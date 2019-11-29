@@ -2,7 +2,10 @@ package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import faust.lhipgame.gameentities.GameEntity;
+import faust.lhipgame.gameentities.Player;
 
 /**
  * Entity instanced in game world class
@@ -10,8 +13,8 @@ import faust.lhipgame.gameentities.GameEntity;
  */
 public class GameInstance {
 
-    private GameEntity entity;
-    private BodyDef bodyDef;
+    protected GameEntity entity;
+    protected BodyDef bodyDef;
 
     //TODO parametrize
     public GameInstance(GameEntity entity) {
@@ -26,6 +29,7 @@ public class GameInstance {
         this.bodyDef = new BodyDef();
         this.bodyDef.type = BodyDef.BodyType.KinematicBody;
         this.bodyDef.position.set(150,180);
+
     }
 
     /**

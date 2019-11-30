@@ -3,12 +3,14 @@ package faust.lhipgame.instances;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.gameentities.Player;
+import faust.lhipgame.gameentities.enums.Direction;
 
 /**
  * Player Instance class
  */
 public class PlayerInstance extends GameInstance implements InputProcessor {
+
+    private static final float SPEED = 100;
 
     public PlayerInstance(GameEntity entity) {
         super(entity);
@@ -17,39 +19,60 @@ public class PlayerInstance extends GameInstance implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
 
-        switch (keycode){
-            case Input.Keys.UP:{
-                this.bodyDef.linearVelocity.set(0,-1);
+        // Keep the initial velocity
+        float horizontalVelocity = this.body.getLinearVelocity().x;
+        float verticalVelocity = this.body.getLinearVelocity().y;
+
+        // Set instance direction and velocity accordingly to the pressed key
+        switch (keycode) {
+            case Input.Keys.UP: {
+                this.currentDirection = Direction.UP;
+                verticalVelocity = SPEED;
                 break;
             }
-            case Input.Keys.DOWN:{
-                this.bodyDef.linearVelocity.set(0,1);
+            case Input.Keys.DOWN: {
+                this.currentDirection = Direction.DOWN;
+                verticalVelocity = -SPEED;
                 break;
             }
-            case Input.Keys.LEFT:{
-                this.bodyDef.linearVelocity.set(-1,0);
+            case Input.Keys.LEFT: {
+                this.currentDirection = Direction.LEFT;
+                horizontalVelocity = -SPEED;
                 break;
             }
-            case Input.Keys.RIGHT:{
-                this.bodyDef.linearVelocity.set(1,0);
+            case Input.Keys.RIGHT: {
+                this.currentDirection = Direction.RIGHT;
+                horizontalVelocity = SPEED;
                 break;
             }
         }
+
+        this.body.setLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
 
-        switch (keycode){
+        // Keep the initial velocity
+        float horizontalVelocity = this.body.getLinearVelocity().x;
+        float verticalVelocity = this.body.getLinearVelocity().y;
+
+        // Determine new velocity
+        switch (keycode) {
             case Input.Keys.UP:
-            case Input.Keys.DOWN:
+            case Input.Keys.DOWN: {
+                verticalVelocity = 0;
+                break;
+            }
             case Input.Keys.LEFT:
-            case Input.Keys.RIGHT:{
-                this.bodyDef.linearVelocity.set(0,0);
+            case Input.Keys.RIGHT: {
+                horizontalVelocity = 0;
                 break;
             }
         }
+
+        this.body.setLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;
     }
 

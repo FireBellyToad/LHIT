@@ -10,16 +10,16 @@ import java.util.Map;
 
 /**
  * Living entities class
+ *
  * @author Jacopo "Faust" Buttiglieri
  */
 public abstract class LivingEntity extends GameEntity {
 
-    protected int resistance;
     protected int damage = 0;
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
 
     //Animations given Behavior and Direction
-    protected Map<GameBehavior,Map<Direction,Animation>> animations = new HashMap<>();
+    protected Map<GameBehavior, Map<Direction, Animation>> animations = new HashMap<>();
 
     public LivingEntity(Texture texture) {
         super(texture);
@@ -28,14 +28,20 @@ public abstract class LivingEntity extends GameEntity {
 
     /**
      * Method for hurting the LivingEntity
-     * @param damage to be subtracted
+     *
+     * @param damageReceived to be subtracted
      */
-    public void hurt(int damage){
-        this.resistance = Math.max(0,resistance-damage);
+    public void hurt(int damageReceived) {
+        this.damage += Math.min(this.getResistance(), damageReceived);
     }
 
     /**
      * Handles the LivingEntity game logic
      */
     public abstract void logic();
+
+    /**
+     * gets the Entity Resistance
+     */
+    public abstract int getResistance();
 }

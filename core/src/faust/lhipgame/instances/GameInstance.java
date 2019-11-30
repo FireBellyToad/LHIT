@@ -1,11 +1,10 @@
 package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.gameentities.Player;
+import faust.lhipgame.gameentities.enums.Direction;
 
 /**
  * Entity instanced in game world class
@@ -14,21 +13,31 @@ import faust.lhipgame.gameentities.Player;
 public class GameInstance {
 
     protected GameEntity entity;
-    protected BodyDef bodyDef;
+    protected Body body;
+    protected Direction currentDirection = Direction.UNUSED;
 
     //TODO parametrize
     public GameInstance(GameEntity entity) {
         this.entity = entity;
-        initBody();
     }
 
     /**
-     * Inits the BodyDefinition
+     * Inits the BodyDefinition TODO Rivedere
      */
-    private void initBody() {
-        this.bodyDef = new BodyDef();
-        this.bodyDef.type = BodyDef.BodyType.KinematicBody;
-        this.bodyDef.position.set(150,180);
+    public void createBody(World world, int x, int y) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(x,y);
+
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(1, 1);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1;
+
+        body = world.createBody(bodyDef);
+        body.createFixture(fixtureDef);
 
     }
 
@@ -37,11 +46,12 @@ public class GameInstance {
      * @param batch
      */
     public void draw(SpriteBatch batch){
-        batch.draw(entity.getTexture(),bodyDef.position.x,bodyDef.position.y);
+        System.out.println(body.getPosition().toString());
+        batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
     };
 
-    public BodyDef getBodyDef() {
-        return bodyDef;
+    public Body getBody() {
+        return body;
     }
 
     /**

@@ -10,7 +10,6 @@ import faust.lhipgame.gameentities.enums.Direction;
 public abstract class GameEntity {
 
     protected Texture texture;
-    protected Direction currentDirection = Direction.UNUSED;
 
     public GameEntity(Texture texture) {
         this.texture = texture;

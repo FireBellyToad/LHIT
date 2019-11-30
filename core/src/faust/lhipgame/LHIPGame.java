@@ -14,11 +14,10 @@ import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.world.WorldManager;
 
 public class LHIPGame extends Game {
-	public static final float PIXEL_PER_METER = 32f;
 
 	SpriteBatch batch;
 	WorldManager worldManager;
-	GameInstance player;
+	PlayerInstance player;
 	OrthographicCamera camera;
 	Box2DDebugRenderer box2DDebugRenderer;
 	
@@ -30,19 +29,22 @@ public class LHIPGame extends Game {
 		camera.setToOrtho(false,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 
 		worldManager = new WorldManager();
+
+		// Creating player and making it available to input processor
 		player = new PlayerInstance(new Player());
-		batch = new SpriteBatch();
-		box2DDebugRenderer = new Box2DDebugRenderer();
 		Gdx.input.setInputProcessor((InputProcessor) player);
 
-		worldManager.insertIntoWorld(player,150,180);
+		batch = new SpriteBatch();
+		box2DDebugRenderer = new Box2DDebugRenderer();
+
+		worldManager.insertPlayerIntoWorld(player,150,180);
 	}
 
 	@Override
 	public void render () {
 		worldManager.doStep();
 
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
@@ -52,7 +54,7 @@ public class LHIPGame extends Game {
 		player.draw(batch);
 		batch.end();
 
-		box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(PIXEL_PER_METER));
+		box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(32f));
 	}
 	
 	@Override

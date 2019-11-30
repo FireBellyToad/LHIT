@@ -1,13 +1,14 @@
 package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 
 /**
  * Entity instanced in game world class
+ *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class GameInstance {
@@ -16,39 +17,50 @@ public class GameInstance {
     protected Body body;
     protected Direction currentDirection = Direction.UNUSED;
 
-    //TODO parametrize
     public GameInstance(GameEntity entity) {
+        Assert.checkNonNull(entity);
+
         this.entity = entity;
     }
 
     /**
      * Inits the BodyDefinition TODO Rivedere
      */
-    public void createBody(World world, int x, int y) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.position.set(x,y);
+    public void createBody(final World world, int x, int y, final boolean isStaticBody) {
+        Assert.checkNonNull(world);
 
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = isStaticBody ? BodyDef.BodyType.StaticBody: BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(x, y);
+
+        // Define shape
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(1, 1);
 
+        // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1;
 
+        // Associate body to world
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
 
+        shape.dispose();
     }
 
     /**
      * Draw the Entity using Body position
+     *
      * @param batch
      */
-    public void draw(SpriteBatch batch){
-        System.out.println(body.getPosition().toString());
+    public void draw(SpriteBatch batch) {
+        Assert.checkNonNull(batch);
+
         batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
-    };
+    }
+
+    ;
 
     public Body getBody() {
         return body;

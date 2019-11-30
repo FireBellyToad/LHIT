@@ -43,4 +43,12 @@ public abstract class LivingEntity extends GameEntity {
      * gets the Entity Resistance
      */
     public abstract int getResistance();
+
+    /**+
+     *
+     * @return true if the damage is greater or equal than the resitance
+     */
+    public boolean isDead(){
+        return this.damage >= this.getResistance();
+    }
 }

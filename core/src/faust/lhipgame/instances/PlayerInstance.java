@@ -10,7 +10,7 @@ import faust.lhipgame.gameentities.enums.Direction;
  */
 public class PlayerInstance extends GameInstance implements InputProcessor {
 
-    private static final float SPEED = 100;
+    private static final float PLAYER_SPEED = 100;
 
     public PlayerInstance(GameEntity entity) {
         super(entity);
@@ -27,30 +27,30 @@ public class PlayerInstance extends GameInstance implements InputProcessor {
         // Check if not moving in opposite direction
         switch (keycode) {
             case Input.Keys.UP: {
-                if (verticalVelocity != -SPEED) {
+                if (verticalVelocity != -PLAYER_SPEED) {
                     this.currentDirection = Direction.UP;
-                    verticalVelocity = SPEED;
+                    verticalVelocity = PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.DOWN: {
-                if (verticalVelocity != SPEED) {
+                if (verticalVelocity != PLAYER_SPEED) {
                     this.currentDirection = Direction.DOWN;
-                    verticalVelocity = -SPEED;
+                    verticalVelocity = -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.LEFT: {
-                if (horizontalVelocity != SPEED) {
+                if (horizontalVelocity != PLAYER_SPEED) {
                     this.currentDirection = Direction.LEFT;
-                    horizontalVelocity = -SPEED;
+                    horizontalVelocity = -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.RIGHT: {
-                if (horizontalVelocity != -SPEED) {
+                if (horizontalVelocity != -PLAYER_SPEED) {
                     this.currentDirection = Direction.RIGHT;
-                    horizontalVelocity = SPEED;
+                    horizontalVelocity = PLAYER_SPEED;
                 }
                 break;
             }

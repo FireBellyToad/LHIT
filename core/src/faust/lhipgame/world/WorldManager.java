@@ -2,8 +2,16 @@ package faust.lhipgame.world;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.instances.PlayerInstance;
 
+
+/**
+ * Wraps Box2D world
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class WorldManager {
     private static final float TIME_STEP = 1 / 60f;
     private static final int VELOCITY_ITERATIONS = 6;
@@ -30,7 +38,26 @@ public class WorldManager {
         world.dispose();
     }
 
-    public void insertIntoWorld(GameInstance instance,int x, int y) {
-        instance.createBody(getWorld(),x,y);
+    /**
+     * Inserts a PlayerInstance into Box2D World
+     * @param playerInstance
+     * @param x
+     * @param y
+     */
+    public void insertPlayerIntoWorld(final PlayerInstance playerInstance, int x, int y) {
+        Assert.checkNonNull(playerInstance);
+        this.insertIntoWorld(playerInstance,x,y,false);
     }
+
+    /**
+     * Inserts a GameInstance into Box2D World
+     * @param instance the instance to insert
+     * @param x
+     * @param y
+     * @param isStaticBody true if is a StaticBody
+     */
+    private void insertIntoWorld(final GameInstance instance, int x, int y, final boolean isStaticBody) {
+        instance.createBody(this.world, x, y, isStaticBody);
+    }
+
 }

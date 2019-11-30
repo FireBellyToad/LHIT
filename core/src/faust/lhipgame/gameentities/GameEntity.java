@@ -1,6 +1,7 @@
 package faust.lhipgame.gameentities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.enums.Direction;
 
 /**
@@ -12,6 +13,8 @@ public abstract class GameEntity {
     protected Texture texture;
 
     public GameEntity(Texture texture) {
+        Assert.checkNonNull(texture);
+
         this.texture = texture;
     }
 

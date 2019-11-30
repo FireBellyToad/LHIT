@@ -23,7 +23,6 @@ public abstract class LivingEntity extends GameEntity {
 
     public LivingEntity(Texture texture) {
         super(texture);
-        this.currentDirection = Direction.DOWN;
     }
 
     /**

@@ -24,25 +24,34 @@ public class PlayerInstance extends GameInstance implements InputProcessor {
         float verticalVelocity = this.body.getLinearVelocity().y;
 
         // Set instance direction and velocity accordingly to the pressed key
+        // Check if not moving in opposite direction
         switch (keycode) {
             case Input.Keys.UP: {
-                this.currentDirection = Direction.UP;
-                verticalVelocity = SPEED;
+                if (verticalVelocity != -SPEED) {
+                    this.currentDirection = Direction.UP;
+                    verticalVelocity = SPEED;
+                }
                 break;
             }
             case Input.Keys.DOWN: {
-                this.currentDirection = Direction.DOWN;
-                verticalVelocity = -SPEED;
+                if (verticalVelocity != SPEED) {
+                    this.currentDirection = Direction.DOWN;
+                    verticalVelocity = -SPEED;
+                }
                 break;
             }
             case Input.Keys.LEFT: {
-                this.currentDirection = Direction.LEFT;
-                horizontalVelocity = -SPEED;
+                if (horizontalVelocity != SPEED) {
+                    this.currentDirection = Direction.LEFT;
+                    horizontalVelocity = -SPEED;
+                }
                 break;
             }
             case Input.Keys.RIGHT: {
-                this.currentDirection = Direction.RIGHT;
-                horizontalVelocity = SPEED;
+                if (horizontalVelocity != -SPEED) {
+                    this.currentDirection = Direction.RIGHT;
+                    horizontalVelocity = SPEED;
+                }
                 break;
             }
         }

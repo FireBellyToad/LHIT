@@ -1,7 +1,6 @@
 package faust.lhipgame.screens;
 
 import com.badlogic.gdx.Screen;
-import faust.lhipgame.gameentities.Player;
 
 public class GameScreen implements Screen {
     @Override

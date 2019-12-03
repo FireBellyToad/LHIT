@@ -4,18 +4,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.gameentities.enums.Direction;
 
 /**
  * Entity instanced in game world class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class GameInstance {
+public abstract class GameInstance {
 
     protected GameEntity entity;
     protected Body body;
-    protected Direction currentDirection = Direction.UNUSED;
 
     public GameInstance(GameEntity entity) {
         Assert.checkNonNull(entity);
@@ -49,12 +47,13 @@ public class GameInstance {
         shape.dispose();
     }
 
-    /**
+       /**
      * Draw the Entity using Body position
      *
-     * @param batch
-     */
-    public void draw(SpriteBatch batch) {
+        * @param batch
+        * @param stateTime
+        */
+    public void draw(SpriteBatch batch, float stateTime) {
         Assert.checkNonNull(batch);
 
         batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);

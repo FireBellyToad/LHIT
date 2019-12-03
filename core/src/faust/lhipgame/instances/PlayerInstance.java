@@ -1,5 +1,6 @@
 package faust.lhipgame.instances;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import faust.lhipgame.gameentities.GameEntity;
@@ -8,12 +9,14 @@ import faust.lhipgame.gameentities.enums.Direction;
 /**
  * Player Instance class
  */
-public class PlayerInstance extends GameInstance implements InputProcessor {
+public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     private static final float PLAYER_SPEED = 100;
 
     public PlayerInstance(GameEntity entity) {
         super(entity);
+
+        Gdx.input.setInputProcessor((InputProcessor) this);
     }
 
     @Override

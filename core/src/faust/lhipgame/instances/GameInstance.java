@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.GameEntity;
 
+import java.util.Objects;
+
 /**
  * Entity instanced in game world class
  *
@@ -16,7 +18,7 @@ public abstract class GameInstance {
     protected Body body;
 
     public GameInstance(GameEntity entity) {
-        Assert.checkNonNull(entity);
+        Objects.requireNonNull(entity);
 
         this.entity = entity;
     }
@@ -25,7 +27,7 @@ public abstract class GameInstance {
      * Inits the BodyDefinition TODO Rivedere
      */
     public void createBody(final World world, int x, int y, final boolean isStaticBody) {
-        Assert.checkNonNull(world);
+        Objects.requireNonNull(world);
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = isStaticBody ? BodyDef.BodyType.StaticBody: BodyDef.BodyType.KinematicBody;
@@ -53,8 +55,8 @@ public abstract class GameInstance {
         * @param batch
         * @param stateTime
         */
-    public void draw(SpriteBatch batch, float stateTime) {
-        Assert.checkNonNull(batch);
+    public void draw(final SpriteBatch batch, float stateTime) {
+        Objects.requireNonNull(batch);
 
         batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
     }

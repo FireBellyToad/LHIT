@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.enums.Direction;
 
+import java.util.Objects;
+
 /**
  * Game entities class
  * @author Jacopo "Faust" Buttiglieri
@@ -13,7 +15,7 @@ public abstract class GameEntity {
     protected Texture texture;
 
     public GameEntity(Texture texture) {
-        Assert.checkNonNull(texture);
+        Objects.requireNonNull(texture);
 
         this.texture = texture;
     }

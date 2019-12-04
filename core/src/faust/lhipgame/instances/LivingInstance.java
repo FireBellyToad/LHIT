@@ -8,12 +8,14 @@ import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
+import java.util.Objects;
+
 public class LivingInstance extends GameInstance {
 
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
     protected Direction currentDirection = Direction.UNUSED;
 
-    public LivingInstance(GameEntity entity) {
+    public LivingInstance(final GameEntity entity) {
         super(entity);
     }
 
@@ -24,8 +26,8 @@ public class LivingInstance extends GameInstance {
      * @param stateTime
      */
     @Override
-    public void draw(SpriteBatch batch, float stateTime) {
-        Assert.checkNonNull(batch);
+    public void draw(final SpriteBatch batch, float stateTime) {
+        Objects.requireNonNull(batch);
 
         TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
         batch.draw(frame, body.getPosition().x, body.getPosition().y);

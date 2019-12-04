@@ -6,6 +6,8 @@ import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.PlayerInstance;
 
+import java.util.Objects;
+
 
 /**
  * Wraps Box2D world
@@ -45,7 +47,7 @@ public class WorldManager {
      * @param y
      */
     public void insertPlayerIntoWorld(final PlayerInstance playerInstance, int x, int y) {
-        Assert.checkNonNull(playerInstance);
+        Objects.requireNonNull(playerInstance);
         this.insertIntoWorld(playerInstance,x,y,false);
     }
 

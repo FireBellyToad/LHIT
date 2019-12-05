@@ -29,6 +29,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         // Set instance direction and velocity accordingly to the pressed key
         // Check if not moving in opposite direction
         switch (keycode) {
+            case Input.Keys.W:
             case Input.Keys.UP: {
                 if (verticalVelocity != -PLAYER_SPEED) {
                     this.currentDirection = Direction.UP;
@@ -36,6 +37,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 }
                 break;
             }
+            case Input.Keys.S:
             case Input.Keys.DOWN: {
                 if (verticalVelocity != PLAYER_SPEED) {
                     this.currentDirection = Direction.DOWN;
@@ -43,6 +45,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 }
                 break;
             }
+            case Input.Keys.A:
             case Input.Keys.LEFT: {
                 if (horizontalVelocity != PLAYER_SPEED) {
                     this.currentDirection = Direction.LEFT;
@@ -50,6 +53,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 }
                 break;
             }
+            case Input.Keys.D:
             case Input.Keys.RIGHT: {
                 if (horizontalVelocity != -PLAYER_SPEED) {
                     this.currentDirection = Direction.RIGHT;
@@ -72,11 +76,15 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
         // Determine new velocity
         switch (keycode) {
+            case Input.Keys.W:
+            case Input.Keys.S:
             case Input.Keys.UP:
             case Input.Keys.DOWN: {
                 verticalVelocity = 0;
                 break;
             }
+            case Input.Keys.A:
+            case Input.Keys.D:
             case Input.Keys.LEFT:
             case Input.Keys.RIGHT: {
                 horizontalVelocity = 0;

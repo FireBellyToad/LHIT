@@ -33,7 +33,7 @@ public class PlayerEntity extends LivingEntity {
 
         TextureRegion[] allFrames = getFramesFromTexture();
 
-        TextureRegion[] idleFrames = Arrays.copyOfRange(allFrames, 0, getTextureColumns() - 1);
+        TextureRegion[] idleFrames = Arrays.copyOfRange(allFrames, 0, getTextureColumns());
 
         // Initialize the Animation with the frame interval and array of frames
         addAnimation(new Animation<TextureRegion>(FRAME_DURATION, idleFrames), GameBehavior.IDLE);

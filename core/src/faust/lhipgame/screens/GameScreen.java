@@ -2,8 +2,10 @@ package faust.lhipgame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -22,6 +24,7 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private float stateTime = 0f;
     private Viewport viewport;
+    private ShapeRenderer  background;
 
     private final LHIPGame game;
 
@@ -44,7 +47,7 @@ public class GameScreen implements Screen {
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
-
+        background = new ShapeRenderer();
     }
 
     @Override
@@ -53,13 +56,23 @@ public class GameScreen implements Screen {
         worldManager.doStep();
         stateTime += Gdx.graphics.getDeltaTime();
 
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         viewport.apply();
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
+        //Draw gray background
+        game.getBatch().begin();
+        background.setColor(Color.GRAY);
+        background.setProjectionMatrix(camera.combined);
+        background.begin(ShapeRenderer.ShapeType.Filled);
+        background.rect(0, 0, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
+        background.end();
+        game.getBatch().end();
+
+        //Draw Walfrit
         game.getBatch().begin();
         player.draw(game.getBatch(), stateTime);
         game.getBatch().end();
@@ -90,7 +103,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
         player.dispose();
         worldManager.dispose();
         box2DDebugRenderer.dispose();

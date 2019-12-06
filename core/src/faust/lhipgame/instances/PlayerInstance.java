@@ -15,6 +15,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     public PlayerInstance(GameEntity entity) {
         super(entity);
+        currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor((InputProcessor) this);
     }

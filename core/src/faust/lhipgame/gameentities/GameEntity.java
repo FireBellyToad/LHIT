@@ -10,7 +10,7 @@ import java.util.Objects;
  * Game entities class
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class GameEntity {
+public class GameEntity {
 
     protected Texture texture;
 

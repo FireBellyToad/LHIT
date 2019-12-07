@@ -20,11 +20,6 @@ public class PlayerEntity extends LivingEntity {
     }
 
     @Override
-    public void logic() {
-        //TODO logic
-    }
-
-    @Override
     public int getResistance() {
         return 12;
     }

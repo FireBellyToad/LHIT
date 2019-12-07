@@ -11,9 +11,12 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.gameentities.PlayerEntity;
+import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.world.WorldManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameScreen implements Screen {
 
@@ -24,9 +27,10 @@ public class GameScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private float stateTime = 0f;
     private Viewport viewport;
-    private ShapeRenderer  background;
+    private ShapeRenderer background;
 
     private final LHIPGame game;
+    private List<POIInstance> poiList;
 
     public GameScreen(LHIPGame game) {
         this.game = game;
@@ -42,11 +46,18 @@ public class GameScreen implements Screen {
         worldManager = new WorldManager();
 
         // Creating player and making it available to input processor
-        player = new PlayerInstance(new PlayerEntity());
+        player = new PlayerInstance();
+
+        poiList = new ArrayList<POIInstance>() {{
+            this.add(new POIInstance());
+        }};
+
+        player.changePOIList(poiList);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
+        worldManager.insertPOIIntoRoom(poiList);
         background = new ShapeRenderer();
     }
 
@@ -74,6 +85,10 @@ public class GameScreen implements Screen {
 
         //Draw Walfrit
         game.getBatch().begin();
+
+        for (POIInstance poi : poiList) {
+            poi.draw(game.getBatch(), stateTime);
+        }
         player.draw(game.getBatch(), stateTime);
         game.getBatch().end();
 

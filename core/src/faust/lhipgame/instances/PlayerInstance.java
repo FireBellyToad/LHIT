@@ -4,7 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import faust.lhipgame.gameentities.GameEntity;
+import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Player Instance class
@@ -12,12 +17,20 @@ import faust.lhipgame.gameentities.enums.Direction;
 public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     private static final float PLAYER_SPEED = 100;
+    private static final int EXAMINATION_DISTANCE = 50;
 
-    public PlayerInstance(GameEntity entity) {
-        super(entity);
+    private final List<GameInstance> roomPoiList = new ArrayList();
+
+    public PlayerInstance() {
+        super(new PlayerEntity());
         currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor((InputProcessor) this);
+    }
+
+    @Override
+    public void logic() {
+
     }
 
     @Override
@@ -62,10 +75,34 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 }
                 break;
             }
+            case Input.Keys.X:
+            case Input.Keys.K: {
+                if (!roomPoiList.isEmpty()) {
+                    examineNearestPOI();
+                    horizontalVelocity = 0;
+                    verticalVelocity = 0;
+                }
+                break;
+            }
         }
 
         this.body.setLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;
+    }
+
+    private void examineNearestPOI() {
+        POIInstance poiToExamine = (POIInstance) this.getNearestInstance(roomPoiList);
+        if (poiToExamine.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
+
+            poiToExamine.examine();
+        }
+    }
+
+
+    public void changePOIList(List<POIInstance> poiNewList) {
+        Objects.nonNull(poiNewList);
+        roomPoiList.clear();
+        roomPoiList.addAll(poiNewList);
     }
 
     @Override

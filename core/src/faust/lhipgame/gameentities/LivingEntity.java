@@ -40,11 +40,6 @@ public abstract class LivingEntity extends GameEntity {
     }
 
     /**
-     * Handles the LivingEntity game logic
-     */
-    public abstract void logic();
-
-    /**
      * gets the Entity Resistance
      */
     public abstract int getResistance();

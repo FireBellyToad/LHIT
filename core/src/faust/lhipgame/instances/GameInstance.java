@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.GameEntity;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,7 +27,7 @@ public abstract class GameInstance {
     /**
      * Inits the BodyDefinition TODO Rivedere
      */
-    public void createBody(final World world, int x, int y, final boolean isStaticBody) {
+    public void createBody(final World world, float x, float y, final boolean isStaticBody) {
         Objects.requireNonNull(world);
 
         BodyDef bodyDef = new BodyDef();
@@ -72,5 +73,24 @@ public abstract class GameInstance {
      */
     public void dispose() {
         this.entity.dispose();
+    }
+
+    /**
+     * @return the nearest Instance from this in the room
+     */
+    protected GameInstance getNearestInstance(List<GameInstance> instanceList) {
+
+        GameInstance nearest = null;
+
+        for (GameInstance poi : instanceList) {
+            // In no nearest, just return the first one
+            if (Objects.isNull(nearest)) {
+                nearest = poi;
+            } else if (nearest.getBody().getPosition().dst(getBody().getPosition()) <= poi.getBody().getPosition().dst(getBody().getPosition())) {
+                nearest = poi;
+            }
+        }
+        return nearest;
+
     }
 }

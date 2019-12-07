@@ -10,7 +10,7 @@ import faust.lhipgame.gameentities.enums.GameBehavior;
 
 import java.util.Objects;
 
-public class LivingInstance extends GameInstance {
+public abstract class LivingInstance extends GameInstance {
 
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
     protected Direction currentDirection = Direction.UNUSED;
@@ -33,4 +33,8 @@ public class LivingInstance extends GameInstance {
         batch.draw(frame, body.getPosition().x, body.getPosition().y);
     }
 
+    /**
+     * Handles the LivingEntity game logic
+     */
+    public abstract void logic();
 }

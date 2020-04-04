@@ -16,7 +16,7 @@ import java.util.Objects;
 public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     private static final float PLAYER_SPEED = 100;
-    private static final int EXAMINATION_DISTANCE = 50;
+    private static final int EXAMINATION_DISTANCE = 40;
 
     private final List<GameInstance> roomPoiList = new ArrayList();
     private POIInstance nearestPOIInstance;
@@ -103,6 +103,9 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         return true;
     }
 
+    /**
+     * Triggers the examination event of the nearest POI found
+     */
     private void examineNearestPOI() {
         Objects.requireNonNull(nearestPOIInstance);
         if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
@@ -110,7 +113,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
     }
 
-
+    /**
+     * Changed the POI list that the Player Instance must check
+     * @param poiNewList
+     */
     public void changePOIList(List<POIInstance> poiNewList) {
         Objects.requireNonNull(poiNewList);
         roomPoiList.clear();

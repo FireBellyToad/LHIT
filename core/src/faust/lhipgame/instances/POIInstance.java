@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class POIInstance extends GameInstance {
 
-    private static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/4 second
+    private static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/8 second in nanoseconds
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0;
@@ -29,11 +29,14 @@ public class POIInstance extends GameInstance {
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        mustFlicker = TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO;
-
         // If flickering is not enabled or the flickering POI must be shown, draw the texture
-        if(!this.enableFlicker || mustFlicker){
+        if(!this.enableFlicker || !mustFlicker){
             batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
+        }
+
+        // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
+        if(this.enableFlicker && TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO){
+            mustFlicker = !mustFlicker;
 
             // restart flickering timer
             startTime = TimeUtils.nanoTime();

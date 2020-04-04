@@ -1,5 +1,6 @@
 package faust.lhipgame.world;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.LHIPGame;
@@ -72,8 +73,17 @@ public class WorldManager {
      * @param poiList
      */
     public void insertPOIIntoRoom(List<POIInstance> poiList) {
-        for (POIInstance poi : poiList) {
-            this.insertIntoWorld(poi, (float)Math.random() * LHIPGame.GAME_WIDTH,  (float)Math.random() * LHIPGame.GAME_HEIGHT, true);
-        }
+
+        poiList.forEach((poi)-> {
+
+            float randomX = MathUtils.random() * LHIPGame.GAME_WIDTH;
+            float randomY = MathUtils.random() * LHIPGame.GAME_HEIGHT;
+
+            // Clamping the values for keeping it inside the screen
+            randomX = MathUtils.clamp(randomX,25, LHIPGame.GAME_WIDTH-25);
+            randomY = MathUtils.clamp(randomY,25, LHIPGame.GAME_HEIGHT-25);
+
+            this.insertIntoWorld(poi, randomX, randomY, true);
+        });
     }
 }

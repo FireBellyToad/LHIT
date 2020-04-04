@@ -76,6 +76,28 @@ public class GameScreen implements Screen {
         game.getBatch().setProjectionMatrix(camera.combined);
 
         //Draw gray background
+        drawBackGround();
+
+        //Draw all instances
+        drawGameInstances();
+
+        box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(32f));
+
+    }
+
+    private void drawGameInstances() {
+        game.getBatch().begin();
+
+        poiList.forEach((poi) -> poi.draw(game.getBatch(),stateTime));
+
+        player.draw(game.getBatch(), stateTime);
+        game.getBatch().end();
+    }
+
+    /**
+     * Draws the background
+     */
+    private void drawBackGround() {
         game.getBatch().begin();
         background.setColor(Color.GRAY);
         background.setProjectionMatrix(camera.combined);
@@ -83,23 +105,16 @@ public class GameScreen implements Screen {
         background.rect(0, 0, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
         background.end();
         game.getBatch().end();
-
-        //Draw Walfrit
-        game.getBatch().begin();
-
-        for (POIInstance poi : poiList) {
-            poi.draw(game.getBatch(),stateTime);
-        }
-        player.draw(game.getBatch(), stateTime);
-        game.getBatch().end();
-
-        box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(32f));
-
     }
 
+    /**
+     * Executes the logic of each game Instance
+     */
     private void doLogic() {
 
         player.logic();
+
+        // for each enemies -> logic()
     }
 
     @Override

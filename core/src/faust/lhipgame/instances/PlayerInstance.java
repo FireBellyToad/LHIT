@@ -33,10 +33,8 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         // Checking if there is any POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
 
-            for (GameInstance poi : roomPoiList) {
-                ((POIInstance) poi).setEnableFlicker(false);
-            }
-
+            roomPoiList.forEach((poi) ->  ((POIInstance) poi).setEnableFlicker(false));
+            
             nearestPOIInstance = (POIInstance) this.getNearestInstance(roomPoiList);
             if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
                 nearestPOIInstance.setEnableFlicker(true);

@@ -20,6 +20,9 @@ public class POIInstance extends GameInstance {
         super(new POIEntity());
     }
 
+    /**
+     * Handles the examination from a Player Instance
+     */
     public void examine() {
         //TODO
         System.out.println("POI EXAMINED");

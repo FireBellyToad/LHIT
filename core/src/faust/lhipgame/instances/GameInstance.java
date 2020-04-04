@@ -50,19 +50,7 @@ public abstract class GameInstance {
         shape.dispose();
     }
 
-       /**
-     * Draw the Entity using Body position
-     *
-        * @param batch
-        * @param stateTime
-        */
-    public void draw(final SpriteBatch batch, float stateTime) {
-        Objects.requireNonNull(batch);
-
-        batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
-    }
-
-    ;
+    public abstract void draw(final SpriteBatch batch, float stateTime);
 
     public Body getBody() {
         return body;

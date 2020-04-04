@@ -64,6 +64,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
+        doLogic();
         worldManager.doStep();
         stateTime += Gdx.graphics.getDeltaTime();
 
@@ -87,13 +88,18 @@ public class GameScreen implements Screen {
         game.getBatch().begin();
 
         for (POIInstance poi : poiList) {
-            poi.draw(game.getBatch(), stateTime);
+            poi.draw(game.getBatch(),stateTime);
         }
         player.draw(game.getBatch(), stateTime);
         game.getBatch().end();
 
         box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(32f));
 
+    }
+
+    private void doLogic() {
+
+        player.logic();
     }
 
     @Override

@@ -25,7 +25,6 @@ public abstract class LivingInstance extends GameInstance {
      * @param batch
      * @param stateTime
      */
-    @Override
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 

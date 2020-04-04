@@ -3,7 +3,6 @@ package faust.lhipgame.instances;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 
@@ -20,6 +19,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private static final int EXAMINATION_DISTANCE = 50;
 
     private final List<GameInstance> roomPoiList = new ArrayList();
+    private POIInstance nearestPOIInstance;
 
     public PlayerInstance() {
         super(new PlayerEntity());
@@ -30,6 +30,19 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     @Override
     public void logic() {
+        // Checking if there is any POI near enough to be examined by the player
+        if (!roomPoiList.isEmpty()) {
+
+            for (GameInstance poi : roomPoiList) {
+                ((POIInstance) poi).setEnableFlicker(false);
+            }
+
+            nearestPOIInstance = (POIInstance) this.getNearestInstance(roomPoiList);
+            if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
+                nearestPOIInstance.setEnableFlicker(true);
+            }
+
+        }
 
     }
 
@@ -77,7 +90,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             }
             case Input.Keys.X:
             case Input.Keys.K: {
-                if (!roomPoiList.isEmpty()) {
+                if (Objects.nonNull(nearestPOIInstance)) {
                     examineNearestPOI();
                     horizontalVelocity = 0;
                     verticalVelocity = 0;
@@ -91,18 +104,20 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     }
 
     private void examineNearestPOI() {
-        POIInstance poiToExamine = (POIInstance) this.getNearestInstance(roomPoiList);
-        if (poiToExamine.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
-
-            poiToExamine.examine();
+        Objects.requireNonNull(nearestPOIInstance);
+        if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
+            nearestPOIInstance.examine();
         }
     }
 
 
     public void changePOIList(List<POIInstance> poiNewList) {
-        Objects.nonNull(poiNewList);
+        Objects.requireNonNull(poiNewList);
         roomPoiList.clear();
         roomPoiList.addAll(poiNewList);
+        if (!roomPoiList.isEmpty()) {
+            nearestPOIInstance = (POIInstance) this.getNearestInstance(roomPoiList);
+        }
     }
 
     @Override

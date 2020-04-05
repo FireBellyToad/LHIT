@@ -6,6 +6,6 @@ import faust.lhipgame.gameentities.GameEntity;
 public class POIEntity extends GameEntity {
 
     public POIEntity() {
-        super(new Texture("poi_sheet.png"));
+        super(new Texture("sprites/poi_sheet.png"));
     }
 }

@@ -16,7 +16,7 @@ import java.util.Arrays;
 public class PlayerEntity extends LivingEntity {
 
     public PlayerEntity() {
-        super(new Texture("walfrit_sheet.png"));
+        super(new Texture("sprites/walfrit_sheet.png"));
     }
 
     @Override

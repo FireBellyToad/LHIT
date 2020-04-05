@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
 import java.util.ArrayList;
@@ -20,9 +21,10 @@ import java.util.List;
 
 public class GameScreen implements Screen {
 
-
     private WorldManager worldManager;
     private PlayerInstance player;
+    private TextManager textManager;
+
     private OrthographicCamera camera;
     private Box2DDebugRenderer box2DDebugRenderer;
     private float stateTime = 0f;
@@ -44,12 +46,13 @@ public class GameScreen implements Screen {
         viewport = new FitViewport(LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT, camera);
 
         worldManager = new WorldManager();
+        textManager = new TextManager();
 
         // Creating player and making it available to input processor
         player = new PlayerInstance();
 
         poiList = new ArrayList<POIInstance>() {{
-            this.add(new POIInstance());
+            this.add(new POIInstance(textManager));
         }};
 
         player.changePOIList(poiList);
@@ -58,6 +61,7 @@ public class GameScreen implements Screen {
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
         worldManager.insertPOIIntoRoom(poiList);
+
         background = new ShapeRenderer();
     }
 
@@ -81,8 +85,17 @@ public class GameScreen implements Screen {
         //Draw all instances
         drawGameInstances();
 
+        //Draw all overlays
+        drawOverlays();
+
         box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(32f));
 
+    }
+
+    private void drawOverlays() {
+        game.getBatch().begin();
+        textManager.renderTextBoxes(game.getBatch());
+        game.getBatch().end();
     }
 
     private void drawGameInstances() {
@@ -141,6 +154,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         player.dispose();
         worldManager.dispose();
+        textManager.dispose();
         box2DDebugRenderer.dispose();
     }
 }

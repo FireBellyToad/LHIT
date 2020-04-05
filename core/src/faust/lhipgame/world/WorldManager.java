@@ -80,8 +80,8 @@ public class WorldManager {
             float randomY = MathUtils.random() * LHIPGame.GAME_HEIGHT;
 
             // Clamping the values for keeping it inside the screen
-            randomX = MathUtils.clamp(randomX,25, LHIPGame.GAME_WIDTH-25);
-            randomY = MathUtils.clamp(randomY,25, LHIPGame.GAME_HEIGHT-25);
+            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
+            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
 
             this.insertIntoWorld(poi, randomX, randomY, true);
         });

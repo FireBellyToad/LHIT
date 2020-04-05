@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.gameentities.POIEntity;
+import faust.lhipgame.text.TextManager;
 
 import java.util.Objects;
 
@@ -13,11 +14,11 @@ public class POIInstance extends GameInstance {
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0;
+    private TextManager textManager;
 
-    final Color color = new Color(1, 1, 1, 0);
-
-    public POIInstance() {
+    public POIInstance(final TextManager textManager) {
         super(new POIEntity());
+        this.textManager = textManager;
     }
 
     /**
@@ -25,7 +26,7 @@ public class POIInstance extends GameInstance {
      */
     public void examine() {
         //TODO
-        System.out.println("POI EXAMINED");
+        textManager.addNewTextBox("JUST A PILE OF \nBONES");
     }
 
     @Override

@@ -7,6 +7,8 @@ import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
+import faust.lhipgame.text.TextManager;
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 

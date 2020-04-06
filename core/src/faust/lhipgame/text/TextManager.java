@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.instances.PlayerInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class TextManager {
         Objects.requireNonNull(text);
 
         TextBoxData newText = new TextBoxData(text);
+
         textBoxes.add(newText);
 
         // Hide box after time
@@ -51,13 +53,16 @@ public class TextManager {
         }, newText.getTimeToShow());
     }
 
-    public void renderTextBoxes(final SpriteBatch batch) {
-
+    public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player) {
         //Render all the created boxes
         textBoxes.forEach((box) -> {
-            mainFont.draw(batch, box.getText(), 8, LHIPGame.GAME_HEIGHT - 8);
+            // Draw on top or bottom screen, given the y position of the player
+            if (player.getBody().getPosition().y < LHIPGame.GAME_HEIGHT / 2) {
+                mainFont.draw(batch, box.getText(), 8, LHIPGame.GAME_HEIGHT - 8);
+            } else {
+                mainFont.draw(batch, box.getText(), 8, 32);
+            }
         });
-
     }
 
     public void dispose() {
@@ -65,16 +70,3 @@ public class TextManager {
     }
 }
 
-
-//
-//
-//    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-//parameter.size = 18;
-//        parameter.characters = "한국어/조선�?";
-//
-//        BitmapFont koreanFont = generator.generateFont(parameter);
-//
-//        parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS;
-//        generator = new FreeTypeFontGenerator(Gdx.files.internal("data/russkij.ttf"));
-//        BitmapFont cyrillicFont = generator.generateFont(parameter);
-//        generator.dispose();

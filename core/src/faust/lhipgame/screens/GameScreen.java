@@ -94,7 +94,7 @@ public class GameScreen implements Screen {
 
     private void drawOverlays() {
         game.getBatch().begin();
-        textManager.renderTextBoxes(game.getBatch());
+        textManager.renderTextBoxes(game.getBatch(),player);
         game.getBatch().end();
     }
 

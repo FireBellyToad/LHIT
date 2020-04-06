@@ -6,8 +6,8 @@ public class TextBoxData {
     private int timeToShow;
 
     public TextBoxData(String text) {
-        this.text = text;
 
+        this.text = text;
         // 1 second plus 1 for each word
         timeToShow = 1 + text.split(" ").length;
 
@@ -18,6 +18,7 @@ public class TextBoxData {
     }
 
     public String getText() {
+
         return text;
     }
 

@@ -4,6 +4,8 @@ package faust.lhipgame.text;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.PlayerInstance;
@@ -20,28 +22,36 @@ import java.util.Objects;
 public class TextManager {
 
     private static final float FONT_SIZE = 0.5f;
-    private static final float MIN_TIME_TO_SHOW = 2;
+
     private BitmapFont mainFont;
     private List<TextBoxData> textBoxes = new ArrayList<>();
+    private JsonValue messageMap;
 
     public TextManager() {
 
+        // Prepare font
         mainFont = new BitmapFont(Gdx.files.internal("fonts/main_font.fnt"),
                 Gdx.files.internal("fonts/main_font.png"), false);
 
         mainFont.getData().setScale(FONT_SIZE);
+
+        // Prepare text map
+        JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/textBoxes.json"));
+        messageMap = root.get("messages");
+
+        Objects.requireNonNull(messageMap);
     }
 
     /**
      * Render a text box
      *
-     * @param text
+     * @param textKey the key of the message to be shown
      */
-    public void addNewTextBox(final String text) {
-        Objects.requireNonNull(text);
+    public void addNewTextBox(final String textKey) {
+        Objects.requireNonNull(textKey);
 
-        TextBoxData newText = new TextBoxData(text);
-
+        //Create text box given a textKey. If no text is found, use key as text
+        TextBoxData newText = new TextBoxData(messageMap.getString(textKey, textKey));
         textBoxes.add(newText);
 
         // Hide box after time

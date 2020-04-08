@@ -64,6 +64,7 @@ public abstract class GameInstance {
     }
 
     /**
+     * Returs the nearest Instance from this in the room. USE ONLY AFTER INSERTING THE POI IN THE WORLD
      * @return the nearest Instance from this in the room
      */
     protected GameInstance getNearestInstance(List<GameInstance> instanceList) {
@@ -74,7 +75,7 @@ public abstract class GameInstance {
             // In no nearest, just return the first one
             if (Objects.isNull(nearest)) {
                 nearest = poi;
-            } else if (nearest.getBody().getPosition().dst(getBody().getPosition()) <= poi.getBody().getPosition().dst(getBody().getPosition())) {
+            } else if (nearest.getBody().getPosition().dst(getBody().getPosition()) > poi.getBody().getPosition().dst(getBody().getPosition())) {
                 nearest = poi;
             }
         }

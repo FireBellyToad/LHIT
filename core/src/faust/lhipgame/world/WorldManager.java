@@ -77,8 +77,8 @@ public class WorldManager {
 
         poiList.forEach((poi)-> {
 
-            float randomX = MathUtils.random() * LHIPGame.GAME_WIDTH;
-            float randomY = MathUtils.random() * LHIPGame.GAME_HEIGHT;
+            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
+            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
 
             // Clamping the values for keeping it inside the screen
             randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
@@ -97,8 +97,8 @@ public class WorldManager {
 
         decorationInstances.forEach((deco)-> {
 
-            float randomX = MathUtils.random() * LHIPGame.GAME_WIDTH;
-            float randomY = MathUtils.random() * LHIPGame.GAME_HEIGHT;
+            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
+            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
 
             // Clamping the values for keeping it inside the screen
             randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);

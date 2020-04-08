@@ -15,6 +15,7 @@ import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.rooms.CasualRoom;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
@@ -34,8 +35,7 @@ public class GameScreen implements Screen {
     private ShapeRenderer background;
 
     private final LHIPGame game;
-    private List<POIInstance> poiList;
-    private List<DecorationInstance> decorationList;
+    private CasualRoom room;
 
     public GameScreen(LHIPGame game) {
         this.game = game;
@@ -54,23 +54,11 @@ public class GameScreen implements Screen {
         // Creating player and making it available to input processor
         player = new PlayerInstance();
 
-        poiList = new ArrayList<POIInstance>() {{
-            this.add(new POIInstance(textManager));
-        }};
-
-        decorationList = new ArrayList<DecorationInstance>() {{
-            this.add(new DecorationInstance());
-            this.add(new DecorationInstance());
-            this.add(new DecorationInstance());
-        }};
-
-        player.changePOIList(poiList);
-
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
-        worldManager.insertPOIIntoRoom(poiList);
-        worldManager.insertDecorationsIntoRoom(decorationList);
+
+        room = new CasualRoom(worldManager, textManager, player);
 
         background = new ShapeRenderer();
     }
@@ -93,7 +81,7 @@ public class GameScreen implements Screen {
         drawBackGround();
 
         //Draw all instances
-        drawGameInstances();
+        drawGameInstances(stateTime);
 
         //Draw all overlays
         drawOverlays();
@@ -104,28 +92,13 @@ public class GameScreen implements Screen {
 
     private void drawOverlays() {
         game.getBatch().begin();
-        textManager.renderTextBoxes(game.getBatch(),player);
+        textManager.renderTextBoxes(game.getBatch(), player);
         game.getBatch().end();
     }
 
-    private void drawGameInstances() {
+    private void drawGameInstances(float stateTime) {
         game.getBatch().begin();
-
-
-        poiList.forEach((poi) -> poi.draw(game.getBatch(),stateTime));
-
-        decorationList.forEach((deco) -> {
-            if(deco.getBody().getPosition().y >= player.getBody().getPosition().y-4)
-                deco.draw(game.getBatch(),stateTime);
-        });
-
-        player.draw(game.getBatch(), stateTime);
-
-        decorationList.forEach((deco) -> {
-            if(deco.getBody().getPosition().y < player.getBody().getPosition().y-4)
-                deco.draw(game.getBatch(),stateTime);
-        });
-
+        room.drawRoomContents(game.getBatch(), stateTime);
         game.getBatch().end();
     }
 

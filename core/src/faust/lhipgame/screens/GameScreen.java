@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.gameentities.PlayerEntity;
+import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.text.TextManager;
@@ -33,6 +35,7 @@ public class GameScreen implements Screen {
 
     private final LHIPGame game;
     private List<POIInstance> poiList;
+    private List<DecorationInstance> decorationList;
 
     public GameScreen(LHIPGame game) {
         this.game = game;
@@ -55,12 +58,19 @@ public class GameScreen implements Screen {
             this.add(new POIInstance(textManager));
         }};
 
+        decorationList = new ArrayList<DecorationInstance>() {{
+            this.add(new DecorationInstance());
+            this.add(new DecorationInstance());
+            this.add(new DecorationInstance());
+        }};
+
         player.changePOIList(poiList);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
         worldManager.insertPOIIntoRoom(poiList);
+        worldManager.insertDecorationsIntoRoom(decorationList);
 
         background = new ShapeRenderer();
     }
@@ -101,9 +111,21 @@ public class GameScreen implements Screen {
     private void drawGameInstances() {
         game.getBatch().begin();
 
+
         poiList.forEach((poi) -> poi.draw(game.getBatch(),stateTime));
 
+        decorationList.forEach((deco) -> {
+            if(deco.getBody().getPosition().y >= player.getBody().getPosition().y-4)
+                deco.draw(game.getBatch(),stateTime);
+        });
+
         player.draw(game.getBatch(), stateTime);
+
+        decorationList.forEach((deco) -> {
+            if(deco.getBody().getPosition().y < player.getBody().getPosition().y-4)
+                deco.draw(game.getBatch(),stateTime);
+        });
+
         game.getBatch().end();
     }
 

@@ -22,6 +22,7 @@ import java.util.Objects;
 public class TextManager {
 
     private static final float FONT_SIZE = 0.5f;
+    private static final float MESSAGE_LIMIT = 1;
 
     private BitmapFont mainFont;
     private List<TextBoxData> textBoxes = new ArrayList<>();
@@ -49,6 +50,10 @@ public class TextManager {
      */
     public void addNewTextBox(final String textKey) {
         Objects.requireNonNull(textKey);
+
+        if(textBoxes.size() == MESSAGE_LIMIT){
+            textBoxes.remove(0);
+        }
 
         //Create text box given a textKey. If no text is found, use key as text
         TextBoxData newText = new TextBoxData(messageMap.getString(textKey, textKey));

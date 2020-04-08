@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
@@ -86,4 +87,25 @@ public class WorldManager {
             this.insertIntoWorld(poi, randomX, randomY, true);
         });
     }
+
+
+    /**
+     * Insert a list of Decorations into world, in random positions
+     * @param decorationInstances
+     */
+    public void insertDecorationsIntoRoom(List<DecorationInstance> decorationInstances) {
+
+        decorationInstances.forEach((deco)-> {
+
+            float randomX = MathUtils.random() * LHIPGame.GAME_WIDTH;
+            float randomY = MathUtils.random() * LHIPGame.GAME_HEIGHT;
+
+            // Clamping the values for keeping it inside the screen
+            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
+            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
+
+            this.insertIntoWorld(deco, randomX, randomY, true);
+        });
+    }
+
 }

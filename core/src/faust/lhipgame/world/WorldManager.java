@@ -73,18 +73,18 @@ public class WorldManager {
      * Insert a list of POI into world, in random positions
      * @param poiList
      */
-    public void insertPOIIntoRoom(List<POIInstance> poiList) {
+    public void insertPOIIntoWorld(List<POIInstance> poiList) {
 
         poiList.forEach((poi)-> {
+//
+//            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
+//            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
+//
+//            // Clamping the values for keeping it inside the screen
+//            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
+//            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
 
-            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
-            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
-
-            // Clamping the values for keeping it inside the screen
-            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
-            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
-
-            this.insertIntoWorld(poi, randomX, randomY, true);
+            this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY(), true);
         });
     }
 
@@ -93,18 +93,18 @@ public class WorldManager {
      * Insert a list of Decorations into world, in random positions
      * @param decorationInstances
      */
-    public void insertDecorationsIntoRoom(List<DecorationInstance> decorationInstances) {
+    public void insertDecorationsIntoWorld(List<DecorationInstance> decorationInstances) {
 
         decorationInstances.forEach((deco)-> {
+//
+//            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
+//            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
+//
+//            // Clamping the values for keeping it inside the screen
+//            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
+//            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
 
-            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
-            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
-
-            // Clamping the values for keeping it inside the screen
-            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
-            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
-
-            this.insertIntoWorld(deco, randomX, randomY, true);
+            this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY(), true);
         });
     }
 

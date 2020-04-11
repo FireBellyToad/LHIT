@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.gameentities.POIEntity;
 import faust.lhipgame.text.TextManager;
 
+import java.lang.management.MemoryType;
 import java.util.Objects;
 
 public class POIInstance extends GameInstance {
@@ -17,9 +18,12 @@ public class POIInstance extends GameInstance {
     private long startTime = 0;
     private TextManager textManager;
 
-    public POIInstance(final TextManager textManager) {
+
+    public POIInstance(final TextManager textManager, float x, float y) {
         super(new POIEntity("poi.skull.examine"));
         this.textManager = textManager;
+        this.startX = x;
+        this.startY = y;
     }
 
     /**

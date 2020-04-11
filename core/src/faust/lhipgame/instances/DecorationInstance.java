@@ -10,9 +10,11 @@ import java.util.Objects;
 
 public class DecorationInstance extends GameInstance {
 
-    public DecorationInstance() {
+    public DecorationInstance(float x, float y) {
         //TODO rivedere
         super(new DecorationEntity());
+        this.startX = x;
+        this.startY = y;
     }
 
     @Override

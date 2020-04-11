@@ -17,6 +17,8 @@ public abstract class GameInstance {
 
     protected GameEntity entity;
     protected Body body;
+    protected float startX = 0;;
+    protected float startY = 0;
 
     public GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);
@@ -82,4 +84,13 @@ public abstract class GameInstance {
         return nearest;
 
     }
+
+    public float getStartX() {
+        return startX;
+    }
+
+    public float getStartY() {
+        return startY;
+    }
+
 }

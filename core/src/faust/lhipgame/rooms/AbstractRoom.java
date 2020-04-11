@@ -1,6 +1,10 @@
 package faust.lhipgame.rooms;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
@@ -17,16 +21,29 @@ import java.util.Objects;
  */
 public abstract class AbstractRoom {
 
+    protected enum MapObjNameEnum {
+        POI,
+        DECO
+    }
+
+    protected static final int TILE_LAYER = 0;
+    protected static final int OBJECT_LAYER = 1;
+
+    protected TiledMap tiledMap;
+    protected TiledMapRenderer tiledMapRenderer;
+    protected MapObjects mapObjects;
+
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
     protected PlayerInstance player;
 
-    public AbstractRoom(final WorldManager worldManager, final TextManager textManager, final PlayerInstance player) {
+    public AbstractRoom(final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
 
-        this.initRoom(worldManager, textManager, player);
+        this.initRoom(worldManager, textManager, player,camera);
+
 
     }
 
@@ -35,8 +52,16 @@ public abstract class AbstractRoom {
      * @param worldManager
      * @param textManager
      * @param player
+     * @param camera
      */
-    protected abstract void initRoom(final WorldManager worldManager, TextManager textManager, PlayerInstance player);
+    protected abstract void initRoom(final WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera);
+
+    /**
+     * Draws room background
+     */
+    public void drawRoomBackground(){
+        tiledMapRenderer.render();
+    }
 
     /**
      * Draws room contents
@@ -45,6 +70,7 @@ public abstract class AbstractRoom {
      */
     public void drawRoomContents(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
+
 
         poiList.forEach((poi) -> poi.draw(batch, stateTime));
 

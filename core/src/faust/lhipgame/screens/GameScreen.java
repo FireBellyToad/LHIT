@@ -11,16 +11,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.gameentities.PlayerEntity;
-import faust.lhipgame.instances.DecorationInstance;
-import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.rooms.CasualRoom;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameScreen implements Screen {
 
@@ -33,6 +27,7 @@ public class GameScreen implements Screen {
     private float stateTime = 0f;
     private Viewport viewport;
     private ShapeRenderer background;
+    private static final Color back = new Color(0x595959ff);
 
     private final LHIPGame game;
     private CasualRoom room;
@@ -58,7 +53,7 @@ public class GameScreen implements Screen {
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
 
-        room = new CasualRoom(worldManager, textManager, player);
+        room = new CasualRoom(worldManager, textManager, player, camera);
 
         background = new ShapeRenderer();
     }
@@ -107,11 +102,12 @@ public class GameScreen implements Screen {
      */
     private void drawBackGround() {
         game.getBatch().begin();
-        background.setColor(Color.GRAY);
+        background.setColor(back);
         background.setProjectionMatrix(camera.combined);
         background.begin(ShapeRenderer.ShapeType.Filled);
         background.rect(0, 0, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
-        background.end();
+        background.end();;
+        room.drawRoomBackground();
         game.getBatch().end();
     }
 

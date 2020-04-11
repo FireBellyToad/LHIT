@@ -30,22 +30,6 @@ public abstract class AbstractRoom {
     public static final float RIGHT_BOUNDARY = LHIPGame.GAME_WIDTH - 32;
     public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 32;
 
-    /**
-     * Enum for Map Object Type
-     */
-    protected static enum MapObjNameEnum {
-        POI,
-        DECO
-    }
-
-    /**
-     * Map Layer enum
-     */
-    protected static enum MapLayersEnum {
-        TILE_LAYER,
-        OBJECT_LAYER
-    }
-
     protected TiledMap tiledMap;
     protected TiledMapRenderer tiledMapRenderer;
     protected MapObjects mapObjects;

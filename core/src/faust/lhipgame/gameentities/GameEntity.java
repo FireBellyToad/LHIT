@@ -24,10 +24,6 @@ public class GameEntity {
         return texture;
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
     /**
      * Disposing internal resources
      */

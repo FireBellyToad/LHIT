@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.rooms.enums.MapLayersEnum;
+import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 

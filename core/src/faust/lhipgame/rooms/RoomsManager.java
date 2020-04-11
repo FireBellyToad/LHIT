@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
@@ -12,15 +13,8 @@ import java.util.Objects;
 
 public class RoomsManager {
 
-
-    private enum RoomType {
-        CASUAL,
-        CASTRUM_ENTRANCE,
-        CHURCH_ENTRANCE
-    }
-
     private AbstractRoom currentRoom;
-    private final Vector2 currentRoomPos = new Vector2(0, 0);
+    private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
 
     /**
      * MainWorld Matrix
@@ -58,14 +52,15 @@ public class RoomsManager {
         }
 
         //TODO CAMBIA
-        int finalX = (newRoomPosX < 0 ? mainWorld[0].length-1 : (newRoomPosX == mainWorld[newRoomPosX].length ? 0 : newRoomPosX));
+        int finalX = (newRoomPosX < 0 ? mainWorld[0].length-1 : (newRoomPosX == mainWorld[0].length ? 0 : newRoomPosX));
         int finalY = (newRoomPosY < 0 ? mainWorld.length-1  : (newRoomPosY == mainWorld.length  ? 0 : newRoomPosY));
 
-        currentRoomPos.set(finalX, finalY);
+        currentRoomPosInWorld.set(finalX, finalY);
 
         if (RoomType.CASUAL.equals(mainWorld[finalX][finalY])) {
             currentRoom = new CasualRoom(worldManager, textManager, player, camera);
-            textManager.addNewTextBox("ROOM " + (int) currentRoomPos.x + "," + (int) currentRoomPos.y);
+            // TODO RIMUOVERE
+            textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         }
 
     }
@@ -75,8 +70,8 @@ public class RoomsManager {
         float newPlayerX = playerPosition.x;
         float newPlayerY = playerPosition.y;
 
-        int newXPosInMatrix = (int) getCurrentRoomPos().x;
-        int newYPosInMatrix = (int) getCurrentRoomPos().y;
+        int newXPosInMatrix = (int) getCurrentRoomPosInWorld().x;
+        int newYPosInMatrix = (int) getCurrentRoomPosInWorld().y;
 
         if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
             newXPosInMatrix--;
@@ -94,7 +89,7 @@ public class RoomsManager {
             newPlayerY = 0;
         }
 
-        if (getCurrentRoomPos().x != newXPosInMatrix || getCurrentRoomPos().y != newYPosInMatrix) {
+        if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
             player.getBody().setTransform(newPlayerX,newPlayerY,0);
             changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
         }
@@ -120,8 +115,8 @@ public class RoomsManager {
         currentRoom.drawRoomBackground();
     }
 
-    public Vector2 getCurrentRoomPos() {
-        return currentRoomPos;
+    public Vector2 getCurrentRoomPosInWorld() {
+        return currentRoomPosInWorld;
     }
 
     /**

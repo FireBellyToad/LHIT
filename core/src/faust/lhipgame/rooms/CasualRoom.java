@@ -26,11 +26,12 @@ public class CasualRoom extends AbstractRoom {
     @Override
     protected void initRoom(WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
 
+        //TODO Randomize terrain
         // Load Tiled map
-        tiledMap = new TmxMapLoader().load("test.tmx");
+        tiledMap = new TmxMapLoader().load("terrains/test.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 0.90f);
 
-        mapObjects = tiledMap.getLayers().get(OBJECT_LAYER).getObjects();
+        mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
 
         // Set camera for rendering
         tiledMapRenderer.setView(camera);
@@ -44,15 +45,15 @@ public class CasualRoom extends AbstractRoom {
 
             if (MapObjNameEnum.POI.name().equals(obj.getName())) {
                 poiList.add(new POIInstance(textManager,
-                        ((float) obj.getProperties().get("x"))-16,
-                        ((float) obj.getProperties().get("y"))-16));
+                        ((float) obj.getProperties().get("x")),
+                        ((float) obj.getProperties().get("y"))));
             }
 
 
             if (MapObjNameEnum.DECO.name().equals(obj.getName())) {
                 decorationList.add(new DecorationInstance(
-                        ((float) obj.getProperties().get("x"))-16,
-                        ((float) obj.getProperties().get("y"))-16));
+                        ((float) obj.getProperties().get("x")),
+                        ((float) obj.getProperties().get("y"))));
             }
 
         }
@@ -60,7 +61,5 @@ public class CasualRoom extends AbstractRoom {
         worldManager.insertPOIIntoWorld(poiList);
         worldManager.insertDecorationsIntoWorld(decorationList);
         player.changePOIList(poiList);
-
-
     }
 }

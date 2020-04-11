@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.PlayerInstance;
-import faust.lhipgame.rooms.CasualRoom;
+import faust.lhipgame.rooms.RoomsManager;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
@@ -21,6 +21,7 @@ public class GameScreen implements Screen {
     private WorldManager worldManager;
     private PlayerInstance player;
     private TextManager textManager;
+    private RoomsManager roomsManager;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -30,7 +31,6 @@ public class GameScreen implements Screen {
     private static final Color back = new Color(0x595959ff);
 
     private final LHIPGame game;
-    private CasualRoom room;
 
     public GameScreen(LHIPGame game) {
         this.game = game;
@@ -43,17 +43,16 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
         viewport = new FitViewport(LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT, camera);
 
-        worldManager = new WorldManager();
-        textManager = new TextManager();
-
         // Creating player and making it available to input processor
         player = new PlayerInstance();
+
+        worldManager = new WorldManager();
+        textManager = new TextManager();
+        roomsManager = new RoomsManager(worldManager,textManager,player,camera);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
-
-        room = new CasualRoom(worldManager, textManager, player, camera);
 
         background = new ShapeRenderer();
     }
@@ -81,7 +80,7 @@ public class GameScreen implements Screen {
         //Draw all overlays
         drawOverlays();
 
-        box2DDebugRenderer.render(worldManager.getWorld(), camera.combined.scl(32f));
+        box2DDebugRenderer.render(worldManager.getWorld(), camera.combined);
 
     }
 
@@ -93,7 +92,7 @@ public class GameScreen implements Screen {
 
     private void drawGameInstances(float stateTime) {
         game.getBatch().begin();
-        room.drawRoomContents(game.getBatch(), stateTime);
+        roomsManager.drawCurrentRoomContents(game.getBatch(), stateTime);
         game.getBatch().end();
     }
 
@@ -106,8 +105,8 @@ public class GameScreen implements Screen {
         background.setProjectionMatrix(camera.combined);
         background.begin(ShapeRenderer.ShapeType.Filled);
         background.rect(0, 0, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
-        background.end();;
-        room.drawRoomBackground();
+        background.end();
+        roomsManager.drawCurrentRoomBackground();
         game.getBatch().end();
     }
 
@@ -116,8 +115,8 @@ public class GameScreen implements Screen {
      */
     private void doLogic() {
 
-        player.logic();
-
+        player.doLogic();
+        roomsManager.doLogic();
         // for each enemies -> logic()
     }
 
@@ -144,6 +143,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         player.dispose();
+        roomsManager.dispose();
         worldManager.dispose();
         textManager.dispose();
         box2DDebugRenderer.dispose();

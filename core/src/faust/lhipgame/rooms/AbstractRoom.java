@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
@@ -21,13 +22,29 @@ import java.util.Objects;
  */
 public abstract class AbstractRoom {
 
-    protected enum MapObjNameEnum {
+    /**
+     * Boundaries for room changing
+     */
+    public static final float LEFT_BOUNDARY = 0;
+    public static final float BOTTOM_BOUNDARY = 0;
+    public static final float RIGHT_BOUNDARY = LHIPGame.GAME_WIDTH - 32;
+    public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 32;
+
+    /**
+     * Enum for Map Object Type
+     */
+    protected static enum MapObjNameEnum {
         POI,
         DECO
     }
 
-    protected static final int TILE_LAYER = 0;
-    protected static final int OBJECT_LAYER = 1;
+    /**
+     * Map Layer enum
+     */
+    protected static enum MapLayersEnum {
+        TILE_LAYER,
+        OBJECT_LAYER
+    }
 
     protected TiledMap tiledMap;
     protected TiledMapRenderer tiledMapRenderer;
@@ -43,8 +60,6 @@ public abstract class AbstractRoom {
         Objects.requireNonNull(player);
 
         this.initRoom(worldManager, textManager, player,camera);
-
-
     }
 
     /**
@@ -69,8 +84,6 @@ public abstract class AbstractRoom {
      * @param stateTime
      */
     public void drawRoomContents(final SpriteBatch batch, float stateTime) {
-        Objects.requireNonNull(batch);
-
 
         poiList.forEach((poi) -> poi.draw(batch, stateTime));
 
@@ -86,5 +99,14 @@ public abstract class AbstractRoom {
                 deco.draw(batch, stateTime);
         });
 
+    }
+
+    /**
+     * Disposes the terrain and the contents of the room
+     */
+    public void dispose(){
+        tiledMap.dispose();
+        decorationList.forEach((deco) -> deco.dispose());
+        poiList.forEach((poi) -> poi.dispose());
     }
 }

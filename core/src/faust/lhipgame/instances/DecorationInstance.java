@@ -1,10 +1,7 @@
 package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.gameentities.DecorationEntity;
-import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.gameentities.LivingEntity;
 
 import java.util.Objects;
 
@@ -20,6 +17,6 @@ public class DecorationInstance extends GameInstance {
     @Override
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-        batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
+        batch.draw(entity.getTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_OFFSET);
     }
 }

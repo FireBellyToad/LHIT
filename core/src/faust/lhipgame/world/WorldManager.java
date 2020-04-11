@@ -1,9 +1,7 @@
 package faust.lhipgame.world;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.POIInstance;
@@ -63,7 +61,6 @@ public class WorldManager {
      * @param x
      * @param y
      * @param isStaticBody true if is a StaticBody
-     *
      */
     private void insertIntoWorld(final GameInstance instance, float x, float y, final boolean isStaticBody) {
         instance.createBody(this.world, x, y, isStaticBody);
@@ -71,19 +68,12 @@ public class WorldManager {
 
     /**
      * Insert a list of POI into world, in random positions
+     *
      * @param poiList
      */
     public void insertPOIIntoWorld(List<POIInstance> poiList) {
 
-        poiList.forEach((poi)-> {
-//
-//            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
-//            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
-//
-//            // Clamping the values for keeping it inside the screen
-//            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
-//            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
-
+        poiList.forEach((poi) -> {
             this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY(), true);
         });
     }
@@ -91,19 +81,12 @@ public class WorldManager {
 
     /**
      * Insert a list of Decorations into world, in random positions
+     *
      * @param decorationInstances
      */
     public void insertDecorationsIntoWorld(List<DecorationInstance> decorationInstances) {
 
-        decorationInstances.forEach((deco)-> {
-//
-//            float randomX = MathUtils.random(LHIPGame.GAME_WIDTH);
-//            float randomY = MathUtils.random(LHIPGame.GAME_HEIGHT);
-//
-//            // Clamping the values for keeping it inside the screen
-//            randomX = MathUtils.clamp(randomX,0, LHIPGame.GAME_WIDTH-32);
-//            randomY = MathUtils.clamp(randomY,0, LHIPGame.GAME_HEIGHT-32);
-
+        decorationInstances.forEach((deco) -> {
             this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY(), true);
         });
     }

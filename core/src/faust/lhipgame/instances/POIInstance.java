@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.gameentities.POIEntity;
 import faust.lhipgame.text.TextManager;
 
-import java.lang.management.MemoryType;
 import java.util.Objects;
 
 public class POIInstance extends GameInstance {
@@ -46,7 +45,7 @@ public class POIInstance extends GameInstance {
 
         // If flickering is not enabled or the flickering POI must be shown, draw the texture
         if(!this.enableFlicker || !mustFlicker){
-            batch.draw(entity.getTexture(), body.getPosition().x, body.getPosition().y);
+            batch.draw(entity.getTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

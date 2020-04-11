@@ -30,7 +30,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     }
 
     @Override
-    public void logic() {
+    public void doLogic() {
         // Checking if there is any POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
 

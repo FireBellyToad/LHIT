@@ -15,6 +15,8 @@ import java.util.Objects;
  */
 public abstract class GameInstance {
 
+    protected final static int POSITION_OFFSET = 16;
+
     protected GameEntity entity;
     protected Body body;
     protected float startX = 0;;
@@ -38,7 +40,7 @@ public abstract class GameInstance {
 
         // Define shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1, 1);
+        shape.setAsBox(16, 16);
 
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();

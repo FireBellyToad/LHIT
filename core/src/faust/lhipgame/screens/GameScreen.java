@@ -115,7 +115,6 @@ public class GameScreen implements Screen {
      */
     private void doLogic() {
 
-        player.doLogic();
         roomsManager.doLogic();
         // for each enemies -> logic()
     }

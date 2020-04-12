@@ -1,7 +1,9 @@
 package faust.lhipgame.world;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.POIInstance;
@@ -51,7 +53,25 @@ public class WorldManager {
      */
     public void insertPlayerIntoWorld(final PlayerInstance playerInstance, float x, float y) {
         Objects.requireNonNull(playerInstance);
+
+        Float horizontalVelocity = null;
+        Float verticalVelocity = null;
+
+        // If player has already a linear velocity, restore after body
+        if (!Objects.isNull(playerInstance.getBody())) {
+            horizontalVelocity = playerInstance.getBody().getLinearVelocity().x;
+            verticalVelocity = playerInstance.getBody().getLinearVelocity().y;
+        }
+
+        // Insert into world generating new body
         this.insertIntoWorld(playerInstance, x, y, false);
+
+        playerInstance.setStartX(0);
+        playerInstance.setStartY(0);
+
+        if (!Objects.isNull(verticalVelocity) || !Objects.isNull(horizontalVelocity)) {
+            playerInstance.getBody().setLinearVelocity(horizontalVelocity,verticalVelocity);
+        }
     }
 
     /**
@@ -88,6 +108,17 @@ public class WorldManager {
 
         decorationInstances.forEach((deco) -> {
             this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY(), true);
+        });
+    }
+
+    /**
+     * Destroy all bodies currently in Box2D world
+     */
+    public void clearBodies() {
+        Array<Body> bodies = new Array<>();
+        world.getBodies(bodies);
+        bodies.forEach((body) -> {
+            this.world.destroyBody(body);
         });
     }
 

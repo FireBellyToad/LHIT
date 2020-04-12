@@ -20,8 +20,9 @@ public class RoomsManager {
      * MainWorld Matrix
      */
     private RoomType mainWorld[][] = {
-            {RoomType.CASUAL, RoomType.CASUAL},
-            {RoomType.CASUAL, RoomType.CASUAL},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
+            {RoomType.CASUAL, RoomType.TREE_STUMP, RoomType.CASUAL},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
     };
 
     private WorldManager worldManager;
@@ -57,40 +58,52 @@ public class RoomsManager {
 
         currentRoomPosInWorld.set(finalX, finalY);
 
-        if (RoomType.CASUAL.equals(mainWorld[finalX][finalY])) {
-            currentRoom = new CasualRoom(worldManager, textManager, player, camera);
-            // TODO RIMUOVERE
-            textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
+        switch (mainWorld[finalX][finalY]){
+            case CASUAL:{
+                currentRoom = new CasualRoom(worldManager, textManager, player, camera);
+                // TODO RIMUOVERE
+                textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
+                break;
+            }
+            default:{
+                currentRoom = new FixedRoom(mainWorld[finalX][finalY], worldManager, textManager, player, camera);
+                // TODO RIMUOVERE
+                textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
+                break;
+            }
         }
 
     }
 
     public void doLogic() {
+        // Do Player logic
+        player.doLogic();
+
+        // After Player logic, handle the roomm
         Vector2 playerPosition = player.getBody().getPosition();
-        float newPlayerX = playerPosition.x;
-        float newPlayerY = playerPosition.y;
+        player.setStartX(playerPosition.x);
+        player.setStartY(playerPosition.y);
 
         int newXPosInMatrix = (int) getCurrentRoomPosInWorld().x;
         int newYPosInMatrix = (int) getCurrentRoomPosInWorld().y;
 
         if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
             newXPosInMatrix--;
-            newPlayerX = LHIPGame.GAME_WIDTH - 32;
+            player.setStartX(LHIPGame.GAME_WIDTH - 16);
         } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
             newXPosInMatrix++;
-            newPlayerX = 0;
+            player.setStartX(0);
         }
 
         if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
             newYPosInMatrix--;
-            newPlayerY = LHIPGame.GAME_HEIGHT - 32;
+            player.setStartY(LHIPGame.GAME_HEIGHT - 16);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
             newYPosInMatrix++;
-            newPlayerY = 0;
+            player.setStartY(0);
         }
 
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
-            player.getBody().setTransform(newPlayerX,newPlayerY,0);
             changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
         }
 

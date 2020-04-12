@@ -11,15 +11,17 @@ import faust.lhipgame.world.WorldManager;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class CasualRoom extends AbstractRoom {
+public class FixedRoom extends AbstractRoom {
 
-    public CasualRoom(WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
-        super(RoomType.CASUAL, worldManager, textManager, player, camera);
+    private RoomType roomType;
+
+    public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
+        super(roomType, worldManager, textManager, player, camera);
+
     }
 
     @Override
     protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
         // Nothing to do... yet
-
     }
 }

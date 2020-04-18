@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputProcessor;
 import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
-import faust.lhipgame.text.TextManager;
 
 import java.util.ArrayList;
 import java.util.List;

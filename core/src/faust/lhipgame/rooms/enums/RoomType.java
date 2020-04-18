@@ -6,8 +6,12 @@ package faust.lhipgame.rooms.enums;
  * @author Jacopo "Faust" Buttiglieri
  */
 public enum RoomType {
+
+    EMPTY_SPACE(""),
     CASUAL("test.tmx"),
-    CASTRUM_ENTRANCE("castrumEntrance.tmx"),
+    CEMETER_TOP("castrumEntrance.tmx"),
+    CEMETER_CENTER("castrumEntrance.tmx"),
+    CEMETER_RIGHT("castrumEntrance.tmx"),
     CHURCH_ENTRANCE("churchEntrance.tmx"),
     TREE_STUMP("treeStump.tmx");
 

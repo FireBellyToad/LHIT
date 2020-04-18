@@ -57,16 +57,6 @@ public abstract class LivingEntity extends GameEntity {
     protected abstract void initAnimations();
 
     /**
-     * @return the columns of the texture of the whole spritesheet
-     */
-    protected abstract int getTextureColumns();
-
-    /**
-     * @return the rows of the texture of the whole spritesheet
-     */
-    protected abstract int getTextureRows();
-
-    /**
      * Adds a new animation that doesn't use a Direction
      *
      * @param animation the animation itself
@@ -124,24 +114,4 @@ public abstract class LivingEntity extends GameEntity {
         return toReturn;
     }
 
-    protected TextureRegion[] getFramesFromTexture(){
-        // Use the split utility method to create a 2D array of TextureRegions.
-        // The sprite sheet MUST contain frames of equal size and they MUST be
-        // all aligned.
-        TextureRegion[][] tmp = TextureRegion.split(this.texture,
-                this.texture.getWidth() / getTextureColumns(),
-                this.texture.getHeight() / getTextureRows());
-
-        // Place the regions into a 1D array in the correct order, starting from the top
-        // left, going across first. The Animation constructor requires a 1D array.
-        TextureRegion[] allFrames = new TextureRegion[getTextureColumns() * getTextureRows()];
-        int index = 0;
-        for (int i = 0; i < getTextureRows(); i++) {
-            for (int j = 0; j < getTextureColumns(); j++) {
-                allFrames[index++] = tmp[i][j];
-            }
-        }
-
-        return allFrames;
-    }
 }

@@ -21,16 +21,16 @@
   <object id="15" name="POI" x="56.1818" y="89.2727">
    <point/>
   </object>
-  <object id="16" name="DECO" x="144.545" y="121.091">
+  <object id="16" name="DECO" type="PLANT" x="144.545" y="121.091">
    <point/>
   </object>
-  <object id="17" name="DECO" x="102" y="21.2727">
+  <object id="17" name="DECO" type="CROSS" x="102" y="21.2727">
    <point/>
   </object>
-  <object id="18" name="DECO" x="30.3636" y="115.636">
+  <object id="18" name="DECO" type="PLANT" x="30.3636" y="115.636">
    <point/>
   </object>
-  <object id="19" name="DECO" x="15.2727" y="28.7273">
+  <object id="19" name="DECO" type="PLANT" x="15.2727" y="28.7273">
    <point/>
   </object>
  </objectgroup>

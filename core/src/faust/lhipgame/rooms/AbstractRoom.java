@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
@@ -75,10 +76,15 @@ public abstract class AbstractRoom {
                         ((float) obj.getProperties().get("y"))));
             }
 
+            // Prepare decoration
             if (MapObjNameEnum.DECO.name().equals(obj.getName())) {
+                DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+                Objects.requireNonNull(decoType);
+
                 decorationList.add(new DecorationInstance(
-                        ((float) obj.getProperties().get("x")),
-                        ((float) obj.getProperties().get("y"))));
+                        (float) obj.getProperties().get("x"),
+                        (float) obj.getProperties().get("y"),
+                        decoType));
             }
 
         }

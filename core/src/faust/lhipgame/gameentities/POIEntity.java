@@ -18,4 +18,14 @@ public class POIEntity extends GameEntity {
     public String getMessageKey(){
         return messageKey;
     }
+
+    @Override
+    protected int getTextureColumns() {
+        return 1;
+    }
+
+    @Override
+    protected int getTextureRows() {
+        return 1;
+    }
 }

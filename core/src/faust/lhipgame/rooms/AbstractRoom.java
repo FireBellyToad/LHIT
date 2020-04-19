@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.POIInstance;
 import faust.lhipgame.instances.PlayerInstance;
@@ -70,21 +71,14 @@ public abstract class AbstractRoom {
         // Place objects in room
         for (MapObject obj : mapObjects) {
 
+            // Prepare POI
             if (MapObjNameEnum.POI.name().equals(obj.getName())) {
-                poiList.add(new POIInstance(textManager,
-                        ((float) obj.getProperties().get("x")),
-                        ((float) obj.getProperties().get("y"))));
+                addObjAsPOI(obj,textManager);
             }
 
             // Prepare decoration
             if (MapObjNameEnum.DECO.name().equals(obj.getName())) {
-                DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
-                Objects.requireNonNull(decoType);
-
-                decorationList.add(new DecorationInstance(
-                        (float) obj.getProperties().get("x"),
-                        (float) obj.getProperties().get("y"),
-                        decoType));
+                addObjAsDecoration(obj);
             }
 
         }
@@ -97,6 +91,39 @@ public abstract class AbstractRoom {
 
         // Do other stuff
         this.initRoom(roomType, worldManager, textManager, player, camera);
+    }
+
+    /**
+     * Add a object as POI
+     *
+     * @param obj
+     * @param textManager
+     */
+    protected void addObjAsPOI(MapObject obj,TextManager textManager){
+
+        POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
+        Objects.requireNonNull(poiType);
+
+        poiList.add(new POIInstance(textManager,
+                (float) obj.getProperties().get("x"),
+                (float) obj.getProperties().get("y"),
+                poiType));
+    };
+
+    /**
+     * Add a object as Decoration
+     *
+     * @param obj MapObject to add
+     */
+    protected void addObjAsDecoration(MapObject obj){
+
+        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+        Objects.requireNonNull(decoType);
+
+        decorationList.add(new DecorationInstance(
+                (float) obj.getProperties().get("x"),
+                (float) obj.getProperties().get("y"),
+                decoType));
     }
 
     /**
@@ -128,14 +155,14 @@ public abstract class AbstractRoom {
         poiList.forEach((poi) -> poi.draw(batch, stateTime));
 
         decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y - 4)
+            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y -2)
                 deco.draw(batch, stateTime);
         });
 
         player.draw(batch, stateTime);
 
         decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y < player.getBody().getPosition().y - 4)
+            if (deco.getBody().getPosition().y < player.getBody().getPosition().y -2)
                 deco.draw(batch, stateTime);
         });
 

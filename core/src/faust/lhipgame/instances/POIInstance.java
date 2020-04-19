@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.gameentities.POIEntity;
+import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.text.TextManager;
 
 import java.util.Objects;
@@ -18,8 +19,8 @@ public class POIInstance extends GameInstance {
     private TextManager textManager;
 
 
-    public POIInstance(final TextManager textManager, float x, float y) {
-        super(new POIEntity("poi.skull.examine"));
+    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType) {
+        super(new POIEntity(poiType));
         this.textManager = textManager;
         this.startX = x;
         this.startY = y;

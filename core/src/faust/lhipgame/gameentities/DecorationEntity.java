@@ -15,12 +15,6 @@ public class DecorationEntity extends SpriteEntity {
     }
 
     @Override
-    protected void initAnimation(int rowNumber) {
-        TextureRegion[] frames = Arrays.copyOfRange(getFramesFromTexture(), rowNumber, getTextureColumns() * (rowNumber+1));
-        this.animation = new Animation<TextureRegion>(FRAME_DURATION, frames);
-    }
-
-    @Override
     protected int getTextureColumns() {
         return 1;
     }

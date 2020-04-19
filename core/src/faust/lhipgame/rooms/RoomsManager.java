@@ -1,14 +1,19 @@
 package faust.lhipgame.rooms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class RoomsManager {
@@ -19,13 +24,8 @@ public class RoomsManager {
     /**
      * MainWorld Matrix
      */
-    private RoomType mainWorld[][] = {
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CEMETER_RIGHT, RoomType.CEMETER_CENTER},
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CEMETER_TOP},
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.TREE_STUMP, RoomType.CASUAL, RoomType.CASUAL},
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
-    };
+    private final Map<Vector2,RoomType> mainWorld = new HashMap<>();
+    private final Vector2 mainWorldSize = new Vector2(0,0);
 
     private WorldManager worldManager;
     private TextManager textManager;
@@ -38,7 +38,29 @@ public class RoomsManager {
         this.player = player;
         this.camera = camera;
 
-        changeCurrentRoom(0, 0);
+        initMap();
+        changeCurrentRoom(2, 0);
+    }
+
+    /**
+     * Inits world from file
+     */
+    private void initMap() {
+
+        JsonValue terrains = new JsonReader().parse(Gdx.files.internal("mainWorld.json")).get("terrains");
+        mainWorldSize.set(0,0);
+
+        terrains.forEach((t) -> {
+            Vector2 v = new Vector2( t.getFloat("x"),  t.getFloat("y"));
+            RoomType type = RoomType.getFromString(t.getString("type"));
+            Objects.requireNonNull(type);
+            mainWorld.put(v,type);
+            mainWorldSize.set(Math.max(mainWorldSize.x,v.x),Math.max(mainWorldSize.y,v.y));
+        });
+        // Finalize size
+        mainWorldSize.set(mainWorldSize.x+1,mainWorldSize.y+1);
+
+
     }
 
     /**
@@ -55,12 +77,12 @@ public class RoomsManager {
         }
 
         //TODO CAMBIA
-        int finalX = (newRoomPosX < 0 ? mainWorld[0].length - 1 : (newRoomPosX == mainWorld[0].length ? 0 : newRoomPosX));
-        int finalY = (newRoomPosY < 0 ? mainWorld.length - 1 : (newRoomPosY == mainWorld.length ? 0 : newRoomPosY));
+        float finalX = (newRoomPosX < 0 ? mainWorldSize.x- 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
+        float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
         currentRoomPosInWorld.set(finalX, finalY);
 
-        switch (mainWorld[finalX][finalY]) {
+        switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
                 currentRoom = new CasualRoom(worldManager, textManager, player, camera);
                 // TODO RIMUOVERE
@@ -68,7 +90,7 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld[finalX][finalY], worldManager, textManager, player, camera);
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, player, camera);
                 // TODO RIMUOVERE
                 textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
                 break;

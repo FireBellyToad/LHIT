@@ -9,9 +9,9 @@ public enum RoomType {
 
     EMPTY_SPACE(""),
     CASUAL("test.tmx"),
-    CEMETER_TOP("cemeteryTop.tmx"),
-    CEMETER_CENTER("cemeteryCenter.tmx"),
-    CEMETER_RIGHT("cemeteryRight.tmx"),
+    CEMETERY_TOP("cemeteryTop.tmx"),
+    CEMETERY_CENTER("cemeteryCenter.tmx"),
+    CEMETERY_RIGHT("cemeteryRight.tmx"),
     CHURCH_ENTRANCE("churchEntrance.tmx"),
     TREE_STUMP("treeStump.tmx");
 
@@ -23,5 +23,14 @@ public enum RoomType {
 
     public String getMapFileName() {
         return mapFileName;
+    }
+
+    public static RoomType getFromString(String name) {
+        for (RoomType e : RoomType.values()) {
+            if (e.name().equals(name)) {
+                return e;
+            }
+        }
+        return null;
     }
 }

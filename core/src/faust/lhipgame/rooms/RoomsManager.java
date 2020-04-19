@@ -20,9 +20,11 @@ public class RoomsManager {
      * MainWorld Matrix
      */
     private RoomType mainWorld[][] = {
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
-            {RoomType.CASUAL, RoomType.TREE_STUMP, RoomType.CASUAL},
-            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CEMETER_RIGHT, RoomType.CEMETER_CENTER},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CEMETER_TOP},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.TREE_STUMP, RoomType.CASUAL, RoomType.CASUAL},
+            {RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL, RoomType.CASUAL},
     };
 
     private WorldManager worldManager;
@@ -53,19 +55,19 @@ public class RoomsManager {
         }
 
         //TODO CAMBIA
-        int finalX = (newRoomPosX < 0 ? mainWorld[0].length-1 : (newRoomPosX == mainWorld[0].length ? 0 : newRoomPosX));
-        int finalY = (newRoomPosY < 0 ? mainWorld.length-1  : (newRoomPosY == mainWorld.length  ? 0 : newRoomPosY));
+        int finalX = (newRoomPosX < 0 ? mainWorld[0].length - 1 : (newRoomPosX == mainWorld[0].length ? 0 : newRoomPosX));
+        int finalY = (newRoomPosY < 0 ? mainWorld.length - 1 : (newRoomPosY == mainWorld.length ? 0 : newRoomPosY));
 
         currentRoomPosInWorld.set(finalX, finalY);
 
-        switch (mainWorld[finalX][finalY]){
-            case CASUAL:{
+        switch (mainWorld[finalX][finalY]) {
+            case CASUAL: {
                 currentRoom = new CasualRoom(worldManager, textManager, player, camera);
                 // TODO RIMUOVERE
                 textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
                 break;
             }
-            default:{
+            default: {
                 currentRoom = new FixedRoom(mainWorld[finalX][finalY], worldManager, textManager, player, camera);
                 // TODO RIMUOVERE
                 textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);

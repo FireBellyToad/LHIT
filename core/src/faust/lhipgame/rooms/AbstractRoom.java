@@ -54,7 +54,7 @@ public abstract class AbstractRoom {
 
         // Load Tiled map
         tiledMap = new TmxMapLoader().load("terrains/"+ roomType.getMapFileName());
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 0.90f);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         // Extract mapObjects
         mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Objects;
+import java.util.logging.Filter;
 
 /**
  * Game entities class
@@ -16,7 +17,6 @@ public abstract class GameEntity {
 
     public GameEntity(Texture texture) {
         Objects.requireNonNull(texture);
-
         this.texture = texture;
     }
 

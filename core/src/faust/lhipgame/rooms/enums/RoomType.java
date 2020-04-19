@@ -9,9 +9,9 @@ public enum RoomType {
 
     EMPTY_SPACE(""),
     CASUAL("test.tmx"),
-    CEMETER_TOP("castrumEntrance.tmx"),
-    CEMETER_CENTER("castrumEntrance.tmx"),
-    CEMETER_RIGHT("castrumEntrance.tmx"),
+    CEMETER_TOP("cemeteryTop.tmx"),
+    CEMETER_CENTER("cemeteryCenter.tmx"),
+    CEMETER_RIGHT("cemeteryRight.tmx"),
     CHURCH_ENTRANCE("churchEntrance.tmx"),
     TREE_STUMP("treeStump.tmx");
 

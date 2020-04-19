@@ -7,7 +7,7 @@ import faust.lhipgame.screens.GameScreen;
 public class LHIPGame extends Game {
 
     public static final int GAME_WIDTH = 160;
-    public static final int GAME_HEIGHT = 144;
+    public static final int GAME_HEIGHT = 144 ;
 
     private SpriteBatch batch;
 

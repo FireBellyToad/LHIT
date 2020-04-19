@@ -2,7 +2,8 @@ package faust.lhipgame.gameentities.enums;
 
 public enum DecorationsEnum {
     PLANT,
-    CROSS;
+    CROSS_WOOD,
+    CROSS_IRON;
 
     public static DecorationsEnum getFromString(String name) {
         for (DecorationsEnum e : DecorationsEnum.values()) {

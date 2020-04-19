@@ -46,12 +46,15 @@ public abstract class AbstractRoom {
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
     protected PlayerInstance player;
+    protected RoomType roomType;
 
     public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
         Objects.requireNonNull(roomType);
+
+        this.roomType = roomType;
 
         // Load Tiled map
         tiledMap = new TmxMapLoader().load("terrains/"+ roomType.getMapFileName());
@@ -175,5 +178,9 @@ public abstract class AbstractRoom {
         tiledMap.dispose();
         decorationList.forEach((deco) -> deco.dispose());
         poiList.forEach((poi) -> poi.dispose());
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
     }
 }

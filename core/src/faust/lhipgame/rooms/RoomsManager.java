@@ -24,8 +24,8 @@ public class RoomsManager {
     /**
      * MainWorld Matrix
      */
-    private final Map<Vector2,RoomType> mainWorld = new HashMap<>();
-    private final Vector2 mainWorldSize = new Vector2(0,0);
+    private final Map<Vector2, RoomType> mainWorld = new HashMap<>();
+    private final Vector2 mainWorldSize = new Vector2(0, 0);
 
     private WorldManager worldManager;
     private TextManager textManager;
@@ -48,17 +48,17 @@ public class RoomsManager {
     private void initMap() {
 
         JsonValue terrains = new JsonReader().parse(Gdx.files.internal("mainWorld.json")).get("terrains");
-        mainWorldSize.set(0,0);
+        mainWorldSize.set(0, 0);
 
         terrains.forEach((t) -> {
-            Vector2 v = new Vector2( t.getFloat("x"),  t.getFloat("y"));
+            Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
             RoomType type = RoomType.getFromString(t.getString("type"));
             Objects.requireNonNull(type);
-            mainWorld.put(v,type);
-            mainWorldSize.set(Math.max(mainWorldSize.x,v.x),Math.max(mainWorldSize.y,v.y));
+            mainWorld.put(v, type);
+            mainWorldSize.set(Math.max(mainWorldSize.x, v.x), Math.max(mainWorldSize.y, v.y));
         });
         // Finalize size
-        mainWorldSize.set(mainWorldSize.x+1,mainWorldSize.y+1);
+        mainWorldSize.set(mainWorldSize.x + 1, mainWorldSize.y + 1);
 
 
     }
@@ -77,7 +77,7 @@ public class RoomsManager {
         }
 
         //TODO CAMBIA
-        float finalX = (newRoomPosX < 0 ? mainWorldSize.x- 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
+        float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
         currentRoomPosInWorld.set(finalX, finalY);
@@ -103,7 +103,7 @@ public class RoomsManager {
         // Do Player logic
         player.doLogic();
 
-        // After Player logic, handle the roomm
+        // After Player logic, handle the room
         Vector2 playerPosition = player.getBody().getPosition();
         player.setStartX(playerPosition.x);
         player.setStartY(playerPosition.y);
@@ -111,7 +111,10 @@ public class RoomsManager {
         int newXPosInMatrix = (int) getCurrentRoomPosInWorld().x;
         int newYPosInMatrix = (int) getCurrentRoomPosInWorld().y;
 
-        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
+        // Check for left or right passage
+        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
+                !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
+                        !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
             player.setStartX(LHIPGame.GAME_WIDTH - 16);
         } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
@@ -119,7 +122,10 @@ public class RoomsManager {
             player.setStartX(0);
         }
 
-        if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
+        // Check for top or bottom passage
+        if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
+                !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
+                        !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix--;
             player.setStartY(LHIPGame.GAME_HEIGHT - 16);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {

@@ -163,6 +163,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         return true;
     }
 
+    public void stopAll(){
+        this.currentBehavior = GameBehavior.IDLE;
+        this.body.setLinearVelocity(0, 0);
+    }
+
 
     public void setStartX(float startX) {
         this.startX = startX;

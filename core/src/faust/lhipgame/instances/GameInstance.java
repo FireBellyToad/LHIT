@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.sun.tools.javac.util.Assert;
 import faust.lhipgame.gameentities.GameEntity;
+import faust.lhipgame.world.CollisionManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,20 +36,23 @@ public abstract class GameInstance {
         Objects.requireNonNull(world);
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = isStaticBody ? BodyDef.BodyType.StaticBody: BodyDef.BodyType.KinematicBody;
+        bodyDef.type = isStaticBody ? BodyDef.BodyType.StaticBody: BodyDef.BodyType.DynamicBody;
+        bodyDef.fixedRotation = true;
         bodyDef.position.set(x, y);
 
         // Define shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(16, 16);
+        shape.setAsBox(4, 2);
 
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1;
+        fixtureDef.friction = 1;
 
         // Associate body to world
         body = world.createBody(bodyDef);
+        body.setUserData(this);
         body.createFixture(fixtureDef);
 
         shape.dispose();

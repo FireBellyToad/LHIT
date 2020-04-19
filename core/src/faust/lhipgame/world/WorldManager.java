@@ -20,13 +20,14 @@ import java.util.Objects;
  */
 public class WorldManager {
     private static final float TIME_STEP = 1 / 60f;
-    private static final int VELOCITY_ITERATIONS = 6;
-    private static final int POSITION_ITERATIONS = 2;
+    private static final int VELOCITY_ITERATIONS = 8;
+    private static final int POSITION_ITERATIONS = 3;
 
     private World world;
 
     public WorldManager() {
-        this.world = new World(new Vector2(0, -10), true);
+        this.world = new World(new Vector2(0, 0), true);
+        world.setContactListener(new CollisionManager());
     }
 
     /**

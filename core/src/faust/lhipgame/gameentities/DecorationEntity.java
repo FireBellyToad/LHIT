@@ -1,17 +1,16 @@
 package faust.lhipgame.gameentities;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 public class DecorationEntity extends SpriteEntity {
 
+    private DecorationsEnum type;
+
     public DecorationEntity(DecorationsEnum decorationType) {
-        super(new Texture("sprites/decorations_sheet.png"),decorationType.ordinal());
+        super(new Texture("sprites/decorations_sheet.png"), decorationType.ordinal());
+
+        this.type = decorationType;
     }
 
     @Override
@@ -22,5 +21,9 @@ public class DecorationEntity extends SpriteEntity {
     @Override
     protected int getTextureRows() {
         return 3;
+    }
+
+    public DecorationsEnum getType() {
+        return type;
     }
 }

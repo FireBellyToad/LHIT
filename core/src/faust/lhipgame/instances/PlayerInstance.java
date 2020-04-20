@@ -3,6 +3,7 @@ package faust.lhipgame.instances;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
@@ -31,6 +32,12 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     @Override
     public void doLogic() {
+
+        // If the player has stopped moving, set idle behaviour
+        if(this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0){
+            this.currentBehavior = GameBehavior.IDLE;
+        }
+
         // Checking if there is any POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
 
@@ -154,10 +161,6 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             }
         }
 
-        // If the player has stopped moving, set idle behaviour
-        if(horizontalVelocity == 0 && verticalVelocity == 0){
-            this.currentBehavior = GameBehavior.IDLE;
-        }
 
         this.body.setLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;
@@ -205,5 +208,35 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public void createBody(World world, float x, float y) {
+        {
+            Objects.requireNonNull(world);
+
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyDef.BodyType.DynamicBody;
+            bodyDef.fixedRotation = true;
+            bodyDef.position.set(x, y);
+
+            // Define shape
+            PolygonShape shape = new PolygonShape();
+            shape.setAsBox(4, 2);
+
+            // Define Fixture
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = shape;
+            fixtureDef.density = 1;
+            fixtureDef.friction = 1;
+
+            // Associate body to world
+            body = world.createBody(bodyDef);
+            body.setUserData(this);
+            body.createFixture(fixtureDef);
+
+            shape.dispose();
+        }
+
     }
 }

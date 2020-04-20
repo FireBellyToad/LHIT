@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.gameentities.GameEntity;
+import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 
 import java.util.Arrays;

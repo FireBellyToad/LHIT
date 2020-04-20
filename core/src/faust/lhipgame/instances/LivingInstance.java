@@ -28,7 +28,7 @@ public abstract class LivingInstance extends GameInstance {
         Objects.requireNonNull(batch);
 
         TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
-        batch.draw(frame, body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_OFFSET);
+        batch.draw(frame, body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
     }
 
     /**

@@ -17,6 +17,7 @@ import java.util.Objects;
 public abstract class GameInstance {
 
     protected final static int POSITION_OFFSET = 16;
+    protected final static int POSITION_Y_OFFSET = 8;
 
     protected GameEntity entity;
     protected Body body;
@@ -32,31 +33,7 @@ public abstract class GameInstance {
     /**
      * Inits the BodyDefinition TODO Rivedere
      */
-    public void createBody(final World world, float x, float y, final boolean isStaticBody) {
-        Objects.requireNonNull(world);
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = isStaticBody ? BodyDef.BodyType.StaticBody: BodyDef.BodyType.DynamicBody;
-        bodyDef.fixedRotation = true;
-        bodyDef.position.set(x, y);
-
-        // Define shape
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(4, 2);
-
-        // Define Fixture
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1;
-        fixtureDef.friction = 1;
-
-        // Associate body to world
-        body = world.createBody(bodyDef);
-        body.setUserData(this);
-        body.createFixture(fixtureDef);
-
-        shape.dispose();
-    }
+    public abstract void createBody(final World world, float x, float y);
 
     public abstract void draw(final SpriteBatch batch, float stateTime);
 

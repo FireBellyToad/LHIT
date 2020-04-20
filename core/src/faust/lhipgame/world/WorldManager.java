@@ -65,7 +65,7 @@ public class WorldManager {
         }
 
         // Insert into world generating new body
-        this.insertIntoWorld(playerInstance, x, y, false);
+        this.insertIntoWorld(playerInstance, x, y);
 
         playerInstance.setStartX(0);
         playerInstance.setStartY(0);
@@ -81,10 +81,9 @@ public class WorldManager {
      * @param instance     the instance to insert
      * @param x
      * @param y
-     * @param isStaticBody true if is a StaticBody
      */
-    private void insertIntoWorld(final GameInstance instance, float x, float y, final boolean isStaticBody) {
-        instance.createBody(this.world, x, y, isStaticBody);
+    private void insertIntoWorld(final GameInstance instance, float x, float y) {
+        instance.createBody(this.world, x, y);
     }
 
     /**
@@ -95,7 +94,7 @@ public class WorldManager {
     public void insertPOIIntoWorld(List<POIInstance> poiList) {
 
         poiList.forEach((poi) -> {
-            this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY(), true);
+            this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY());
         });
     }
 
@@ -108,7 +107,7 @@ public class WorldManager {
     public void insertDecorationsIntoWorld(List<DecorationInstance> decorationInstances) {
 
         decorationInstances.forEach((deco) -> {
-            this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY(), true);
+            this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY());
         });
     }
 

@@ -11,6 +11,7 @@ public class CollisionManager implements ContactListener {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
+        //FIXME
         if(fixtureA.getBody().getUserData() instanceof PlayerInstance){
             ((PlayerInstance) fixtureA.getBody().getUserData()).stopAll();
         }

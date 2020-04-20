@@ -15,8 +15,11 @@ import java.util.Arrays;
  */
 public class PlayerEntity extends LivingEntity {
 
+    private Texture shadow;
+
     public PlayerEntity() {
         super(new Texture("sprites/walfrit_sheet.png"));
+        shadow = new Texture("sprites/shadow.png");
     }
 
     @Override
@@ -62,4 +65,9 @@ public class PlayerEntity extends LivingEntity {
     protected int getTextureRows() {
         return 8;
     }
+
+    public Texture getShadowTexture() {
+        return shadow;
+    }
+
 }

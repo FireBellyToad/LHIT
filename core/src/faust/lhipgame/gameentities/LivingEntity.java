@@ -17,8 +17,6 @@ import java.util.Objects;
  */
 public abstract class LivingEntity extends GameEntity {
 
-    protected static final float FRAME_DURATION = 0.1f;
-
     protected int damage = 0;
 
     //Animations given Behavior and Direction

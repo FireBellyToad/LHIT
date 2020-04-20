@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.Objects;
-import java.util.logging.Filter;
 
 /**
  * Game entities class
@@ -12,6 +11,8 @@ import java.util.logging.Filter;
  * @author Jacopo "Faust" Buttiglieri
  */
 public abstract class GameEntity {
+
+    public static final float FRAME_DURATION = 0.1f;
 
     protected Texture texture;
 
@@ -32,7 +33,7 @@ public abstract class GameEntity {
     }
 
 
-    protected TextureRegion[] getFramesFromTexture(){
+    protected TextureRegion[] getFramesFromTexture() {
         // Use the split utility method to create a 2D array of TextureRegions.
         // The sprite sheet MUST contain frames of equal size and they MUST be
         // all aligned.

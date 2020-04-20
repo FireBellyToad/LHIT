@@ -3,11 +3,8 @@ package faust.lhipgame.gameentities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import faust.lhipgame.gameentities.enums.DecorationsEnum;
-import faust.lhipgame.gameentities.enums.Direction;
-import faust.lhipgame.gameentities.enums.GameBehavior;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Single sprite Entities class
@@ -26,7 +23,7 @@ public abstract class SpriteEntity extends GameEntity {
         this.initAnimation(0);
     }
 
-    public SpriteEntity(Texture texture,int rowNumber) {
+    public SpriteEntity(Texture texture, int rowNumber) {
         super(texture);
 
         this.initAnimation(rowNumber);
@@ -36,7 +33,8 @@ public abstract class SpriteEntity extends GameEntity {
      * Initializes the animation
      */
     protected void initAnimation(int rowNumber) {
-        TextureRegion[] frames = Arrays.copyOfRange(getFramesFromTexture(), rowNumber, getTextureColumns() * (rowNumber+1));
+        TextureRegion[] frames = Arrays.copyOfRange(getFramesFromTexture(), getTextureColumns() * (rowNumber), getTextureColumns() * (rowNumber + 1));
+
         this.animation = new Animation<TextureRegion>(FRAME_DURATION, frames);
     }
 
@@ -47,7 +45,7 @@ public abstract class SpriteEntity extends GameEntity {
      * @return the TextureRegion of the frame
      */
     public TextureRegion getFrame(float stateTime) {
-        return  (TextureRegion) animation.getKeyFrame(stateTime, true);
+        return (TextureRegion) animation.getKeyFrame(stateTime, true);
     }
 
 }

@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="26">
  <editorsettings>
-  <export format="json"/>
+  <export target="." format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="1" name="Livello tile 1" width="10" height="9">
   <data encoding="csv">
-8,2,2,3,0,21,0,0,0,0,
-6,6,6,8,3,0,0,25,21,0,
-6,6,6,6,8,2,3,21,27,0,
-6,6,6,6,6,6,8,3,0,21,
-6,6,6,6,6,6,6,7,0,0,
-6,6,6,6,6,6,6,8,2,3,
-6,6,6,6,6,6,6,6,6,7,
-6,6,6,6,6,6,6,6,6,7,
-19,19,19,19,19,19,19,19,19,20
+8,15,15,16,0,21,0,0,0,0,
+30,30,31,8,3,0,0,25,21,0,
+34,34,40,31,8,15,3,21,27,0,
+34,34,34,40,30,31,8,3,25,21,
+34,34,34,34,34,40,31,20,17,27,
+34,34,34,34,34,34,35,8,15,3,
+34,34,34,34,34,34,40,30,31,20,
+34,34,34,34,34,34,34,34,35,20,
+32,32,32,32,32,32,32,32,40,20
 </data>
  </layer>
  <objectgroup id="2" name="Livello di oggetti 1">
-  <object id="20" name="DECO" type="CROSS_WOOD" x="25.75" y="111">
+  <object id="20" name="DECO" type="CROSS_WOOD" x="19.2738" y="108.9">
    <point/>
   </object>
   <object id="21" name="DECO" type="CROSS_IRON" x="26.5" y="55.75">
    <point/>
   </object>
-  <object id="22" name="DECO" type="CROSS_IRON" x="133.75" y="101">
+  <object id="23" name="DECO" type="CROSS_WOOD" x="45.4224" y="83.6503">
    <point/>
   </object>
-  <object id="23" name="DECO" type="CROSS_WOOD" x="59.25" y="82.25">
+  <object id="24" name="DECO" type="CROSS_IRON" x="94.0733" y="117.25">
    <point/>
   </object>
-  <object id="24" name="DECO" type="CROSS_IRON" x="103" y="117.25">
-   <point/>
-  </object>
-  <object id="25" name="DECO" type="CROSS_WOOD" x="67" y="117.75">
+  <object id="25" name="DECO" type="CROSS_WOOD" x="58.2483" y="117.75">
    <point/>
   </object>
  </objectgroup>

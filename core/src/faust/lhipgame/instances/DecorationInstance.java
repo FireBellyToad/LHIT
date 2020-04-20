@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.gameentities.DecorationEntity;
+import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 
@@ -15,6 +16,7 @@ import java.util.Objects;
 public class DecorationInstance extends GameInstance {
 
     private DecorationsEnum type;
+    private boolean interacted = false;
 
     public DecorationInstance(float x, float y, DecorationsEnum type) {
         super(new DecorationEntity(type));
@@ -25,14 +27,22 @@ public class DecorationInstance extends GameInstance {
     @Override
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-        TextureRegion frame = ((SpriteEntity) entity).getFrame(stateTime);
+
+        TextureRegion frame;
+
+        if (interacted) {
+            frame = ((SpriteEntity) entity).getFrame(GameEntity.FRAME_DURATION);
+        } else {
+            frame = ((SpriteEntity) entity).getFrame(0);
+        }
+
         //Rivedere
         batch.draw(frame, body.getPosition().x + calculateAdditionalOffset() - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
     }
 
     private int calculateAdditionalOffset() {
 
-        if(DecorationsEnum.CROSS_IRON.equals(((DecorationEntity) entity).getType())){
+        if (DecorationsEnum.CROSS_IRON.equals(((DecorationEntity) entity).getType())) {
             return 2;
         }
         return 0;
@@ -44,26 +54,36 @@ public class DecorationInstance extends GameInstance {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.active = isPassable();
         bodyDef.fixedRotation = true;
 
         // Define shape
         PolygonShape shape = new PolygonShape();
 
         //Adjustements
-        if(DecorationsEnum.CROSS_IRON.equals(((DecorationEntity) entity).getType())){
-            shape.setAsBox(2, 2);
-            bodyDef.position.set(x-2, y-16);
-        }else{
-            shape.setAsBox(4, 2);
-            bodyDef.position.set(x, y-16);
+        switch (((DecorationEntity) entity).getType()){
+            case CROSS_IRON:{
+                shape.setAsBox(2, 2);
+                bodyDef.position.set(x - 2, y - 16);
+                break;
+            }
+            case PLANT:{
+                shape.setAsBox(5, 3);
+                bodyDef.position.set(x, y - 16);
+                break;
+            }
+            default:{
+                shape.setAsBox(4, 2);
+                bodyDef.position.set(x, y - 16);
+                break;
+            }
         }
 
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1;
-        fixtureDef.friction = 1;
+        fixtureDef.density = isPassable() ? 0 : 1;
+        fixtureDef.friction = isPassable() ? 0 : 1;
+        fixtureDef.isSensor = isPassable();
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -73,8 +93,15 @@ public class DecorationInstance extends GameInstance {
         shape.dispose();
     }
 
-    private boolean isPassable() {
-        return !DecorationsEnum.PLANT.equals(((DecorationEntity) entity).getType());
+    public boolean isPassable() {
+        return DecorationsEnum.PLANT.equals(((DecorationEntity) entity).getType());
     }
 
+    public void setInteracted(boolean interacted) {
+        this.interacted = interacted;
+    }
+
+    public boolean getInteracted(){
+        return this.interacted;
+    }
 }

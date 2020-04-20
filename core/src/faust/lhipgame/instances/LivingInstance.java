@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.LivingEntity;
+import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
@@ -28,7 +29,13 @@ public abstract class LivingInstance extends GameInstance {
         Objects.requireNonNull(batch);
 
         TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
+
+        //Draw shadow
+        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
+
+        //Draw Walfrit
         batch.draw(frame, body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
+
     }
 
     /**

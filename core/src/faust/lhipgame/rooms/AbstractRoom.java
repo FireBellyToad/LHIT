@@ -158,14 +158,14 @@ public abstract class AbstractRoom {
         poiList.forEach((poi) -> poi.draw(batch, stateTime));
 
         decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y -2)
+            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y -2 || deco.getInteracted())
                 deco.draw(batch, stateTime);
         });
 
         player.draw(batch, stateTime);
 
         decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y < player.getBody().getPosition().y -2)
+            if (deco.getBody().getPosition().y < player.getBody().getPosition().y -2 && !deco.getInteracted())
                 deco.draw(batch, stateTime);
         });
 

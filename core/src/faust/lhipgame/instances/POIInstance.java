@@ -51,7 +51,6 @@ public class POIInstance extends GameInstance {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.active =false;
         bodyDef.position.set(x, y);
 
         // Define shape
@@ -61,6 +60,8 @@ public class POIInstance extends GameInstance {
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
+        fixtureDef.density = 0;
+        fixtureDef.friction = 0;
         fixtureDef.isSensor = true;
 
         // Associate body to world

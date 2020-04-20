@@ -36,7 +36,24 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         // If the player has stopped moving, set idle behaviour
         if(this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0){
             this.currentBehavior = GameBehavior.IDLE;
+        } else {
+            this.currentBehavior = GameBehavior.WALK;
         }
+
+        // Set horizontal direction if horizontal velocity is not zero
+        if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
+                this.currentDirection = Direction.RIGHT;
+        } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
+            this.currentDirection = Direction.LEFT;
+        }
+
+        // Set vertical direction if vertical velocity is not zero
+        if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
+            this.currentDirection = Direction.UP;
+        } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
+            this.currentDirection = Direction.DOWN;
+        }
+
 
         // Checking if there is any POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
@@ -64,36 +81,28 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         switch (keycode) {
             case Input.Keys.W:
             case Input.Keys.UP: {
-                this.currentBehavior = GameBehavior.WALK;
                 if (verticalVelocity != -PLAYER_SPEED) {
-                    this.currentDirection = Direction.UP;
                     verticalVelocity = PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
-                this.currentBehavior = GameBehavior.WALK;
                 if (verticalVelocity != PLAYER_SPEED) {
-                    this.currentDirection = Direction.DOWN;
                     verticalVelocity = -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.A:
             case Input.Keys.LEFT: {
-                this.currentBehavior = GameBehavior.WALK;
                 if (horizontalVelocity != PLAYER_SPEED) {
-                    this.currentDirection = Direction.LEFT;
                     horizontalVelocity = -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.D:
             case Input.Keys.RIGHT: {
-                this.currentBehavior = GameBehavior.WALK;
                 if (horizontalVelocity != -PLAYER_SPEED) {
-                    this.currentDirection = Direction.RIGHT;
                     horizontalVelocity = PLAYER_SPEED;
                 }
                 break;
@@ -160,7 +169,6 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 break;
             }
         }
-
 
         this.body.setLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;

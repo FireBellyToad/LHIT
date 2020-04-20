@@ -15,7 +15,7 @@ public class DecorationEntity extends SpriteEntity {
 
     @Override
     protected int getTextureColumns() {
-        return 1;
+        return 2;
     }
 
     @Override

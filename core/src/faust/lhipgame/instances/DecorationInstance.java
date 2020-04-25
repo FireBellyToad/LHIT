@@ -20,8 +20,8 @@ public class DecorationInstance extends GameInstance {
 
     public DecorationInstance(float x, float y, DecorationsEnum type) {
         super(new DecorationEntity(type));
-        this.startX = x;
-        this.startY = y;
+        this.startX = x ;
+        this.startY = y + POSITION_OFFSET;
     }
 
     @Override
@@ -60,23 +60,23 @@ public class DecorationInstance extends GameInstance {
         PolygonShape shape = new PolygonShape();
 
         //Adjustements
-        switch (((DecorationEntity) entity).getType()){
-            case CROSS_IRON:{
+        switch (((DecorationEntity) entity).getType()) {
+            case CROSS_IRON: {
                 shape.setAsBox(2, 2);
                 bodyDef.position.set(x - 2, y - 16);
                 break;
             }
-            case PLANT:{
+            case PLANT: {
                 shape.setAsBox(5, 3);
                 bodyDef.position.set(x, y - 16);
                 break;
             }
-            case STONE:{
+            case STONE: {
                 shape.setAsBox(16, 5);
                 bodyDef.position.set(x, y - 16);
                 break;
             }
-            default:{
+            default: {
                 shape.setAsBox(4, 2);
                 bodyDef.position.set(x, y - 16);
                 break;
@@ -106,7 +106,7 @@ public class DecorationInstance extends GameInstance {
         this.interacted = interacted;
     }
 
-    public boolean getInteracted(){
+    public boolean getInteracted() {
         return this.interacted;
     }
 }

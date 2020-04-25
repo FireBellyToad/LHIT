@@ -18,55 +18,49 @@
 </data>
  </layer>
  <objectgroup id="2" name="Livello di oggetti 1">
-  <object id="26" name="DECO" type="PLANT" x="40.5" y="32.25">
+  <object id="26" name="DECO" type="PLANT" x="35.75" y="38.25">
    <point/>
   </object>
-  <object id="30" name="DECO" type="GRASS" x="26.25" y="80.75">
+  <object id="30" name="DECO" type="GRASS" x="27.25" y="76.75">
    <point/>
   </object>
-  <object id="31" name="DECO" type="GRASS" x="87.5" y="23.25">
+  <object id="31" name="DECO" type="GRASS" x="88.5" y="38.25">
    <point/>
   </object>
-  <object id="34" name="DECO" type="PLANT" x="142" y="9.75">
+  <object id="34" name="DECO" type="PLANT" x="139" y="24.75">
    <point/>
   </object>
-  <object id="35" name="DECO" type="PLANT" x="146" y="40.75">
+  <object id="35" name="DECO" type="PLANT" x="143" y="53">
    <point/>
   </object>
-  <object id="36" name="DECO" type="GRASS" x="144.5" y="125">
+  <object id="36" name="DECO" type="GRASS" x="144.5" y="117">
    <point/>
   </object>
-  <object id="38" name="DECO" type="GRASS" x="119.5" y="64.25">
+  <object id="39" name="DECO" type="GRASS" x="116.25" y="132.25">
    <point/>
   </object>
-  <object id="39" name="DECO" type="GRASS" x="117" y="112">
+  <object id="40" name="DECO" type="PLANT" x="33" y="127.25">
    <point/>
   </object>
-  <object id="40" name="DECO" type="PLANT" x="35.75" y="123">
-   <point/>
-  </object>
-  <object id="41" name="DECO" type="PLANT" x="119.25" y="29">
+  <object id="41" name="DECO" type="PLANT" x="118.25" y="44">
    <point/>
   </object>
   <object id="43" name="POI" type="SKELETON" x="79.5" y="78.25">
    <point/>
   </object>
-  <object id="44" name="DECO" type="GRASS" x="12.75" y="108">
+  <object id="44" name="DECO" type="GRASS" x="18" y="104.5">
    <point/>
   </object>
-  <object id="45" name="DECO" type="PLANT" x="67.25" y="115.25">
+  <object id="45" name="DECO" type="PLANT" x="68.25" y="130.25">
    <point/>
   </object>
-  <object id="47" name="DECO" type="GRASS" x="11" y="25.25">
+  <object id="47" name="DECO" type="GRASS" x="15.25" y="21.75">
    <point/>
   </object>
-  <object id="49" name="DECO" type="GRASS" x="145.75" y="78">
+  <object id="49" name="DECO" type="GRASS" x="131" y="80.5">
    <point/>
   </object>
-  <object id="51" name="DECO" type="PLANT" x="15" y="57">
-   <point/>
-  </object>
-  <object id="53" name="DECO" type="GRASS" x="59" y="6.5">
+  <object id="53" name="DECO" type="GRASS" x="60" y="21.5">
    <point/>
   </object>
  </objectgroup>

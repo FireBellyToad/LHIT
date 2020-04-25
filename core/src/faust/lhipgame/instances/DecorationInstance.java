@@ -71,6 +71,11 @@ public class DecorationInstance extends GameInstance {
                 bodyDef.position.set(x, y - 16);
                 break;
             }
+            case STONE:{
+                shape.setAsBox(16, 5);
+                bodyDef.position.set(x, y - 16);
+                break;
+            }
             default:{
                 shape.setAsBox(4, 2);
                 bodyDef.position.set(x, y - 16);
@@ -94,7 +99,7 @@ public class DecorationInstance extends GameInstance {
     }
 
     public boolean isPassable() {
-        return DecorationsEnum.PLANT.equals(((DecorationEntity) entity).getType());
+        return ((DecorationEntity) entity).isPassable();
     }
 
     public void setInteracted(boolean interacted) {

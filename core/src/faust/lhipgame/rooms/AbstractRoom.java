@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
@@ -56,8 +57,11 @@ public abstract class AbstractRoom {
 
         this.roomType = roomType;
 
+        // Casual maps range from casual1.tmx to casualN.tmx, with a %d to be mapped
+        final String finalMapName = String.format("terrains/"+ roomType.getMapFileName(), MathUtils.random(1,CasualRoom.CASUAL_TOTAL));
+
         // Load Tiled map
-        tiledMap = new TmxMapLoader().load("terrains/"+ roomType.getMapFileName());
+        tiledMap = new TmxMapLoader().load(finalMapName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         // Extract mapObjects

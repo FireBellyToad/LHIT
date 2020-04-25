@@ -13,6 +13,8 @@ import faust.lhipgame.world.WorldManager;
  */
 public class CasualRoom extends AbstractRoom {
 
+    public static final int CASUAL_TOTAL = 3;
+
     public CasualRoom(WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
         super(RoomType.CASUAL, worldManager, textManager, player, camera);
     }

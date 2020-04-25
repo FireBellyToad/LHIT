@@ -8,7 +8,7 @@ package faust.lhipgame.rooms.enums;
 public enum RoomType {
 
     EMPTY_SPACE(""),
-    CASUAL("test.tmx"),
+    CASUAL("casual%d.tmx"),
     CEMETERY_TOP("cemeteryTop.tmx"),
     CEMETERY_CENTER("cemeteryCenter.tmx"),
     CEMETERY_RIGHT("cemeteryRight.tmx"),

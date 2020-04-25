@@ -20,10 +20,22 @@ public class DecorationEntity extends SpriteEntity {
 
     @Override
     protected int getTextureRows() {
-        return 3;
+        return 5;
     }
 
     public DecorationsEnum getType() {
         return type;
+    }
+
+    public boolean isPassable() {
+        switch (type){
+            case GRASS:
+            case PLANT:{
+                return true;
+            }
+            default:{
+                return false;
+            }
+        }
     }
 }

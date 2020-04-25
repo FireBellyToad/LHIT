@@ -4,7 +4,8 @@ public enum DecorationsEnum {
     PLANT,
     CROSS_WOOD,
     CROSS_IRON,
-    STONE,
+    STONE_1,
+    STONE_2,
     GRASS;
 
     public static DecorationsEnum getFromString(String name) {

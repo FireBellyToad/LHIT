@@ -20,6 +20,7 @@ public class DecorationInstance extends GameInstance {
 
     public DecorationInstance(float x, float y, DecorationsEnum type) {
         super(new DecorationEntity(type));
+        // Add Position Y offset for better position from tiled
         this.startX = x ;
         this.startY = y + POSITION_OFFSET;
     }
@@ -71,7 +72,8 @@ public class DecorationInstance extends GameInstance {
                 bodyDef.position.set(x, y - 16);
                 break;
             }
-            case STONE: {
+            case STONE_1:
+            case STONE_2: {
                 shape.setAsBox(16, 5);
                 bodyDef.position.set(x, y - 16);
                 break;

@@ -20,7 +20,7 @@ public class DecorationEntity extends SpriteEntity {
 
     @Override
     protected int getTextureRows() {
-        return 5;
+        return 6;
     }
 
     public DecorationsEnum getType() {

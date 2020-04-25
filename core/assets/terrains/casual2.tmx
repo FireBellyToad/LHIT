@@ -24,7 +24,7 @@
   <object id="23" name="DECO" type="PLANT" x="144.75" y="99.5">
    <point/>
   </object>
-  <object id="24" name="DECO" type="STONE" x="96.75" y="92.5">
+  <object id="24" name="DECO" type="STONE_1" x="96.75" y="92.5">
    <point/>
   </object>
  </objectgroup>

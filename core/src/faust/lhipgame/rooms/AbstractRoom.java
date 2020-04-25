@@ -48,6 +48,7 @@ public abstract class AbstractRoom {
     protected List<DecorationInstance> decorationList;
     protected PlayerInstance player;
     protected RoomType roomType;
+    protected String roomFileName;
 
     public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera) {
         Objects.requireNonNull(worldManager);
@@ -57,12 +58,9 @@ public abstract class AbstractRoom {
 
         this.roomType = roomType;
 
-        // Casual maps range from casual1.tmx to casualN.tmx, with a %d to be mapped
-        final String finalMapName = String.format("terrains/"+ roomType.getMapFileName(), MathUtils.random(1,CasualRoom.CASUAL_TOTAL));
+        this.roomFileName = "terrains/"+roomType.getMapFileName();
 
-        // Load Tiled map
-        tiledMap = new TmxMapLoader().load(finalMapName);
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        loadTiledMap();
 
         // Extract mapObjects
         mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
@@ -99,6 +97,8 @@ public abstract class AbstractRoom {
         // Do other stuff
         this.initRoom(roomType, worldManager, textManager, player, camera);
     }
+
+    protected abstract void loadTiledMap();
 
     /**
      * Add a object as POI

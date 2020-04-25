@@ -1,9 +1,11 @@
 package faust.lhipgame.rooms;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import faust.lhipgame.LHIPGame;
@@ -12,9 +14,7 @@ import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class RoomsManager {
 
@@ -26,6 +26,7 @@ public class RoomsManager {
      */
     private final Map<Vector2, RoomType> mainWorld = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
+    private final List<RoomSaveEntry> saveList = new ArrayList<>();
 
     private WorldManager worldManager;
     private TextManager textManager;
@@ -38,16 +39,16 @@ public class RoomsManager {
         this.player = player;
         this.camera = camera;
 
-        initMap();
+        initMainWorld();
         changeCurrentRoom(2, 0);
     }
 
     /**
      * Inits world from file
      */
-    private void initMap() {
+    private void initMainWorld() {
 
-        JsonValue terrains = new JsonReader().parse(Gdx.files.internal("mainWorld.json")).get("terrains");
+        JsonValue terrains = new JsonReader().parse(Gdx.files.internal("mainWorldModel.json")).get("terrains");
         mainWorldSize.set(0, 0);
 
         terrains.forEach((t) -> {
@@ -59,7 +60,6 @@ public class RoomsManager {
         });
         // Finalize size
         mainWorldSize.set(mainWorldSize.x + 1, mainWorldSize.y + 1);
-
 
     }
 
@@ -87,12 +87,23 @@ public class RoomsManager {
                 currentRoom = new CasualRoom(worldManager, textManager, player, camera);
                 // TODO RIMUOVERE
                 textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
+
+                saveList.add(new RoomSaveEntry(
+                        currentRoom.roomType,
+                        (int) finalX,
+                        (int) finalY,
+                        ((CasualRoom) currentRoom).getCasualNumber()));
                 break;
             }
             default: {
                 currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, player, camera);
                 // TODO RIMUOVERE
                 textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
+
+                saveList.add(new RoomSaveEntry(
+                        currentRoom.roomType,
+                        (int) finalX,
+                        (int) finalY));
                 break;
             }
         }
@@ -114,7 +125,7 @@ public class RoomsManager {
         // Check for left or right passage
         if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                        !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
+                !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
             player.setStartX(LHIPGame.GAME_WIDTH - 16);
         } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
@@ -125,10 +136,13 @@ public class RoomsManager {
         // Check for top or bottom passage
         if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                        !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
+                !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix--;
             player.setStartY(LHIPGame.GAME_HEIGHT - 16);
-        } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
+        } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
+                !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
+                !RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType()) &&
+                !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix++;
             player.setStartY(0);
         }
@@ -166,6 +180,15 @@ public class RoomsManager {
      * Dispose current room contents
      */
     public void dispose() {
+        saveOnFile();
+
         currentRoom.dispose();
+    }
+
+    private void saveOnFile() {
+
+        Json json = new Json();
+        String saveFile = json.prettyPrint(saveList);
+        Gdx.files.local("mainWorldSave.json").writeString(saveFile, false);
     }
 }

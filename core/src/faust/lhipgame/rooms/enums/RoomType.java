@@ -13,6 +13,9 @@ public enum RoomType {
     CEMETERY_CENTER("cemeteryCenter.tmx"),
     CEMETERY_RIGHT("cemeteryRight.tmx"),
     CHURCH_ENTRANCE("churchEntrance.tmx"),
+    CHURCH_RIGHT("churchRight.tmx"),
+    CHURCH_BOTTOM("churchBottom.tmx"),
+    CHURCH_LEFT("churchLeft.tmx"),
     TREE_STUMP("treeStump.tmx");
 
     private String mapFileName;

@@ -1,6 +1,9 @@
 package faust.lhipgame.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.text.TextManager;
@@ -14,14 +17,33 @@ import faust.lhipgame.world.WorldManager;
 public class CasualRoom extends AbstractRoom {
 
     public static final int CASUAL_TOTAL = 3;
+    private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
         super(RoomType.CASUAL, worldManager, textManager, player, camera);
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
-        // Nothing to do... yet
+    protected void loadTiledMap() {
 
+        casualNumber = MathUtils.random(1,CasualRoom.CASUAL_TOTAL);
+
+        // Casual maps range from casual1.tmx to casualN.tmx, with a %d to be mapped
+        roomFileName= String.format(roomFileName,casualNumber);
+
+        // Load Tiled map
+        tiledMap = new TmxMapLoader().load(roomFileName);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+    }
+
+    @Override
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
+
+
+    }
+
+    public int getCasualNumber() {
+        return casualNumber;
     }
 }

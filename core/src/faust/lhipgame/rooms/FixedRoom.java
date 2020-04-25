@@ -1,6 +1,8 @@
 package faust.lhipgame.rooms;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.instances.PlayerInstance;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.text.TextManager;
@@ -18,6 +20,13 @@ public class FixedRoom extends AbstractRoom {
     public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
         super(roomType, worldManager, textManager, player, camera);
 
+    }
+
+    @Override
+    protected void loadTiledMap() {
+        // Load Tiled map
+        tiledMap = new TmxMapLoader().load(roomFileName);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
     @Override

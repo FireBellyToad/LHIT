@@ -1,0 +1,16 @@
+[
+{
+	class: faust.lhipgame.rooms.RoomSaveEntry
+	roomType: CASUAL
+	casualNumber: 1
+	x: 2
+	y: 0
+}
+{
+	class: faust.lhipgame.rooms.RoomSaveEntry
+	roomType: CASUAL
+	casualNumber: 2
+	x: 3
+	y: 0
+}
+]

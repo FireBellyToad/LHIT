@@ -1,0 +1,204 @@
+{
+  "terrains": [
+    {
+      "x": 0,
+      "y": 0,
+      "type": "CEMETERY_CENTER"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "type": "CEMETERY_RIGHT"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "type": "CASUAL"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "type": "CEMETERY_TOP"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "type": "CASUAL"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "type": "CASUAL"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "type": "CASUAL"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "type": "CASUAL"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "type": "CASUAL"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "type": "CASUAL"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "type": "CASUAL"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "type": "TREE_STUMP"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "type": "CASUAL"
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "type": "CASUAL"
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "type": "CASUAL"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "type": "CASUAL"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "type": "CASUAL"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "type": "CASUAL"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 6,
+      "type": "CASUAL"
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "type": "CASUAL"
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "type": "CHURCH_BOTTOM"
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "type": "CASUAL"
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "type": "CASUAL"
+    },
+    {
+      "x": 0,
+      "y": 7,
+      "type": "CASUAL"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "type": "CHURCH_LEFT"
+    },
+    {
+      "x": 2,
+      "y": 7,
+      "type": "CHURCH_ENTRANCE"
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "type": "CHURCH_RIGHT"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "type": "CASUAL"
+    }
+  ]
+}

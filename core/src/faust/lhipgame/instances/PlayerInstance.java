@@ -3,7 +3,10 @@ package faust.lhipgame.instances;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
+import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
@@ -217,6 +220,26 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    /**
+     * Draw the Entity frames using Body position
+     *
+     * @param batch
+     * @param stateTime
+     */
+    public void draw(final SpriteBatch batch, float stateTime) {
+        Objects.requireNonNull(batch);
+
+        TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
+
+        //Draw shadow
+        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
+
+        //Draw Walfrit
+        batch.draw(frame, body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
+
+    }
+
 
     @Override
     public void createBody(World world, float x, float y) {

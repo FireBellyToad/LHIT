@@ -6,12 +6,11 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
-import faust.lhipgame.instances.DecorationInstance;
-import faust.lhipgame.instances.POIInstance;
-import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.instances.*;
 import faust.lhipgame.rooms.enums.MapLayersEnum;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
@@ -43,20 +42,22 @@ public abstract class AbstractRoom {
 
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
+    protected List<LivingInstance> enemyList;
     protected PlayerInstance player;
     protected RoomType roomType;
     protected String roomFileName;
 
     /**
      * Constructor without additional loader argouments
+     *
      * @param roomType
      * @param worldManager
      * @param textManager
      * @param player
      * @param camera
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera){
-        this(roomType, worldManager, textManager, player, camera,null);
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera) {
+        this(roomType, worldManager, textManager, player, camera, null);
     }
 
     /**
@@ -69,7 +70,7 @@ public abstract class AbstractRoom {
      * @param camera
      * @param additionalLoadArgs
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera, Object...additionalLoadArgs ) {
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera, Object... additionalLoadArgs) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -77,7 +78,7 @@ public abstract class AbstractRoom {
 
         // Load tiled map by name
         this.roomType = roomType;
-        this.roomFileName = "terrains/"+roomType.getMapFileName();
+        this.roomFileName = "terrains/" + roomType.getMapFileName();
         loadTiledMap(additionalLoadArgs);
 
         // Extract mapObjects
@@ -90,13 +91,14 @@ public abstract class AbstractRoom {
         this.player = player;
         poiList = new ArrayList<>();
         decorationList = new ArrayList<>();
+        enemyList = new ArrayList<>();
 
         // Place objects in room
         for (MapObject obj : mapObjects) {
 
             // Prepare POI
             if (MapObjNameEnum.POI.name().equals(obj.getName())) {
-                addObjAsPOI(obj,textManager);
+                addObjAsPOI(obj, textManager);
             }
 
             // Prepare decoration
@@ -107,9 +109,10 @@ public abstract class AbstractRoom {
         }
 
         worldManager.clearBodies();
-        worldManager.insertPlayerIntoWorld(player,player.getStartX(),player.getStartY());
+        worldManager.insertPlayerIntoWorld(player, player.getStartX(), player.getStartY());
         worldManager.insertPOIIntoWorld(poiList);
         worldManager.insertDecorationsIntoWorld(decorationList);
+        worldManager.insertEnemiesIntoWorld(enemyList);
         player.changePOIList(poiList);
 
         // Do other stuff
@@ -118,6 +121,7 @@ public abstract class AbstractRoom {
 
     /**
      * Implements tiled map load
+     *
      * @param additionalLoadArguments if needed
      */
     protected abstract void loadTiledMap(Object[] additionalLoadArguments);
@@ -128,7 +132,7 @@ public abstract class AbstractRoom {
      * @param obj
      * @param textManager
      */
-    protected void addObjAsPOI(MapObject obj,TextManager textManager){
+    protected void addObjAsPOI(MapObject obj, TextManager textManager) {
 
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
@@ -137,14 +141,16 @@ public abstract class AbstractRoom {
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 poiType));
-    };
+    }
+
+    ;
 
     /**
      * Add a object as Decoration
      *
      * @param obj MapObject to add
      */
-    protected void addObjAsDecoration(MapObject obj){
+    protected void addObjAsDecoration(MapObject obj) {
 
         DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(decoType);
@@ -153,6 +159,20 @@ public abstract class AbstractRoom {
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 decoType));
+    }
+
+    /**
+     * Add a object as Enemy
+     *
+     * @param obj MapObject to add
+     */
+    protected void addObjAsEnemy(MapObject obj) {
+
+        //FIXME
+        enemyList.add(new StrixInstance(
+                LHIPGame.GAME_WIDTH/2,
+                LHIPGame.GAME_HEIGHT/2,
+                player));
     }
 
     /**
@@ -186,15 +206,27 @@ public abstract class AbstractRoom {
 
         // All decorations behind player
         decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y -2 || deco.getInteracted())
+            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y - 2 || deco.getInteracted())
                 deco.draw(batch, stateTime);
+        });
+
+        // All enemies behind of player
+        enemyList.forEach((ene) -> {
+            if (ene.getBody().getPosition().y >= player.getBody().getPosition().y - 2 )
+                ene.draw(batch, stateTime);
         });
 
         player.draw(batch, stateTime);
 
+        // All enemies in front of player
+        enemyList.forEach((ene) -> {
+            if (ene.getBody().getPosition().y < player.getBody().getPosition().y - 2 )
+                ene.draw(batch, stateTime);
+        });
+
         // All decorations in front of player
         decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y < player.getBody().getPosition().y -2 && !deco.getInteracted())
+            if (deco.getBody().getPosition().y < player.getBody().getPosition().y - 2 && !deco.getInteracted())
                 deco.draw(batch, stateTime);
         });
 
@@ -205,6 +237,7 @@ public abstract class AbstractRoom {
      */
     public void dispose() {
         tiledMap.dispose();
+        enemyList.forEach((ene) -> ene.dispose());
         decorationList.forEach((deco) -> deco.dispose());
         poiList.forEach((poi) -> poi.dispose());
     }
@@ -212,4 +245,13 @@ public abstract class AbstractRoom {
     public RoomType getRoomType() {
         return roomType;
     }
+
+    public void doRoomContentsLogic(){
+        // Do Player logic
+        player.doLogic();
+
+        // Do enemy logic
+        enemyList.forEach((ene) -> ene.doLogic());
+
+    };
 }

@@ -43,10 +43,17 @@ public class CasualRoom extends AbstractRoom {
         tiledMap = new TmxMapLoader().load(roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
+
     }
 
     @Override
     protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
+
+        //FIXME
+        if(MathUtils.randomBoolean()){
+            addObjAsEnemy(null);
+            worldManager.insertEnemiesIntoWorld(enemyList);
+        }
 
 
     }

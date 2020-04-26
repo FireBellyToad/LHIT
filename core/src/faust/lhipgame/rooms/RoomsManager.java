@@ -133,11 +133,10 @@ public class RoomsManager {
     /**
      * Wraps the room contents game logic
      */
-    public void doLogic() {
-        // Do Player logic
-        player.doLogic();
+    public void doRoomContentsLogic() {
+        currentRoom.doRoomContentsLogic();
 
-        // After Player logic, handle the room
+        // After room logic, handle the room change
         Vector2 playerPosition = player.getBody().getPosition();
         player.setStartX(playerPosition.x);
         player.setStartY(playerPosition.y);
@@ -173,7 +172,6 @@ public class RoomsManager {
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
             changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
         }
-
     }
 
     /**

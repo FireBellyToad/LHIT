@@ -4,10 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import faust.lhipgame.instances.DecorationInstance;
-import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.instances.POIInstance;
-import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.instances.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -98,7 +95,6 @@ public class WorldManager {
         });
     }
 
-
     /**
      * Insert a list of Decorations into world, in random positions
      *
@@ -122,4 +118,15 @@ public class WorldManager {
         });
     }
 
+    /**
+     * Insert a list of Enemies into world, in random positions
+     *
+     * @param enemiesInstance
+     */
+    public void insertEnemiesIntoWorld(List<LivingInstance> enemiesInstance) {
+
+        enemiesInstance.forEach((e) -> {
+            this.insertIntoWorld(e, e.getStartX(), e.getStartY());
+        });
+    }
 }

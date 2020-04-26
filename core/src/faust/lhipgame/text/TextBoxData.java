@@ -1,5 +1,8 @@
 package faust.lhipgame.text;
 
+/**
+ * Class for wrapping text and duration
+ */
 public class TextBoxData {
 
     private String text;
@@ -22,7 +25,4 @@ public class TextBoxData {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
 }

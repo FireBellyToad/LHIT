@@ -6,9 +6,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
@@ -50,17 +47,38 @@ public abstract class AbstractRoom {
     protected RoomType roomType;
     protected String roomFileName;
 
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera) {
+    /**
+     * Constructor without additional loader argouments
+     * @param roomType
+     * @param worldManager
+     * @param textManager
+     * @param player
+     * @param camera
+     */
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera){
+        this(roomType, worldManager, textManager, player, camera,null);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param roomType
+     * @param worldManager
+     * @param textManager
+     * @param player
+     * @param camera
+     * @param additionalLoadArgs
+     */
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera, Object...additionalLoadArgs ) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
         Objects.requireNonNull(roomType);
 
+        // Load tiled map by name
         this.roomType = roomType;
-
         this.roomFileName = "terrains/"+roomType.getMapFileName();
-
-        loadTiledMap();
+        loadTiledMap(additionalLoadArgs);
 
         // Extract mapObjects
         mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
@@ -68,8 +86,8 @@ public abstract class AbstractRoom {
         // Set camera for rendering
         tiledMapRenderer.setView(camera);
 
+        // Add content to room
         this.player = player;
-
         poiList = new ArrayList<>();
         decorationList = new ArrayList<>();
 
@@ -98,7 +116,11 @@ public abstract class AbstractRoom {
         this.initRoom(roomType, worldManager, textManager, player, camera);
     }
 
-    protected abstract void loadTiledMap();
+    /**
+     * Implements tiled map load
+     * @param additionalLoadArguments if needed
+     */
+    protected abstract void loadTiledMap(Object[] additionalLoadArguments);
 
     /**
      * Add a object as POI
@@ -134,7 +156,7 @@ public abstract class AbstractRoom {
     }
 
     /**
-     * Method for room initialization
+     * Method for additional room initialization
      *
      * @param roomType
      * @param worldManager
@@ -159,8 +181,10 @@ public abstract class AbstractRoom {
      */
     public void drawRoomContents(final SpriteBatch batch, float stateTime) {
 
+        //
         poiList.forEach((poi) -> poi.draw(batch, stateTime));
 
+        // All decorations behind player
         decorationList.forEach((deco) -> {
             if (deco.getBody().getPosition().y >= player.getBody().getPosition().y -2 || deco.getInteracted())
                 deco.draw(batch, stateTime);
@@ -168,6 +192,7 @@ public abstract class AbstractRoom {
 
         player.draw(batch, stateTime);
 
+        // All decorations in front of player
         decorationList.forEach((deco) -> {
             if (deco.getBody().getPosition().y < player.getBody().getPosition().y -2 && !deco.getInteracted())
                 deco.draw(batch, stateTime);

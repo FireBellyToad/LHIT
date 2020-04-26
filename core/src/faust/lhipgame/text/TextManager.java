@@ -44,7 +44,7 @@ public class TextManager {
     }
 
     /**
-     * Render a text box
+     * Generate a new text box
      *
      * @param textKey the key of the message to be shown
      */
@@ -68,6 +68,11 @@ public class TextManager {
         }, newText.getTimeToShow());
     }
 
+    /**
+     * Render all the generated (right now just one) text boxes
+     * @param batch
+     * @param player
+     */
     public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player) {
         //Render all the created boxes
         textBoxes.forEach((box) -> {

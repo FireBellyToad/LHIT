@@ -13,9 +13,11 @@ import faust.lhipgame.gameentities.enums.DecorationsEnum;
 
 import java.util.Objects;
 
+/**
+ * Class for Decoration Instances
+ */
 public class DecorationInstance extends GameInstance {
 
-    private DecorationsEnum type;
     private boolean interacted = false;
 
     public DecorationInstance(float x, float y, DecorationsEnum type) {
@@ -41,6 +43,10 @@ public class DecorationInstance extends GameInstance {
         batch.draw(frame, body.getPosition().x + calculateAdditionalOffset() - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
     }
 
+    /**
+     *
+     * @return offset for particular Decoration render
+     */
     private int calculateAdditionalOffset() {
 
         if (DecorationsEnum.CROSS_IRON.equals(((DecorationEntity) entity).getType())) {
@@ -104,8 +110,16 @@ public class DecorationInstance extends GameInstance {
         return ((DecorationEntity) entity).isPassable();
     }
 
-    public void setInteracted(boolean interacted) {
-        this.interacted = interacted;
+    public void doPlayerInteraction() {
+        this.interacted = true;
+
+        // Do other stuff if needed
+    }
+
+    public void endPlayerInteraction() {
+        this.interacted = false;
+
+        // Do other stuff if needed
     }
 
     public boolean getInteracted() {

@@ -3,6 +3,9 @@ package faust.lhipgame.gameentities;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 
+/**
+ * Entity for Decorations
+ */
 public class DecorationEntity extends SpriteEntity {
 
     private DecorationsEnum type;
@@ -27,6 +30,10 @@ public class DecorationEntity extends SpriteEntity {
         return type;
     }
 
+    /**
+     *
+     * @return true if decoration is passable
+     */
     public boolean isPassable() {
         switch (type){
             case GRASS:

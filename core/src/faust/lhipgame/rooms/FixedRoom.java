@@ -8,8 +8,10 @@ import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
+import java.util.Objects;
+
 /**
- * Casual Room class
+ * Fixes Room class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
@@ -23,7 +25,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void loadTiledMap() {
+    protected void loadTiledMap(Object[] additionalLoadArguments) {
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);

@@ -6,6 +6,9 @@ import faust.lhipgame.instances.PlayerInstance;
 
 import java.util.Objects;
 
+/**
+ * Class for handling all the collisions between GameInstances
+ */
 public class CollisionManager implements ContactListener {
 
     @Override
@@ -30,19 +33,22 @@ public class CollisionManager implements ContactListener {
 
         // Handle Decoration Collision
         if(isContactOfClass(contact, DecorationInstance.class)){
+            //If decoration is passable, just do and Interaction. Else stop the player
             DecorationInstance inst = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
             if(inst.isPassable())
-                inst.setInteracted(true);
+                inst.doPlayerInteraction();
             else
                 ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData()).stopAll();
         }
     }
 
     private void handlePlayerEndContact(Contact contact) {
+        // Handle Decoration Collision
         if(isContactOfClass(contact, DecorationInstance.class)){
+            //If decoration is passable, just end interaction
             DecorationInstance inst = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
             if(inst.isPassable())
-                inst.setInteracted(false);
+                inst.endPlayerInteraction();
         }
     }
 
@@ -55,6 +61,13 @@ public class CollisionManager implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }
 
+    /**
+     * Check if this contact is of a particular Instance
+     * @param contact
+     * @param gameInstanceClass the class of the GameInstance to check
+     * @param <T> the class of the GameInstance to check
+     * @return
+     */
     private <T> boolean isContactOfClass(Contact contact, Class<T> gameInstanceClass){
         Objects.requireNonNull(contact.getFixtureA().getBody().getUserData());
         Objects.requireNonNull(contact.getFixtureB().getBody().getUserData());
@@ -63,7 +76,13 @@ public class CollisionManager implements ContactListener {
                 contact.getFixtureB().getBody().getUserData().getClass().equals(gameInstanceClass) ;
     }
 
-
+    /**
+     * Extract from a contact the fixture of the GameInstance
+     * @param contact
+     * @param gameInstanceClass the class of the GameInstance fixture to extract
+     * @param <T>
+     * @return
+     */
     private <T> Fixture getCorrectFixture(Contact contact,Class<T> gameInstanceClass) {
         if(contact.getFixtureA().getBody().getUserData().getClass().equals(gameInstanceClass))
             return contact.getFixtureA();

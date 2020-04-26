@@ -32,15 +32,14 @@ public class StrixEntity extends LivingEntity {
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesLeft), GameBehavior.IDLE, Direction.DOWN);
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesLeft), GameBehavior.IDLE, Direction.LEFT);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesRight), GameBehavior.IDLE, Direction.RIGHT);
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesRight), GameBehavior.IDLE, Direction.UP);
+        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesRight), GameBehavior.IDLE, Direction.RIGHT);
 
         // Initialize the Walk Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesLeft), GameBehavior.WALK, Direction.DOWN);
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesLeft), GameBehavior.WALK, Direction.LEFT);
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.UP);
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.RIGHT);
-
 
     }
 

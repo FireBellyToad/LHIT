@@ -31,9 +31,15 @@ public class StrixInstance extends LivingInstance {
     @Override
     public void doLogic() {
 
+        if(target.getBody().getPosition().dst(getBody().getPosition()) > 2)
+            if (getBody().getPosition().x >= target.getBody().getPosition().x)
+                currentDirection = Direction.LEFT;
+            else
+                currentDirection = Direction.RIGHT;
+
         if (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
-            // Normal from strix position to targert
+            // Normal from strix position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
 

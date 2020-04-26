@@ -211,16 +211,16 @@ public abstract class AbstractRoom {
         });
 
         // All enemies behind of player
-        enemyList.forEach((ene) -> {
-            if (ene.getBody().getPosition().y >= player.getBody().getPosition().y - 2 )
-                ene.draw(batch, stateTime);
-        });
+//        enemyList.forEach((ene) -> {
+//            if (ene.getBody().getPosition().y >= player.getBody().getPosition().y - 2 )
+//                ene.draw(batch, stateTime);
+//        });
 
         player.draw(batch, stateTime);
 
         // All enemies in front of player
         enemyList.forEach((ene) -> {
-            if (ene.getBody().getPosition().y < player.getBody().getPosition().y - 2 )
+        //    if (ene.getBody().getPosition().y < player.getBody().getPosition().y - 2 )
                 ene.draw(batch, stateTime);
         });
 

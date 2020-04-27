@@ -2,7 +2,7 @@ package faust.lhipgame.instances;
 
 public interface Interactable {
 
-    void doPlayerInteraction();
+    void doPlayerInteraction(PlayerInstance playerInstance);
     
-    void endPlayerInteraction();
+    void endPlayerInteraction(PlayerInstance playerInstance);
 }

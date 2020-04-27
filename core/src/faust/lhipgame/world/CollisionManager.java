@@ -35,16 +35,18 @@ public class CollisionManager implements ContactListener {
         if(isContactOfClass(contact, DecorationInstance.class)){
             //If decoration is passable, just do and Interaction. Else stop the player
             DecorationInstance inst = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
+            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
             if(inst.isPassable())
-                inst.doPlayerInteraction();
+                inst.doPlayerInteraction(pInst);
             else
-                ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData()).stopAll();
+                pInst.stopAll();
         }
 
         // Handle Strix Collision
         if(isContactOfClass(contact, StrixInstance.class)){
             StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
-            inst.doPlayerInteraction();
+            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
+            inst.doPlayerInteraction(pInst);
         }
     }
 
@@ -53,14 +55,16 @@ public class CollisionManager implements ContactListener {
         if(isContactOfClass(contact, DecorationInstance.class)){
             //If decoration is passable, just end interaction
             DecorationInstance inst = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
+            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
             if(inst.isPassable())
-                inst.endPlayerInteraction();
+                inst.endPlayerInteraction(pInst);
         }
 
         // Handle Strix Collision end
         if(isContactOfClass(contact, StrixInstance.class)){
             StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
-            inst.endPlayerInteraction();
+            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
+            inst.endPlayerInteraction(pInst);
         }
     }
 

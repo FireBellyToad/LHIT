@@ -2,11 +2,13 @@ package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.StrixEntity;
 import faust.lhipgame.gameentities.enums.Direction;
@@ -96,19 +98,37 @@ public class StrixInstance extends LivingInstance implements Interactable {
 
     }
 
-    @Override
-    public void doPlayerInteraction() {
-        attachedToPlayer = true;
+    private void leechLife(PlayerInstance playerInstance) {
 
-    }
-
-    @Override
-    public void endPlayerInteraction() {
-        attachedToPlayer = false;
+        //Keep leeching
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (attachedToPlayer) {
+                    playerInstance.hurt(1);
+                    leechLife(playerInstance);
+                }
+            }
+        }, 2);
 
     }
 
     public boolean isAttachedToPlayer() {
         return attachedToPlayer;
+    }
+
+    @Override
+    public void doPlayerInteraction(PlayerInstance playerInstance) {
+        attachedToPlayer = true;
+        // Start to leech
+        leechLife(playerInstance);
+
+
+    }
+
+    @Override
+    public void endPlayerInteraction(PlayerInstance playerInstance) {
+        attachedToPlayer = false;
+
     }
 }

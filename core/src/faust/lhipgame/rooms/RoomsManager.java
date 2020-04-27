@@ -105,8 +105,6 @@ public class RoomsManager {
             case CASUAL: {
 
                 currentRoom = new CasualRoom(worldManager, textManager, player, camera, mainWorldPredefinedCasualNumbers.get(currentRoomPosInWorld));
-                // TODO RIMUOVERE
-                textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
 
                 final int roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
 
@@ -121,9 +119,6 @@ public class RoomsManager {
             }
             default: {
                 currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, player, camera);
-                // TODO RIMUOVERE
-                textManager.addNewTextBox("ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
-
                 break;
             }
         }

@@ -17,7 +17,6 @@ import java.util.Objects;
  */
 public abstract class LivingEntity extends GameEntity {
 
-    protected int damage = 0;
 
     //Animations given Behavior and Direction
     protected Map<GameBehavior, Map<Direction, Animation>> animations = new HashMap<>();
@@ -29,25 +28,9 @@ public abstract class LivingEntity extends GameEntity {
     }
 
     /**
-     * Method for hurting the LivingEntity
-     *
-     * @param damageReceived to be subtracted
-     */
-    public void hurt(int damageReceived) {
-        this.damage += Math.min(this.getResistance(), damageReceived);
-    }
-
-    /**
      * gets the Entity Resistance
      */
     public abstract int getResistance();
-
-    /**
-     * @return true if the damage is greater or equal than the resitance
-     */
-    public boolean isDead() {
-        return this.damage >= this.getResistance();
-    }
 
     /**
      * Initializes the animation

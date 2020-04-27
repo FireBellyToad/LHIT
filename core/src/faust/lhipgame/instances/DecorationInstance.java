@@ -114,17 +114,14 @@ public class DecorationInstance extends GameInstance implements Interactable{
         return this.interacted;
     }
 
+
     @Override
-    public void doPlayerInteraction() {
+    public void doPlayerInteraction(PlayerInstance playerInstance) {
         this.interacted = true;
-
-        // Do other stuff if needed
     }
+
     @Override
-    public void endPlayerInteraction() {
+    public void endPlayerInteraction(PlayerInstance playerInstance) {
         this.interacted = false;
-
-        // Do other stuff if needed
     }
-
 }

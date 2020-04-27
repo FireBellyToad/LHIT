@@ -42,16 +42,16 @@ public class PlayerEntity extends LivingEntity {
         TextureRegion[] walkFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 7, getTextureColumns() * 8);
 
         // Initialize the Idle Animation with the frame interval and array of frames
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, Direction.DOWN);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesLeft), GameBehavior.IDLE, Direction.LEFT);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesUp), GameBehavior.IDLE, Direction.UP);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesRight), GameBehavior.IDLE, Direction.RIGHT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, Direction.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesLeft), GameBehavior.IDLE, Direction.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesUp), GameBehavior.IDLE, Direction.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesRight), GameBehavior.IDLE, Direction.RIGHT);
 
         // Initialize the Walk Animation with the frame interval and array of frames
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesDown), GameBehavior.WALK, Direction.DOWN);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesLeft), GameBehavior.WALK, Direction.LEFT);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesUp), GameBehavior.WALK, Direction.UP);
-        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.RIGHT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.WALK, Direction.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesLeft), GameBehavior.WALK, Direction.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.WALK, Direction.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.RIGHT);
 
 
     }

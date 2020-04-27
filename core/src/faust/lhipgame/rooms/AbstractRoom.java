@@ -1,5 +1,6 @@
 package faust.lhipgame.rooms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -211,26 +212,25 @@ public abstract class AbstractRoom {
         allInstance.addAll(enemyList);
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
-        allInstance.sort((o1, o2) -> {
-            if(o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
-                    (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted())){
-                //Lower Y or low priority
-                return 1;
-            } else if(o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
-                    (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer())){
-                //Higher Y or high priority
-                return -1;
-            } else {
-                return 0;
-            }
-        });
+        allInstance.sort((o1, o2) -> compareEntities(o1,o2));
 
         allInstance.forEach((i) -> {
             i.draw(batch, stateTime);
         });
 
+    }
 
+    protected int compareEntities(GameInstance o1, GameInstance o2) {
+        if(o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
+                (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
+                (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted())){
+            return 1;
+        } else if(o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
+                (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {
+            return -1;
+        }
 
+        return 0;
     }
 
     /**
@@ -249,7 +249,11 @@ public abstract class AbstractRoom {
 
     public void doRoomContentsLogic(){
         // Do Player logic
-        player.doLogic();
+        if(!player.isDead())
+            player.doLogic();
+        else {
+            Gdx.app.exit();
+        }
 
         // Do enemy logic
         enemyList.forEach((ene) -> ene.doLogic());

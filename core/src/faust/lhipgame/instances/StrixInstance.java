@@ -32,7 +32,6 @@ public class StrixInstance extends LivingInstance implements Interactable {
     @Override
     public void doLogic() {
 
-
         if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
             // Normal from strix position to target
@@ -45,25 +44,11 @@ public class StrixInstance extends LivingInstance implements Interactable {
             // Move towards target
             body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
         } else {
-            currentBehavior = GameBehavior.IDLE;
+
+            currentBehavior = attachedToPlayer ? GameBehavior.ATTACK : GameBehavior.IDLE;
+
             body.setLinearVelocity(0, 0);
         }
-    }
-
-    private Direction extractDirectionFromNormal(Vector2 direction) {
-
-        if (direction.x <= -0.5) {
-            return Direction.LEFT;
-        } else if (direction.x > 0.5) {
-            return Direction.RIGHT;
-        }
-
-        if (direction.y < 0) {
-            return Direction.DOWN;
-        } else {
-            return Direction.UP;
-        }
-
     }
 
     @Override
@@ -121,5 +106,9 @@ public class StrixInstance extends LivingInstance implements Interactable {
     public void endPlayerInteraction() {
         attachedToPlayer = false;
 
+    }
+
+    public boolean isAttachedToPlayer() {
+        return attachedToPlayer;
     }
 }

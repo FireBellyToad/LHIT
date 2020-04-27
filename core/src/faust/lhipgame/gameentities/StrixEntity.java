@@ -32,6 +32,7 @@ public class StrixEntity extends LivingEntity {
         TextureRegion[] walkFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 5, getTextureColumns() * 6);
         TextureRegion[] walkFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 6, getTextureColumns() * 7);
         TextureRegion[] walkFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 7, getTextureColumns() * 8);
+        TextureRegion[] attachedFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 8, getTextureColumns() * 9);
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, Direction.DOWN);
@@ -45,6 +46,8 @@ public class StrixEntity extends LivingEntity {
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesUp), GameBehavior.WALK, Direction.UP);
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.RIGHT);
 
+        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, attachedFrames), GameBehavior.ATTACK, Direction.UNUSED);
+
     }
 
     @Override
@@ -54,6 +57,6 @@ public class StrixEntity extends LivingEntity {
 
     @Override
     protected int getTextureRows() {
-        return 8;
+        return 9;
     }
 }

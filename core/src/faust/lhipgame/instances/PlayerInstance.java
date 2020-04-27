@@ -30,7 +30,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         super(new PlayerEntity());
         currentDirection = Direction.DOWN;
 
-        Gdx.input.setInputProcessor((InputProcessor) this);
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -56,7 +56,6 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
             this.currentDirection = Direction.DOWN;
         }
-
 
         // Checking if there is any POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {

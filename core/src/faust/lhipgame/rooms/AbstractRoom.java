@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.*;
@@ -18,6 +19,7 @@ import faust.lhipgame.text.TextManager;
 import faust.lhipgame.world.WorldManager;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -201,34 +203,33 @@ public abstract class AbstractRoom {
      */
     public void drawRoomContents(final SpriteBatch batch, float stateTime) {
 
-        //
-        poiList.forEach((poi) -> poi.draw(batch, stateTime));
+        List<GameInstance> allInstance = new ArrayList<>();
 
-        // All decorations behind player
-        decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y >= player.getBody().getPosition().y - 2 || deco.getInteracted())
-                deco.draw(batch, stateTime);
+        allInstance.addAll(poiList);
+        allInstance.addAll(decorationList);
+        allInstance.add(player);
+        allInstance.addAll(enemyList);
+
+        // Sort by Y for depth effect. If decoration is interacted, priority is lowered
+        allInstance.sort((o1, o2) -> {
+            if(o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
+                    (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted())){
+                //Lower Y or low priority
+                return 1;
+            } else if(o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
+                    (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer())){
+                //Higher Y or high priority
+                return -1;
+            } else {
+                return 0;
+            }
         });
 
-        // All enemies behind of player
-//        enemyList.forEach((ene) -> {
-//            if (ene.getBody().getPosition().y >= player.getBody().getPosition().y - 2 )
-//                ene.draw(batch, stateTime);
-//        });
-
-        player.draw(batch, stateTime);
-
-        // All enemies in front of player
-        enemyList.forEach((ene) -> {
-        //    if (ene.getBody().getPosition().y < player.getBody().getPosition().y - 2 )
-                ene.draw(batch, stateTime);
+        allInstance.forEach((i) -> {
+            i.draw(batch, stateTime);
         });
 
-        // All decorations in front of player
-        decorationList.forEach((deco) -> {
-            if (deco.getBody().getPosition().y < player.getBody().getPosition().y - 2 && !deco.getInteracted())
-                deco.draw(batch, stateTime);
-        });
+
 
     }
 

@@ -14,9 +14,10 @@ import faust.lhipgame.gameentities.enums.GameBehavior;
 
 import java.util.Objects;
 
-public class StrixInstance extends LivingInstance {
+public class StrixInstance extends LivingInstance implements Interactable {
 
     private static final float STRIX_SPEED = 25;
+    private boolean attachedToPlayer = false;
 
     private PlayerInstance target;
 
@@ -31,17 +32,15 @@ public class StrixInstance extends LivingInstance {
     @Override
     public void doLogic() {
 
-        if(target.getBody().getPosition().dst(getBody().getPosition()) > 2)
-            if (getBody().getPosition().x >= target.getBody().getPosition().x)
-                currentDirection = Direction.LEFT;
-            else
-                currentDirection = Direction.RIGHT;
 
-        if (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
+        if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
             // Normal from strix position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
+
+            // If not already attached su player
+            currentDirection = extractDirectionFromNormal(direction);
 
             // Move towards target
             body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
@@ -49,6 +48,22 @@ public class StrixInstance extends LivingInstance {
             currentBehavior = GameBehavior.IDLE;
             body.setLinearVelocity(0, 0);
         }
+    }
+
+    private Direction extractDirectionFromNormal(Vector2 direction) {
+
+        if (direction.x <= -0.5) {
+            return Direction.LEFT;
+        } else if (direction.x > 0.5) {
+            return Direction.RIGHT;
+        }
+
+        if (direction.y < 0) {
+            return Direction.DOWN;
+        } else {
+            return Direction.UP;
+        }
+
     }
 
     @Override
@@ -93,6 +108,18 @@ public class StrixInstance extends LivingInstance {
 
         //Draw Strix
         batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+
+    }
+
+    @Override
+    public void doPlayerInteraction() {
+        attachedToPlayer = true;
+
+    }
+
+    @Override
+    public void endPlayerInteraction() {
+        attachedToPlayer = false;
 
     }
 }

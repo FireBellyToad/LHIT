@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * Class for Decoration Instances
  */
-public class DecorationInstance extends GameInstance {
+public class DecorationInstance extends GameInstance implements Interactable{
 
     private boolean interacted = false;
 
@@ -110,19 +110,21 @@ public class DecorationInstance extends GameInstance {
         return ((DecorationEntity) entity).isPassable();
     }
 
+    public boolean getInteracted() {
+        return this.interacted;
+    }
+
+    @Override
     public void doPlayerInteraction() {
         this.interacted = true;
 
         // Do other stuff if needed
     }
-
+    @Override
     public void endPlayerInteraction() {
         this.interacted = false;
 
         // Do other stuff if needed
     }
 
-    public boolean getInteracted() {
-        return this.interacted;
-    }
 }

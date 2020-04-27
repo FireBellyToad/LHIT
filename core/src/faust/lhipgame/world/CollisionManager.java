@@ -3,6 +3,7 @@ package faust.lhipgame.world;
 import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.instances.DecorationInstance;
 import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.instances.StrixInstance;
 
 import java.util.Objects;
 
@@ -17,7 +18,6 @@ public class CollisionManager implements ContactListener {
         if(isContactOfClass(contact,PlayerInstance.class)){
             handlePlayerBeginContact(contact);
         }
-
     }
 
 
@@ -40,15 +40,27 @@ public class CollisionManager implements ContactListener {
             else
                 ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData()).stopAll();
         }
+
+        // Handle Strix Collision
+        if(isContactOfClass(contact, StrixInstance.class)){
+            StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
+            inst.doPlayerInteraction();
+        }
     }
 
     private void handlePlayerEndContact(Contact contact) {
-        // Handle Decoration Collision
+        // Handle Decoration Collision end
         if(isContactOfClass(contact, DecorationInstance.class)){
             //If decoration is passable, just end interaction
             DecorationInstance inst = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
             if(inst.isPassable())
                 inst.endPlayerInteraction();
+        }
+
+        // Handle Strix Collision end
+        if(isContactOfClass(contact, StrixInstance.class)){
+            StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
+            inst.endPlayerInteraction();
         }
     }
 

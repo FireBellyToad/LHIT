@@ -1,4 +1,4 @@
-package faust.lhipgame.text;
+package faust.lhipgame.text.manager;
 
 
 import com.badlogic.gdx.Gdx;
@@ -8,7 +8,8 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.text.TextBoxData;
 
 import java.util.ArrayList;
 import java.util.List;

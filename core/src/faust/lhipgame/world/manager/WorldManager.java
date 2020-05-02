@@ -1,10 +1,13 @@
-package faust.lhipgame.world;
+package faust.lhipgame.world.manager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import faust.lhipgame.instances.*;
+import faust.lhipgame.instances.impl.DecorationInstance;
+import faust.lhipgame.instances.impl.POIInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
 
 import java.util.List;
 import java.util.Objects;

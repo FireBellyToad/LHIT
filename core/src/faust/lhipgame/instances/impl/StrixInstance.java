@@ -1,8 +1,7 @@
-package faust.lhipgame.instances;
+package faust.lhipgame.instances.impl;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -10,15 +9,18 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.LivingEntity;
-import faust.lhipgame.gameentities.StrixEntity;
+import faust.lhipgame.gameentities.impl.StrixEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
+import faust.lhipgame.instances.Interactable;
+import faust.lhipgame.instances.LivingInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
 
 import java.util.Objects;
 
 public class StrixInstance extends LivingInstance implements Interactable {
 
-    private static final float STRIX_SPEED = 25;
+    private static final float STRIX_SPEED = 30;
     private boolean attachedToPlayer = false;
 
     private PlayerInstance target;
@@ -32,7 +34,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
     }
 
     @Override
-    public void doLogic() {
+    public void doLogic(float stateTime) {
 
         if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
@@ -93,8 +95,16 @@ public class StrixInstance extends LivingInstance implements Interactable {
 
         TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
 
+        //Draw shadow
+        batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
+
+
         //Draw Strix
-        batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        if(currentBehavior.equals(GameBehavior.IDLE)){
+            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
+        } else {
+            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        }
 
     }
 
@@ -131,4 +141,5 @@ public class StrixInstance extends LivingInstance implements Interactable {
         attachedToPlayer = false;
 
     }
+
 }

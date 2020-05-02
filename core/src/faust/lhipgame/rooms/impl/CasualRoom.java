@@ -1,13 +1,14 @@
-package faust.lhipgame.rooms;
+package faust.lhipgame.rooms.impl;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.rooms.AbstractRoom;
 import faust.lhipgame.rooms.enums.RoomType;
-import faust.lhipgame.text.TextManager;
-import faust.lhipgame.world.WorldManager;
+import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.Objects;
 

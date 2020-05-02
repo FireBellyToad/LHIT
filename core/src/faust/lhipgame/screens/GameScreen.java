@@ -10,10 +10,10 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.viewport.*;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.instances.PlayerInstance;
-import faust.lhipgame.rooms.RoomsManager;
-import faust.lhipgame.text.TextManager;
-import faust.lhipgame.world.WorldManager;
+import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.rooms.manager.RoomsManager;
+import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.world.manager.WorldManager;
 
 public class GameScreen implements Screen {
 
@@ -51,8 +51,6 @@ public class GameScreen implements Screen {
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-        worldManager.insertPlayerIntoWorld(player, LHIPGame.GAME_WIDTH / 2, LHIPGame.GAME_HEIGHT / 2);
-
         background = new ShapeRenderer();
     }
 
@@ -79,7 +77,7 @@ public class GameScreen implements Screen {
         //Draw all overlays
         drawOverlays();
 
-        //box2DDebugRenderer.render(worldManager.getWorld(), camera.combined);
+        box2DDebugRenderer.render(worldManager.getWorld(), camera.combined);
 
     }
 
@@ -114,7 +112,7 @@ public class GameScreen implements Screen {
      */
     private void doLogic() {
 
-        roomsManager.doRoomContentsLogic();
+        roomsManager.doRoomContentsLogic(stateTime);
         // for each enemies -> logic()
     }
 

@@ -1,4 +1,4 @@
-package faust.lhipgame.instances;
+package faust.lhipgame.instances.impl;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -7,10 +7,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import faust.lhipgame.gameentities.POIEntity;
-import faust.lhipgame.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.gameentities.impl.POIEntity;
 import faust.lhipgame.gameentities.enums.POIEnum;
-import faust.lhipgame.text.TextManager;
+import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.text.manager.TextManager;
 
 import java.util.Objects;
 

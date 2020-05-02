@@ -1,9 +1,9 @@
-package faust.lhipgame.world;
+package faust.lhipgame.world.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
-import faust.lhipgame.instances.DecorationInstance;
-import faust.lhipgame.instances.PlayerInstance;
-import faust.lhipgame.instances.StrixInstance;
+import faust.lhipgame.instances.impl.DecorationInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.instances.impl.StrixInstance;
 
 import java.util.Objects;
 

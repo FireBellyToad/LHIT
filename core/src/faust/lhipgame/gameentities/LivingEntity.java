@@ -65,8 +65,9 @@ public abstract class LivingEntity extends GameEntity {
         this.animations.get(behavior).put(direction, animation);
     }
 
+
     /**
-     * Returns frame to render
+     * Returns frame to render with looping animation
      *
      * @param behavior  The behavior of the animation
      * @param direction the direction of the animation
@@ -74,6 +75,19 @@ public abstract class LivingEntity extends GameEntity {
      * @return the TextureRegion of the frame
      */
     public TextureRegion getFrame(GameBehavior behavior, Direction direction, float stateTime) {
+        return getFrame(behavior, direction, stateTime, true);
+    }
+
+    /**
+     * Returns frame to render
+     *
+     * @param behavior  The behavior of the animation
+     * @param direction the direction of the animation
+     * @param stateTime state time to render
+     * @param looping   true if must loop
+     * @return the TextureRegion of the frame
+     */
+    public TextureRegion getFrame(GameBehavior behavior, Direction direction, float stateTime, boolean looping) {
         Objects.requireNonNull(behavior);
         Objects.requireNonNull(direction);
 
@@ -85,9 +99,9 @@ public abstract class LivingEntity extends GameEntity {
         TextureRegion toReturn;
         // If the animations doesn't have any direction, then return the unused one
         if (behaviorAnimations.containsKey(Direction.UNUSED)) {
-            toReturn = (TextureRegion) behaviorAnimations.get(Direction.UNUSED).getKeyFrame(stateTime, true);
+            toReturn = (TextureRegion) behaviorAnimations.get(Direction.UNUSED).getKeyFrame(stateTime, looping);
         } else {
-            toReturn = (TextureRegion) behaviorAnimations.get(direction).getKeyFrame(stateTime, true);
+            toReturn = (TextureRegion) behaviorAnimations.get(direction).getKeyFrame(stateTime, looping);
         }
 
         Objects.requireNonNull(toReturn);
@@ -95,4 +109,31 @@ public abstract class LivingEntity extends GameEntity {
         return toReturn;
     }
 
+    /**
+     * Returns current frame Index
+     *
+     * @param behavior  The behavior of the animation
+     * @param direction the direction of the animation
+     * @param stateTime state time to render
+     * @return true if animation is finished
+     */
+    public boolean isAnimationFinished(GameBehavior behavior, Direction direction, float stateTime) {
+        Objects.requireNonNull(behavior);
+        Objects.requireNonNull(direction);
+
+        // Get all animations for behaviour
+        Map<Direction, Animation> behaviorAnimations = this.animations.get(behavior);
+
+        Objects.requireNonNull(behaviorAnimations);
+
+        boolean toReturn;
+        // If the animations doesn't have any direction, then return the unused one
+        if (behaviorAnimations.containsKey(Direction.UNUSED)) {
+            toReturn = behaviorAnimations.get(Direction.UNUSED).isAnimationFinished(stateTime);
+        } else {
+            toReturn = behaviorAnimations.get(direction).isAnimationFinished(stateTime);
+        }
+
+        return toReturn;
+    }
 }

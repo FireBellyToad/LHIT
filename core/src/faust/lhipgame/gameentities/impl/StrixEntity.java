@@ -1,8 +1,9 @@
-package faust.lhipgame.gameentities;
+package faust.lhipgame.gameentities.impl;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
@@ -10,8 +11,11 @@ import java.util.Arrays;
 
 public class StrixEntity extends LivingEntity {
 
+    private Texture shadow;
+
     public StrixEntity() {
         super(new Texture("sprites/strix_sheet.png"));
+        shadow = new Texture("sprites/shadow.png");
     }
 
     @Override
@@ -58,5 +62,9 @@ public class StrixEntity extends LivingEntity {
     @Override
     protected int getTextureRows() {
         return 9;
+    }
+
+    public Texture getShadowTexture() {
+        return shadow;
     }
 }

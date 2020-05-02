@@ -7,20 +7,21 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.*;
+import faust.lhipgame.instances.impl.DecorationInstance;
+import faust.lhipgame.instances.impl.POIInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.instances.impl.StrixInstance;
 import faust.lhipgame.rooms.enums.MapLayersEnum;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
-import faust.lhipgame.text.TextManager;
-import faust.lhipgame.world.WorldManager;
+import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -247,16 +248,16 @@ public abstract class AbstractRoom {
         return roomType;
     }
 
-    public void doRoomContentsLogic(){
+    public void doRoomContentsLogic(float stateTime){
         // Do Player logic
         if(!player.isDead())
-            player.doLogic();
+            player.doLogic(stateTime);
         else {
             Gdx.app.exit();
         }
 
         // Do enemy logic
-        enemyList.forEach((ene) -> ene.doLogic());
+        enemyList.forEach((ene) -> ene.doLogic(stateTime));
 
     };
 }

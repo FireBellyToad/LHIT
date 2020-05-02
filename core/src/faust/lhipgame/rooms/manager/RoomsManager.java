@@ -1,4 +1,4 @@
-package faust.lhipgame.rooms;
+package faust.lhipgame.rooms.manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -6,10 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.instances.PlayerInstance;
+import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.rooms.AbstractRoom;
+import faust.lhipgame.rooms.CasualRoomNumberSaveEntry;
 import faust.lhipgame.rooms.enums.RoomType;
-import faust.lhipgame.text.TextManager;
-import faust.lhipgame.world.WorldManager;
+import faust.lhipgame.rooms.impl.CasualRoom;
+import faust.lhipgame.rooms.impl.FixedRoom;
+import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.*;
 
@@ -68,7 +72,7 @@ public class RoomsManager {
     private void loadPredefinedCasualRoomNumbers() {
         //Try to load predefined casualnumbers for casual rooms from file
         try{
-            JsonValue numbers = new JsonReader().parse(Gdx.files.local("mainWorldSave.json"));
+            JsonValue numbers = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
 
             numbers.forEach((t) -> {
                 Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
@@ -127,9 +131,10 @@ public class RoomsManager {
 
     /**
      * Wraps the room contents game logic
+     * @param stateTime
      */
-    public void doRoomContentsLogic() {
-        currentRoom.doRoomContentsLogic();
+    public void doRoomContentsLogic(float stateTime) {
+        currentRoom.doRoomContentsLogic(stateTime);
 
         // After room logic, handle the room change
         Vector2 playerPosition = player.getBody().getPosition();

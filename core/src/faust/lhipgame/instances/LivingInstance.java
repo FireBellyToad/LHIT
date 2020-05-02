@@ -21,8 +21,9 @@ public abstract class LivingInstance extends GameInstance {
 
     /**
      * Handles the LivingEntity game logic
+     * @param stateTime
      */
-    public abstract void doLogic();
+    public abstract void doLogic(float stateTime);
 
 
     /**

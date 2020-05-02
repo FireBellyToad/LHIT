@@ -1,9 +1,10 @@
-package faust.lhipgame.gameentities;
+package faust.lhipgame.gameentities.impl;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.gameentities.GameEntity;
+import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 

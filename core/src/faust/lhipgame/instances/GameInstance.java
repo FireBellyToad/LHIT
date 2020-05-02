@@ -2,9 +2,8 @@ package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
-import com.sun.tools.javac.util.Assert;
+import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.world.CollisionManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +20,8 @@ public abstract class GameInstance {
 
     protected GameEntity entity;
     protected Body body;
-    protected float startX = 0;;
-    protected float startY = 0;
+    protected float startX = LHIPGame.GAME_WIDTH/2;
+    protected float startY = LHIPGame.GAME_HEIGHT/2;
 
     public GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);
@@ -31,7 +30,7 @@ public abstract class GameInstance {
     }
 
     /**
-     * Inits the BodyDefinition TODO Rivedere
+     * Inits the BodyDefinition
      */
     public abstract void createBody(final World world, float x, float y);
 

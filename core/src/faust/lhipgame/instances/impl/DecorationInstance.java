@@ -1,4 +1,4 @@
-package faust.lhipgame.instances;
+package faust.lhipgame.instances.impl;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -6,17 +6,19 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import faust.lhipgame.gameentities.DecorationEntity;
+import faust.lhipgame.gameentities.impl.DecorationEntity;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.instances.Interactable;
 
 import java.util.Objects;
 
 /**
  * Class for Decoration Instances
  */
-public class DecorationInstance extends GameInstance implements Interactable{
+public class DecorationInstance extends GameInstance implements Interactable {
 
     private boolean interacted = false;
 
@@ -80,7 +82,7 @@ public class DecorationInstance extends GameInstance implements Interactable{
             }
             case STONE_1:
             case STONE_2: {
-                shape.setAsBox(16, 5);
+                shape.setAsBox(16, 8);
                 bodyDef.position.set(x, y - 16);
                 break;
             }

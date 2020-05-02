@@ -1,4 +1,4 @@
-package faust.lhipgame.instances;
+package faust.lhipgame.instances.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.gameentities.LivingEntity;
-import faust.lhipgame.gameentities.PlayerEntity;
+import faust.lhipgame.gameentities.impl.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
+import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.instances.LivingInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,9 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private static final int ATTACK_VALID_FRAME = 3;
     private static final float SPEAR_SENSOR_Y_OFFSET = 10;
 
+    private float attackDeltaTime =0;
+
     //Body for spear attacks
-    private Body horSpearBody;
-    private Body verSpearBody;
 
     private final List<GameInstance> roomPoiList = new ArrayList();
     private POIInstance nearestPOIInstance;
@@ -42,29 +44,33 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     @Override
     public void doLogic(float stateTime) {
 
-        // If the player has stopped moving, set idle behaviour
-        if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {
-            this.currentBehavior = GameBehavior.IDLE;
-        } else {
-            this.currentBehavior = GameBehavior.WALK;
-        }
-
-        // Set horizontal direction if horizontal velocity is not zero
-        if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
-            this.currentDirection = Direction.RIGHT;
-        } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
-            this.currentDirection = Direction.LEFT;
-        }
-
-        // Set vertical direction if vertical velocity is not zero
-        if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
-            this.currentDirection = Direction.UP;
-        } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
-            this.currentDirection = Direction.DOWN;
-        }
 
         if(GameBehavior.ATTACK.equals(currentBehavior))
             attackLogic(stateTime);
+        else{
+
+            // If the player has stopped moving, set idle behaviour
+            if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {
+                this.currentBehavior = GameBehavior.IDLE;
+            } else {
+                this.currentBehavior = GameBehavior.WALK;
+            }
+
+            // Set horizontal direction if horizontal velocity is not zero
+            if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
+                this.currentDirection = Direction.RIGHT;
+            } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
+                this.currentDirection = Direction.LEFT;
+            }
+
+            // Set vertical direction if vertical velocity is not zero
+            if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
+                this.currentDirection = Direction.UP;
+            } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
+                this.currentDirection = Direction.DOWN;
+            }
+
+        }
 
         // Checking if there is any POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
@@ -110,13 +116,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private void setPlayerLinearVelocity(float horizontalVelocity, float verticalVelocity) {
 
         this.body.setLinearVelocity(horizontalVelocity, verticalVelocity);
-        this.horSpearBody.setLinearVelocity(horizontalVelocity, verticalVelocity);
-        this.verSpearBody.setLinearVelocity(horizontalVelocity, verticalVelocity);
     }
 
     public void stopAll() {
         this.currentBehavior = GameBehavior.IDLE;
-        setPlayerLinearVelocity(0, 0);
     }
 
     /**
@@ -128,14 +131,42 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
+        TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection,
+                mapStateTimeFromBehaviour(stateTime));
+
+        int xOffset = 0;
+        int yOffset = 0;
+
+        if(GameBehavior.ATTACK.equals(currentBehavior)){
+            switch (currentDirection){
+                case LEFT:{
+                    xOffset = 1;
+                    yOffset = 0;
+                    break;
+                }
+                case RIGHT: {
+                    xOffset = -1;
+                    yOffset = 1;
+                    break;
+                }
+            }
+        }
 
         //Draw shadow
-        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw Walfrit
-        batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset- POSITION_Y_OFFSET);
 
+    }
+
+    private float mapStateTimeFromBehaviour(float stateTime) {
+        switch (currentBehavior){
+            case ATTACK:{
+                return 2.75f * (stateTime - attackDeltaTime);
+            }
+        }
+        return stateTime;
     }
 
     /**
@@ -144,7 +175,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((LivingEntity) entity).getFrameIndex(currentBehavior, currentDirection, stateTime);
+        if(attackDeltaTime == 0)
+            attackDeltaTime = stateTime;
+
+//        int currentFrame = ((LivingEntity) entity).getFrameIndex(currentBehavior, currentDirection, stateTime);
 //        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < 8) {
 //            if(Direction.RIGHT.equals(currentDirection) || Direction.LEFT.equals(currentDirection) ){
 //                horSpearBody.setActive(true);
@@ -153,8 +187,8 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 //            }
 //        }
 //
-//        // Resetting Behaviour on animation end FIXME improve
-        if(currentFrame == 8){
+//        // Resetting Behaviour on animation end
+        if(((LivingEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))){
             currentBehavior = GameBehavior.IDLE;
         }
     }
@@ -185,50 +219,6 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             body.createFixture(mainFixtureDef);
             shape.dispose();
 
-            BodyDef horSpearBodyDef = new BodyDef();
-            horSpearBodyDef.type = BodyDef.BodyType.DynamicBody;
-            horSpearBodyDef.fixedRotation = true;
-            horSpearBodyDef.position.set(x, y + SPEAR_SENSOR_Y_OFFSET);
-
-            // Define shape
-            PolygonShape horSpearShape = new PolygonShape();
-            horSpearShape.setAsBox(24, 2);
-
-            // Define Fixtures
-            FixtureDef horSpearFixture = new FixtureDef();
-            horSpearFixture.shape = shape;
-            horSpearFixture.density = 1;
-            horSpearFixture.friction = 1;
-            horSpearFixture.isSensor = true;
-
-            // Associate body to world
-            horSpearBody = world.createBody(horSpearBodyDef);
-            horSpearBody.setUserData(this);
-            horSpearBody.createFixture(horSpearFixture);
-            horSpearShape.dispose();
-
-            //
-            BodyDef verSpearBodyDef = new BodyDef();
-            verSpearBodyDef.type = BodyDef.BodyType.DynamicBody;
-            verSpearBodyDef.fixedRotation = true;
-            verSpearBodyDef.position.set(x, y  + SPEAR_SENSOR_Y_OFFSET);
-
-            // Define shape
-            PolygonShape verSpearShape = new PolygonShape();
-            verSpearShape.setAsBox(2, 24);
-
-            // Define Fixtures
-            FixtureDef verSpearFixture = new FixtureDef();
-            verSpearFixture.shape = shape;
-            verSpearFixture.density = 1;
-            verSpearFixture.friction = 1;
-            verSpearFixture.isSensor = true;
-
-            // Associate body to world
-            verSpearBody = world.createBody(verSpearBodyDef);
-            verSpearBody.setUserData(this);
-            verSpearBody.createFixture(verSpearFixture);
-            verSpearShape.dispose();
         }
 
     }
@@ -255,34 +245,34 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         switch (keycode) {
             case Input.Keys.W:
             case Input.Keys.UP: {
-                if (verticalVelocity != -PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != -PLAYER_SPEED) {
                     verticalVelocity = PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
-                if (verticalVelocity != PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != PLAYER_SPEED) {
                     verticalVelocity = -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.A:
             case Input.Keys.LEFT: {
-                if (horizontalVelocity != PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != PLAYER_SPEED) {
                     horizontalVelocity = -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.D:
             case Input.Keys.RIGHT: {
-                if (horizontalVelocity != -PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != -PLAYER_SPEED) {
                     horizontalVelocity = PLAYER_SPEED;
                 }
                 break;
             }
-            case Input.Keys.Z:
-            case Input.Keys.J: {
+            case Input.Keys.X:
+            case Input.Keys.K: {
                 if (Objects.nonNull(nearestPOIInstance)) {
                     examineNearestPOI();
                     horizontalVelocity = 0;
@@ -290,9 +280,12 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 }
                 break;
             }
-            case Input.Keys.X:
-            case Input.Keys.K: {
-                currentBehavior = GameBehavior.ATTACK;
+            case Input.Keys.Z:
+            case Input.Keys.J:{
+                if (!GameBehavior.ATTACK.equals(currentBehavior)){
+                    currentBehavior = GameBehavior.ATTACK;
+                    attackDeltaTime = 0;
+                }
                 break;
             }
         }

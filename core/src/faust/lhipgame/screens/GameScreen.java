@@ -42,11 +42,12 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
         viewport = new FillViewport(LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT, camera);
 
+        worldManager = new WorldManager();
+        textManager = new TextManager();
+
         // Creating player and making it available to input processor
         player = new PlayerInstance();
 
-        worldManager = new WorldManager();
-        textManager = new TextManager();
         roomsManager = new RoomsManager(worldManager,textManager,player,camera);
 
         box2DDebugRenderer = new Box2DDebugRenderer();

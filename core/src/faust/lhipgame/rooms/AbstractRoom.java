@@ -22,6 +22,7 @@ import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -257,7 +258,16 @@ public abstract class AbstractRoom {
         }
 
         // Do enemy logic
-        enemyList.forEach((ene) -> ene.doLogic(stateTime));
+        enemyList.forEach((ene) -> {
+
+            if(!ene.isDead())
+                ene.doLogic(stateTime);
+             else
+                ene.dispose();
+
+        });
+
+        enemyList.removeIf(ene -> ene.isDead());
 
     };
 }

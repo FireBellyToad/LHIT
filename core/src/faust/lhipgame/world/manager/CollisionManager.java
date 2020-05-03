@@ -1,5 +1,6 @@
 package faust.lhipgame.world.manager;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
@@ -18,8 +19,8 @@ public class CollisionManager implements ContactListener {
         if(isContactOfClass(contact,PlayerInstance.class)){
             handlePlayerBeginContact(contact);
         }
-    }
 
+    }
 
     @Override
     public void endContact(Contact contact) {
@@ -27,7 +28,9 @@ public class CollisionManager implements ContactListener {
         if(isContactOfClass(contact,PlayerInstance.class)){
             handlePlayerEndContact(contact);
         }
+
     }
+
 
     private void handlePlayerBeginContact(Contact contact) {
 
@@ -45,8 +48,15 @@ public class CollisionManager implements ContactListener {
         // Handle Strix Collision
         if(isContactOfClass(contact, StrixInstance.class)){
             StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
-            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
-            inst.doPlayerInteraction(pInst);
+
+            Body pBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
+            PlayerInstance pInst = (PlayerInstance) pBody.getUserData();
+
+            if(BodyDef.BodyType.StaticBody.equals(pBody.getType())){
+                inst.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6))+1);
+            } else {
+                inst.doPlayerInteraction(pInst);
+            }
         }
     }
 

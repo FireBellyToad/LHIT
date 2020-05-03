@@ -61,7 +61,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
         Objects.requireNonNull(world);
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.position.set(x, y);
 

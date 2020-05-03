@@ -33,7 +33,7 @@ public abstract class LivingInstance extends GameInstance {
      */
     public void hurt(int damageReceived) {
         this.damage += Math.min(((LivingEntity) entity).getResistance(), damageReceived);
-        Gdx.app.log("INFO","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
+        Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
     }
 
 

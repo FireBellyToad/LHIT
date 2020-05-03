@@ -117,6 +117,34 @@ public abstract class LivingEntity extends GameEntity {
      * @param stateTime state time to render
      * @return true if animation is finished
      */
+    public int getFrameIndex(GameBehavior behavior, Direction direction, float stateTime) {
+        Objects.requireNonNull(behavior);
+        Objects.requireNonNull(direction);
+
+        // Get all animations for behaviour
+        Map<Direction, Animation> behaviorAnimations = this.animations.get(behavior);
+
+        Objects.requireNonNull(behaviorAnimations);
+
+        int toReturn;
+        // If the animations doesn't have any direction, then return the unused one
+        if (behaviorAnimations.containsKey(Direction.UNUSED)) {
+            toReturn = behaviorAnimations.get(Direction.UNUSED).getKeyFrameIndex(stateTime);
+        } else {
+            toReturn = behaviorAnimations.get(direction).getKeyFrameIndex(stateTime);
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Returns if current Animation is finished
+     *
+     * @param behavior  The behavior of the animation
+     * @param direction the direction of the animation
+     * @param stateTime state time to render
+     * @return true if animation is finished
+     */
     public boolean isAnimationFinished(GameBehavior behavior, Direction direction, float stateTime) {
         Objects.requireNonNull(behavior);
         Objects.requireNonNull(direction);

@@ -1,7 +1,8 @@
 package faust.lhipgame.instances;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
 
@@ -20,8 +21,8 @@ public abstract class GameInstance {
 
     protected GameEntity entity;
     protected Body body;
-    protected float startX = LHIPGame.GAME_WIDTH/2;
-    protected float startY = LHIPGame.GAME_HEIGHT/2;
+    protected float startX = LHIPGame.GAME_WIDTH / 2;
+    protected float startY = LHIPGame.GAME_HEIGHT / 2;
 
     public GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);
@@ -44,11 +45,14 @@ public abstract class GameInstance {
      * Disposing internal resources
      */
     public void dispose() {
+        this.body.getFixtureList().forEach(f ->
+                this.body.destroyFixture(f));
         this.entity.dispose();
     }
 
     /**
      * Returs the nearest Instance from this in the room. USE ONLY AFTER INSERTING THE POI IN THE WORLD
+     *
      * @return the nearest Instance from this in the room
      */
     protected GameInstance getNearestInstance(List<GameInstance> instanceList) {

@@ -30,6 +30,8 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private float attackDeltaTime =0;
 
     //Body for spear attacks
+    private Body horSpearBody;
+    private Body verSpearBody;
 
     private final List<GameInstance> roomPoiList = new ArrayList();
     private POIInstance nearestPOIInstance;
@@ -44,6 +46,9 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     @Override
     public void doLogic(float stateTime) {
 
+        // Setting Attack area position
+        horSpearBody.setTransform(body.getPosition().x-1, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
+        verSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
 
         if(GameBehavior.ATTACK.equals(currentBehavior))
             attackLogic(stateTime);
@@ -183,18 +188,21 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         if(attackDeltaTime == 0)
             attackDeltaTime = stateTime;
 
-//        int currentFrame = ((LivingEntity) entity).getFrameIndex(currentBehavior, currentDirection, stateTime);
-//        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < 8) {
-//            if(Direction.RIGHT.equals(currentDirection) || Direction.LEFT.equals(currentDirection) ){
-//                horSpearBody.setActive(true);
-//            } else {
-//                verSpearBody.setActive(true);
-//            }
-//        }
-//
-//        // Resetting Behaviour on animation end
+
+        int currentFrame = ((LivingEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
+        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < 10) {
+            if(Direction.RIGHT.equals(currentDirection) || Direction.LEFT.equals(currentDirection) ){
+                horSpearBody.setActive(true);
+            } else {
+                verSpearBody.setActive(true);
+            }
+        }
+
+        // Resetting Behaviour on animation end
         if(((LivingEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))){
             currentBehavior = GameBehavior.IDLE;
+            horSpearBody.setActive(false);
+            verSpearBody.setActive(false);
         }
     }
 
@@ -223,6 +231,52 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             body.setUserData(this);
             body.createFixture(mainFixtureDef);
             shape.dispose();
+
+            BodyDef horSpearDef = new BodyDef();
+            horSpearDef.type = BodyDef.BodyType.StaticBody;
+            horSpearDef.fixedRotation = true;
+            horSpearDef.position.set(x, y);
+
+            // Define shape
+            PolygonShape horSpearShape = new PolygonShape();
+            horSpearShape.setAsBox(18, 2);
+
+            // Define Fixtures
+            FixtureDef horSpearFixtureDef = new FixtureDef();
+            horSpearFixtureDef.shape = shape;
+            horSpearFixtureDef.density = 1;
+            horSpearFixtureDef.friction = 1;
+            horSpearFixtureDef.isSensor = true;
+
+            // Associate body to world
+            horSpearBody = world.createBody(horSpearDef);
+            horSpearBody.setUserData(this);
+            horSpearBody.createFixture(horSpearFixtureDef);
+            horSpearBody.setActive(false);
+            horSpearShape.dispose();
+
+            BodyDef verSpearDef = new BodyDef();
+            verSpearDef.type = BodyDef.BodyType.StaticBody;
+            verSpearDef.fixedRotation = true;
+            verSpearDef.position.set(x, y);
+
+            // Define shape
+            PolygonShape verSpearShape = new PolygonShape();
+            verSpearShape.setAsBox(2, 18);
+
+            // Define Fixtures
+            FixtureDef verSpearFixtureDef = new FixtureDef();
+            verSpearFixtureDef.shape = shape;
+            verSpearFixtureDef.density = 1;
+            verSpearFixtureDef.friction = 1;
+            verSpearFixtureDef.isSensor = true;
+
+            // Associate body to world
+            verSpearBody = world.createBody(verSpearDef);
+            verSpearBody.setUserData(this);
+            verSpearBody.createFixture(verSpearFixtureDef);
+            verSpearBody.setActive(false);
+            verSpearShape.dispose();
 
         }
 

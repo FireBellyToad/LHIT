@@ -133,7 +133,6 @@ public class StrixInstance extends LivingInstance implements Interactable {
         // Start to leech
         leechLife(playerInstance);
 
-
     }
 
     @Override

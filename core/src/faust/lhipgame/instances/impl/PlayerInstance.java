@@ -149,6 +149,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                     yOffset = 1;
                     break;
                 }
+                case UP: {
+                    xOffset = 0;
+                    yOffset = -3;
+                    break;
+                }
             }
         }
 
@@ -163,7 +168,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private float mapStateTimeFromBehaviour(float stateTime) {
         switch (currentBehavior){
             case ATTACK:{
-                return 2.75f * (stateTime - attackDeltaTime);
+                return 2.25f * (stateTime - attackDeltaTime);
             }
         }
         return stateTime;

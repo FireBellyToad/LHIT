@@ -59,7 +59,7 @@ public abstract class LivingEntity extends GameEntity {
         Objects.requireNonNull(direction);
 
         if (!this.animations.containsKey(behavior)) {
-            this.animations.put(behavior, new HashMap<Direction, Animation>());
+            this.animations.put(behavior, new HashMap<>());
         }
 
         this.animations.get(behavior).put(direction, animation);

@@ -52,6 +52,12 @@ public class StrixEntity extends LivingEntity {
 
         addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, attachedFrames), GameBehavior.ATTACK, Direction.UNUSED);
 
+        // Initialize the Walk Animation with the frame interval and array of frames
+        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesDown), GameBehavior.HURT, Direction.DOWN);
+        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesLeft), GameBehavior.HURT, Direction.LEFT);
+        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesUp), GameBehavior.HURT, Direction.UP);
+        addAnimationForDirection(new Animation<TextureRegion>(FRAME_DURATION, walkFramesRight), GameBehavior.HURT, Direction.RIGHT);
+
     }
 
     @Override

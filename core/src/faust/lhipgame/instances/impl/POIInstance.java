@@ -16,7 +16,6 @@ import java.util.Objects;
 
 public class POIInstance extends GameInstance {
 
-    private static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/8 second in nanoseconds
 
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden

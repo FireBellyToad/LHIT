@@ -11,7 +11,6 @@ public abstract class LivingInstance extends GameInstance {
 
     protected static final int LINE_OF_SIGHT = 60;
     protected int damage = 0;
-
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
     protected Direction currentDirection = Direction.UNUSED;
 
@@ -34,7 +33,13 @@ public abstract class LivingInstance extends GameInstance {
     public void hurt(int damageReceived) {
         this.damage += Math.min(((LivingEntity) entity).getResistance(), damageReceived);
         Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
+        postHurtLogic();
     }
+
+    /**
+     * Logic to be done after being hurt
+     */
+    protected abstract void postHurtLogic();
 
 
     /**

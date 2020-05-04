@@ -7,14 +7,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.LivingEntity;
-import faust.lhipgame.gameentities.impl.StrixEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
+import faust.lhipgame.gameentities.impl.StrixEntity;
 import faust.lhipgame.instances.Interactable;
 import faust.lhipgame.instances.LivingInstance;
-import faust.lhipgame.instances.impl.PlayerInstance;
 
 import java.util.Objects;
 
@@ -36,6 +36,9 @@ public class StrixInstance extends LivingInstance implements Interactable {
     @Override
     public void doLogic(float stateTime) {
 
+        if (GameBehavior.HURT.equals(currentBehavior))
+            return;
+
         if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
             // Normal from strix position to target
@@ -53,6 +56,24 @@ public class StrixInstance extends LivingInstance implements Interactable {
 
             body.setLinearVelocity(0, 0);
         }
+    }
+
+    @Override
+    protected void postHurtLogic() {
+
+        Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
+                target.getBody().getPosition().y - body.getPosition().y).nor();
+
+        body.setLinearVelocity(STRIX_SPEED * 4 * -direction.x, STRIX_SPEED * 4 * -direction.y);
+        currentBehavior = GameBehavior.HURT;
+
+        // Do nothing for half second
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                currentBehavior = GameBehavior.IDLE;
+            }
+        }, 0.25f);
     }
 
     @Override
@@ -96,14 +117,26 @@ public class StrixInstance extends LivingInstance implements Interactable {
         TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
 
         //Draw shadow
-        batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y- POSITION_Y_OFFSET);
+        batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
 
         //Draw Strix
-        if(currentBehavior.equals(GameBehavior.IDLE)){
+        if (GameBehavior.IDLE.equals(currentBehavior)) {
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
         } else {
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+
+            // If not hurt or the flickering POI must be shown, draw the texture
+            if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+                batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+            }
+
+            // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
+            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO) {
+                mustFlicker = !mustFlicker;
+
+                // restart flickering timer
+                startTime = TimeUtils.nanoTime();
+            }
         }
 
     }

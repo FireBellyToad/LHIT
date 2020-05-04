@@ -89,6 +89,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
     }
 
+    @Override
+    protected void postHurtLogic() {
+
+    }
+
     /**
      * Triggers the examination event of the nearest POI found
      */

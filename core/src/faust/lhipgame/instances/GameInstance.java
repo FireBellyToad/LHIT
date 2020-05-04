@@ -19,6 +19,12 @@ public abstract class GameInstance {
     protected final static int POSITION_OFFSET = 16;
     protected final static int POSITION_Y_OFFSET = 8;
 
+    // Flicker effect variables
+    protected static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/8 second in nanoseconds
+    protected boolean mustFlicker = false;// flag that is true when the Instance must be hidden
+    protected long startTime = 0;
+
+
     protected GameEntity entity;
     protected Body body;
     protected float startX = LHIPGame.GAME_WIDTH / 2;

@@ -2,6 +2,7 @@ package faust.lhipgame.instances;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
@@ -13,6 +14,8 @@ public abstract class LivingInstance extends GameInstance {
     protected int damage = 0;
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
     protected Direction currentDirection = Direction.UNUSED;
+
+    protected Body hitBox;
 
     public LivingInstance(final GameEntity entity) {
         super(entity);
@@ -65,5 +68,12 @@ public abstract class LivingInstance extends GameInstance {
         } else {
             return Direction.UP;
         }
+    }
+
+    @Override
+    public void dispose() {
+        this.hitBox.getFixtureList().forEach(f ->
+                this.hitBox.destroyFixture(f));
+        super.dispose();
     }
 }

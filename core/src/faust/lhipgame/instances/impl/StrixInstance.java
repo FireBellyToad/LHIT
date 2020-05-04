@@ -36,6 +36,8 @@ public class StrixInstance extends LivingInstance implements Interactable {
     @Override
     public void doLogic(float stateTime) {
 
+        hitBox.setTransform(body.getPosition().x, body.getPosition().y+8,0);
+
         if (GameBehavior.HURT.equals(currentBehavior))
             return;
 
@@ -103,6 +105,30 @@ public class StrixInstance extends LivingInstance implements Interactable {
         body.createFixture(fixtureDef);
 
         shape.dispose();
+
+        // Hitbox definition
+        BodyDef hitBoxDef = new BodyDef();
+        hitBoxDef.type = BodyDef.BodyType.KinematicBody;
+        hitBoxDef.fixedRotation = true;
+        hitBoxDef.position.set(x, y);
+
+        // Define shape
+        PolygonShape hitBoxShape = new PolygonShape();
+        hitBoxShape.setAsBox(4, 6);
+
+        // Define Fixture
+        FixtureDef hitBoxFixtureDef = new FixtureDef();
+        hitBoxFixtureDef.shape = shape;
+        hitBoxFixtureDef.density = 0;
+        hitBoxFixtureDef.friction = 0;
+        hitBoxFixtureDef.isSensor = true;
+
+        // Associate body to world
+        hitBox = world.createBody(bodyDef);
+        hitBox.setUserData(this);
+        hitBox.createFixture(hitBoxFixtureDef);
+
+        shape.dispose();
     }
 
     /**
@@ -131,7 +157,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
             }
 
             // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO) {
+            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO/6) {
                 mustFlicker = !mustFlicker;
 
                 // restart flickering timer

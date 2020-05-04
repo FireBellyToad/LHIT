@@ -50,10 +50,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public void doLogic(float stateTime) {
 
         // Setting Attack area position
-        rightSpearBody.setTransform(body.getPosition().x+12, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
-        upSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y+13+SPEAR_SENSOR_Y_OFFSET,0);
-        leftSpearBody.setTransform(body.getPosition().x-12, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
-        downSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y-13+SPEAR_SENSOR_Y_OFFSET,0);
+        rightSpearBody.setTransform(body.getPosition().x+10, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
+        upSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y+11+SPEAR_SENSOR_Y_OFFSET,0);
+        leftSpearBody.setTransform(body.getPosition().x-10, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
+        downSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y-11+SPEAR_SENSOR_Y_OFFSET,0);
 
         if(GameBehavior.ATTACK.equals(currentBehavior))
             attackLogic(stateTime);
@@ -259,13 +259,13 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
 
             BodyDef rightSpearDef = new BodyDef();
-            rightSpearDef.type = BodyDef.BodyType.StaticBody;
+            rightSpearDef.type = BodyDef.BodyType.KinematicBody;
             rightSpearDef.fixedRotation = true;
             rightSpearDef.position.set(x, y);
 
             // Define shape
             PolygonShape rightSpearShape = new PolygonShape();
-            rightSpearShape.setAsBox(4, 2);
+            rightSpearShape.setAsBox(6, 2);
 
             // Define Fixtures
             FixtureDef rightSpearFixtureDef = new FixtureDef();
@@ -282,13 +282,13 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             rightSpearShape.dispose();
 
             BodyDef upSpearDef = new BodyDef();
-            upSpearDef.type = BodyDef.BodyType.StaticBody;
+            upSpearDef.type = BodyDef.BodyType.KinematicBody;
             upSpearDef.fixedRotation = true;
             upSpearDef.position.set(x, y);
 
             // Define shape
             PolygonShape upSpearShape = new PolygonShape();
-            upSpearShape.setAsBox(2, 4);
+            upSpearShape.setAsBox(2, 6);
 
             // Define Fixtures
             FixtureDef upSpearFixtureDef = new FixtureDef();
@@ -305,13 +305,13 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             upSpearShape.dispose();
 
             BodyDef leftSpearDef = new BodyDef();
-            leftSpearDef.type = BodyDef.BodyType.StaticBody;
+            leftSpearDef.type = BodyDef.BodyType.KinematicBody;
             leftSpearDef.fixedRotation = true;
             leftSpearDef.position.set(x, y);
 
             // Define shape
             PolygonShape leftSpearShape = new PolygonShape();
-            leftSpearShape.setAsBox(4, 2);
+            leftSpearShape.setAsBox(6, 2);
 
             // Define Fixtures
             FixtureDef leftSpearFixtureDef = new FixtureDef();
@@ -328,13 +328,13 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             leftSpearShape.dispose();
 
             BodyDef downSpearDef = new BodyDef();
-            downSpearDef.type = BodyDef.BodyType.StaticBody;
+            downSpearDef.type = BodyDef.BodyType.KinematicBody;
             downSpearDef.fixedRotation = true;
             downSpearDef.position.set(x, y);
 
             // Define shape
             PolygonShape downSpearShape = new PolygonShape();
-            downSpearShape.setAsBox(2, 4);
+            downSpearShape.setAsBox(2, 6);
 
             // Define Fixtures
             FixtureDef downSpearFixtureDef = new FixtureDef();

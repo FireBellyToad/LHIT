@@ -47,16 +47,18 @@ public class CollisionManager implements ContactListener {
 
         // Handle Strix Collision
         if(isContactOfClass(contact, StrixInstance.class)){
-            StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
+            Body sBody = getCorrectFixture(contact,StrixInstance.class).getBody();
+            StrixInstance sInst = (StrixInstance) sBody.getUserData();
 
             Body pBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
             PlayerInstance pInst = (PlayerInstance) pBody.getUserData();
 
-            if(BodyDef.BodyType.StaticBody.equals(pBody.getType())){
-                inst.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6))+1);
-            } else {
-                inst.doPlayerInteraction(pInst);
+            if(BodyDef.BodyType.DynamicBody.equals(sBody.getType()) && BodyDef.BodyType.DynamicBody.equals(pBody.getType())){
+                sInst.doPlayerInteraction(pInst);
+            } else if(BodyDef.BodyType.DynamicBody.equals(sBody.getType()) && BodyDef.BodyType.KinematicBody.equals(pBody.getType())){
+                sInst.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6))+1);
             }
+
         }
     }
 
@@ -72,9 +74,15 @@ public class CollisionManager implements ContactListener {
 
         // Handle Strix Collision end
         if(isContactOfClass(contact, StrixInstance.class)){
-            StrixInstance inst = ((StrixInstance) getCorrectFixture(contact,StrixInstance.class).getBody().getUserData());
-            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
-            inst.endPlayerInteraction(pInst);
+            Body sBody = getCorrectFixture(contact,StrixInstance.class).getBody();
+            StrixInstance sInst = (StrixInstance) sBody.getUserData();
+
+            Body pBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
+            PlayerInstance pInst = (PlayerInstance) pBody.getUserData();
+
+            if(BodyDef.BodyType.DynamicBody.equals(sBody.getType())  && BodyDef.BodyType.DynamicBody.equals(pBody.getType())){
+                sInst.endPlayerInteraction(pInst);
+            }
         }
     }
 

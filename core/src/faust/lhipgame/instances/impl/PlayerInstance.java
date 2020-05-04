@@ -219,15 +219,16 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                     break;
                 }
             }
+        } else {
+            rightSpearBody.setActive(false);
+            upSpearBody.setActive(false);
+            leftSpearBody.setActive(false);
+            downSpearBody.setActive(false);
         }
 
         // Resetting Behaviour on animation end
         if(((LivingEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))){
             currentBehavior = GameBehavior.IDLE;
-            rightSpearBody.setActive(false);
-            upSpearBody.setActive(false);
-            leftSpearBody.setActive(false);
-            downSpearBody.setActive(false);
         }
     }
 
@@ -265,7 +266,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
             // Define shape
             PolygonShape rightSpearShape = new PolygonShape();
-            rightSpearShape.setAsBox(6, 2);
+            rightSpearShape.setAsBox(6, 3);
 
             // Define Fixtures
             FixtureDef rightSpearFixtureDef = new FixtureDef();
@@ -288,7 +289,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
             // Define shape
             PolygonShape upSpearShape = new PolygonShape();
-            upSpearShape.setAsBox(2, 6);
+            upSpearShape.setAsBox(3, 6);
 
             // Define Fixtures
             FixtureDef upSpearFixtureDef = new FixtureDef();
@@ -311,7 +312,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
             // Define shape
             PolygonShape leftSpearShape = new PolygonShape();
-            leftSpearShape.setAsBox(6, 2);
+            leftSpearShape.setAsBox(6, 3);
 
             // Define Fixtures
             FixtureDef leftSpearFixtureDef = new FixtureDef();
@@ -334,7 +335,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
             // Define shape
             PolygonShape downSpearShape = new PolygonShape();
-            downSpearShape.setAsBox(2, 6);
+            downSpearShape.setAsBox(3, 6);
 
             // Define Fixtures
             FixtureDef downSpearFixtureDef = new FixtureDef();

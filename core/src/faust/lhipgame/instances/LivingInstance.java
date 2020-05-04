@@ -8,6 +8,8 @@ import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
+import java.util.Objects;
+
 public abstract class LivingInstance extends GameInstance {
 
     protected static final int LINE_OF_SIGHT = 60;
@@ -34,9 +36,12 @@ public abstract class LivingInstance extends GameInstance {
      * @param damageReceived to be subtracted
      */
     public void hurt(int damageReceived) {
-        this.damage += Math.min(((LivingEntity) entity).getResistance(), damageReceived);
-        Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
-        postHurtLogic();
+        if(!GameBehavior.HURT.equals(currentBehavior)){
+            this.damage += Math.min(((LivingEntity) entity).getResistance(), damageReceived);
+            Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
+            postHurtLogic();
+        }
+
     }
 
     /**
@@ -72,8 +77,10 @@ public abstract class LivingInstance extends GameInstance {
 
     @Override
     public void dispose() {
-        this.hitBox.getFixtureList().forEach(f ->
-                this.hitBox.destroyFixture(f));
+        if(!Objects.isNull(hitBox)){
+            this.hitBox.getFixtureList().forEach(f ->
+                    hitBox.destroyFixture(f));
+        }
         super.dispose();
     }
 }

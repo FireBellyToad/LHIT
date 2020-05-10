@@ -32,8 +32,8 @@ public class TextManager {
     private List<TextBoxData> textBoxes = new ArrayList<>();
     private JsonValue messageMap;
 
-    private ShapeRenderer backgroundBox;
-    private ShapeRenderer cornerBox;
+    private final ShapeRenderer backgroundBox = new ShapeRenderer();
+    private final ShapeRenderer cornerBox = new ShapeRenderer();
     private static final Color corner = new Color(0xffffffff);
     private static final Color back = new Color(0x222222ff);
 
@@ -50,9 +50,6 @@ public class TextManager {
         messageMap = root.get("messages");
 
         Objects.requireNonNull(messageMap);
-
-        backgroundBox = new ShapeRenderer();
-        cornerBox = new ShapeRenderer();
     }
 
     /**

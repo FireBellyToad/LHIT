@@ -24,7 +24,6 @@ public abstract class GameInstance {
     protected boolean mustFlicker = false;// flag that is true when the Instance must be hidden
     protected long startTime = 0;
 
-
     protected GameEntity entity;
     protected Body body;
     protected float startX = LHIPGame.GAME_WIDTH / 2;

@@ -55,9 +55,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         leftSpearBody.setTransform(body.getPosition().x-10, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
         downSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y-11+SPEAR_SENSOR_Y_OFFSET,0);
 
-        if(GameBehavior.ATTACK.equals(currentBehavior))
+        if(GameBehavior.ATTACK.equals(currentBehavior)) {
+            setPlayerLinearVelocity(0, 0);
             attackLogic(stateTime);
-        else{
+        } else{
 
             // If the player has stopped moving, set idle behaviour
             if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {

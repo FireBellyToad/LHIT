@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.utils.viewport.*;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.hud.Hud;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.manager.RoomsManager;
 import faust.lhipgame.text.manager.TextManager;
@@ -21,6 +23,8 @@ public class GameScreen implements Screen {
     private PlayerInstance player;
     private TextManager textManager;
     private RoomsManager roomsManager;
+
+    private Hud hud;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -48,10 +52,11 @@ public class GameScreen implements Screen {
         // Creating player and making it available to input processor
         player = new PlayerInstance();
 
-        roomsManager = new RoomsManager(worldManager,textManager,player,camera);
+        roomsManager = new RoomsManager(worldManager, textManager, player, camera);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
+        hud = new Hud(player);
         background = new ShapeRenderer();
     }
 
@@ -83,8 +88,9 @@ public class GameScreen implements Screen {
     }
 
     private void drawOverlays() {
+        textManager.renderTextBoxes(game.getBatch(), player, camera);
         game.getBatch().begin();
-        textManager.renderTextBoxes(game.getBatch(), player);
+        hud.drawHud(game.getBatch(),player);
         game.getBatch().end();
     }
 

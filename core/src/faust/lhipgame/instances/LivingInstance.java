@@ -83,4 +83,13 @@ public abstract class LivingInstance extends GameInstance {
         }
         super.dispose();
     }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getDamageDelta() {
+        return  ((LivingEntity) entity).getResistance() - damage;
+    }
+
 }

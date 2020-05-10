@@ -35,7 +35,7 @@ public abstract class SpriteEntity extends GameEntity {
     protected void initAnimation(int rowNumber) {
         TextureRegion[] frames = Arrays.copyOfRange(getFramesFromTexture(), getTextureColumns() * (rowNumber), getTextureColumns() * (rowNumber + 1));
 
-        this.animation = new Animation<TextureRegion>(FRAME_DURATION, frames);
+        this.animation = new Animation<>(FRAME_DURATION, frames);
     }
 
     /**

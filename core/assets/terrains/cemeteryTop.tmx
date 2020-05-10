@@ -30,10 +30,10 @@
   <object id="25" name="DECO" type="CROSS_WOOD" x="90.75" y="134.5">
    <point/>
   </object>
-  <object id="26" name="DECO" type="STONE_2" x="7.75" y="20.25">
+  <object id="26" name="DECO" type="STONE_2" x="8.09783" y="20.2065">
    <point/>
   </object>
-  <object id="32" name="DECO" type="STONE_2" x="7.75" y="34.75">
+  <object id="32" name="DECO" type="STONE_2" x="8.06111" y="34.75">
    <point/>
   </object>
   <object id="33" name="DECO" type="STONE_1" x="7.75" y="50.75">
@@ -57,7 +57,7 @@
   <object id="39" name="DECO" type="STONE_2" x="7.75" y="138.5">
    <point/>
   </object>
-  <object id="40" name="DECO" type="STONE_2" x="8" y="9.75">
+  <object id="40" name="DECO" type="STONE_2" x="8" y="9.83696">
    <point/>
   </object>
  </objectgroup>

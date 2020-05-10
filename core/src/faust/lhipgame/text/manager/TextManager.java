@@ -108,13 +108,13 @@ public class TextManager {
             backgroundBox.setColor(back);
             backgroundBox.setProjectionMatrix(camera.combined);
             backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-            backgroundBox.rect(4, 4, LHIPGame.GAME_WIDTH-8, 40);
+            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH-4, 44);
             backgroundBox.end();
             batch.end();
 
             //Text
             batch.begin();
-            mainFont.draw(batch, box.getText(), 8, 40);
+            mainFont.draw(batch, box.getText(), 6, 40);
             batch.end();
         });
     }

@@ -48,6 +48,7 @@ public class GameScreen implements Screen {
 
         worldManager = new WorldManager();
         textManager = new TextManager();
+        hud = new Hud();
 
         // Creating player and making it available to input processor
         player = new PlayerInstance();
@@ -56,7 +57,6 @@ public class GameScreen implements Screen {
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-        hud = new Hud(player);
         background = new ShapeRenderer();
     }
 

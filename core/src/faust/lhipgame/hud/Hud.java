@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
+import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
+import faust.lhipgame.instances.LivingInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 
 import java.util.Objects;
@@ -18,10 +20,10 @@ import java.util.Objects;
  */
 public class Hud {
     private SpriteEntity lifeMeterTexture;
-    private final Vector2 meterPosition = new Vector2(5, LHIPGame.GAME_HEIGHT-10);
+    private final Vector2 meterPosition = new Vector2(2.5f, LHIPGame.GAME_HEIGHT-10);
 
-    public Hud(PlayerInstance player) {
-        Objects.requireNonNull(player);
+    public Hud() {
+
         this.lifeMeterTexture = new SpriteEntity(new Texture("sprites/health_sheet.png")) {
             @Override
             protected int getTextureColumns() {
@@ -40,12 +42,12 @@ public class Hud {
     public void drawHud(SpriteBatch batch, PlayerInstance player) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = lifeMeterTexture.getFrame(0);
-        for (int r = 0; r < player.getDamageDelta(); r++) {
+        // Draw Health meter
+        TextureRegion frame;
+        for (int r = 0; r < ((LivingInstance) player).getResistance(); r++) {
+            frame = lifeMeterTexture.getFrame(r < player.getDamageDelta()? 0 : GameEntity.FRAME_DURATION );
             batch.draw(frame, meterPosition.x+(r*frame.getRegionWidth()), meterPosition.y);
         }
 
-
-        //Rivedere
     }
 }

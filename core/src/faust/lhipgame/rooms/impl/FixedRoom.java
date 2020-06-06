@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
 import faust.lhipgame.rooms.enums.RoomType;
+import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
@@ -18,8 +19,8 @@ public class FixedRoom extends AbstractRoom {
 
     private RoomType roomType;
 
-    public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
-        super(roomType, worldManager, textManager, player, camera);
+    public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
+        super(roomType, worldManager, textManager,splashManager,  player, camera);
 
     }
 
@@ -31,7 +32,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
         // Nothing to do... yet
     }
 }

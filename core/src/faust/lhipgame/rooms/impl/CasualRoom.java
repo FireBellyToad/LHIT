@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
 import faust.lhipgame.rooms.enums.RoomType;
+import faust.lhipgame.splash.SplashManager;
+import faust.lhipgame.splash.enums.SplashScreenEnum;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
@@ -22,8 +24,8 @@ public class CasualRoom extends AbstractRoom {
     public static final int CASUAL_TOTAL = 3;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera,Integer casualNumber) {
-        super(RoomType.CASUAL, worldManager, textManager, player, camera,casualNumber);
+    public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, Integer casualNumber) {
+        super(RoomType.CASUAL, worldManager, textManager, splashManager,  player, camera,casualNumber);
     }
 
     @Override
@@ -48,12 +50,13 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
 
         //FIXME
         if(MathUtils.randomBoolean()){
             addObjAsEnemy(null);
             worldManager.insertEnemiesIntoWorld(enemyList);
+            splashManager.setSplashToShow(SplashScreenEnum.STRIX_SPLASH);
         }
 
 

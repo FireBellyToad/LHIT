@@ -14,6 +14,7 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.hud.Hud;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.manager.RoomsManager;
+import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
@@ -25,6 +26,7 @@ public class GameScreen implements Screen {
     private RoomsManager roomsManager;
 
     private Hud hud;
+    private SplashManager splashManager;
 
     private OrthographicCamera camera;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -49,11 +51,12 @@ public class GameScreen implements Screen {
         worldManager = new WorldManager();
         textManager = new TextManager();
         hud = new Hud();
+        splashManager = new SplashManager(textManager);
 
         // Creating player and making it available to input processor
         player = new PlayerInstance();
 
-        roomsManager = new RoomsManager(worldManager, textManager, player, camera);
+        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, camera);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
@@ -63,10 +66,13 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        doLogic();
-        worldManager.doStep();
-        stateTime += Gdx.graphics.getDeltaTime();
+        // Stops game logic if splash screen is shown
+        if (!splashManager.isDrawingSplash()) {
+            doLogic();
+            worldManager.doStep();
+        }
 
+        stateTime += Gdx.graphics.getDeltaTime();
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -74,11 +80,13 @@ public class GameScreen implements Screen {
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
-        //Draw gray background
-        drawBackGround();
+        if (!splashManager.isDrawingSplash()) {
+            //Draw gray background
+            drawBackGround();
 
-        //Draw all instances
-        drawGameInstances(stateTime);
+            //Draw all instances
+            drawGameInstances(stateTime);
+        }
 
         //Draw all overlays
         drawOverlays();
@@ -88,10 +96,16 @@ public class GameScreen implements Screen {
     }
 
     private void drawOverlays() {
-        textManager.renderTextBoxes(game.getBatch(), player, camera);
+        // Draw splash XOR hud
         game.getBatch().begin();
-        hud.drawHud(game.getBatch(),player);
+        if (splashManager.isDrawingSplash()) {
+            splashManager.drawSplash(game.getBatch());
+        } else {
+            hud.drawHud(game.getBatch(), player);;
+        }
         game.getBatch().end();
+        // draw text
+        textManager.renderTextBoxes(game.getBatch(), player, camera);
     }
 
     private void drawGameInstances(float stateTime) {

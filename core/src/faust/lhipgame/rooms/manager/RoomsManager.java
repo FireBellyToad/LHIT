@@ -12,6 +12,7 @@ import faust.lhipgame.rooms.CasualRoomNumberSaveEntry;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.rooms.impl.CasualRoom;
 import faust.lhipgame.rooms.impl.FixedRoom;
+import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
@@ -19,6 +20,7 @@ import java.util.*;
 
 public class RoomsManager {
 
+    private final SplashManager splashManager;
     private AbstractRoom currentRoom;
     private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
 
@@ -35,9 +37,10 @@ public class RoomsManager {
     private PlayerInstance player;
     private OrthographicCamera camera;
 
-    public RoomsManager(WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera) {
+    public RoomsManager(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
         this.worldManager = worldManager;
         this.textManager = textManager;
+        this.splashManager = splashManager;
         this.player = player;
         this.camera = camera;
 
@@ -108,7 +111,7 @@ public class RoomsManager {
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
 
-                currentRoom = new CasualRoom(worldManager, textManager, player, camera, mainWorldPredefinedCasualNumbers.get(currentRoomPosInWorld));
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, mainWorldPredefinedCasualNumbers.get(currentRoomPosInWorld));
 
                 final int roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
 
@@ -122,7 +125,7 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, player, camera);
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera);
                 break;
             }
         }

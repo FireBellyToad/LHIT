@@ -10,7 +10,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
-import faust.lhipgame.instances.*;
+import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.instances.LivingInstance;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
@@ -18,11 +19,11 @@ import faust.lhipgame.instances.impl.StrixInstance;
 import faust.lhipgame.rooms.enums.MapLayersEnum;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
+import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,11 +59,12 @@ public abstract class AbstractRoom {
      * @param roomType
      * @param worldManager
      * @param textManager
+     * @param splashManager
      * @param player
      * @param camera
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera) {
-        this(roomType, worldManager, textManager, player, camera, null);
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera) {
+        this(roomType, worldManager, textManager, splashManager, player, camera, null);
     }
 
     /**
@@ -71,11 +73,12 @@ public abstract class AbstractRoom {
      * @param roomType
      * @param worldManager
      * @param textManager
+     * @param splashManager
      * @param player
      * @param camera
      * @param additionalLoadArgs
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final PlayerInstance player, final OrthographicCamera camera, Object... additionalLoadArgs) {
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, Object... additionalLoadArgs) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -121,7 +124,7 @@ public abstract class AbstractRoom {
         player.changePOIList(poiList);
 
         // Do other stuff
-        this.initRoom(roomType, worldManager, textManager, player, camera);
+        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera);
     }
 
     /**
@@ -175,8 +178,8 @@ public abstract class AbstractRoom {
 
         //FIXME
         enemyList.add(new StrixInstance(
-                LHIPGame.GAME_WIDTH/2,
-                LHIPGame.GAME_HEIGHT/2,
+                LHIPGame.GAME_WIDTH / 2,
+                LHIPGame.GAME_HEIGHT / 2,
                 player));
     }
 
@@ -186,10 +189,10 @@ public abstract class AbstractRoom {
      * @param roomType
      * @param worldManager
      * @param textManager
-     * @param player
+     * @param splashManager
      * @param camera
      */
-    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, TextManager textManager, PlayerInstance player, OrthographicCamera camera);
+    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera);
 
     /**
      * Draws room background
@@ -214,7 +217,7 @@ public abstract class AbstractRoom {
         allInstance.addAll(enemyList);
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
-        allInstance.sort((o1, o2) -> compareEntities(o1,o2));
+        allInstance.sort((o1, o2) -> compareEntities(o1, o2));
 
         allInstance.forEach((i) -> {
             i.draw(batch, stateTime);
@@ -223,11 +226,11 @@ public abstract class AbstractRoom {
     }
 
     protected int compareEntities(GameInstance o1, GameInstance o2) {
-        if(o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
+        if (o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
-                (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted())){
+                (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted())) {
             return 1;
-        } else if(o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
+        } else if (o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
                 (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {
             return -1;
         }
@@ -249,9 +252,9 @@ public abstract class AbstractRoom {
         return roomType;
     }
 
-    public void doRoomContentsLogic(float stateTime){
+    public void doRoomContentsLogic(float stateTime) {
         // Do Player logic
-        if(!player.isDead())
+        if (!player.isDead())
             player.doLogic(stateTime);
         else {
             Gdx.app.exit();
@@ -260,14 +263,16 @@ public abstract class AbstractRoom {
         // Do enemy logic
         enemyList.forEach((ene) -> {
 
-            if(!ene.isDead())
+            if (!ene.isDead())
                 ene.doLogic(stateTime);
-             else
+            else
                 ene.dispose();
 
         });
 
         enemyList.removeIf(ene -> ene.isDead());
 
-    };
+    }
+
+    ;
 }

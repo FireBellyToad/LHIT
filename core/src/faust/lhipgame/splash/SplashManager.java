@@ -1,13 +1,14 @@
 package faust.lhipgame.splash;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.splash.enums.SplashScreenEnum;
 import faust.lhipgame.text.manager.TextManager;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,8 +20,8 @@ import java.util.Objects;
  */
 public class SplashManager {
 
-    private final Map<SplashScreenEnum, GameEntity> splashScreens = new HashMap<>();
-    private GameEntity splashToShow;
+    private final Map<String, GameEntity> splashScreens = new HashMap<>();
+    private String splashToShow;
     private TextManager textManager;
 
     public SplashManager(TextManager textManager) {
@@ -28,31 +29,34 @@ public class SplashManager {
 
         this.textManager = textManager;
 
-        Arrays.asList(SplashScreenEnum.values()).forEach((splashScreenEnum) -> {
-            this.splashScreens.put(splashScreenEnum, new GameEntity(new Texture(splashScreenEnum.getSplashPath())) {
-                @Override
-                protected int getTextureColumns() {
-                    return 1;
-                }
+        JsonValue splash = new JsonReader().parse(Gdx.files.internal("splash/splashScreen.json")).get("splashScreens");
+        splash.forEach((s) -> {
+            this.splashScreens.put(s.getString("splashKey"),
+                    new GameEntity(new Texture(s.getString("splashPath"))) {
+                        @Override
+                        protected int getTextureColumns() {
+                            return 1;
+                        }
 
-                @Override
-                protected int getTextureRows() {
-                    return 1;
-                }
-            });
+                        @Override
+                        protected int getTextureRows() {
+                            return 1;
+                        }
+                    });
         });
     }
 
-    public void setSplashToShow(SplashScreenEnum splashScreenEnum) {
-        Objects.requireNonNull(splashScreenEnum);
+    public void setSplashToShow(String splashScreen) {
+        Objects.requireNonNull(splashScreen);
 
-        this.splashToShow = this.splashScreens.get(splashScreenEnum);
+        this.splashToShow = splashScreen;
     }
 
     public void drawSplash(SpriteBatch batch) {
         Objects.requireNonNull(batch);
 
-        batch.draw(splashToShow.getTexture(), 0, 0);
+        batch.draw(this.splashScreens.get(splashToShow).getTexture(), 0, 0);
+        textManager.addNewTextBox(splashToShow);
 
         // Hide splashToShow after time
         Timer.schedule(new Timer.Task() {

@@ -8,7 +8,6 @@ import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.splash.enums.SplashScreenEnum;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
@@ -25,7 +24,7 @@ public class CasualRoom extends AbstractRoom {
     private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, Integer casualNumber) {
-        super(RoomType.CASUAL, worldManager, textManager, splashManager,  player, camera,casualNumber);
+        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, casualNumber);
     }
 
     @Override
@@ -33,14 +32,14 @@ public class CasualRoom extends AbstractRoom {
 
         // If has a predefined casual number (like from a savefile or because it was already visited) use that one
         // Or else generate a new number.
-        if(Objects.nonNull(additionalLoadArguments) && additionalLoadArguments.length >0 && Objects.nonNull(additionalLoadArguments[0])){
+        if (Objects.nonNull(additionalLoadArguments) && additionalLoadArguments.length > 0 && Objects.nonNull(additionalLoadArguments[0])) {
             casualNumber = (int) additionalLoadArguments[0];
         } else {
-            casualNumber = MathUtils.random(1,CasualRoom.CASUAL_TOTAL);
+            casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
         }
 
         // Casual maps range from casual1.tmx to casual6.tmx, with a %d to be mapped
-        roomFileName= String.format(roomFileName,casualNumber);
+        roomFileName = String.format(roomFileName, casualNumber);
 
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);
@@ -53,10 +52,10 @@ public class CasualRoom extends AbstractRoom {
     protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
 
         //FIXME
-        if(MathUtils.randomBoolean()){
+        if (MathUtils.randomBoolean()) {
             addObjAsEnemy(null);
             worldManager.insertEnemiesIntoWorld(enemyList);
-            splashManager.setSplashToShow(SplashScreenEnum.STRIX_SPLASH);
+            splashManager.setSplashToShow("splash.strix");
         }
 
 

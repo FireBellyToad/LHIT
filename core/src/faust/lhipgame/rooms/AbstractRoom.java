@@ -63,6 +63,7 @@ public abstract class AbstractRoom {
      * @param player
      * @param camera
      */
+    @SuppressWarnings("unchecked")
     public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera) {
         this(roomType, worldManager, textManager, splashManager, player, camera, null);
     }

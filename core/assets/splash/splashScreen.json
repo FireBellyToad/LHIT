@@ -1,0 +1,8 @@
+{
+  "splashScreens": [
+    {
+        "splashKey": "splash.strix",
+        "splashPath": "splash/strix_splash.png"
+    }
+  ]
+}

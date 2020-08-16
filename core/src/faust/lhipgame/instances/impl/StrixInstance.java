@@ -174,7 +174,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
             @Override
             public void run() {
                 if (attachedToPlayer) {
-                    playerInstance.hurt(1);
+                    playerInstance.hurt(2);
                     leechLife(playerInstance);
                 }
             }

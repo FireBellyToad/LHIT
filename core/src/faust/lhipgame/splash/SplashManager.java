@@ -56,7 +56,7 @@ public class SplashManager {
         Objects.requireNonNull(batch);
 
         batch.draw(this.splashScreens.get(splashToShow).getTexture(), 0, 0);
-        textManager.addNewTextBox(splashToShow);
+        //textManager.addNewTextBox(splashToShow);
 
         // Hide splashToShow after time
         Timer.schedule(new Timer.Task() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.impl.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
@@ -26,6 +27,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private static final int EXAMINATION_DISTANCE = 40;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 10;
+    private static final float HEALTH_KIT_TIME = 4;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime =0;
@@ -39,9 +41,13 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private final List<GameInstance> roomPoiList = new ArrayList();
     private POIInstance nearestPOIInstance;
 
+    private int availableHealthKits = 10; // available Health Kits
+    private Timer.Task isHealingTimer;
+
     public PlayerInstance() {
         super(new PlayerEntity());
         currentDirection = Direction.DOWN;
+        damage = 10;
 
         Gdx.input.setInputProcessor(this);
     }
@@ -55,32 +61,50 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         leftSpearBody.setTransform(body.getPosition().x-10, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
         downSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y-11+SPEAR_SENSOR_Y_OFFSET,0);
 
-        if(GameBehavior.ATTACK.equals(currentBehavior)) {
-            setPlayerLinearVelocity(0, 0);
-            attackLogic(stateTime);
-        } else{
+        // Interrupt healing if moving
+        if (GameBehavior.KNEE.equals(currentBehavior) &&
+                (this.body.getLinearVelocity().x != 0 ||
+                this.body.getLinearVelocity().y != 0)) {
+            currentBehavior = GameBehavior.WALK;
+        }
 
-            // If the player has stopped moving, set idle behaviour
-            if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {
-                this.currentBehavior = GameBehavior.IDLE;
+        // If not healing
+        if (!GameBehavior.KNEE.equals(currentBehavior)) {
+            if(!Objects.isNull(isHealingTimer)) {
+                // Resetting healing timer if healing is interrupted by anything
+                isHealingTimer.cancel();
+                isHealingTimer = null;
+                currentBehavior = GameBehavior.IDLE;
+            }
+
+            if (GameBehavior.ATTACK.equals(currentBehavior)) {
+                // If attacking do attack logic
+                setPlayerLinearVelocity(0, 0);
+                attackLogic(stateTime);
             } else {
-                this.currentBehavior = GameBehavior.WALK;
-            }
 
-            // Set horizontal direction if horizontal velocity is not zero
-            if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
-                this.currentDirection = Direction.RIGHT;
-            } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
-                this.currentDirection = Direction.LEFT;
-            }
+                // If the player has stopped moving, set idle behaviour
+                if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {
+                    currentBehavior = GameBehavior.IDLE;
+                } else {
+                    currentBehavior = GameBehavior.WALK;
+                }
 
-            // Set vertical direction if vertical velocity is not zero
-            if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
-                this.currentDirection = Direction.UP;
-            } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
-                this.currentDirection = Direction.DOWN;
-            }
+                // Set horizontal direction if horizontal velocity is not zero
+                if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
+                    this.currentDirection = Direction.RIGHT;
+                } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
+                    this.currentDirection = Direction.LEFT;
+                }
 
+                // Set vertical direction if vertical velocity is not zero
+                if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
+                    this.currentDirection = Direction.UP;
+                } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
+                    this.currentDirection = Direction.DOWN;
+                }
+
+            }
         }
 
         // Checking if there is any POI near enough to be examined by the player
@@ -181,6 +205,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     }
 
+    /**
+     * Alter state time for different animation speed based on current behaviour
+     * @param stateTime
+     * @return
+     */
     private float mapStateTimeFromBehaviour(float stateTime) {
         switch (currentBehavior){
             case ATTACK:{
@@ -191,7 +220,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     }
 
     /**
-     * Handle the attack logic
+     * Handle the attack logic, activating and deactivating attack collision bodies
      * @param stateTime
      */
     private void attackLogic(float stateTime) {
@@ -421,6 +450,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 }
                 break;
             }
+            case Input.Keys.C:
+            case Input.Keys.L: {
+                this.useHealthKit();
+                break;
+            }
         }
 
         setPlayerLinearVelocity(horizontalVelocity, verticalVelocity);
@@ -453,6 +487,26 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
         setPlayerLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;
+    }
+
+    /**
+     * Walfrit cures himself with a health kit
+     */
+    private void useHealthKit() {
+        //FIXME add timer
+        if (Objects.isNull(isHealingTimer) && availableHealthKits > 0 && damage > 0) {
+            currentBehavior = GameBehavior.KNEE;
+            isHealingTimer = Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    availableHealthKits--;
+                    isHealingTimer = null;
+                    damage = Math.max(0, damage - 4);
+                    currentBehavior = GameBehavior.IDLE;
+                }
+            }, HEALTH_KIT_TIME);
+
+        }
     }
 
     @Override

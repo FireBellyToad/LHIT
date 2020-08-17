@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
 
         worldManager = new WorldManager();
         textManager = new TextManager();
-        hud = new Hud();
+        hud = new Hud(textManager);
         splashManager = new SplashManager(textManager);
 
         // Creating player and making it available to input processor
@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
         //Draw all overlays
         drawOverlays();
 
-        box2DDebugRenderer.render(worldManager.getWorld(), camera.combined);
+        //box2DDebugRenderer.render(worldManager.getWorld(), camera.combined);
 
     }
 

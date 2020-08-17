@@ -41,7 +41,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private final List<GameInstance> roomPoiList = new ArrayList();
     private POIInstance nearestPOIInstance;
 
-    private int availableHealthKits = 10; // available Health Kits
+    private int availableHealthKits = 9; // available Health Kits
     private Timer.Task isHealingTimer;
 
     public PlayerInstance() {
@@ -507,6 +507,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             }, HEALTH_KIT_TIME);
 
         }
+    }
+
+    public long getAvailableHealthKits() {
+        return availableHealthKits;
     }
 
     @Override

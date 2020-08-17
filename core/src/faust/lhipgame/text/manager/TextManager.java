@@ -119,5 +119,13 @@ public class TextManager {
     public void dispose() {
         mainFont.dispose();
     }
+
+    /**
+     *
+     * @return
+     */
+    public BitmapFont getMainFont() {
+        return mainFont;
+    }
 }
 

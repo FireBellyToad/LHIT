@@ -152,7 +152,7 @@ public class RoomsManager {
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
                 !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
-            player.setStartX(LHIPGame.GAME_WIDTH - 16);
+            player.setStartX(LHIPGame.GAME_WIDTH - 20);
         } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
             newXPosInMatrix++;
             player.setStartX(0);
@@ -163,7 +163,7 @@ public class RoomsManager {
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
                 !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix--;
-            player.setStartY(LHIPGame.GAME_HEIGHT - 16);
+            player.setStartY(LHIPGame.GAME_HEIGHT - 25);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
                 !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
                 !RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType()) &&

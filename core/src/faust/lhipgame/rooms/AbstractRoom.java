@@ -40,7 +40,7 @@ public abstract class AbstractRoom {
     public static final float LEFT_BOUNDARY = 0;
     public static final float BOTTOM_BOUNDARY = 0;
     public static final float RIGHT_BOUNDARY = LHIPGame.GAME_WIDTH - 16;
-    public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 16;
+    public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 24;
 
     protected TiledMap tiledMap;
     protected TiledMapRenderer tiledMapRenderer;

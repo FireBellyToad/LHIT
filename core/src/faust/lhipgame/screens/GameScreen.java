@@ -97,13 +97,13 @@ public class GameScreen implements Screen {
 
     private void drawOverlays() {
         // Draw splash XOR hud
-        game.getBatch().begin();
         if (splashManager.isDrawingSplash()) {
+            game.getBatch().begin();
             splashManager.drawSplash(game.getBatch());
+            game.getBatch().end();
         } else {
-            hud.drawHud(game.getBatch(), player);;
+            hud.drawHud(game.getBatch(), player, camera);
         }
-        game.getBatch().end();
         // draw text
         textManager.renderTextBoxes(game.getBatch(), player, camera);
     }

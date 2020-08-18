@@ -22,8 +22,8 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class Hud {
-    private SpriteEntity lifeMeterTexture;
-    private SpriteEntity healkitIconTexture;
+    private SpriteEntity lifeMeterTexture;  //Life meters
+    private SpriteEntity healkitIconTexture; //Heal Kit icon
 
     private TextManager textManager;
 

@@ -5,7 +5,7 @@ import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 
 /**
- * Entity for Decorations
+ * Entity class for Decorations
  */
 public class DecorationEntity extends SpriteEntity {
 

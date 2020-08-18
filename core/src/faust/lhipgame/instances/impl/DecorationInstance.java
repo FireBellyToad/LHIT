@@ -17,6 +17,8 @@ import java.util.Objects;
 
 /**
  * Class for Decoration Instances
+ *
+ * @author Jacopo "Faust" Buttiglieri
  */
 public class DecorationInstance extends GameInstance implements Interactable {
 

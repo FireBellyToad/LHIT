@@ -152,10 +152,10 @@ public class RoomsManager {
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
                 !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
-            player.setStartX(LHIPGame.GAME_WIDTH - 20);
+            player.setStartX(AbstractRoom.RIGHT_BOUNDARY-4);
         } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
             newXPosInMatrix++;
-            player.setStartX(0);
+            player.setStartX( AbstractRoom.LEFT_BOUNDARY+4);
         }
 
         // Check for top or bottom passage
@@ -163,13 +163,13 @@ public class RoomsManager {
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
                 !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix--;
-            player.setStartY(LHIPGame.GAME_HEIGHT - 25);
+            player.setStartY(AbstractRoom.TOP_BOUNDARY -4);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
                 !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
                 !RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType()) &&
                 !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix++;
-            player.setStartY(0);
+            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY+4);
         }
 
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {

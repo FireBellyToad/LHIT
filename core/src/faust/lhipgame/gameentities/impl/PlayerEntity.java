@@ -10,7 +10,7 @@ import faust.lhipgame.gameentities.enums.GameBehavior;
 import java.util.Arrays;
 
 /**
- * Player class
+ * Player entity class
  *
  * @author Jacopo "Faust" Buttiglieri
  */

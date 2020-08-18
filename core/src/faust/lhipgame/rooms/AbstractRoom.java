@@ -37,9 +37,9 @@ public abstract class AbstractRoom {
     /**
      * Boundaries for room changing
      */
-    public static final float LEFT_BOUNDARY = 0;
-    public static final float BOTTOM_BOUNDARY = 0;
-    public static final float RIGHT_BOUNDARY = LHIPGame.GAME_WIDTH - 16;
+    public static final float LEFT_BOUNDARY = 12;
+    public static final float BOTTOM_BOUNDARY = 4;
+    public static final float RIGHT_BOUNDARY = LHIPGame.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 24;
 
     protected TiledMap tiledMap;
@@ -149,7 +149,7 @@ public abstract class AbstractRoom {
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType));
+                poiType, player));
     }
 
     ;

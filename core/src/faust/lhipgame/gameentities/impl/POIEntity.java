@@ -10,6 +10,11 @@ import faust.lhipgame.gameentities.enums.POIEnum;
 
 import java.util.Arrays;
 
+/**
+ * POI Entity class
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class POIEntity extends SpriteEntity {
 
     public static final String FOUND_ITEM_MESSAGE_KEY = "poi.success.examine";

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.LivingEntity;
+import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
@@ -20,6 +21,8 @@ import java.util.Objects;
 
 /**
  * Player Instance class
+ *
+ * @author Jacopo "Faust" Buttiglieri
  */
 public class PlayerInstance extends LivingInstance implements InputProcessor {
 
@@ -28,6 +31,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 10;
     private static final float HEALTH_KIT_TIME = 4;
+    private static final int MAX_AVAILABLE_HEALTH_KIT = 9;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime =0;
@@ -41,7 +45,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private final List<GameInstance> roomPoiList = new ArrayList();
     private POIInstance nearestPOIInstance;
 
-    private int availableHealthKits = 9; // available Health Kits
+    private int availableHealthKits = 0; // available Health Kits
     private Timer.Task isHealingTimer;
 
     public PlayerInstance() {
@@ -543,5 +547,19 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         return false;
     }
 
-
+    /**
+     * Called whenever the player finds an item
+     * @param itemFound
+     */
+    public void foundItem(ItemEnum itemFound) {
+        switch (itemFound){
+            case HEALTH_KIT:{
+                availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT,availableHealthKits+1);
+                break;
+            }
+            default:{
+                Gdx.app.log("WARN","No implementation for item" + itemFound.name());
+            }
+        }
+    }
 }

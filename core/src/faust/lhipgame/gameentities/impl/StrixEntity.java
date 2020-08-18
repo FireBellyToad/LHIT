@@ -9,6 +9,12 @@ import faust.lhipgame.gameentities.enums.GameBehavior;
 
 import java.util.Arrays;
 
+/**
+ *
+ * Strix enemy Entity class
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class StrixEntity extends LivingEntity {
 
     private Texture shadow;

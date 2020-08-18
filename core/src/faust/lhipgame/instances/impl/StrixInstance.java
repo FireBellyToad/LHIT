@@ -18,6 +18,11 @@ import faust.lhipgame.instances.LivingInstance;
 
 import java.util.Objects;
 
+/**
+ * Strix enemy instance class
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class StrixInstance extends LivingInstance implements Interactable {
 
     private static final float STRIX_SPEED = 30;

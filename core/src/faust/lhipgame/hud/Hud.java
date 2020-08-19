@@ -22,13 +22,13 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class Hud {
-    private SpriteEntity lifeMeterTexture;  //Life meters
-    private SpriteEntity healkitIconTexture; //Heal Kit icon
+    private SpriteEntity hudTexture;
 
     private TextManager textManager;
 
     private final Vector2 meterPosition = new Vector2(2.5f, LHIPGame.GAME_HEIGHT-10);
     private final Vector2 healthKitCountPosition = new Vector2(LHIPGame.GAME_WIDTH-10, LHIPGame.GAME_HEIGHT-4);
+    private final Vector2 morgengabeCountPosition = new Vector2(LHIPGame.GAME_WIDTH-50, LHIPGame.GAME_HEIGHT-4);
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x222222ff);
@@ -36,21 +36,10 @@ public class Hud {
     public Hud(TextManager textManager) {
 
         this.textManager = textManager;
-        this.lifeMeterTexture = new SpriteEntity(new Texture("sprites/health_sheet.png")) {
+        this.hudTexture = new SpriteEntity(new Texture("sprites/hud.png")) {
             @Override
             protected int getTextureColumns() {
-                return 2;
-            }
-
-            @Override
-            protected int getTextureRows() {
-                return 1;
-            }
-        };
-        this.healkitIconTexture = new SpriteEntity(new Texture("sprites/health_kit.png")) {
-            @Override
-            protected int getTextureColumns() {
-                return 1;
+                return 4;
             }
 
             @Override
@@ -78,16 +67,33 @@ public class Hud {
         // Draw Health meter (red crosses for each hitpoit remaining, hollow ones for each damage point)
         TextureRegion frame;
         for (int r = 0; r < ((LivingInstance) player).getResistance(); r++) {
-            frame = lifeMeterTexture.getFrame(r < player.getDamageDelta()? 0 : GameEntity.FRAME_DURATION );
+            frame = hudTexture.getFrame(r < player.getDamageDelta()?
+                    HudIconsEnum.LIFE_METER_EMPTY.ordinal() :
+                    HudIconsEnum.LIFE_METER_FULL.ordinal() * GameEntity.FRAME_DURATION );
             batch.draw(frame, meterPosition.x+(r*frame.getRegionWidth()), meterPosition.y);
         }
 
-        //TODO Health kit icon
-        batch.draw(healkitIconTexture.getTexture(), healthKitCountPosition.x-15, healthKitCountPosition.y-10);
+        //Morgengabes found count
+        batch.draw(hudTexture.getFrame( HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
+                morgengabeCountPosition.x-10,
+                morgengabeCountPosition.y-6);
+
+        textManager.getMainFont().draw(batch,
+                String.valueOf(player.getFoundMorgengabe()),
+                morgengabeCountPosition.x,
+                morgengabeCountPosition.y);
+
+
+        //Healthkits found count
+        batch.draw(hudTexture.getFrame( HudIconsEnum.HEALTH_KIT.ordinal() * GameEntity.FRAME_DURATION),
+                healthKitCountPosition.x-10,
+                healthKitCountPosition.y-6);
+
         textManager.getMainFont().draw(batch,
                 String.valueOf(player.getAvailableHealthKits()),
                 healthKitCountPosition.x,
                 healthKitCountPosition.y);
+
         batch.end();
 
 

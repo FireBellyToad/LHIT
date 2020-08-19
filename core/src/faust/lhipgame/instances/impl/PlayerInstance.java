@@ -47,6 +47,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     private int availableHealthKits = 0; // available Health Kits
     private Timer.Task isHealingTimer;
+    private int foundMorgengabe = 0;
 
     public PlayerInstance() {
         super(new PlayerEntity());
@@ -513,8 +514,32 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
     }
 
-    public long getAvailableHealthKits() {
+    /**
+     * Called whenever the player finds an item
+     * @param itemFound
+     */
+    public void foundItem(ItemEnum itemFound) {
+        switch (itemFound){
+            case HEALTH_KIT:{
+                availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT,availableHealthKits+1);
+                break;
+            }
+            case MORGENGABE:{
+                foundMorgengabe++;
+                break;
+            }
+            default:{
+                Gdx.app.log("WARN","No implementation for item" + itemFound.name());
+            }
+        }
+    }
+
+    public int getAvailableHealthKits() {
         return availableHealthKits;
+    }
+
+    public int getFoundMorgengabe() {
+        return foundMorgengabe;
     }
 
     @Override
@@ -547,19 +572,4 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         return false;
     }
 
-    /**
-     * Called whenever the player finds an item
-     * @param itemFound
-     */
-    public void foundItem(ItemEnum itemFound) {
-        switch (itemFound){
-            case HEALTH_KIT:{
-                availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT,availableHealthKits+1);
-                break;
-            }
-            default:{
-                Gdx.app.log("WARN","No implementation for item" + itemFound.name());
-            }
-        }
-    }
 }

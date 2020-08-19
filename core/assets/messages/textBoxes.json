@@ -5,6 +5,8 @@
     "poi.stones.examine": "THERE IS NOTHING \nUNDER THESE STONES",
 
     "splash.strix": "I HEARD A LOUD BUZZ",
+    "splash.healthkit": "I FOUND SOME HERBS",
+    "splash.morgengabe": "I FOUND A MORGENGABE",
 
     "echo.drowning.first.": "I CAN'T BREATH!!!",
     "echo.drowning.second.": "HEEELP MEEE!",

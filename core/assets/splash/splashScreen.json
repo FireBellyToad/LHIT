@@ -3,6 +3,10 @@
     {
         "splashKey": "splash.strix",
         "splashPath": "splash/strix_splash.png"
+    },
+    {
+      "splashKey": "splash.morgengabe",
+      "splashPath": "splash/morgengabe_splash.png"
     }
   ]
 }

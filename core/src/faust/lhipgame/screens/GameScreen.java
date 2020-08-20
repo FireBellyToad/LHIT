@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
             hud.drawHud(game.getBatch(), player, camera);
         }
         // draw text
-        textManager.renderTextBoxes(game.getBatch(), player, camera);
+        textManager.renderTextBoxes(game.getBatch(), player, camera, splashManager.isDrawingSplash());
     }
 
     private void drawGameInstances(float stateTime) {

@@ -47,12 +47,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     private int availableHealthKits = 0; // available Health Kits
     private Timer.Task isHealingTimer;
-    private int foundMorgengabe = 0;
+    private int foundMorgengabes = 0;
 
     public PlayerInstance() {
         super(new PlayerEntity());
         currentDirection = Direction.DOWN;
-        damage = 10;
 
         Gdx.input.setInputProcessor(this);
     }
@@ -525,7 +524,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 break;
             }
             case MORGENGABE:{
-                foundMorgengabe++;
+                foundMorgengabes++;
                 break;
             }
             default:{
@@ -538,8 +537,8 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         return availableHealthKits;
     }
 
-    public int getFoundMorgengabe() {
-        return foundMorgengabe;
+    public int getFoundMorgengabes() {
+        return foundMorgengabes;
     }
 
     @Override

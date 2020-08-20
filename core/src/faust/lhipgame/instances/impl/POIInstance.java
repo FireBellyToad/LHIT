@@ -11,6 +11,7 @@ import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.POIEntity;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 
 import java.util.Objects;
@@ -30,15 +31,17 @@ public class POIInstance extends GameInstance {
     private boolean isAlreadyExamined;
     private PlayerInstance player;
     private TextManager textManager;
+    private SplashManager splashManager;
 
 
-    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player) {
+    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager) {
         super(new POIEntity(poiType));
         this.textManager = textManager;
         this.player = player;
         this.startX = x;
         this.startY = y;
         this.isAlreadyExamined = false;
+        this.splashManager = splashManager;
     }
 
     /**
@@ -50,13 +53,21 @@ public class POIInstance extends GameInstance {
         String messageKey = ((POIEntity) this.entity).getMessageKey();
 
         if (!isAlreadyExamined && MathUtils.randomBoolean()) {
-            messageKey = POIEntity.FOUND_ITEM_MESSAGE_KEY;
-            player.foundItem(ItemEnum.HEALTH_KIT);
+
+            player.foundItem(((POIEntity) this.entity).getItemGiven());
+
+            if(!((POIEntity) this.entity).getSplashKey().isEmpty()){
+                // Show splash screen
+                splashManager.setSplashToShow(((POIEntity) this.entity).getSplashKey());
+            } else {
+                // Just show message
+                //messageKey = POIEntity.FOUND_ITEM_MESSAGE_KEY;
+                textManager.addNewTextBox(messageKey);
+            }
         }
 
         // Only on the first examination there is a chance to find something
         isAlreadyExamined = true;
-        textManager.addNewTextBox(messageKey);
 
     }
 
@@ -94,7 +105,9 @@ public class POIInstance extends GameInstance {
 
         // If flickering is not enabled or the flickering POI must be shown, draw the texture
         if (!this.enableFlicker || !mustFlicker) {
-            batch.draw(entity.getTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_OFFSET);
+            batch.draw(((POIEntity) entity).getFrame(stateTime),
+                    body.getPosition().x - POSITION_OFFSET,
+                    body.getPosition().y - POSITION_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

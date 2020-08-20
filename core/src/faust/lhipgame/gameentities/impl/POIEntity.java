@@ -1,14 +1,9 @@
 package faust.lhipgame.gameentities.impl;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
-import faust.lhipgame.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
-
-import java.util.Arrays;
 
 /**
  * POI Entity class
@@ -20,14 +15,26 @@ public class POIEntity extends SpriteEntity {
     public static final String FOUND_ITEM_MESSAGE_KEY = "poi.success.examine";
 
     private String messageKey;
+    private ItemEnum itemGiven;
+    private String splashKey;
 
     public POIEntity(POIEnum type) {
         super(new Texture("sprites/poi_sheet.png"), type.ordinal());
         this.messageKey = type.getTextKey();
+        this.itemGiven = type.getItemGiven();
+        this.splashKey = type.getSplashKey();
     }
 
-    public String getMessageKey(){
+    public String getMessageKey() {
         return messageKey;
+    }
+
+    public ItemEnum getItemGiven() {
+        return itemGiven;
+    }
+
+    public String getSplashKey() {
+        return splashKey;
     }
 
     @Override
@@ -37,7 +44,7 @@ public class POIEntity extends SpriteEntity {
 
     @Override
     protected int getTextureRows() {
-        return 1;
+        return 2;
     }
 
 }

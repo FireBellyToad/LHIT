@@ -52,6 +52,7 @@ public abstract class AbstractRoom {
     protected PlayerInstance player;
     protected RoomType roomType;
     protected String roomFileName;
+    protected SplashManager splashManager;
 
     /**
      * Constructor without additional loader argouments
@@ -98,9 +99,11 @@ public abstract class AbstractRoom {
 
         // Add content to room
         this.player = player;
+        this.splashManager = splashManager;
         poiList = new ArrayList<>();
         decorationList = new ArrayList<>();
         enemyList = new ArrayList<>();
+
 
         // Place objects in room
         for (MapObject obj : mapObjects) {
@@ -149,7 +152,7 @@ public abstract class AbstractRoom {
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player));
+                poiType, player, splashManager));
     }
 
     ;

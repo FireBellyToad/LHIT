@@ -29,6 +29,7 @@ public class SplashManager {
 
         this.textManager = textManager;
 
+        //Extract all splash screens
         JsonValue splash = new JsonReader().parse(Gdx.files.internal("splash/splashScreen.json")).get("splashScreens");
         splash.forEach((s) -> {
             this.splashScreens.put(s.getString("splashKey"),
@@ -50,21 +51,27 @@ public class SplashManager {
         Objects.requireNonNull(splashScreen);
 
         this.splashToShow = splashScreen;
+
+        //Check if valid splash screen
+        if(!this.splashScreens.containsKey(splashToShow)){
+            throw new RuntimeException("Invalid splashcreen " + splashScreen);
+        }
     }
 
     public void drawSplash(SpriteBatch batch) {
         Objects.requireNonNull(batch);
 
         batch.draw(this.splashScreens.get(splashToShow).getTexture(), 0, 0);
-        //textManager.addNewTextBox(splashToShow);
+        textManager.addNewTextBox(splashToShow);
 
         // Hide splashToShow after time
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 splashToShow = null;
+                textManager.removeAllBoxes();
             }
-        }, 0.5f);
+        }, 1.5f);
 
     }
 

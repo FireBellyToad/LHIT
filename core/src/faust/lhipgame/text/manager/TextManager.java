@@ -72,7 +72,9 @@ public class TextManager {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                textBoxes.remove(newText);
+                if(!textBoxes.isEmpty()){
+                    textBoxes.remove(newText);
+                }
             }
         }, newText.getTimeToShow());
     }
@@ -83,9 +85,10 @@ public class TextManager {
      * @param player
      * @param camera
      */
-    public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
+    public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera,boolean splashScreenIsDrawn) {
 
-        if(player.getBody().getPosition().y <= 48){
+        // Remove box if player is under a certain boundary and there is no splash screen
+        if(!splashScreenIsDrawn && player.getBody().getPosition().y <= 48){
             textBoxes.clear();
             return;
         }
@@ -126,6 +129,13 @@ public class TextManager {
      */
     public BitmapFont getMainFont() {
         return mainFont;
+    }
+
+    /**
+     * Removes all boxes
+     */
+    public void removeAllBoxes() {
+        textBoxes.clear();
     }
 }
 

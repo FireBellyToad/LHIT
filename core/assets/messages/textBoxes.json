@@ -1,12 +1,13 @@
 {
   "messages": {
     "poi.success.examine": "I FOUND SOMETHING!",
+    "poi.bush.examine": "A WORTHLESS BUSH",
     "poi.skull.examine": "JUST A PILE OF BONES",
     "poi.stones.examine": "THERE IS NOTHING \nUNDER THESE STONES",
 
     "splash.strix": "I HEARD A LOUD BUZZ",
     "splash.healthkit": "I FOUND SOME HERBS",
-    "splash.morgengabe": "I FOUND A MORGENGABE",
+    "splash.morgengabe": "I FOUND A PRECIOUS \nMORGENGABE",
 
     "echo.drowning.first.": "I CAN'T BREATH!!!",
     "echo.drowning.second.": "HEEELP MEEE!",

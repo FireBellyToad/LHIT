@@ -6,7 +6,7 @@ package faust.lhipgame.text;
 public class TextBoxData {
 
     private String text;
-    private int timeToShow;
+    private float timeToShow;
 
     public TextBoxData(String text) {
 
@@ -16,7 +16,11 @@ public class TextBoxData {
 
     }
 
-    public int getTimeToShow() {
+    public void setTimeToShow(float timeToShow) {
+        this.timeToShow = timeToShow;
+    }
+
+    public float getTimeToShow() {
         return timeToShow;
     }
 

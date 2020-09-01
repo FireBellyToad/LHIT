@@ -451,6 +451,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             }
             case Input.Keys.Z:
             case Input.Keys.J: {
+                //Attacks
                 if (!GameBehavior.ATTACK.equals(currentBehavior)) {
                     currentBehavior = GameBehavior.ATTACK;
                     attackDeltaTime = 0;
@@ -459,6 +460,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             }
             case Input.Keys.C:
             case Input.Keys.L: {
+                //Tries to heal himself
                 this.useHealthKit();
                 break;
             }
@@ -497,11 +499,12 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     }
 
     /**
-     * Walfrit cures himself with a health kit
+     * Walfrit cures himself with a health kit, instancing a isHealingTimer
      */
     private void useHealthKit() {
-        //FIXME add timer
+        //If has at least one healing kit, is not already curing himself and at least 1 damage point
         if (Objects.isNull(isHealingTimer) && availableHealthKits > 0 && damage > 0) {
+            //Cures himself if not interrupted
             currentBehavior = GameBehavior.KNEE;
             isHealingTimer = Timer.schedule(new Timer.Task() {
                 @Override
@@ -523,10 +526,12 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public void foundItem(ItemEnum itemFound) {
         switch (itemFound) {
             case HEALTH_KIT: {
+                //Increase available Kits, max 9
                 availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
                 break;
             }
             case MORGENGABE: {
+                //Increase found Morgangabes
                 foundMorgengabes++;
                 break;
             }
@@ -536,14 +541,26 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
     }
 
+    /**
+     * @return current available Health kits
+     *
+     */
     public int getAvailableHealthKits() {
         return availableHealthKits;
     }
 
+    /**
+     *
+     * @return the current number of found morgengabes
+     */
     public int getFoundMorgengabes() {
         return foundMorgengabes;
     }
 
+    /**
+     *
+     * @return healing timer instance, non null if the player is curing himself
+     */
     public Timer.Task getIsHealingTimer() {
         return isHealingTimer;
     }

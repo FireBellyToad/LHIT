@@ -101,8 +101,8 @@ public class Hud {
 
         batch.end();
 
-        //Draw Healing timer bar
-        if (GameBehavior.KNEE.equals(player.getCurrentBehavior())) {
+        //Draw Healing timer bar if player is curing himself
+        if (GameBehavior.KNEE.equals(player.getCurrentBehavior()) && Objects.nonNull(player.getIsHealingTimer())) {
             Vector2 playerPosition = player.getBody().getPosition();
             //Black Corner
             batch.begin();

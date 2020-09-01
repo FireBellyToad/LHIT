@@ -1,5 +1,6 @@
 package faust.lhipgame.hud;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
+import faust.lhipgame.gameentities.enums.GameBehavior;
 import faust.lhipgame.instances.LivingInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.text.manager.TextManager;
@@ -32,6 +34,10 @@ public class Hud {
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x222222ff);
+
+    //Healing timer bar
+    private final ShapeRenderer cornerBox = new ShapeRenderer();
+    private static final Color corner = new Color(0xffffffff);
 
     public Hud(TextManager textManager) {
 
@@ -68,7 +74,7 @@ public class Hud {
         TextureRegion frame;
         for (int r = 0; r < ((LivingInstance) player).getResistance(); r++) {
             frame = hudTexture.getFrame(r < player.getDamageDelta() ?
-                    HudIconsEnum.LIFE_METER_FULL.ordinal():
+                    HudIconsEnum.LIFE_METER_FULL.ordinal() :
                     HudIconsEnum.LIFE_METER_EMPTY.ordinal() * GameEntity.FRAME_DURATION);
             batch.draw(frame, meterPosition.x + (r * frame.getRegionWidth()), meterPosition.y);
         }
@@ -83,7 +89,6 @@ public class Hud {
                 morgengabeCountPosition.x,
                 morgengabeCountPosition.y);
 
-
         //Healthkits found count
         batch.draw(hudTexture.getFrame(HudIconsEnum.HEALTH_KIT.ordinal() * GameEntity.FRAME_DURATION),
                 healthKitCountPosition.x - 10,
@@ -95,6 +100,28 @@ public class Hud {
                 healthKitCountPosition.y);
 
         batch.end();
+
+        //Draw Healing timer bar
+        if (GameBehavior.KNEE.equals(player.getCurrentBehavior())) {
+            Vector2 playerPosition = player.getBody().getPosition();
+            //Black Corner
+            batch.begin();
+            backgroundBox.setColor(back);
+            backgroundBox.setProjectionMatrix(camera.combined);
+            backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+            backgroundBox.rect(playerPosition.x, playerPosition.y+17, 10,  5);
+            backgroundBox.end();
+
+            //White bar
+            long deltaTimer = (player.getIsHealingTimer().getExecuteTimeMillis() - (System.nanoTime() / 1000000) )/1000;
+
+            cornerBox.setColor(corner);
+            cornerBox.setProjectionMatrix(camera.combined);
+            cornerBox.begin(ShapeRenderer.ShapeType.Filled);
+            cornerBox.rect(playerPosition.x + 1, playerPosition.y + 18,2 + (deltaTimer * 2), 3);
+            cornerBox.end();
+            batch.end();
+        }
 
 
     }

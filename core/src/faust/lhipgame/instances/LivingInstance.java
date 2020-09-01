@@ -14,6 +14,7 @@ public abstract class LivingInstance extends GameInstance {
 
     protected static final int LINE_OF_SIGHT = 60;
     protected int damage = 0;
+
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
     protected Direction currentDirection = Direction.UNUSED;
 
@@ -95,5 +96,10 @@ public abstract class LivingInstance extends GameInstance {
     public int getDamageDelta() {
         return  ((LivingEntity) entity).getResistance() - damage;
     }
+
+    public GameBehavior getCurrentBehavior() {
+        return currentBehavior;
+    }
+
 
 }

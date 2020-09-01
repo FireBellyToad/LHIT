@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.LivingEntity;
-import faust.lhipgame.gameentities.enums.ItemEnum;
-import faust.lhipgame.gameentities.impl.PlayerEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
+import faust.lhipgame.gameentities.enums.ItemEnum;
+import faust.lhipgame.gameentities.impl.PlayerEntity;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.LivingInstance;
 
@@ -34,7 +34,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private static final int MAX_AVAILABLE_HEALTH_KIT = 9;
 
     // Time delta between state and start of attack animation
-    private float attackDeltaTime =0;
+    private float attackDeltaTime = 0;
 
     //Body for spear attacks
     private Body downSpearBody;
@@ -60,21 +60,21 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public void doLogic(float stateTime) {
 
         // Setting Attack area position
-        rightSpearBody.setTransform(body.getPosition().x+10, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
-        upSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y+11+SPEAR_SENSOR_Y_OFFSET,0);
-        leftSpearBody.setTransform(body.getPosition().x-10, body.getPosition().y+SPEAR_SENSOR_Y_OFFSET,0);
-        downSpearBody.setTransform(body.getPosition().x-4, body.getPosition().y-11+SPEAR_SENSOR_Y_OFFSET,0);
+        rightSpearBody.setTransform(body.getPosition().x + 10, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 11 + SPEAR_SENSOR_Y_OFFSET, 0);
+        leftSpearBody.setTransform(body.getPosition().x - 10, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 11 + SPEAR_SENSOR_Y_OFFSET, 0);
 
         // Interrupt healing if moving
         if (GameBehavior.KNEE.equals(currentBehavior) &&
                 (this.body.getLinearVelocity().x != 0 ||
-                this.body.getLinearVelocity().y != 0)) {
+                        this.body.getLinearVelocity().y != 0)) {
             currentBehavior = GameBehavior.WALK;
         }
 
         // If not healing
         if (!GameBehavior.KNEE.equals(currentBehavior)) {
-            if(!Objects.isNull(isHealingTimer)) {
+            if (!Objects.isNull(isHealingTimer)) {
                 // Resetting healing timer if healing is interrupted by anything
                 isHealingTimer.cancel();
                 isHealingTimer = null;
@@ -154,6 +154,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     /**
      * Handles player bodies movement
+     *
      * @param horizontalVelocity
      * @param verticalVelocity
      */
@@ -181,9 +182,9 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         int xOffset = 0;
         int yOffset = 0;
 
-        if(GameBehavior.ATTACK.equals(currentBehavior)){
-            switch (currentDirection){
-                case LEFT:{
+        if (GameBehavior.ATTACK.equals(currentBehavior)) {
+            switch (currentDirection) {
+                case LEFT: {
                     xOffset = 1;
                     yOffset = 0;
                     break;
@@ -202,21 +203,22 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
 
         //Draw shadow
-        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x- POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw Walfrit
-        batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset- POSITION_Y_OFFSET);
+        batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
 
     }
 
     /**
      * Alter state time for different animation speed based on current behaviour
+     *
      * @param stateTime
      * @return
      */
     private float mapStateTimeFromBehaviour(float stateTime) {
-        switch (currentBehavior){
-            case ATTACK:{
+        switch (currentBehavior) {
+            case ATTACK: {
                 return 2.25f * (stateTime - attackDeltaTime);
             }
         }
@@ -225,30 +227,31 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     /**
      * Handle the attack logic, activating and deactivating attack collision bodies
+     *
      * @param stateTime
      */
     private void attackLogic(float stateTime) {
 
-        if(attackDeltaTime == 0)
+        if (attackDeltaTime == 0)
             attackDeltaTime = stateTime;
 
 
         int currentFrame = ((LivingEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < 10) {
-            switch (currentDirection){
-                case UP:{
+            switch (currentDirection) {
+                case UP: {
                     upSpearBody.setActive(true);
                     break;
                 }
-                case DOWN:{
+                case DOWN: {
                     downSpearBody.setActive(true);
                     break;
                 }
-                case LEFT:{
+                case LEFT: {
                     leftSpearBody.setActive(true);
                     break;
                 }
-                case RIGHT:{
+                case RIGHT: {
                     rightSpearBody.setActive(true);
                     break;
                 }
@@ -261,7 +264,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
 
         // Resetting Behaviour on animation end
-        if(((LivingEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))){
+        if (((LivingEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
             currentBehavior = GameBehavior.IDLE;
         }
     }
@@ -447,8 +450,8 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 break;
             }
             case Input.Keys.Z:
-            case Input.Keys.J:{
-                if (!GameBehavior.ATTACK.equals(currentBehavior)){
+            case Input.Keys.J: {
+                if (!GameBehavior.ATTACK.equals(currentBehavior)) {
                     currentBehavior = GameBehavior.ATTACK;
                     attackDeltaTime = 0;
                 }
@@ -509,26 +512,26 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                     currentBehavior = GameBehavior.IDLE;
                 }
             }, HEALTH_KIT_TIME);
-
         }
     }
 
     /**
      * Called whenever the player finds an item
+     *
      * @param itemFound
      */
     public void foundItem(ItemEnum itemFound) {
-        switch (itemFound){
-            case HEALTH_KIT:{
-                availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT,availableHealthKits+1);
+        switch (itemFound) {
+            case HEALTH_KIT: {
+                availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
                 break;
             }
-            case MORGENGABE:{
+            case MORGENGABE: {
                 foundMorgengabes++;
                 break;
             }
-            default:{
-                Gdx.app.log("WARN","No implementation for item" + itemFound.name());
+            default: {
+                Gdx.app.log("WARN", "No implementation for item" + itemFound.name());
             }
         }
     }
@@ -539,6 +542,10 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
 
     public int getFoundMorgengabes() {
         return foundMorgengabes;
+    }
+
+    public Timer.Task getIsHealingTimer() {
+        return isHealingTimer;
     }
 
     @Override

@@ -12,7 +12,8 @@ import faust.lhipgame.gameentities.enums.POIEnum;
  */
 public class POIEntity extends SpriteEntity {
 
-    public static final String FOUND_ITEM_MESSAGE_KEY = "poi.success.examine";
+    public static final String FOUND_ITEM_MESSAGE_KEY_SUFFIX = ".success";
+    public static final String EXAMINING_ITEM_MESSAGE_KEY_SUFFIX = ".examine";
 
     private String messageKey;
     private ItemEnum itemGiven;

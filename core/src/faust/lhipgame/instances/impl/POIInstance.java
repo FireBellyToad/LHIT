@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.POIEntity;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.GameInstance;
@@ -61,9 +60,11 @@ public class POIInstance extends GameInstance {
                 splashManager.setSplashToShow(((POIEntity) this.entity).getSplashKey());
             } else {
                 // Just show message
-                //messageKey = POIEntity.FOUND_ITEM_MESSAGE_KEY;
-                textManager.addNewTextBox(messageKey);
+                textManager.addNewTextBox(messageKey + POIEntity.FOUND_ITEM_MESSAGE_KEY_SUFFIX);
             }
+        } else{
+            // Just show message
+            textManager.addNewTextBox(messageKey + POIEntity.EXAMINING_ITEM_MESSAGE_KEY_SUFFIX);
         }
 
         // Only on the first examination there is a chance to find something

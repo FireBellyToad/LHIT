@@ -53,6 +53,7 @@ public abstract class AbstractRoom {
     protected RoomType roomType;
     protected String roomFileName;
     protected SplashManager splashManager;
+    protected TextManager textManager;
 
     /**
      * Constructor without additional loader argouments
@@ -100,6 +101,7 @@ public abstract class AbstractRoom {
         // Add content to room
         this.player = player;
         this.splashManager = splashManager;
+        this.textManager = textManager;
         poiList = new ArrayList<>();
         decorationList = new ArrayList<>();
         enemyList = new ArrayList<>();
@@ -246,6 +248,7 @@ public abstract class AbstractRoom {
      * Disposes the terrain and the contents of the room
      */
     public void dispose() {
+        textManager.removeAllBoxes();
         tiledMap.dispose();
         enemyList.forEach((ene) -> ene.dispose());
         decorationList.forEach((deco) -> deco.dispose());

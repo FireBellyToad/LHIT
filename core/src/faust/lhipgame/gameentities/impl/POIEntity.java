@@ -45,7 +45,7 @@ public class POIEntity extends SpriteEntity {
 
     @Override
     protected int getTextureRows() {
-        return 2;
+        return POIEnum.values().length;
     }
 
 }

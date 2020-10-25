@@ -24,7 +24,7 @@ public class DecorationEntity extends SpriteEntity {
 
     @Override
     protected int getTextureRows() {
-        return 6;
+        return DecorationsEnum.values().length;
     }
 
     public DecorationsEnum getType() {

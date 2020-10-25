@@ -6,7 +6,8 @@ public enum DecorationsEnum {
     CROSS_IRON,
     STONE_1,
     STONE_2,
-    GRASS;
+    GRASS,
+    TREE_STUMP;
 
     public static DecorationsEnum getFromString(String name) {
         for (DecorationsEnum e : DecorationsEnum.values()) {

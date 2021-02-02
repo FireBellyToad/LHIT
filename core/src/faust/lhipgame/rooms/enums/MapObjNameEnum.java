@@ -7,5 +7,6 @@ package faust.lhipgame.rooms.enums;
  */
 public enum MapObjNameEnum {
     POI,
-    DECO
+    DECO,
+    ENEMY
 }

@@ -1,5 +1,6 @@
 package faust.lhipgame.instances.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -29,6 +30,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
     private boolean attachedToPlayer = false;
 
     private PlayerInstance target;
+    private Timer.Task leechLifeTimer;
 
     public StrixInstance(float x, float y, PlayerInstance target) {
         super(new StrixEntity());
@@ -68,6 +70,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
     @Override
     protected void postHurtLogic() {
 
+        // is pushed away while flickering
         Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                 target.getBody().getPosition().y - body.getPosition().y).nor();
 
@@ -150,7 +153,6 @@ public class StrixInstance extends LivingInstance implements Interactable {
         //Draw shadow
         batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
-
         //Draw Strix
         if (GameBehavior.IDLE.equals(currentBehavior)) {
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
@@ -174,16 +176,23 @@ public class StrixInstance extends LivingInstance implements Interactable {
 
     private void leechLife(PlayerInstance playerInstance) {
 
+        // Force cancel another one must start
+        if(Objects.nonNull(leechLifeTimer)) {
+            leechLifeTimer.cancel();
+        }
+
         //Keep leeching
-        Timer.schedule(new Timer.Task() {
+        leechLifeTimer = Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 if (attachedToPlayer) {
                     playerInstance.hurt(2);
                     leechLife(playerInstance);
+                    Gdx.app.log("DEBUG", "END leech timer" );
                 }
             }
         }, 2);
+        Gdx.app.log("DEBUG", "START leech timer" );
 
     }
 
@@ -193,16 +202,20 @@ public class StrixInstance extends LivingInstance implements Interactable {
 
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
-        attachedToPlayer = true;
         // Start to leech
+        attachedToPlayer = true;
         leechLife(playerInstance);
 
     }
 
     @Override
     public void endPlayerInteraction(PlayerInstance playerInstance) {
+        // End leech and cancel timer if present
         attachedToPlayer = false;
-
+        if(Objects.nonNull(leechLifeTimer)){
+            leechLifeTimer.cancel();
+            Gdx.app.log("DEBUG", "CANCEL leech timer" );
+        }
     }
 
 }

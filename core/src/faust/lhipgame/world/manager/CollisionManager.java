@@ -1,5 +1,6 @@
 package faust.lhipgame.world.manager;
 
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.instances.impl.DecorationInstance;
@@ -31,37 +32,46 @@ public class CollisionManager implements ContactListener {
 
     }
 
-
+    /**
+     * Handleing player contact start
+     * @param contact
+     */
     private void handlePlayerBeginContact(Contact contact) {
-
+        
         // Handle Decoration Collision
         if(isContactOfClass(contact, DecorationInstance.class)){
             //If decoration is passable, just do and Interaction. Else stop the player
-            DecorationInstance inst = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
-            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
-            if(inst.isPassable())
-                inst.doPlayerInteraction(pInst);
+            DecorationInstance decorationInstance = ((DecorationInstance) getCorrectFixture(contact,DecorationInstance.class).getBody().getUserData());
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
+            if(decorationInstance.isPassable())
+                decorationInstance.doPlayerInteraction(playerInstance);
             else
-                pInst.stopAll();
+                playerInstance.stopAll();
         }
 
         // Handle Strix Collision
         if(isContactOfClass(contact, StrixInstance.class)){
-            Body sBody = getCorrectFixture(contact,StrixInstance.class).getBody();
-            StrixInstance sInst = (StrixInstance) sBody.getUserData();
+            Body strixBody = getCorrectFixture(contact,StrixInstance.class).getBody();
+            StrixInstance strixInstance = (StrixInstance) strixBody.getUserData();
 
-            Body pBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
-            PlayerInstance pInst = (PlayerInstance) pBody.getUserData();
+            Body playerBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
+            PlayerInstance playerInstance = (PlayerInstance) playerBody.getUserData();
 
-            if(BodyDef.BodyType.DynamicBody.equals(sBody.getType()) && BodyDef.BodyType.DynamicBody.equals(pBody.getType())){
-                sInst.doPlayerInteraction(pInst);
-            } else if(BodyDef.BodyType.DynamicBody.equals(sBody.getType()) && BodyDef.BodyType.KinematicBody.equals(pBody.getType())){
-                sInst.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6))+1);
+            if(BodyDef.BodyType.DynamicBody.equals(strixBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())){
+                // Attacking player
+                strixInstance.doPlayerInteraction(playerInstance);
+            } else if(BodyDef.BodyType.DynamicBody.equals(strixBody.getType()) && BodyDef.BodyType.KinematicBody.equals(playerBody.getType())){
+                // Hurt by player
+                strixInstance.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6))+1);
             }
 
         }
     }
 
+    /**
+     * Handling Player contact end
+     * @param contact
+     */
     private void handlePlayerEndContact(Contact contact) {
         // Handle Decoration Collision end
         if(isContactOfClass(contact, DecorationInstance.class)){

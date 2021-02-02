@@ -51,10 +51,13 @@ public class POIInstance extends GameInstance {
         //TODO add new examinations results
         String messageKey = ((POIEntity) this.entity).getMessageKey();
 
+        //If is not already examined
         if (!isAlreadyExamined && MathUtils.randomBoolean()) {
 
+            //Let player find item
             player.foundItem(((POIEntity) this.entity).getItemGiven());
 
+            //If has splash screen
             if(!((POIEntity) this.entity).getSplashKey().isEmpty()){
                 // Show splash screen
                 splashManager.setSplashToShow(((POIEntity) this.entity).getSplashKey());

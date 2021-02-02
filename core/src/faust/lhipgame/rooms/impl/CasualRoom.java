@@ -51,14 +51,6 @@ public class CasualRoom extends AbstractRoom {
     @Override
     protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
 
-        //FIXME
-        if (MathUtils.randomBoolean()) {
-            addObjAsEnemy(null);
-            worldManager.insertEnemiesIntoWorld(enemyList);
-            splashManager.setSplashToShow("splash.strix");
-        }
-
-
     }
 
     public int getCasualNumber() {

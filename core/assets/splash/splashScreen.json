@@ -7,6 +7,10 @@
     {
       "splashKey": "splash.morgengabe",
       "splashPath": "splash/morgengabe_splash.png"
+    },
+    {
+      "splashKey": "splash.holy",
+      "splashPath": "splash/morgengabe_splash.png"
     }
   ]
 }

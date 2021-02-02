@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
@@ -45,6 +47,7 @@ public abstract class AbstractRoom {
     protected TiledMap tiledMap;
     protected TiledMapRenderer tiledMapRenderer;
     protected MapObjects mapObjects;
+    protected MapObjects mapTiles;
 
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
@@ -120,6 +123,12 @@ public abstract class AbstractRoom {
                 addObjAsDecoration(obj);
             }
 
+            // Prepare enemy (casual choice)
+            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && MathUtils.randomBoolean()) {
+                addObjAsEnemy(obj);
+                ///splashManager.setSplashToShow("splash.strix");
+            }
+
         }
 
         worldManager.clearBodies();
@@ -184,8 +193,8 @@ public abstract class AbstractRoom {
 
         //FIXME
         enemyList.add(new StrixInstance(
-                LHIPGame.GAME_WIDTH / 2,
-                LHIPGame.GAME_HEIGHT / 2,
+                (float) obj.getProperties().get("x"),
+                (float) obj.getProperties().get("y"),
                 player));
     }
 

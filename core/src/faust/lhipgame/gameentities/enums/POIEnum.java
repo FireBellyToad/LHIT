@@ -2,7 +2,8 @@ package faust.lhipgame.gameentities.enums;
 
 public enum POIEnum {
     SKELETON("poi.skull",ItemEnum.MORGENGABE,"splash.morgengabe"),
-    BUSH("poi.bush",ItemEnum.HEALTH_KIT);
+    BUSH("poi.bush",ItemEnum.HEALTH_KIT),
+    SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy");
 
     private String textKey;
     private ItemEnum itemGiven;

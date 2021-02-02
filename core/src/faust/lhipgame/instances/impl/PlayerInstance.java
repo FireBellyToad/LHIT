@@ -48,6 +48,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     private int availableHealthKits = 0; // available Health Kits
     private Timer.Task isHealingTimer;
     private int foundMorgengabes = 0;
+    private boolean hasHolyLance = false;
 
     public PlayerInstance() {
         super(new PlayerEntity());
@@ -57,6 +58,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     }
 
     @Override
+
     public void doLogic(float stateTime) {
 
         // Setting Attack area position
@@ -535,6 +537,9 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
                 foundMorgengabes++;
                 break;
             }
+            case HOLY_LANCE: {
+                hasHolyLance = true;
+            }
             default: {
                 Gdx.app.log("WARN", "No implementation for item" + itemFound.name());
             }
@@ -594,5 +599,4 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
 }

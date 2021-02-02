@@ -191,7 +191,7 @@ public abstract class AbstractRoom {
      */
     protected void addObjAsEnemy(MapObject obj) {
 
-        //FIXME
+        //FIXME add different enemy types
         enemyList.add(new StrixInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
@@ -240,6 +240,7 @@ public abstract class AbstractRoom {
 
     }
 
+    // Compares two GameInstances by y depth
     protected int compareEntities(GameInstance o1, GameInstance o2) {
         if (o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
@@ -273,7 +274,7 @@ public abstract class AbstractRoom {
         if (!player.isDead())
             player.doLogic(stateTime);
         else {
-            Gdx.app.exit();
+            splashManager.setSplashToShow("splash.gameover");
         }
 
         // Do enemy logic
@@ -286,6 +287,7 @@ public abstract class AbstractRoom {
 
         });
 
+        // Remove dead enemies
         enemyList.removeIf(ene -> ene.isDead());
 
     }

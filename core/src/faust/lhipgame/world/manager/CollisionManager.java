@@ -84,13 +84,14 @@ public class CollisionManager implements ContactListener {
 
         // Handle Strix Collision end
         if(isContactOfClass(contact, StrixInstance.class)){
-            Body sBody = getCorrectFixture(contact,StrixInstance.class).getBody();
-            StrixInstance sInst = (StrixInstance) sBody.getUserData();
+            //Just free the player from leech grapple
+            Body strixBody = getCorrectFixture(contact,StrixInstance.class).getBody();
+            StrixInstance sInst = (StrixInstance) strixBody.getUserData();
 
-            Body pBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
-            PlayerInstance pInst = (PlayerInstance) pBody.getUserData();
+            Body playerBody =  getCorrectFixture(contact,PlayerInstance.class).getBody();
+            PlayerInstance pInst = (PlayerInstance) playerBody.getUserData();
 
-            if(BodyDef.BodyType.DynamicBody.equals(sBody.getType())  && BodyDef.BodyType.DynamicBody.equals(pBody.getType())){
+            if(BodyDef.BodyType.DynamicBody.equals(strixBody.getType())  && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())){
                 sInst.endPlayerInteraction(pInst);
             }
         }

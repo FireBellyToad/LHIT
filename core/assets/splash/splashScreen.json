@@ -11,6 +11,10 @@
     {
       "splashKey": "splash.holy",
       "splashPath": "splash/morgengabe_splash.png"
+    },
+    {
+      "splashKey": "splash.gameover",
+      "splashPath": "splash/gameover_splash.png"
     }
   ]
 }

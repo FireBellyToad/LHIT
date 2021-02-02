@@ -23,11 +23,13 @@ public class SplashManager {
     private final Map<String, GameEntity> splashScreens = new HashMap<>();
     private String splashToShow;
     private TextManager textManager;
+    private boolean isGameOverSplash;
 
     public SplashManager(TextManager textManager) {
         Objects.requireNonNull(textManager);
 
         this.textManager = textManager;
+        this.isGameOverSplash = false;
 
         //Extract all splash screens
         JsonValue splash = new JsonReader().parse(Gdx.files.internal("splash/splashScreen.json")).get("splashScreens");
@@ -51,6 +53,7 @@ public class SplashManager {
         Objects.requireNonNull(splashScreen);
 
         this.splashToShow = splashScreen;
+        this.isGameOverSplash = (splashToShow == "splash.gameover");
 
         //Check if valid splash screen
         if(!this.splashScreens.containsKey(splashToShow)){
@@ -62,16 +65,23 @@ public class SplashManager {
         Objects.requireNonNull(batch);
 
         batch.draw(this.splashScreens.get(splashToShow).getTexture(), 0, 0);
-        textManager.addNewTextBox(splashToShow);
 
+        if(!this.isGameOverSplash ){
+            textManager.addNewTextBox(splashToShow);
+        }
+
+        //FIXME improve gameover logic
         // Hide splashToShow after time
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                if(isGameOverSplash){
+                    Gdx.app.exit();
+                }
                 splashToShow = null;
                 textManager.removeAllBoxes();
             }
-        }, 1.5f);
+        }, this.isGameOverSplash ? 3f : 1.5f);
 
     }
 

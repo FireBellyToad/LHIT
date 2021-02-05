@@ -150,12 +150,14 @@ public class RoomsManager {
         // Check for left or right passage
         if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
+                !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType()) &&
+                !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
-            player.setStartX(AbstractRoom.RIGHT_BOUNDARY-4);
-        } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
+            player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
+        } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) &&
+                !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType())) {
             newXPosInMatrix++;
-            player.setStartX( AbstractRoom.LEFT_BOUNDARY+4);
+            player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
         }
 
         // Check for top or bottom passage

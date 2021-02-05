@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="47">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="49">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -36,62 +36,7 @@
   <object id="25" name="DECO" type="CROSS_WOOD" x="82.8333" y="51.25">
    <point/>
   </object>
-  <object id="26" name="DECO" type="STONE_1" x="7.75" y="11.25">
-   <point/>
-  </object>
-  <object id="27" name="DECO" type="STONE_1" x="7.75" y="25.75">
-   <point/>
-  </object>
-  <object id="28" name="DECO" type="STONE_2" x="7.75" y="41.75">
-   <point/>
-  </object>
-  <object id="29" name="DECO" type="STONE_2" x="7.75" y="61">
-   <point/>
-  </object>
-  <object id="30" name="DECO" type="STONE_2" x="7.75" y="75.5">
-   <point/>
-  </object>
-  <object id="31" name="DECO" type="STONE_1" x="7.75" y="91.5">
-   <point/>
-  </object>
-  <object id="32" name="DECO" type="STONE_1" x="7.75" y="107">
-   <point/>
-  </object>
-  <object id="33" name="DECO" type="STONE_2" x="7.75" y="121.5">
-   <point/>
-  </object>
-  <object id="34" name="DECO" type="STONE_1" x="7.75" y="137.5">
-   <point/>
-  </object>
-  <object id="35" name="DECO" type="STONE_2" x="22.6667" y="137.667">
-   <point/>
-  </object>
-  <object id="37" name="DECO" type="STONE_1" x="40.75" y="138.166">
-   <point/>
-  </object>
-  <object id="38" name="DECO" type="STONE_2" x="55.6667" y="138.333">
-   <point/>
-  </object>
-  <object id="39" name="DECO" type="STONE_2" x="72.0833" y="138.834">
-   <point/>
-  </object>
-  <object id="40" name="DECO" type="STONE_1" x="87" y="139.001">
-   <point/>
-  </object>
-  <object id="41" name="DECO" type="STONE_1" x="104.083" y="138.5">
-   <point/>
-  </object>
-  <object id="42" name="DECO" type="STONE_1" x="120" y="138.667">
-   <point/>
-  </object>
-  <object id="43" name="DECO" type="STONE_2" x="152.333" y="138">
-   <point/>
-  </object>
-  <object id="44" name="DECO" type="STONE_1" x="135.333" y="138">
-   <point/>
-  </object>
-  <object id="45" name="POI" type="SOIL" x="35.5625" y="96.5">
-   <point/>
-  </object>
+  <object id="47" name="WALL" x="0" y="0" width="16" height="144"/>
+  <object id="48" name="WALL" x="16" y="128" width="144" height="16"/>
  </objectgroup>
 </map>

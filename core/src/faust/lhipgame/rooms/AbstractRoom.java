@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
@@ -52,6 +53,7 @@ public abstract class AbstractRoom {
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
     protected List<LivingInstance> enemyList;
+    protected List<Rectangle> wallList;
     protected PlayerInstance player;
     protected RoomType roomType;
     protected String roomFileName;
@@ -108,6 +110,7 @@ public abstract class AbstractRoom {
         poiList = new ArrayList<>();
         decorationList = new ArrayList<>();
         enemyList = new ArrayList<>();
+        wallList = new ArrayList<>();
 
 
         // Place objects in room
@@ -126,6 +129,12 @@ public abstract class AbstractRoom {
             // Prepare enemy (casual choice)
             if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && MathUtils.randomBoolean()) {
                 addObjAsEnemy(obj);
+                splashManager.setSplashToShow("splash.strix");
+            }
+
+            // Prepare enemy (casual choice)
+            if (MapObjNameEnum.WALL.name().equals(obj.getName())) {
+                addObjAsWall(obj);
                 ///splashManager.setSplashToShow("splash.strix");
             }
 
@@ -136,10 +145,26 @@ public abstract class AbstractRoom {
         worldManager.insertPOIIntoWorld(poiList);
         worldManager.insertDecorationsIntoWorld(decorationList);
         worldManager.insertEnemiesIntoWorld(enemyList);
+        worldManager.insertWallIntoWorld(wallList);
         player.changePOIList(poiList);
 
         // Do other stuff
         this.initRoom(roomType, worldManager, textManager, splashManager, player, camera);
+    }
+
+    /**
+     * Add invisible walls
+     * @param obj
+     */
+    protected void addObjAsWall(MapObject obj){
+
+        wallList.add(new Rectangle(
+                (float) obj.getProperties().get("x"),
+                (float) obj.getProperties().get("y"),
+                (float) obj.getProperties().get("width"),
+                (float) obj.getProperties().get("height")));
+
+
     }
 
     /**

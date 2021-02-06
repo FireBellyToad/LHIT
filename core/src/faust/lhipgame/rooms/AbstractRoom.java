@@ -1,20 +1,18 @@
 package faust.lhipgame.rooms;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.LivingInstance;
+import faust.lhipgame.instances.WallInstance;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
@@ -53,7 +51,7 @@ public abstract class AbstractRoom {
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
     protected List<LivingInstance> enemyList;
-    protected List<Rectangle> wallList;
+    protected List<WallInstance> wallList;
     protected PlayerInstance player;
     protected RoomType roomType;
     protected String roomFileName;
@@ -145,7 +143,7 @@ public abstract class AbstractRoom {
         worldManager.insertPOIIntoWorld(poiList);
         worldManager.insertDecorationsIntoWorld(decorationList);
         worldManager.insertEnemiesIntoWorld(enemyList);
-        worldManager.insertWallIntoWorld(wallList);
+        worldManager.insertWallsIntoWorld(wallList);
         player.changePOIList(poiList);
 
         // Do other stuff
@@ -158,7 +156,7 @@ public abstract class AbstractRoom {
      */
     protected void addObjAsWall(MapObject obj){
 
-        wallList.add(new Rectangle(
+        wallList.add(new WallInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 (float) obj.getProperties().get("width"),
@@ -288,6 +286,7 @@ public abstract class AbstractRoom {
         enemyList.forEach((ene) -> ene.dispose());
         decorationList.forEach((deco) -> deco.dispose());
         poiList.forEach((poi) -> poi.dispose());
+        wallList.forEach((wall) -> wall.dispose());
     }
 
     public RoomType getRoomType() {

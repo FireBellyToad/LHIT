@@ -1,10 +1,8 @@
 package faust.lhipgame.world.manager;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import faust.lhipgame.gameentities.impl.DecorationEntity;
 import faust.lhipgame.instances.*;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
@@ -26,7 +24,6 @@ public class WorldManager {
     private static final int POSITION_ITERATIONS = 3;
 
     private World world;
-    private List<Body> wallInstances = new ArrayList<>();
 
     public WorldManager() {
         this.world = new World(new Vector2(0, 0), true);
@@ -45,10 +42,6 @@ public class WorldManager {
     }
 
     public void dispose() {
-        //Destroy all wall fixtures
-        this.wallInstances.forEach(b -> b.getFixtureList().forEach(f ->
-                b.destroyFixture(f)));
-        this.wallInstances.clear();
         world.dispose();
     }
 
@@ -140,33 +133,14 @@ public class WorldManager {
         });
     }
 
-    public void insertWallIntoWorld(List<Rectangle> wallList) {
+    /**
+     * Insert static walls into world
+     * @param wallList
+     */
+    public void insertWallsIntoWorld(List<WallInstance> wallList) {
         wallList.forEach((w) -> {
-            Objects.requireNonNull(world);
-
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.fixedRotation = true;
-
-            // Define shape
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(w.width/2, w.height/2);
-            bodyDef.position.set(w.x+w.width/2,w.y+w.height/2);
-
-            // Define Fixture
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.shape = shape;
-            fixtureDef.density =  1;
-            fixtureDef.friction =  1;
-            fixtureDef.isSensor = false;
-
-            // Associate body to world
-            Body body = world.createBody(bodyDef);
-            body.setUserData(this);
-            body.createFixture(fixtureDef);
-
-            wallInstances.add(body);
-            shape.dispose();
+            w.createBody(this.world);
         });
     }
+
 }

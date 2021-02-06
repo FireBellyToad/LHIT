@@ -134,7 +134,6 @@ public class GameScreen implements Screen {
     private void doLogic() {
 
         roomsManager.doRoomContentsLogic(stateTime);
-        // for each enemies -> logic()
     }
 
     @Override

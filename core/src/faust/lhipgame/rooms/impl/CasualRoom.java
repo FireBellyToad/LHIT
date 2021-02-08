@@ -24,7 +24,7 @@ public class CasualRoom extends AbstractRoom {
     private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, Integer casualNumber) {
-        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, casualNumber);
+        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, (Integer) casualNumber);
     }
 
     @Override

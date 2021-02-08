@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
-import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
-import faust.lhipgame.rooms.CasualRoomNumberSaveEntry;
+import faust.lhipgame.rooms.RoomNumberSaveEntry;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.rooms.impl.CasualRoom;
 import faust.lhipgame.rooms.impl.FixedRoom;
@@ -29,8 +28,8 @@ public class RoomsManager {
      */
     private final Map<Vector2, RoomType> mainWorld = new HashMap<>();
     private final Map<Vector2, Integer> mainWorldPredefinedCasualNumbers = new HashMap<>();
+    private final Map<Vector2,RoomNumberSaveEntry> saveMap = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
-    private final List<CasualRoomNumberSaveEntry> saveList = new ArrayList<>();
 
     private WorldManager worldManager;
     private TextManager textManager;
@@ -77,6 +76,10 @@ public class RoomsManager {
         try {
             JsonValue numbers = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
 
+            if(Objects.isNull(numbers)){
+                return;
+            }
+
             numbers.forEach((t) -> {
                 Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
                 int casualNumberPredefined = t.getInt("casualNumber");
@@ -108,19 +111,14 @@ public class RoomsManager {
 
         currentRoomPosInWorld.set(finalX, finalY);
 
+        int roomCasualNumber = 0;
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
 
                 currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, mainWorldPredefinedCasualNumbers.get(currentRoomPosInWorld));
 
-                final int roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
-
+                roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
                 // Save casualnumber in memory and prepare save on filesystem
-                saveList.add(new CasualRoomNumberSaveEntry(
-                        (int) finalX,
-                        (int) finalY,
-                        roomCasualNumber));
-
                 mainWorldPredefinedCasualNumbers.put(currentRoomPosInWorld, roomCasualNumber);
                 break;
             }
@@ -129,6 +127,15 @@ public class RoomsManager {
                 break;
             }
         }
+        //Keep the same state of already visited rooms
+        if(Objects.isNull(saveMap.get(currentRoomPosInWorld))){
+            saveMap.put(currentRoomPosInWorld,
+                    new RoomNumberSaveEntry(
+                            (int) finalX,
+                            (int) finalY,
+                            roomCasualNumber));
+        }
+
 
     }
 
@@ -217,7 +224,7 @@ public class RoomsManager {
 
         //TODO per nome della partita
         Json json = new Json();
-        String saveFile = json.toJson(saveList);
+        String saveFile = json.toJson(saveMap.values());
         Gdx.files.local("saves/mainWorldSave.json").writeString(saveFile, false);
     }
 }

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="23">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="24">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="1" name="Livello tile 1" width="10" height="9">
   <data encoding="csv">
-34,34,34,34,34,34,36,39,6,7,
-34,34,34,34,36,38,39,4,10,11,
-34,34,34,36,39,4,23,24,0,0,
-34,34,36,39,6,20,17,17,0,0,
-34,36,39,4,23,24,17,17,28,0,
-34,35,6,20,17,27,26,26,21,0,
-36,39,4,17,27,28,21,17,27,0,
+45,32,32,32,32,32,19,19,19,7,
+49,34,34,34,36,38,39,4,10,11,
+49,34,34,36,39,4,23,24,0,0,
+45,34,36,39,6,20,17,17,0,0,
+49,34,35,4,23,24,17,17,28,0,
+43,34,35,20,17,27,26,26,21,0,
+36,38,4,17,27,28,21,17,27,0,
 39,4,24,21,0,26,17,21,0,0,
 4,11,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="2" name="Livello di oggetti 1">
-  <object id="22" name="WALL" x="-16" y="0" width="16" height="128"/>
+  <object id="22" name="WALL" x="0" y="0" width="16" height="86"/>
+  <object id="23" name="WALL" x="16" y="-0.25" width="144" height="16"/>
  </objectgroup>
 </map>

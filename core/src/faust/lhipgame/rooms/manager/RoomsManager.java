@@ -74,7 +74,7 @@ public class RoomsManager {
      */
     private void loadPredefinedCasualRoomNumbers() {
         //Try to load predefined casualnumbers for casual rooms from file
-        try{
+        try {
             JsonValue numbers = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
 
             numbers.forEach((t) -> {
@@ -84,8 +84,8 @@ public class RoomsManager {
                 mainWorldPredefinedCasualNumbers.put(v, casualNumberPredefined);
             });
 
-        }catch (SerializationException ex){
-            Gdx.app.log("WARN","No valid savefile to load");
+        } catch (SerializationException ex) {
+            Gdx.app.log("WARN", "No valid savefile to load");
         }
 
     }
@@ -121,7 +121,7 @@ public class RoomsManager {
                         (int) finalY,
                         roomCasualNumber));
 
-                mainWorldPredefinedCasualNumbers.put(currentRoomPosInWorld,roomCasualNumber);
+                mainWorldPredefinedCasualNumbers.put(currentRoomPosInWorld, roomCasualNumber);
                 break;
             }
             default: {
@@ -134,6 +134,7 @@ public class RoomsManager {
 
     /**
      * Wraps the room contents game logic
+     *
      * @param stateTime
      */
     public void doRoomContentsLogic(float stateTime) {
@@ -150,12 +151,10 @@ public class RoomsManager {
         // Check for left or right passage
         if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType()) &&
-                !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
+                !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
             player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
-        } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) &&
-                !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType())) {
+        } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
             newXPosInMatrix++;
             player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
         }
@@ -165,13 +164,13 @@ public class RoomsManager {
                 !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
                 !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix--;
-            player.setStartY(AbstractRoom.TOP_BOUNDARY -4);
+            player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
                 !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
                 !RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType()) &&
                 !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix++;
-            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY+4);
+            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
         }
 
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {

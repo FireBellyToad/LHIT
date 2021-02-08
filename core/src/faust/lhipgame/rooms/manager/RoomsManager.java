@@ -27,7 +27,6 @@ public class RoomsManager {
      * MainWorld Matrix
      */
     private final Map<Vector2, RoomType> mainWorld = new HashMap<>();
-    private final Map<Vector2, Integer> mainWorldPredefinedCasualNumbers = new HashMap<>();
     private final Map<Vector2,RoomNumberSaveEntry> saveMap = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
 
@@ -83,8 +82,12 @@ public class RoomsManager {
             numbers.forEach((t) -> {
                 Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
                 int casualNumberPredefined = t.getInt("casualNumber");
+                boolean arePoiCleared = t.getBoolean("poiCleared");
                 Objects.requireNonNull(casualNumberPredefined);
-                mainWorldPredefinedCasualNumbers.put(v, casualNumberPredefined);
+
+                saveMap.put(v, new RoomNumberSaveEntry(
+                        (int) v.x, (int) v.y, casualNumberPredefined,
+                        arePoiCleared));
             });
 
         } catch (SerializationException ex) {
@@ -103,6 +106,7 @@ public class RoomsManager {
 
         // Dispose the current room contents if not null
         if (!Objects.isNull(currentRoom)) {
+            saveMap.get(currentRoomPosInWorld).poiCleared = currentRoom.arePoiCleared();
             currentRoom.dispose();
         }
 
@@ -115,11 +119,10 @@ public class RoomsManager {
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
 
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, mainWorldPredefinedCasualNumbers.get(currentRoomPosInWorld));
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, saveMap.get(currentRoomPosInWorld));
 
-                roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
                 // Save casualnumber in memory and prepare save on filesystem
-                mainWorldPredefinedCasualNumbers.put(currentRoomPosInWorld, roomCasualNumber);
+                roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
                 break;
             }
             default: {
@@ -128,13 +131,12 @@ public class RoomsManager {
             }
         }
         //Keep the same state of already visited rooms
-        if(Objects.isNull(saveMap.get(currentRoomPosInWorld))){
-            saveMap.put(currentRoomPosInWorld,
-                    new RoomNumberSaveEntry(
-                            (int) finalX,
-                            (int) finalY,
-                            roomCasualNumber));
-        }
+        saveMap.put(currentRoomPosInWorld,
+                new RoomNumberSaveEntry(
+                        (int) finalX,
+                        (int) finalY,
+                        roomCasualNumber,
+                        currentRoom.arePoiCleared()));
 
 
     }

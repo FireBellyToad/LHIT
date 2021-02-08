@@ -316,5 +316,14 @@ public abstract class AbstractRoom {
 
     }
 
+    /**
+     *
+     * @return true if all Poi are been examined
+     */
+    public boolean arePoiCleared(){
+        //FIXME handle multiple POI
+        return this.poiList.stream().allMatch(poiInstance -> poiInstance.isAlreadyExamined());
+    }
+
     ;
 }

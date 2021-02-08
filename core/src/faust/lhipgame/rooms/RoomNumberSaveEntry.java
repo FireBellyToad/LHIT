@@ -7,14 +7,17 @@ import java.io.Serializable;
  */
 public class RoomNumberSaveEntry implements Serializable {
 
-    private int casualNumber;
-    private int x;
-    private int y;
+    public int casualNumber;
+    public int x;
+    public int y;
+    public boolean poiCleared;
 
-    public RoomNumberSaveEntry(int x, int y, int casualNumber) {
+    public RoomNumberSaveEntry(int x, int y, int casualNumber, boolean poiCleared) {
         this.casualNumber = casualNumber;
         this.x = x;
         this.y = y;
+        this.poiCleared = poiCleared;
     }
+
 
 }

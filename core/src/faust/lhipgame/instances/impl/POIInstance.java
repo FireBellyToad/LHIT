@@ -127,4 +127,13 @@ public class POIInstance extends GameInstance {
     public void setEnableFlicker(boolean enableFlicker) {
         this.enableFlicker = enableFlicker;
     }
+
+    // Handling POI states
+    public boolean isAlreadyExamined() {
+        return isAlreadyExamined;
+    }
+
+    public void setAlreadyExamined(boolean alreadyExamined) {
+        isAlreadyExamined = alreadyExamined;
+    }
 }

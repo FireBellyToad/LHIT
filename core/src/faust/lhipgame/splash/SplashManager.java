@@ -24,6 +24,7 @@ public class SplashManager {
     private String splashToShow;
     private TextManager textManager;
     private boolean isGameOverSplash;
+    private Timer.Task splashTimer;
 
     public SplashManager(TextManager textManager) {
         Objects.requireNonNull(textManager);
@@ -72,16 +73,21 @@ public class SplashManager {
 
         //FIXME improve gameover logic
         // Hide splashToShow after time
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                if(isGameOverSplash){
-                    Gdx.app.exit();
+        if(Objects.isNull(splashTimer)) {
+            splashTimer = Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    if (isGameOverSplash) {
+                        Gdx.app.exit();
+                    }
+                    Gdx.app.log("DEBUG", "END splash timer");
+                    splashToShow = null;
+                    textManager.removeAllBoxes();
+                    splashTimer = null;
                 }
-                splashToShow = null;
-                textManager.removeAllBoxes();
-            }
-        }, this.isGameOverSplash ? 3f : 1.5f);
+            }, this.isGameOverSplash ? 3f : 1.5f);
+            Gdx.app.log("DEBUG", "START splash timer" );
+        }
 
     }
 

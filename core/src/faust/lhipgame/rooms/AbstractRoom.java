@@ -25,6 +25,7 @@ import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +47,6 @@ public abstract class AbstractRoom {
     protected TiledMap tiledMap;
     protected TiledMapRenderer tiledMapRenderer;
     protected MapObjects mapObjects;
-    protected MapObjects mapTiles;
 
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
@@ -70,7 +70,7 @@ public abstract class AbstractRoom {
      */
     @SuppressWarnings("unchecked")
     public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera) {
-        this(roomType, worldManager, textManager, splashManager, player, camera, null);
+        this(roomType, worldManager, textManager, splashManager, player, camera, Collections.emptyList());
     }
 
     /**

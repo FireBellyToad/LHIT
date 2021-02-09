@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
-    public static final int CASUAL_TOTAL = 3;
+    public static final int CASUAL_TOTAL = 5;
     private int casualNumber;
     private boolean mustClearPOI = false;
 

@@ -126,7 +126,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
 
         // Define Fixture
         FixtureDef hitBoxFixtureDef = new FixtureDef();
-        hitBoxFixtureDef.shape = shape;
+        hitBoxFixtureDef.shape = hitBoxShape;
         hitBoxFixtureDef.density = 0;
         hitBoxFixtureDef.friction = 0;
         hitBoxFixtureDef.isSensor = true;
@@ -136,7 +136,7 @@ public class StrixInstance extends LivingInstance implements Interactable {
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
 
-        shape.dispose();
+        hitBoxShape.dispose();
     }
 
     /**
@@ -186,12 +186,12 @@ public class StrixInstance extends LivingInstance implements Interactable {
             @Override
             public void run() {
                 if (attachedToPlayer) {
-                    playerInstance.hurt(2);
+                    playerInstance.hurt(1);
                     leechLife(playerInstance);
                     Gdx.app.log("DEBUG", "END leech timer" );
                 }
             }
-        }, 2);
+        }, 1);
         Gdx.app.log("DEBUG", "START leech timer" );
 
     }

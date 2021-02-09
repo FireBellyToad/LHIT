@@ -113,13 +113,14 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             }
         }
 
-        // Checking if there is any POI near enough to be examined by the player
+        // Checking if there is any unexamined POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
 
             roomPoiList.forEach((poi) -> ((POIInstance) poi).setEnableFlicker(false));
 
             nearestPOIInstance = (POIInstance) this.getNearestInstance(roomPoiList);
-            if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
+            if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE &&
+                    !nearestPOIInstance.isAlreadyExamined()) {
                 nearestPOIInstance.setEnableFlicker(true);
             }
         }
@@ -135,7 +136,8 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
      */
     private void examineNearestPOI() {
         Objects.requireNonNull(nearestPOIInstance);
-        if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE) {
+        if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE &&
+                !nearestPOIInstance.isAlreadyExamined()) {
             nearestPOIInstance.examine();
         }
     }

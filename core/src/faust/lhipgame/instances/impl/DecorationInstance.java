@@ -44,17 +44,30 @@ public class DecorationInstance extends GameInstance implements Interactable {
         }
 
         //Rivedere
-        batch.draw(frame, body.getPosition().x + calculateAdditionalOffset() - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(frame, body.getPosition().x + calculateAdditionalXOffset() - POSITION_OFFSET,
+                body.getPosition().y + +calculateAdditionalYOffset() - POSITION_Y_OFFSET);
     }
 
     /**
      *
-     * @return offset for particular Decoration render
+     * @return X offset for particular Decoration render
      */
-    private int calculateAdditionalOffset() {
+    private int calculateAdditionalXOffset() {
 
         if (DecorationsEnum.CROSS_IRON.equals(((DecorationEntity) entity).getType())) {
             return 2;
+        }
+        return 0;
+    }
+
+    /**
+     *
+     * @return Y offset for particular Decoration render
+     */
+    private int calculateAdditionalYOffset() {
+
+        if (DecorationsEnum.BOAT.equals(((DecorationEntity) entity).getType())) {
+            return -4;
         }
         return 0;
     }
@@ -84,7 +97,8 @@ public class DecorationInstance extends GameInstance implements Interactable {
             }
             case STONE_1:
             case STONE_2:
-            case TREE_STUMP: {
+            case TREE_STUMP:
+            case BOAT:{
                 shape.setAsBox(16, 8);
                 bodyDef.position.set(x, y - 16);
                 break;

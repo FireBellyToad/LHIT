@@ -16,7 +16,8 @@ public enum RoomType {
     CHURCH_RIGHT("churchRight.tmx"),
     CHURCH_BOTTOM("churchBottom.tmx"),
     CHURCH_LEFT("churchLeft.tmx"),
-    TREE_STUMP("treeStump.tmx");
+    TREE_STUMP("treeStump.tmx"),
+    BOAT("boat.tmx");
 
     private String mapFileName;
 

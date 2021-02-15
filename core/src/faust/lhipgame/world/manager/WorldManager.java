@@ -8,7 +8,6 @@ import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -126,7 +125,7 @@ public class WorldManager {
      *
      * @param enemiesInstance
      */
-    public void insertEnemiesIntoWorld(List<LivingInstance> enemiesInstance) {
+    public void insertEnemiesIntoWorld(List<AnimatedInstance> enemiesInstance) {
 
         enemiesInstance.forEach((e) -> {
             this.insertIntoWorld(e, e.getStartX(), e.getStartY());

@@ -7,7 +7,8 @@ public enum DecorationsEnum {
     STONE_1,
     STONE_2,
     GRASS,
-    TREE_STUMP;
+    TREE_STUMP,
+    BOAT;
 
     public static DecorationsEnum getFromString(String name) {
         for (DecorationsEnum e : DecorationsEnum.values()) {

@@ -1,6 +1,5 @@
 package faust.lhipgame.hud;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +11,7 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.GameBehavior;
-import faust.lhipgame.instances.LivingInstance;
+import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.text.manager.TextManager;
 
@@ -72,7 +71,7 @@ public class Hud {
         batch.begin();
         // Draw Health meter (red crosses for each hitpoit remaining, hollow ones for each damage point)
         TextureRegion frame;
-        for (int r = 0; r < ((LivingInstance) player).getResistance(); r++) {
+        for (int r = 0; r < player.getResistance(); r++) {
             frame = hudTexture.getFrame(r < player.getDamageDelta() ?
                     HudIconsEnum.LIFE_METER_FULL.ordinal() :
                     HudIconsEnum.LIFE_METER_EMPTY.ordinal() * GameEntity.FRAME_DURATION);

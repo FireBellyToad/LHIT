@@ -3,7 +3,7 @@ package faust.lhipgame.gameentities.impl;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import faust.lhipgame.gameentities.LivingEntity;
+import faust.lhipgame.gameentities.AnimatedEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
@@ -15,18 +15,13 @@ import java.util.Arrays;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class StrixEntity extends LivingEntity {
+public class StrixEntity extends AnimatedEntity {
 
     private Texture shadow;
 
     public StrixEntity() {
         super(new Texture("sprites/strix_sheet.png"));
         shadow = new Texture("sprites/shadow.png");
-    }
-
-    @Override
-    public int getResistance() {
-        return 10;
     }
 
     @Override
@@ -56,7 +51,7 @@ public class StrixEntity extends LivingEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.WALK, Direction.UP);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.RIGHT);
 
-        addAnimationForDirection(new Animation<>(FRAME_DURATION, attachedFrames), GameBehavior.ATTACK, Direction.UNUSED);
+        addAnimation(new Animation<>(FRAME_DURATION, attachedFrames), GameBehavior.ATTACK);
 
         // Initialize the Hurt Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.HURT, Direction.DOWN);
@@ -79,4 +74,5 @@ public class StrixEntity extends LivingEntity {
     public Texture getShadowTexture() {
         return shadow;
     }
+
 }

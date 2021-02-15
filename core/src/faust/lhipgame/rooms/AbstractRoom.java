@@ -8,10 +8,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.gameentities.Killable;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
+import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.instances.LivingInstance;
 import faust.lhipgame.instances.WallInstance;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
@@ -50,7 +51,7 @@ public abstract class AbstractRoom {
 
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
-    protected List<LivingInstance> enemyList;
+    protected List<AnimatedInstance> enemyList;
     protected List<WallInstance> wallList;
     protected PlayerInstance player;
     protected RoomType roomType;
@@ -304,7 +305,7 @@ public abstract class AbstractRoom {
         // Do enemy logic
         enemyList.forEach((ene) -> {
 
-            if (!ene.isDead())
+            if (!((Killable) ene).isDead())
                 ene.doLogic(stateTime);
             else
                 ene.dispose();
@@ -312,7 +313,7 @@ public abstract class AbstractRoom {
         });
 
         // Remove dead enemies
-        enemyList.removeIf(ene -> ene.isDead());
+        enemyList.removeIf(ene -> ((Killable) ene).isDead());
 
     }
 

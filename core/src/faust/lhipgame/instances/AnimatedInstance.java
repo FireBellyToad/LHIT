@@ -1,16 +1,14 @@
 package faust.lhipgame.instances;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
 import java.util.Objects;
 
-public abstract class LivingInstance extends GameInstance {
+public abstract class AnimatedInstance extends GameInstance {
 
     protected static final int LINE_OF_SIGHT = 60;
     protected int damage = 0;
@@ -20,7 +18,7 @@ public abstract class LivingInstance extends GameInstance {
 
     protected Body hitBox;
 
-    public LivingInstance(final GameEntity entity) {
+    public AnimatedInstance(final GameEntity entity) {
         super(entity);
     }
 
@@ -29,34 +27,6 @@ public abstract class LivingInstance extends GameInstance {
      * @param stateTime
      */
     public abstract void doLogic(float stateTime);
-
-
-    /**
-     * Method for hurting the LivingEntity
-     *
-     * @param damageReceived to be subtracted
-     */
-    public void hurt(int damageReceived) {
-        if(!GameBehavior.HURT.equals(currentBehavior)){
-            this.damage += Math.min(((LivingEntity) entity).getResistance(), damageReceived);
-            Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
-            postHurtLogic();
-        }
-
-    }
-
-    /**
-     * Logic to be done after being hurt
-     */
-    protected abstract void postHurtLogic();
-
-
-    /**
-     * @return true if the damage is greater or equal than the resitance
-     */
-    public boolean isDead() {
-        return this.damage >= ((LivingEntity) entity).getResistance();
-    }
 
     /**
      * Utility for extracting Direction from a directionNormal normal
@@ -83,18 +53,6 @@ public abstract class LivingInstance extends GameInstance {
                     hitBox.destroyFixture(f));
         }
         super.dispose();
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public int getResistance(){
-        return ((LivingEntity) entity).getResistance();
-    }
-
-    public int getDamageDelta() {
-        return  ((LivingEntity) entity).getResistance() - damage;
     }
 
     public GameBehavior getCurrentBehavior() {

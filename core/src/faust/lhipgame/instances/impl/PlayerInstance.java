@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Timer;
-import faust.lhipgame.gameentities.LivingEntity;
+import faust.lhipgame.gameentities.AnimatedEntity;
+import faust.lhipgame.gameentities.Killable;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.PlayerEntity;
+import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.instances.LivingInstance;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class PlayerInstance extends LivingInstance implements InputProcessor {
+public class PlayerInstance extends AnimatedInstance implements InputProcessor, Killable {
 
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
@@ -55,6 +56,11 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
+    public int getResistance() {
+        return 12;
     }
 
     @Override
@@ -127,8 +133,17 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     }
 
     @Override
-    protected void postHurtLogic() {
+    public void hurt(int damageReceived) {
+        if(!GameBehavior.HURT.equals(currentBehavior)){
+            this.damage += Math.min(getResistance(), damageReceived);
+            Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
+            postHurtLogic();
+        }
+    }
 
+    @Override
+    public void postHurtLogic() {
+        //Nothing to do that here... yet
     }
 
     /**
@@ -180,7 +195,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = ((LivingEntity) entity).getFrame(currentBehavior, currentDirection,
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection,
                 mapStateTimeFromBehaviour(stateTime));
 
         int xOffset = 0;
@@ -240,7 +255,7 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
             attackDeltaTime = stateTime;
 
 
-        int currentFrame = ((LivingEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < 10) {
             switch (currentDirection) {
                 case UP: {
@@ -268,131 +283,130 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
         }
 
         // Resetting Behaviour on animation end
-        if (((LivingEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
+        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
             currentBehavior = GameBehavior.IDLE;
         }
     }
 
     @Override
     public void createBody(World world, float x, float y) {
-        {
-            Objects.requireNonNull(world);
 
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.type = BodyDef.BodyType.DynamicBody;
-            bodyDef.fixedRotation = true;
-            bodyDef.position.set(x, y);
+        Objects.requireNonNull(world);
 
-            // Define shape
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(4, 2);
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.fixedRotation = true;
+        bodyDef.position.set(x, y);
 
-            // Define Fixtures
-            FixtureDef mainFixtureDef = new FixtureDef();
-            mainFixtureDef.shape = shape;
-            mainFixtureDef.density = 1;
-            mainFixtureDef.friction = 1;
+        // Define shape
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(4, 2);
 
-            // Associate body to world
-            body = world.createBody(bodyDef);
-            body.setUserData(this);
-            body.createFixture(mainFixtureDef);
-            shape.dispose();
+        // Define Fixtures
+        FixtureDef mainFixtureDef = new FixtureDef();
+        mainFixtureDef.shape = shape;
+        mainFixtureDef.density = 1;
+        mainFixtureDef.friction = 1;
+
+        // Associate body to world
+        body = world.createBody(bodyDef);
+        body.setUserData(this);
+        body.createFixture(mainFixtureDef);
+        shape.dispose();
 
 
-            BodyDef rightSpearDef = new BodyDef();
-            rightSpearDef.type = BodyDef.BodyType.KinematicBody;
-            rightSpearDef.fixedRotation = true;
-            rightSpearDef.position.set(x, y);
+        BodyDef rightSpearDef = new BodyDef();
+        rightSpearDef.type = BodyDef.BodyType.KinematicBody;
+        rightSpearDef.fixedRotation = true;
+        rightSpearDef.position.set(x+2, y);
 
-            // Define shape
-            PolygonShape rightSpearShape = new PolygonShape();
-            rightSpearShape.setAsBox(6, 3);
+        // Define shape
+        PolygonShape rightSpearShape = new PolygonShape();
+        rightSpearShape.setAsBox(6, 3);
 
-            // Define Fixtures
-            FixtureDef rightSpearFixtureDef = new FixtureDef();
-            rightSpearFixtureDef.shape = shape;
-            rightSpearFixtureDef.density = 1;
-            rightSpearFixtureDef.friction = 1;
-            rightSpearFixtureDef.isSensor = true;
+        // Define Fixtures
+        FixtureDef rightSpearFixtureDef = new FixtureDef();
+        rightSpearFixtureDef.shape = shape;
+        rightSpearFixtureDef.density = 1;
+        rightSpearFixtureDef.friction = 1;
+        rightSpearFixtureDef.isSensor = true;
 
-            // Associate body to world
-            rightSpearBody = world.createBody(rightSpearDef);
-            rightSpearBody.setUserData(this);
-            rightSpearBody.createFixture(rightSpearFixtureDef);
-            rightSpearBody.setActive(false);
-            rightSpearShape.dispose();
+        // Associate body to world
+        rightSpearBody = world.createBody(rightSpearDef);
+        rightSpearBody.setUserData(this);
+        rightSpearBody.createFixture(rightSpearFixtureDef);
+        rightSpearBody.setActive(false);
+        rightSpearShape.dispose();
 
-            BodyDef upSpearDef = new BodyDef();
-            upSpearDef.type = BodyDef.BodyType.KinematicBody;
-            upSpearDef.fixedRotation = true;
-            upSpearDef.position.set(x, y);
+        BodyDef upSpearDef = new BodyDef();
+        upSpearDef.type = BodyDef.BodyType.KinematicBody;
+        upSpearDef.fixedRotation = true;
+        upSpearDef.position.set(x, y-2);
 
-            // Define shape
-            PolygonShape upSpearShape = new PolygonShape();
-            upSpearShape.setAsBox(3, 6);
+        // Define shape
+        PolygonShape upSpearShape = new PolygonShape();
+        upSpearShape.setAsBox(3, 6);
 
-            // Define Fixtures
-            FixtureDef upSpearFixtureDef = new FixtureDef();
-            upSpearFixtureDef.shape = shape;
-            upSpearFixtureDef.density = 1;
-            upSpearFixtureDef.friction = 1;
-            upSpearFixtureDef.isSensor = true;
+        // Define Fixtures
+        FixtureDef upSpearFixtureDef = new FixtureDef();
+        upSpearFixtureDef.shape = shape;
+        upSpearFixtureDef.density = 1;
+        upSpearFixtureDef.friction = 1;
+        upSpearFixtureDef.isSensor = true;
 
-            // Associate body to world
-            upSpearBody = world.createBody(upSpearDef);
-            upSpearBody.setUserData(this);
-            upSpearBody.createFixture(upSpearFixtureDef);
-            upSpearBody.setActive(false);
-            upSpearShape.dispose();
+        // Associate body to world
+        upSpearBody = world.createBody(upSpearDef);
+        upSpearBody.setUserData(this);
+        upSpearBody.createFixture(upSpearFixtureDef);
+        upSpearBody.setActive(false);
+        upSpearShape.dispose();
 
-            BodyDef leftSpearDef = new BodyDef();
-            leftSpearDef.type = BodyDef.BodyType.KinematicBody;
-            leftSpearDef.fixedRotation = true;
-            leftSpearDef.position.set(x, y);
+        BodyDef leftSpearDef = new BodyDef();
+        leftSpearDef.type = BodyDef.BodyType.KinematicBody;
+        leftSpearDef.fixedRotation = true;
+        leftSpearDef.position.set(x-2, y);
 
-            // Define shape
-            PolygonShape leftSpearShape = new PolygonShape();
-            leftSpearShape.setAsBox(6, 3);
+        // Define shape
+        PolygonShape leftSpearShape = new PolygonShape();
+        leftSpearShape.setAsBox(6, 3);
 
-            // Define Fixtures
-            FixtureDef leftSpearFixtureDef = new FixtureDef();
-            leftSpearFixtureDef.shape = shape;
-            leftSpearFixtureDef.density = 1;
-            leftSpearFixtureDef.friction = 1;
-            leftSpearFixtureDef.isSensor = true;
+        // Define Fixtures
+        FixtureDef leftSpearFixtureDef = new FixtureDef();
+        leftSpearFixtureDef.shape = shape;
+        leftSpearFixtureDef.density = 1;
+        leftSpearFixtureDef.friction = 1;
+        leftSpearFixtureDef.isSensor = true;
 
-            // Associate body to world
-            leftSpearBody = world.createBody(leftSpearDef);
-            leftSpearBody.setUserData(this);
-            leftSpearBody.createFixture(leftSpearFixtureDef);
-            leftSpearBody.setActive(false);
-            leftSpearShape.dispose();
+        // Associate body to world
+        leftSpearBody = world.createBody(leftSpearDef);
+        leftSpearBody.setUserData(this);
+        leftSpearBody.createFixture(leftSpearFixtureDef);
+        leftSpearBody.setActive(false);
+        leftSpearShape.dispose();
 
-            BodyDef downSpearDef = new BodyDef();
-            downSpearDef.type = BodyDef.BodyType.KinematicBody;
-            downSpearDef.fixedRotation = true;
-            downSpearDef.position.set(x, y);
+        BodyDef downSpearDef = new BodyDef();
+        downSpearDef.type = BodyDef.BodyType.KinematicBody;
+        downSpearDef.fixedRotation = true;
+        downSpearDef.position.set(x, y+2);
 
-            // Define shape
-            PolygonShape downSpearShape = new PolygonShape();
-            downSpearShape.setAsBox(3, 6);
+        // Define shape
+        PolygonShape downSpearShape = new PolygonShape();
+        downSpearShape.setAsBox(3, 6);
 
-            // Define Fixtures
-            FixtureDef downSpearFixtureDef = new FixtureDef();
-            downSpearFixtureDef.shape = shape;
-            downSpearFixtureDef.density = 1;
-            downSpearFixtureDef.friction = 1;
-            downSpearFixtureDef.isSensor = true;
+        // Define Fixtures
+        FixtureDef downSpearFixtureDef = new FixtureDef();
+        downSpearFixtureDef.shape = shape;
+        downSpearFixtureDef.density = 1;
+        downSpearFixtureDef.friction = 1;
+        downSpearFixtureDef.isSensor = true;
 
-            // Associate body to world
-            downSpearBody = world.createBody(downSpearDef);
-            downSpearBody.setUserData(this);
-            downSpearBody.createFixture(downSpearFixtureDef);
-            downSpearBody.setActive(false);
-            downSpearShape.dispose();
+        // Associate body to world
+        downSpearBody = world.createBody(downSpearDef);
+        downSpearBody.setUserData(this);
+        downSpearBody.createFixture(downSpearFixtureDef);
+        downSpearBody.setActive(false);
+        downSpearShape.dispose();
 
-        }
 
     }
 
@@ -601,4 +615,17 @@ public class PlayerInstance extends LivingInstance implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    /**
+     * @return true if the damage is greater or equal than the resitance
+     */
+    @Override
+    public boolean isDead() {
+        return this.damage >= getResistance();
+    }
+
+    public int getDamageDelta() {
+        return  getResistance() - damage;
+    }
+
 }

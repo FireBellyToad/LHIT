@@ -2,13 +2,15 @@ package faust.lhipgame.rooms.impl;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import faust.lhipgame.echoes.EchoManager;
-import faust.lhipgame.echoes.enums.EchoType;
+import faust.lhipgame.echoes.enums.EchoesActorType;
 import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.instances.impl.EchoActorInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
+import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
@@ -25,11 +27,10 @@ import java.util.Objects;
  */
 public class FixedRoom extends AbstractRoom {
 
-    private RoomType roomType;
-    private EchoManager echoManager;
+    private List<EchoActorInstance> echoActors;
 
     public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
-        super(roomType, worldManager, textManager,splashManager,  player, camera);
+        super(roomType, worldManager, textManager, splashManager, player, camera);
     }
 
     @Override
@@ -37,21 +38,37 @@ public class FixedRoom extends AbstractRoom {
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
     }
 
     @Override
     protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
+        this.echoActors = new ArrayList<>();
+        mapObjects.forEach(obj -> {
+            // Prepare ECHO ACTORS
+            if (MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
+                addObjAsEchoActor(obj);
+            }
+        });
 
-        switch (roomType){
-            case BOAT:{
-                this.echoManager = new EchoManager(EchoType.DEAD_RIVER,worldManager);
-                break;
-            }
-            case TREE_STUMP:{
-                this.echoManager = new EchoManager(EchoType.TREE_MASSACRE, worldManager);
-                break;
-            }
-        }
+        worldManager.insertEchoActorsIntoWorld(echoActors);
+
+    }
+
+    /**
+     * Add a object as Echo Actor
+     *
+     * @param obj MapObject to add
+     */
+    private void addObjAsEchoActor(MapObject obj) {
+
+        EchoesActorType echoesActorType = EchoesActorType.getFromString((String) obj.getProperties().get("type"));
+        Objects.requireNonNull(echoesActorType);
+
+        echoActors.add(new EchoActorInstance(echoesActorType,
+                (float) obj.getProperties().get("x"),
+                (float) obj.getProperties().get("y")));
+
     }
 
     @Override
@@ -63,8 +80,8 @@ public class FixedRoom extends AbstractRoom {
         allInstance.add(player);
         allInstance.addAll(enemyList);
 
-        if(Objects.nonNull(this.echoManager)){
-            allInstance.addAll(this.echoManager.getEchoActors());
+        if (Objects.nonNull(echoActors)) {
+            allInstance.addAll(echoActors);
         }
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
@@ -79,8 +96,22 @@ public class FixedRoom extends AbstractRoom {
     @Override
     public void dispose() {
         super.dispose();
-        if(Objects.nonNull(this.echoManager)) {
-            this.echoManager.dispose();
-        }
+        echoActors.forEach(echoActorInstance -> echoActorInstance.dispose());
+    }
+
+    public void doRoomContentsLogic(float stateTime) {
+        super.doRoomContentsLogic(stateTime);
+
+        // Manage echo actors
+        echoActors.forEach(actor -> {
+            if (actor.mustRemoveFromRoom()) {
+                actor.dispose();
+            } else {
+                actor.doLogic(stateTime);
+            }
+        });
+
+        echoActors.removeIf(actor -> actor.mustRemoveFromRoom());
+
     }
 }

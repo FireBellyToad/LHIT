@@ -113,7 +113,7 @@ public abstract class AbstractRoom {
 
 
         // Place objects in room
-        for (MapObject obj : mapObjects) {
+        mapObjects.forEach(obj ->{
 
             // Prepare POI
             if (MapObjNameEnum.POI.name().equals(obj.getName())) {
@@ -136,8 +136,7 @@ public abstract class AbstractRoom {
                 addObjAsWall(obj);
                 ///splashManager.setSplashToShow("splash.strix");
             }
-
-        }
+        });
 
         worldManager.clearBodies();
         worldManager.insertPlayerIntoWorld(player, player.getStartX(), player.getStartY());

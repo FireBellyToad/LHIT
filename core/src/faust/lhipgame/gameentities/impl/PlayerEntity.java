@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.gameentities.AnimatedEntity;
-import faust.lhipgame.gameentities.Killable;
-import faust.lhipgame.gameentities.LivingEntity;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 

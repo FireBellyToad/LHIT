@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import faust.lhipgame.instances.*;
 import faust.lhipgame.instances.impl.DecorationInstance;
+import faust.lhipgame.instances.impl.EchoActorInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 
@@ -142,4 +143,14 @@ public class WorldManager {
         });
     }
 
+    /**
+     *
+     * @param echoActors
+     */
+    public void insertEchoActorsIntoWorld(List<EchoActorInstance> echoActors) {
+
+        echoActors.forEach((a) -> {
+            a.createBody(this.world, a.getStartX(), a.getStartY());
+        });
+    }
 }

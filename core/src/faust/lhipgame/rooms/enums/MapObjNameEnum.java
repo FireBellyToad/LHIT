@@ -1,5 +1,7 @@
 package faust.lhipgame.rooms.enums;
 
+import jdk.internal.jmod.JmodFile;
+
 /**
  * Enum for Map Object Type
  *
@@ -9,5 +11,6 @@ public enum MapObjNameEnum {
     POI,
     DECO,
     ENEMY,
-    WALL
+    WALL,
+    ECHO_ACTOR;
 }

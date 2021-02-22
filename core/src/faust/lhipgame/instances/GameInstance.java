@@ -83,6 +83,4 @@ public abstract class GameInstance {
     public float getStartY() {
         return startY;
     }
-
-
 }

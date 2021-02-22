@@ -153,4 +153,15 @@ public abstract class AnimatedEntity extends GameEntity {
 
         return toReturn;
     }
+
+    /**
+     * Returns if current Animation is finished, direction is UNUSED
+     *
+     * @param behavior  The behavior of the animation
+     * @param stateTime state time to render
+     * @return true if animation is finished
+     */
+    public boolean isAnimationFinished(GameBehavior behavior, float stateTime) {
+        return isAnimationFinished(behavior,Direction.UNUSED,stateTime);
+    }
 }

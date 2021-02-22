@@ -104,10 +104,10 @@ public class FixedRoom extends AbstractRoom {
 
         // Manage echo actors
         echoActors.forEach(actor -> {
+            actor.doLogic(stateTime);
+
             if (actor.mustRemoveFromRoom()) {
                 actor.dispose();
-            } else {
-                actor.doLogic(stateTime);
             }
         });
 

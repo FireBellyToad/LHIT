@@ -304,9 +304,9 @@ public abstract class AbstractRoom {
         // Do enemy logic
         enemyList.forEach((ene) -> {
 
-            if (!((Killable) ene).isDead())
-                ene.doLogic(stateTime);
-            else
+            ene.doLogic(stateTime);
+
+            if (((Killable) ene).isDead())
                 ene.dispose();
 
         });

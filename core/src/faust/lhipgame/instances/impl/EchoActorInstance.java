@@ -52,6 +52,7 @@ public class EchoActorInstance extends AnimatedInstance {
 
         //If animation is finished pass to the next step
        if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,stateTime - deltaTime)){
+           deltaTime = stateTime;
            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
            final int index = stepOrder.indexOf(currentBehavior);
            Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " end step "+ currentBehavior);
@@ -59,14 +60,11 @@ public class EchoActorInstance extends AnimatedInstance {
            //If is not last step
            if(index+1 < stepOrder.size()){
                currentBehavior = ((EchoActorEntity) entity).getStepOrder().get(index+1);
-               deltaTime = 0;
            } else {
                removeFromRoom = true;
                Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
            }
        }
-
-
     }
 
     @Override
@@ -84,9 +82,9 @@ public class EchoActorInstance extends AnimatedInstance {
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0;
-        fixtureDef.friction = 0;
-        fixtureDef.isSensor = true;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 1;
+        fixtureDef.isSensor = false;
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -104,7 +102,8 @@ public class EchoActorInstance extends AnimatedInstance {
             return;
         }
 
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, Direction.UNUSED,stateTime - deltaTime, false);
+        // Should not loop!
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, Direction.UNUSED,stateTime - deltaTime,false);
 
         batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
@@ -114,8 +113,4 @@ public class EchoActorInstance extends AnimatedInstance {
         return removeFromRoom;
     }
 
-
-    public EchoesActorType getEchoesActorType() {
-        return ((EchoActorEntity) entity).getEchoesActorType();
-    }
 }

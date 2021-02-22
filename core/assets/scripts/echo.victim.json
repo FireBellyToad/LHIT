@@ -1,12 +1,10 @@
 {
   "steps": [
     {
-      "behaviour": "IDLE",
-      "seconds": "5"
+      "behaviour": "IDLE"
     },
     {
-      "behaviour": "WALK",
-      "seconds": "5"
+      "behaviour": "WALK"
     }
   ]
 }

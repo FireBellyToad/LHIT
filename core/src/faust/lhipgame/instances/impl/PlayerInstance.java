@@ -49,7 +49,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private int availableHealthKits = 0; // available Health Kits
     private Timer.Task isHealingTimer;
     private int foundMorgengabes = 0;
-    private boolean hasHolyLance = false;
+    private int holyLancePieces = 0;
 
     public PlayerInstance() {
         super(new PlayerEntity());
@@ -554,7 +554,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 break;
             }
             case HOLY_LANCE: {
-                hasHolyLance = true;
+                holyLancePieces++;
             }
             default: {
                 Gdx.app.log("WARN", "No implementation for item" + itemFound.name());
@@ -584,6 +584,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     public Timer.Task getIsHealingTimer() {
         return isHealingTimer;
+    }
+
+    public int getHolyLancePieces() {
+        return holyLancePieces;
     }
 
     @Override
@@ -627,5 +631,4 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public int getDamageDelta() {
         return  getResistance() - damage;
     }
-
 }

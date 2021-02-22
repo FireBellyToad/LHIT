@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
+import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.POIEntity;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.GameInstance;
@@ -54,13 +55,22 @@ public class POIInstance extends GameInstance {
         //If is not already examined
         if (!isAlreadyExamined && MathUtils.randomBoolean()) {
 
+            final ItemEnum itemGiven = ((POIEntity) this.entity).getItemGiven();
+
             //Let player find item
-            player.foundItem(((POIEntity) this.entity).getItemGiven());
+            player.foundItem(itemGiven);
 
             //If has splash screen
             if(!((POIEntity) this.entity).getSplashKey().isEmpty()){
+                String splashKey = ((POIEntity) this.entity).getSplashKey();
+
+                //Holy lance has to different splashes based on pieces found
+                if(itemGiven == ItemEnum.HOLY_LANCE){
+                    splashKey+= "."+player.getHolyLancePieces();
+                }
+
                 // Show splash screen
-                splashManager.setSplashToShow(((POIEntity) this.entity).getSplashKey());
+                splashManager.setSplashToShow(splashKey);
             } else {
                 // Just show message
                 textManager.addNewTextBox(messageKey + POIEntity.FOUND_ITEM_MESSAGE_KEY_SUFFIX);

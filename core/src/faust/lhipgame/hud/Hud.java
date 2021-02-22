@@ -29,6 +29,7 @@ public class Hud {
 
     private final Vector2 meterPosition = new Vector2(2.5f, LHIPGame.GAME_HEIGHT - 10);
     private final Vector2 healthKitCountPosition = new Vector2(LHIPGame.GAME_WIDTH - 10, LHIPGame.GAME_HEIGHT - 4);
+    private final Vector2 holyLancePiecesPosition = new Vector2(LHIPGame.GAME_WIDTH - 30, LHIPGame.GAME_HEIGHT - 4);
     private final Vector2 morgengabeCountPosition = new Vector2(LHIPGame.GAME_WIDTH - 50, LHIPGame.GAME_HEIGHT - 4);
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
@@ -44,7 +45,7 @@ public class Hud {
         this.hudTexture = new SpriteEntity(new Texture("sprites/hud.png")) {
             @Override
             protected int getTextureColumns() {
-                return 4;
+                return HudIconsEnum.values().length;
             }
 
             @Override
@@ -87,6 +88,17 @@ public class Hud {
                 String.valueOf(player.getFoundMorgengabes()),
                 morgengabeCountPosition.x,
                 morgengabeCountPosition.y);
+
+        //Holy lance pieces found count
+        batch.draw(hudTexture.getFrame(HudIconsEnum.LANCE.ordinal() * GameEntity.FRAME_DURATION),
+                holyLancePiecesPosition.x - 10,
+                holyLancePiecesPosition.y - 6);
+
+        textManager.getMainFont().draw(batch,
+                String.valueOf(player.getHolyLancePieces()),
+                holyLancePiecesPosition.x,
+                holyLancePiecesPosition.y);
+
 
         //Healthkits found count
         batch.draw(hudTexture.getFrame(HudIconsEnum.HEALTH_KIT.ordinal() * GameEntity.FRAME_DURATION),

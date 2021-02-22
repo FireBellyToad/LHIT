@@ -21,13 +21,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Fixes Room class
+ * Fixed Room class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class FixedRoom extends AbstractRoom {
 
-    private List<EchoActorInstance> echoActors;
+    private List<EchoActorInstance> echoActors; //Can have Echo actors
 
     public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
         super(roomType, worldManager, textManager, splashManager, player, camera);

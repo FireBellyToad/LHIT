@@ -16,10 +16,6 @@ public class TextBoxData {
 
     }
 
-    public void setTimeToShow(float timeToShow) {
-        this.timeToShow = timeToShow;
-    }
-
     public float getTimeToShow() {
         return timeToShow;
     }

@@ -41,6 +41,8 @@ public class CasualRoom extends AbstractRoom {
 
         } else {
             casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
+            //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
+            casualNumber = MathUtils.clamp(casualNumber, 1,CasualRoom.CASUAL_TOTAL);
         }
 
         // Casual maps range from casual1.tmx to casual6.tmx, with a %d to be mapped

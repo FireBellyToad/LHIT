@@ -18,12 +18,14 @@ public class POIEntity extends SpriteEntity {
     private String messageKey;
     private ItemEnum itemGiven;
     private String splashKey;
+    private POIEnum type;
 
     public POIEntity(POIEnum type) {
         super(new Texture("sprites/poi_sheet.png"), type.ordinal());
         this.messageKey = type.getTextKey();
         this.itemGiven = type.getItemGiven();
         this.splashKey = type.getSplashKey();
+        this.type = type;
     }
 
     public String getMessageKey() {
@@ -48,4 +50,7 @@ public class POIEntity extends SpriteEntity {
         return POIEnum.values().length;
     }
 
+    public POIEnum getType() {
+        return type;
+    }
 }

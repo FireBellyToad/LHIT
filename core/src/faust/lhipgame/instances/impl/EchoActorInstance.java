@@ -113,4 +113,12 @@ public class EchoActorInstance extends AnimatedInstance {
         return removeFromRoom;
     }
 
+    /**
+     *
+     * @return TextBox key to show based on current actor step
+     */
+    public String getCurrentTextBoxToShow(){
+        return ((EchoActorEntity) entity).getTextBoxPerStep(currentBehavior);
+    }
+
 }

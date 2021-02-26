@@ -227,8 +227,10 @@ public class RoomsManager {
             newYPosInMatrix = (int) (mainWorldSize.y-2);
         }
 
+        //Change room and clear nearest poi reference
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
             changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
+            player.clearNearestPoiReference();
         }
     }
 

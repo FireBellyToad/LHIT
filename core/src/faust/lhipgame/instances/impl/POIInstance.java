@@ -146,4 +146,8 @@ public class POIInstance extends GameInstance {
     public void setAlreadyExamined(boolean alreadyExamined) {
         isAlreadyExamined = alreadyExamined;
     }
+
+    public POIEnum getType() {
+        return ((POIEntity) entity).getType();
+    }
 }

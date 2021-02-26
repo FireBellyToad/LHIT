@@ -143,7 +143,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void postHurtLogic() {
-        //Nothing to do that here... yet
+        //Nothing to do here... yet
     }
 
     /**
@@ -630,5 +630,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public int getDamageDelta() {
         return  getResistance() - damage;
+    }
+
+    public void clearNearestPoiReference() {
+        nearestPOIInstance = null;
     }
 }

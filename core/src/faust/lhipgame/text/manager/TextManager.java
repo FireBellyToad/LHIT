@@ -27,6 +27,7 @@ public class TextManager {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float MESSAGE_LIMIT = 1;
+    private static final int TOTAL_TEXTBOX_HEIGHT = 34;
 
     private BitmapFont mainFont;
     private List<TextBoxData> textBoxes = new ArrayList<>();
@@ -36,6 +37,7 @@ public class TextManager {
     private final ShapeRenderer cornerBox = new ShapeRenderer();
     private static final Color corner = new Color(0xffffffff);
     private static final Color back = new Color(0x222222ff);
+    private Timer.Task currentTimer;
 
     public TextManager() {
 
@@ -62,6 +64,13 @@ public class TextManager {
 
         if (textBoxes.size() == MESSAGE_LIMIT) {
             textBoxes.remove(0);
+            currentTimer.cancel();
+            currentTimer = null;
+        };
+
+        if (Objects.nonNull(currentTimer)) {
+            currentTimer.cancel();
+            currentTimer = null;
         }
 
         //Create text box given a textKey. If no text is found, use key as text
@@ -69,11 +78,13 @@ public class TextManager {
         textBoxes.add(newText);
 
         // Hide box after time
-        Timer.schedule(new Timer.Task() {
+        currentTimer = Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 if(!textBoxes.isEmpty()){
                     textBoxes.remove(newText);
+                    currentTimer.cancel();
+                    currentTimer = null;
                 }
             }
         }, newText.getTimeToShow());
@@ -88,7 +99,7 @@ public class TextManager {
     public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera,boolean splashScreenIsDrawn) {
 
         // Remove box if player is under a certain boundary and there is no splash screen
-        if(!splashScreenIsDrawn && player.getBody().getPosition().y <= 48){
+        if(!splashScreenIsDrawn && player.getBody().getPosition().y <= TOTAL_TEXTBOX_HEIGHT){
             textBoxes.clear();
             return;
         }
@@ -101,20 +112,20 @@ public class TextManager {
             cornerBox.setColor(corner);
             cornerBox.setProjectionMatrix(camera.combined);
             cornerBox.begin(ShapeRenderer.ShapeType.Filled);
-            cornerBox.rect(0, 0, LHIPGame.GAME_WIDTH, 48);
+            cornerBox.rect(0, 0, LHIPGame.GAME_WIDTH, TOTAL_TEXTBOX_HEIGHT);
             cornerBox.end();
 
             //Black Background
             backgroundBox.setColor(back);
             backgroundBox.setProjectionMatrix(camera.combined);
             backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH-4, 44);
+            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH-4, TOTAL_TEXTBOX_HEIGHT -4);
             backgroundBox.end();
             batch.end();
 
             //Text
             batch.begin();
-            mainFont.draw(batch, box.getText(), 6, 40);
+            mainFont.draw(batch, box.getText(), 6, TOTAL_TEXTBOX_HEIGHT-8);
             batch.end();
         });
     }

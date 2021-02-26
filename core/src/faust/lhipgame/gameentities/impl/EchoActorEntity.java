@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import faust.lhipgame.echoes.enums.EchoesActorType;
 import faust.lhipgame.gameentities.AnimatedEntity;
+import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 
 import java.util.*;
@@ -22,9 +23,9 @@ public class EchoActorEntity extends AnimatedEntity {
 
     private final EchoesActorType echoesActorType;
 
-    //Seconds of each step, ordered
-    private final Map<GameBehavior, Float> secondsPerStep = new LinkedHashMap<>();
+    //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();
+    protected Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType) {
         super(new Texture(echoesActorType.getSpriteFilename()));
@@ -44,10 +45,12 @@ public class EchoActorEntity extends AnimatedEntity {
 
         parsedSteps.forEach((s) -> {
             GameBehavior behaviour = GameBehavior.getFromString(s.getString("behaviour"));
-            float seconds = s.getFloat("seconds");
             Objects.requireNonNull(behaviour);
-            secondsPerStep.put(behaviour, seconds);
             stepOrder.add(behaviour);
+
+            if (s.has("textBoxKey")) {
+                textBoxPerStep.put(behaviour, s.getString("textBoxKey"));
+            }
         });
 
     }
@@ -83,4 +86,14 @@ public class EchoActorEntity extends AnimatedEntity {
     public EchoesActorType getEchoesActorType() {
         return echoesActorType;
     }
+
+    /**
+     * Get text box to show given "step"
+     * @param step
+     * @return can be null
+     */
+    public String getTextBoxPerStep(GameBehavior step){
+        return textBoxPerStep.get(step);
+    }
+
 }

@@ -1,10 +1,12 @@
 {
   "steps": [
     {
-      "behaviour": "IDLE"
+      "behaviour": "IDLE",
+      "textBoxKey": "echo.tree.first"
     },
     {
-      "behaviour": "WALK"
+      "behaviour": "WALK",
+      "textBoxKey": "echo.tree.second"
     }
   ]
 }

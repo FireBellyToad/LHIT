@@ -8,13 +8,13 @@
 
     "splash.strix": "I HEARD A LOUD BUZZ",
     "splash.morgengabe": "I FOUND A PRECIOUS \nMORGENGABIUM",
-    "splash.holy.1": "I FOUND A PIECE OF THE \nMIGHTY HOLY LANCE",
-    "splash.holy.2": "I NOW POSSES THE MIGHTY \nHOLY LANCE",
+    "splash.holy.1": "I FOUND A PIECE OF \nTHE MIGHTY HOLY LANCE",
+    "splash.holy.2": "I NOW POSSES THE \nMIGHTY HOLY LANCE",
 
-    "echo.drowning.first.": "I CAN'T BREATH!!!",
-    "echo.drowning.second.": "HEEELP MEEE!",
+    "echo.boat.first": "I CAN'T BREATH!!!",
+    "echo.boat.second": "HEEELP MEEE!",
 
-    "echo.boat.first.": "ORCUS DOMINAT",
-    "echo.boat.second.": "PERIT UT VIVAT"
+    "echo.tree.first": "ORCUS DOMINAT",
+    "echo.tree.second": "PERIT UT VIVAT"
   }
 }

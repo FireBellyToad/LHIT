@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
-import faust.lhipgame.rooms.RoomNumberSaveEntry;
+import faust.lhipgame.rooms.RoomSaveEntry;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.rooms.impl.CasualRoom;
 import faust.lhipgame.rooms.impl.FixedRoom;
@@ -27,7 +27,7 @@ public class RoomsManager {
      * MainWorld Matrix
      */
     private final Map<Vector2, RoomType> mainWorld = new HashMap<>();
-    private final Map<Vector2,RoomNumberSaveEntry> saveMap = new HashMap<>();
+    private final Map<Vector2, RoomSaveEntry> saveMap = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
 
     private WorldManager worldManager;
@@ -85,7 +85,7 @@ public class RoomsManager {
                 boolean arePoiCleared = t.getBoolean("poiCleared");
                 Objects.requireNonNull(casualNumberPredefined);
 
-                saveMap.put(v, new RoomNumberSaveEntry(
+                saveMap.put(v, new RoomSaveEntry(
                         (int) v.x, (int) v.y, casualNumberPredefined,
                         arePoiCleared));
             });
@@ -128,13 +128,13 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera);
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, saveMap.get(currentRoomPosInWorld));
                 break;
             }
         }
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld,
-                new RoomNumberSaveEntry(
+                new RoomSaveEntry(
                         (int) finalX,
                         (int) finalY,
                         roomCasualNumber,

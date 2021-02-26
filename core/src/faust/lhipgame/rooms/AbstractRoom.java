@@ -26,7 +26,6 @@ import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,6 +58,8 @@ public abstract class AbstractRoom {
     protected SplashManager splashManager;
     protected TextManager textManager;
 
+    protected boolean mustClearPOI = false;
+
     /**
      * Constructor without additional loader argouments
      *
@@ -71,7 +72,7 @@ public abstract class AbstractRoom {
      */
     @SuppressWarnings("unchecked")
     public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera) {
-        this(roomType, worldManager, textManager, splashManager, player, camera, Collections.emptyList());
+        this(roomType, worldManager, textManager, splashManager, player, camera, null);
     }
 
     /**
@@ -83,9 +84,9 @@ public abstract class AbstractRoom {
      * @param splashManager
      * @param player
      * @param camera
-     * @param additionalLoadArgs
+     * @param roomSaveEntry
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, Object... additionalLoadArgs) {
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final RoomSaveEntry roomSaveEntry) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -94,7 +95,7 @@ public abstract class AbstractRoom {
         // Load tiled map by name
         this.roomType = roomType;
         this.roomFileName = "terrains/" + roomType.getMapFileName();
-        loadTiledMap(additionalLoadArgs);
+        loadTiledMap(roomSaveEntry);
 
         // Extract mapObjects
         mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
@@ -168,9 +169,9 @@ public abstract class AbstractRoom {
     /**
      * Implements tiled map load
      *
-     * @param additionalLoadArguments if needed
+     * @param roomSaveEntry if needed
      */
-    protected abstract void loadTiledMap(Object[] additionalLoadArguments);
+    protected abstract void loadTiledMap(RoomSaveEntry roomSaveEntry);
 
     /**
      * Add a object as POI

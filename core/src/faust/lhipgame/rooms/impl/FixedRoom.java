@@ -10,6 +10,7 @@ import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.impl.EchoActorInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
+import faust.lhipgame.rooms.RoomSaveEntry;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.splash.SplashManager;
@@ -28,16 +29,20 @@ import java.util.Objects;
 public class FixedRoom extends AbstractRoom {
 
     private List<EchoActorInstance> echoActors; //Can have Echo actors
+    private boolean echoIsActivated = false;
 
-    public FixedRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
-        super(roomType, worldManager, textManager, splashManager, player, camera);
+    public FixedRoom( final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final RoomSaveEntry roomSaveEntry) {
+        super(roomType, worldManager, textManager, splashManager, player, camera, roomSaveEntry);
     }
 
     @Override
-    protected void loadTiledMap(Object[] additionalLoadArguments) {
+    protected void loadTiledMap(RoomSaveEntry roomSaveEntry) {
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+
+        // FIXME handle multiple POI
+        mustClearPOI = roomSaveEntry.poiCleared;
 
     }
 
@@ -52,6 +57,10 @@ public class FixedRoom extends AbstractRoom {
         });
 
         worldManager.insertEchoActorsIntoWorld(echoActors);
+        // FIXME handle multiple POI
+        if(mustClearPOI){
+            this.poiList.forEach(poi -> poi.setAlreadyExamined(true));
+        }
 
     }
 
@@ -80,7 +89,7 @@ public class FixedRoom extends AbstractRoom {
         allInstance.add(player);
         allInstance.addAll(enemyList);
 
-        if (Objects.nonNull(echoActors)) {
+        if (echoIsActivated && Objects.nonNull(echoActors)) {
             allInstance.addAll(echoActors);
         }
 
@@ -103,15 +112,17 @@ public class FixedRoom extends AbstractRoom {
         super.doRoomContentsLogic(stateTime);
 
         // Manage echo actors
-        echoActors.forEach(actor -> {
-            actor.doLogic(stateTime);
+        if(echoIsActivated){
+            echoActors.forEach(actor -> {
+                actor.doLogic(stateTime);
 
-            if (actor.mustRemoveFromRoom()) {
-                actor.dispose();
-            }
-        });
+                if (actor.mustRemoveFromRoom()) {
+                    actor.dispose();
+                }
+            });
 
-        echoActors.removeIf(actor -> actor.mustRemoveFromRoom());
+            echoActors.removeIf(actor -> actor.mustRemoveFromRoom());
+        }
 
     }
 }

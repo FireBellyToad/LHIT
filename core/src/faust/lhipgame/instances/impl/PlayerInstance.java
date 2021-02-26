@@ -590,6 +590,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         return holyLancePieces;
     }
 
+    public void setHolyLancePieces(int holyLancePieces) {
+        this.holyLancePieces = holyLancePieces;
+    }
+
     @Override
     public boolean keyTyped(char character) {
         return false;

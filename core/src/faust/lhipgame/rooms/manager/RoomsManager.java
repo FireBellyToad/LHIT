@@ -64,25 +64,37 @@ public class RoomsManager {
         // Finalize size
         mainWorldSize.set(mainWorldSize.x + 1, mainWorldSize.y + 1);
 
-        loadPredefinedCasualRoomNumbers();
+        loadRoomSaveEntry();
     }
 
     /**
-     * Load predefined casual room numbers
+     * Load saved room info
      */
-    private void loadPredefinedCasualRoomNumbers() {
+    private void loadRoomSaveEntry() {
         //Try to load predefined casualnumbers for casual rooms from file
         try {
-            JsonValue numbers = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
+            JsonValue file = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
 
-            if(Objects.isNull(numbers)){
+            if(Objects.isNull(file)){
                 return;
             }
 
-            numbers.forEach((t) -> {
-                Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
-                int casualNumberPredefined = t.getInt("casualNumber");
-                boolean arePoiCleared = t.getBoolean("poiCleared");
+            //TODO spostare altrove se possibile
+            JsonValue playerInfo = file.get("playerInfo");
+            if(Objects.isNull(playerInfo)){
+                return;
+            }
+            player.setHolyLancePieces(playerInfo.getInt("lance"));
+
+            JsonValue rooms = file.get("rooms");
+            if(Objects.isNull(rooms)){
+                return;
+            }
+
+            rooms.forEach((roomSaveEntry) -> {
+                Vector2 v = new Vector2(roomSaveEntry.getFloat("x"), roomSaveEntry.getFloat("y"));
+                int casualNumberPredefined = roomSaveEntry.getInt("casualNumber");
+                boolean arePoiCleared = roomSaveEntry.getBoolean("poiCleared");
                 Objects.requireNonNull(casualNumberPredefined);
 
                 saveMap.put(v, new RoomSaveEntry(
@@ -272,8 +284,10 @@ public class RoomsManager {
     private void saveOnFile() {
 
         //TODO per nome della partita
+        //TODO improve structure
         Json json = new Json();
-        String saveFile = json.toJson(saveMap.values());
+        String saveFile = "{ \"playerInfo\" : { \"lance\":" + player.getHolyLancePieces()+ "},";
+        saveFile += "\"rooms\":" + json.toJson(saveMap.values())+ " }";
         Gdx.files.local("saves/mainWorldSave.json").writeString(saveFile, false);
     }
 }

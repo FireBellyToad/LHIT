@@ -8,6 +8,8 @@ import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.EchoActorInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.rooms.areas.EmergedArea;
+import faust.lhipgame.rooms.areas.WallArea;
 
 import java.util.List;
 import java.util.Objects;
@@ -137,9 +139,19 @@ public class WorldManager {
      * Insert static walls into world
      * @param wallList
      */
-    public void insertWallsIntoWorld(List<WallInstance> wallList) {
+    public void insertWallsIntoWorld(List<WallArea> wallList) {
         wallList.forEach((w) -> {
             w.createBody(this.world);
+        });
+    }
+
+    /**
+     * Insert static emerged areas into world
+     * @param areasList
+     */
+    public void insertEmergedAreasIntoWorld(List<EmergedArea> areasList) {
+        areasList.forEach((a) -> {
+            a.createBody(this.world);
         });
     }
 

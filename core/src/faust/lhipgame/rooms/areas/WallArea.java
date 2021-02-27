@@ -1,32 +1,25 @@
-package faust.lhipgame.instances;
+package faust.lhipgame.rooms.areas;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
-import java.awt.*;
 import java.util.Objects;
 
 /**
- * Static invisible Wall instance. Doesn't need anything from GameInstance
+ * Static invisible Wall area.
  * @author Jacopo "Faust" Buttiglieri
  */
-public class WallInstance {
+public class WallArea {
 
     private Body body;
     private Rectangle wallRect;
 
-    public WallInstance(float x,float y,float w,float h) {
-        this.wallRect = new Rectangle((int) x,(int) y,(int) w,(int) h);
+    public WallArea(Rectangle wallRect) {
+        this.wallRect = wallRect;
     }
 
     public Body getBody() {
         return body;
-    }
-    public Rectangle getWallRect() {
-        return wallRect;
-    }
-
-    public void setBody(Body body) {
-        this.body = body;
     }
 
     public void dispose() {

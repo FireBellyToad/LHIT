@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -13,7 +15,8 @@ import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.instances.WallInstance;
+import faust.lhipgame.rooms.areas.EmergedArea;
+import faust.lhipgame.rooms.areas.WallArea;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
@@ -51,7 +54,8 @@ public abstract class AbstractRoom {
     protected List<POIInstance> poiList;
     protected List<DecorationInstance> decorationList;
     protected List<AnimatedInstance> enemyList;
-    protected List<WallInstance> wallList;
+    protected List<WallArea> wallList;
+    protected List<EmergedArea> emergedAreaList;
     protected PlayerInstance player;
     protected RoomType roomType;
     protected String roomFileName;
@@ -111,7 +115,7 @@ public abstract class AbstractRoom {
         decorationList = new ArrayList<>();
         enemyList = new ArrayList<>();
         wallList = new ArrayList<>();
-
+        emergedAreaList = new ArrayList<>();
 
         // Place objects in room
         mapObjects.forEach(obj ->{
@@ -137,6 +141,11 @@ public abstract class AbstractRoom {
                 addObjAsWall(obj);
                 ///splashManager.setSplashToShow("splash.strix");
             }
+
+            // Prepare enemy (casual choice)
+            if (MapObjNameEnum.EMERGED.name().equals(obj.getName())) {
+                addObjAsEmerged(obj);
+            }
         });
 
         worldManager.clearBodies();
@@ -145,6 +154,7 @@ public abstract class AbstractRoom {
         worldManager.insertDecorationsIntoWorld(decorationList);
         worldManager.insertEnemiesIntoWorld(enemyList);
         worldManager.insertWallsIntoWorld(wallList);
+        worldManager.insertEmergedAreasIntoWorld(emergedAreaList);
         player.changePOIList(poiList);
 
         // Do other stuff
@@ -157,13 +167,20 @@ public abstract class AbstractRoom {
      */
     protected void addObjAsWall(MapObject obj){
 
-        wallList.add(new WallInstance(
-                (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"),
-                (float) obj.getProperties().get("width"),
-                (float) obj.getProperties().get("height")));
+        RectangleMapObject mapObject = (RectangleMapObject) obj;
 
+        wallList.add(new WallArea(mapObject.getRectangle()));
+    }
 
+    /**
+     * Add invisible emerged areas
+     * @param obj
+     */
+    protected void addObjAsEmerged(MapObject obj){
+
+        PolygonMapObject mapObject = (PolygonMapObject) obj;
+
+        emergedAreaList.add(new EmergedArea(mapObject.getPolygon()));
     }
 
     /**
@@ -288,6 +305,7 @@ public abstract class AbstractRoom {
         decorationList.forEach((deco) -> deco.dispose());
         poiList.forEach((poi) -> poi.dispose());
         wallList.forEach((wall) -> wall.dispose());
+        emergedAreaList.forEach((emergedArea) -> emergedArea.dispose());
     }
 
     public RoomType getRoomType() {

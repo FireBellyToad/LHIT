@@ -285,7 +285,8 @@ public abstract class AbstractRoom {
     protected int compareEntities(GameInstance o1, GameInstance o2) {
         if (o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
-                (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted())) {
+                (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted()) ||
+                (o2 instanceof POIInstance && POIEnum.SKELETON.equals(((POIInstance) o2).getType()))) {
             return 1;
         } else if (o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
                 (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {

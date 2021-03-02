@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.instances.impl.StrixInstance;
+import faust.lhipgame.rooms.areas.EmergedArea;
 
 import java.util.Objects;
 
@@ -37,7 +38,14 @@ public class CollisionManager implements ContactListener {
      * @param contact
      */
     private void handlePlayerBeginContact(Contact contact) {
-        
+        // Handle emerged area begin
+        if(isContactOfClass(contact, EmergedArea.class)){
+            //Player emerges from water
+            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
+            pInst.setSubmerged(false);
+        }
+
+
         // Handle Decoration Collision
         if(isContactOfClass(contact, DecorationInstance.class)){
             //If decoration is passable, just do and Interaction. Else stop the player
@@ -73,6 +81,13 @@ public class CollisionManager implements ContactListener {
      * @param contact
      */
     private void handlePlayerEndContact(Contact contact) {
+        // Handle emerged area end
+        if(isContactOfClass(contact, EmergedArea.class)){
+            //Player submerges in water
+            PlayerInstance pInst = ((PlayerInstance) getCorrectFixture(contact,PlayerInstance.class).getBody().getUserData());
+            pInst.setSubmerged(true);
+        }
+
         // Handle Decoration Collision end
         if(isContactOfClass(contact, DecorationInstance.class)){
             //If decoration is passable, just end interaction

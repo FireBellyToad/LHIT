@@ -1,5 +1,6 @@
 package faust.lhipgame.instances;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,10 +30,13 @@ public abstract class GameInstance {
     protected float startX = LHIPGame.GAME_WIDTH / 2;
     protected float startY = LHIPGame.GAME_HEIGHT / 2;
 
+    protected ParticleEmitter particleEmitter;
+
     public GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);
 
         this.entity = entity;
+        this.particleEmitter = new ParticleEmitter();
     }
 
     /**

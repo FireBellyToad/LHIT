@@ -3,6 +3,8 @@ package faust.lhipgame.instances.impl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
@@ -50,12 +52,21 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private Timer.Task isHealingTimer;
     private int foundMorgengabes = 0;
     private int holyLancePieces = 0;
+    private boolean isSubmerged = false;
+
+    private ParticleEffect waterWalkEffect;
 
     public PlayerInstance() {
         super(new PlayerEntity());
         currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor(this);
+
+        // Init waterwalk effect
+        waterWalkEffect = new ParticleEffect();
+        // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
+        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk_test"), Gdx.files.internal("sprites/"));
+        waterWalkEffect.start();
     }
 
     @Override
@@ -130,6 +141,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 nearestPOIInstance.setEnableFlicker(true);
             }
         }
+
+        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
     }
 
     @Override
@@ -221,11 +234,25 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
         }
 
+        //Draw watersteps if submerged
+        if(isSubmerged){
+            waterWalkEffect.update(Gdx.graphics.getDeltaTime());
+            waterWalkEffect.draw(batch);
+            yOffset +=2;
+            // Do not loop if is not doing anything
+            if(waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)){
+                waterWalkEffect.reset();
+            }
+        } else {
+            waterWalkEffect.reset();
+        }
+
         //Draw shadow
         batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw Walfrit
         batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
+
 
     }
 
@@ -594,6 +621,37 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         this.holyLancePieces = holyLancePieces;
     }
 
+
+    /**
+     * @return true if the damage is greater or equal than the resitance
+     */
+    @Override
+    public boolean isDead() {
+        return this.damage >= getResistance();
+    }
+
+    public int getDamageDelta() {
+        return  getResistance() - damage;
+    }
+
+    public void cleanReferences() {
+        nearestPOIInstance = null;
+        //Reset particle emitter and change position
+        final ParticleEmitter firstEmitter = waterWalkEffect.getEmitters().first();
+        firstEmitter.setPosition(startX,startY);
+        firstEmitter.reset();
+    }
+
+    public void setSubmerged(boolean submerged) {
+        isSubmerged = submerged;
+    }
+
+    @Override
+    public void dispose(){
+        super.dispose();
+        waterWalkEffect.dispose();
+    }
+
     @Override
     public boolean keyTyped(char character) {
         return false;
@@ -622,21 +680,5 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public boolean scrolled(int amount) {
         return false;
-    }
-
-    /**
-     * @return true if the damage is greater or equal than the resitance
-     */
-    @Override
-    public boolean isDead() {
-        return this.damage >= getResistance();
-    }
-
-    public int getDamageDelta() {
-        return  getResistance() - damage;
-    }
-
-    public void clearNearestPoiReference() {
-        nearestPOIInstance = null;
     }
 }

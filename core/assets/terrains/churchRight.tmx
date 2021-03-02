@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="24">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="25">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -20,5 +20,8 @@
  <objectgroup id="2" name="Livello di oggetti 1">
   <object id="22" name="WALL" x="0" y="0" width="16" height="86"/>
   <object id="23" name="WALL" x="16" y="-0.25" width="144" height="16"/>
+  <object id="24" name="EMERGED" x="-3.5" y="37.75">
+   <polygon points="3.5,-38 167.5,-37.5 163.375,-14.875 90.5,1 89,32.5 60.5,33.5 38,79.875 3.75,106.25"/>
+  </object>
  </objectgroup>
 </map>

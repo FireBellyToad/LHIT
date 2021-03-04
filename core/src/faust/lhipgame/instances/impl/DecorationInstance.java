@@ -1,5 +1,6 @@
 package faust.lhipgame.instances.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -24,8 +25,8 @@ public class DecorationInstance extends GameInstance implements Interactable {
 
     private boolean interacted = false;
 
-    public DecorationInstance(float x, float y, DecorationsEnum type) {
-        super(new DecorationEntity(type));
+    public DecorationInstance(float x, float y, DecorationsEnum type, AssetManager assetManager) {
+        super(new DecorationEntity(type,assetManager));
         // Add Position Y offset for better position from tiled
         this.startX = x ;
         this.startY = y + POSITION_OFFSET;

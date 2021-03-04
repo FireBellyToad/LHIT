@@ -2,6 +2,7 @@ package faust.lhipgame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,6 +21,7 @@ import faust.lhipgame.world.manager.WorldManager;
 
 public class GameScreen implements Screen {
 
+    private AssetManager assetManager;
     private WorldManager worldManager;
     private PlayerInstance player;
     private TextManager textManager;
@@ -39,6 +41,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(LHIPGame game) {
         this.game = game;
+        this.assetManager = game.getAssetManager();
     }
 
     @Override
@@ -48,15 +51,15 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
         viewport = new FillViewport(LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT, camera);
 
-        worldManager = new WorldManager();
-        textManager = new TextManager();
-        hud = new Hud(textManager);
-        splashManager = new SplashManager(textManager);
+        worldManager = new WorldManager(assetManager);
+        textManager = new TextManager(assetManager);
+        hud = new Hud(textManager,assetManager);
+        splashManager = new SplashManager(textManager,assetManager);
 
         // Creating player and making it available to input processor
-        player = new PlayerInstance();
+        player = new PlayerInstance(assetManager);
 
-        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, camera);
+        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, camera, assetManager);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 

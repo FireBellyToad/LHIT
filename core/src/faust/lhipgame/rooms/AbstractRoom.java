@@ -1,5 +1,6 @@
 package faust.lhipgame.rooms;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -15,12 +16,12 @@ import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.rooms.areas.EmergedArea;
-import faust.lhipgame.rooms.areas.WallArea;
 import faust.lhipgame.instances.impl.DecorationInstance;
 import faust.lhipgame.instances.impl.POIInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.instances.impl.StrixInstance;
+import faust.lhipgame.rooms.areas.EmergedArea;
+import faust.lhipgame.rooms.areas.WallArea;
 import faust.lhipgame.rooms.enums.MapLayersEnum;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
@@ -75,8 +76,8 @@ public abstract class AbstractRoom {
      * @param camera
      */
     @SuppressWarnings("unchecked")
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera) {
-        this(roomType, worldManager, textManager, splashManager, player, camera, null);
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager) {
+        this(roomType, worldManager, textManager, splashManager, player, camera, assetManager, null);
     }
 
     /**
@@ -90,7 +91,7 @@ public abstract class AbstractRoom {
      * @param camera
      * @param roomSaveEntry
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final RoomSaveEntry roomSaveEntry) {
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry ) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -122,24 +123,23 @@ public abstract class AbstractRoom {
 
             // Prepare POI
             if (MapObjNameEnum.POI.name().equals(obj.getName())) {
-                addObjAsPOI(obj, textManager);
+                addObjAsPOI(obj, textManager, assetManager);
             }
 
             // Prepare decoration
             if (MapObjNameEnum.DECO.name().equals(obj.getName())) {
-                addObjAsDecoration(obj);
+                addObjAsDecoration(obj, assetManager);
             }
 
             // Prepare enemy (casual choice)
             if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && MathUtils.randomBoolean()) {
-                addObjAsEnemy(obj);
+                addObjAsEnemy(obj, assetManager);
                 splashManager.setSplashToShow("splash.strix");
             }
 
             // Prepare enemy (casual choice)
             if (MapObjNameEnum.WALL.name().equals(obj.getName())) {
                 addObjAsWall(obj);
-                ///splashManager.setSplashToShow("splash.strix");
             }
 
             // Prepare enemy (casual choice)
@@ -158,7 +158,7 @@ public abstract class AbstractRoom {
         player.changePOIList(poiList);
 
         // Do other stuff
-        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera);
+        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
     }
 
     /**
@@ -196,7 +196,7 @@ public abstract class AbstractRoom {
      * @param obj
      * @param textManager
      */
-    protected void addObjAsPOI(MapObject obj, TextManager textManager) {
+    protected void addObjAsPOI(MapObject obj, TextManager textManager, AssetManager assetManager) {
 
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
@@ -204,7 +204,7 @@ public abstract class AbstractRoom {
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager));
+                poiType, player, splashManager, assetManager));
     }
 
     ;
@@ -214,7 +214,7 @@ public abstract class AbstractRoom {
      *
      * @param obj MapObject to add
      */
-    protected void addObjAsDecoration(MapObject obj) {
+    protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
 
         DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(decoType);
@@ -222,7 +222,7 @@ public abstract class AbstractRoom {
         decorationList.add(new DecorationInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                decoType));
+                decoType, assetManager));
     }
 
     /**
@@ -230,13 +230,14 @@ public abstract class AbstractRoom {
      *
      * @param obj MapObject to add
      */
-    protected void addObjAsEnemy(MapObject obj) {
+    protected void addObjAsEnemy(MapObject obj, AssetManager assetManager) {
 
         //FIXME add different enemy types
         enemyList.add(new StrixInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                player));
+                player,
+                assetManager));
     }
 
     /**
@@ -248,7 +249,7 @@ public abstract class AbstractRoom {
      * @param splashManager
      * @param camera
      */
-    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera);
+    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
 
     /**
      * Draws room background

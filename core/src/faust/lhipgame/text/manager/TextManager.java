@@ -2,6 +2,7 @@ package faust.lhipgame.text.manager;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -39,7 +40,7 @@ public class TextManager {
     private static final Color back = new Color(0x222222ff);
     private Timer.Task currentTimer;
 
-    public TextManager() {
+    public TextManager(AssetManager assetManager) {
 
         // Prepare font
         mainFont = new BitmapFont(Gdx.files.internal("fonts/main_font.fnt"),
@@ -64,8 +65,6 @@ public class TextManager {
 
         if (textBoxes.size() == MESSAGE_LIMIT) {
             textBoxes.remove(0);
-            currentTimer.cancel();
-            currentTimer = null;
         };
 
         if (Objects.nonNull(currentTimer)) {

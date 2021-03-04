@@ -1,6 +1,7 @@
 package faust.lhipgame.instances.impl;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -33,8 +34,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     private PlayerInstance target;
     private Timer.Task leechLifeTimer;
 
-    public StrixInstance(float x, float y, PlayerInstance target) {
-        super(new StrixEntity());
+    public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
+        super(new StrixEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;

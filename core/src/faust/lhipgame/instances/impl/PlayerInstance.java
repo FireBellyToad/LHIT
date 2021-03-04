@@ -3,6 +3,7 @@ package faust.lhipgame.instances.impl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -56,8 +57,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private ParticleEffect waterWalkEffect;
 
-    public PlayerInstance() {
-        super(new PlayerEntity());
+    public PlayerInstance(AssetManager assetManager) {
+        super(new PlayerEntity(assetManager));
         currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor(this);

@@ -1,5 +1,6 @@
 package faust.lhipgame.instances.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -34,8 +35,8 @@ public class POIInstance extends GameInstance {
     private SplashManager splashManager;
 
 
-    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager) {
-        super(new POIEntity(poiType));
+    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager) {
+        super(new POIEntity(poiType, assetManager));
         this.textManager = textManager;
         this.player = player;
         this.startX = x;

@@ -1,5 +1,6 @@
 package faust.lhipgame.gameentities.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,9 +19,9 @@ public class PlayerEntity extends AnimatedEntity {
 
     private Texture shadow;
 
-    public PlayerEntity() {
-        super(new Texture("sprites/walfrit_sheet.png"));
-        shadow = new Texture("sprites/shadow.png");
+    public PlayerEntity(AssetManager assetManager) {
+        super(assetManager.get("sprites/walfrit_sheet.png"));
+        shadow = assetManager.get("sprites/shadow.png");
     }
 
     @Override

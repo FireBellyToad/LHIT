@@ -2,8 +2,8 @@ package faust.lhipgame.echoes.enums;
 
 public enum EchoesActorType {
     DISCIPULUS("echo.discipulus.json","sprites/discipulus_sheet.png"),
-    VICTIM("echo.victim.json","sprites/victim_sheet.png"),
-    CADAVER("echo.cadaver.json","sprites/cadaver_sheet.png");
+    VICTIM("echo.victim.json","sprites/victim_sheet.png");
+   // CADAVER("echo.cadaver.json","sprites/cadaver_sheet.png");
 
     private String filename;
     private String spriteFilename;

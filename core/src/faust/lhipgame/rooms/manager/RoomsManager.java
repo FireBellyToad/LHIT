@@ -1,6 +1,7 @@
 package faust.lhipgame.rooms.manager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -20,6 +21,7 @@ import java.util.*;
 public class RoomsManager {
 
     private final SplashManager splashManager;
+    private final AssetManager assetManager;
     private AbstractRoom currentRoom;
     private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
 
@@ -35,10 +37,11 @@ public class RoomsManager {
     private PlayerInstance player;
     private OrthographicCamera camera;
 
-    public RoomsManager(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
+    public RoomsManager(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         this.worldManager = worldManager;
         this.textManager = textManager;
         this.splashManager = splashManager;
+        this.assetManager = assetManager;
         this.player = player;
         this.camera = camera;
 
@@ -132,7 +135,7 @@ public class RoomsManager {
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
 
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, saveMap.get(currentRoomPosInWorld));
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld));
 
                 // Save casualnumber in memory and prepare save on filesystem
                 roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
@@ -140,7 +143,7 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, saveMap.get(currentRoomPosInWorld));
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld));
                 break;
             }
         }

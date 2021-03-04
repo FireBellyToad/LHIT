@@ -1,5 +1,6 @@
 package faust.lhipgame.gameentities.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.ItemEnum;
@@ -20,8 +21,8 @@ public class POIEntity extends SpriteEntity {
     private String splashKey;
     private POIEnum type;
 
-    public POIEntity(POIEnum type) {
-        super(new Texture("sprites/poi_sheet.png"), type.ordinal());
+    public POIEntity(POIEnum type, AssetManager assetManager) {
+        super(assetManager.get("sprites/poi_sheet.png"), type.ordinal());
         this.messageKey = type.getTextKey();
         this.itemGiven = type.getItemGiven();
         this.splashKey = type.getSplashKey();

@@ -1,5 +1,6 @@
 package faust.lhipgame.hud;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,10 +40,10 @@ public class Hud {
     private final ShapeRenderer cornerBox = new ShapeRenderer();
     private static final Color corner = new Color(0xffffffff);
 
-    public Hud(TextManager textManager) {
+    public Hud(TextManager textManager, AssetManager assetManager) {
 
         this.textManager = textManager;
-        this.hudTexture = new SpriteEntity(new Texture("sprites/hud.png")) {
+        this.hudTexture = new SpriteEntity(assetManager.get("sprites/hud.png")) {
             @Override
             protected int getTextureColumns() {
                 return HudIconsEnum.values().length;

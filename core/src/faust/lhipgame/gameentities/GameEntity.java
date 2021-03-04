@@ -25,14 +25,6 @@ public abstract class GameEntity {
         return texture;
     }
 
-    /**
-     * Disposing internal resources
-     */
-    public void dispose() {
-        this.texture.dispose();
-    }
-
-
     protected TextureRegion[] getFramesFromTexture() {
         // Use the split utility method to create a 2D array of TextureRegions.
         // The sprite sheet MUST contain frames of equal size and they MUST be

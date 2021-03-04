@@ -1,5 +1,6 @@
 package faust.lhipgame.gameentities.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
@@ -11,8 +12,8 @@ public class DecorationEntity extends SpriteEntity {
 
     private DecorationsEnum type;
 
-    public DecorationEntity(DecorationsEnum decorationType) {
-        super(new Texture("sprites/decorations_sheet.png"), decorationType.ordinal());
+    public DecorationEntity(DecorationsEnum decorationType, AssetManager assetManager) {
+        super(assetManager.get("sprites/decorations_sheet.png"), decorationType.ordinal());
 
         this.type = decorationType;
     }

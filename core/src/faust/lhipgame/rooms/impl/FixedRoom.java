@@ -1,5 +1,6 @@
 package faust.lhipgame.rooms.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -38,8 +39,8 @@ public class FixedRoom extends AbstractRoom {
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;
 
-    public FixedRoom( final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final RoomSaveEntry roomSaveEntry) {
-        super(roomType, worldManager, textManager, splashManager, player, camera, roomSaveEntry);
+    public FixedRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry) {
+        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS
@@ -79,7 +80,7 @@ public class FixedRoom extends AbstractRoom {
      * @param textManager
      */
     @Override
-    protected void addObjAsPOI(MapObject obj, TextManager textManager) {
+    protected void addObjAsPOI(MapObject obj, TextManager textManager, AssetManager assetManager) {
 
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
@@ -87,7 +88,7 @@ public class FixedRoom extends AbstractRoom {
         POIInstance instance = new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager);
+                poiType, player, splashManager, assetManager);
 
         poiList.add(instance);
 
@@ -110,7 +111,7 @@ public class FixedRoom extends AbstractRoom {
      * @param obj MapObject to add
      */
     @Override
-    protected void addObjAsDecoration(MapObject obj) {
+    protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
 
         DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(decoType);
@@ -118,7 +119,7 @@ public class FixedRoom extends AbstractRoom {
         DecorationInstance instance = new DecorationInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                decoType);
+                decoType, assetManager);
 
         decorationList.add(instance);
 

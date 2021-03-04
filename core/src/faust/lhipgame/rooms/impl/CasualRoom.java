@@ -1,5 +1,6 @@
 package faust.lhipgame.rooms.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -24,8 +25,8 @@ public class CasualRoom extends AbstractRoom {
     public static final int CASUAL_TOTAL = 5;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, RoomSaveEntry roomSaveEntry) {
-        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, roomSaveEntry);
+    public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
+        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera) {
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         // FIXME handle multiple POI
         if(mustClearPOI){
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));

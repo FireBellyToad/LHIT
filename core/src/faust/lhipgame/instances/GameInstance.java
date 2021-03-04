@@ -56,7 +56,6 @@ public abstract class GameInstance {
     public void dispose() {
         this.body.getFixtureList().forEach(f ->
                 this.body.destroyFixture(f));
-        this.entity.dispose();
     }
 
     /**

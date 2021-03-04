@@ -1,6 +1,7 @@
 package faust.lhipgame.splash;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.JsonReader;
@@ -26,7 +27,7 @@ public class SplashManager {
     private boolean isGameOverSplash;
     private Timer.Task splashTimer;
 
-    public SplashManager(TextManager textManager) {
+    public SplashManager(TextManager textManager, AssetManager assetManager) {
         Objects.requireNonNull(textManager);
 
         this.textManager = textManager;
@@ -36,7 +37,7 @@ public class SplashManager {
         JsonValue splash = new JsonReader().parse(Gdx.files.internal("splash/splashScreen.json")).get("splashScreens");
         splash.forEach((s) -> {
             this.splashScreens.put(s.getString("splashKey"),
-                    new GameEntity(new Texture(s.getString("splashPath"))) {
+                    new GameEntity(assetManager.get(s.getString("splashPath"))) {
                         @Override
                         protected int getTextureColumns() {
                             return 1;

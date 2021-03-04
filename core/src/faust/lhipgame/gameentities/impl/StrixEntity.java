@@ -1,5 +1,6 @@
 package faust.lhipgame.gameentities.impl;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,9 +20,9 @@ public class StrixEntity extends AnimatedEntity {
 
     private Texture shadow;
 
-    public StrixEntity() {
-        super(new Texture("sprites/strix_sheet.png"));
-        shadow = new Texture("sprites/shadow.png");
+    public StrixEntity(AssetManager assetManager) {
+        super(assetManager.get("sprites/strix_sheet.png"));
+        shadow = assetManager.get("sprites/shadow.png");
     }
 
     @Override

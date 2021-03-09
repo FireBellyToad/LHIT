@@ -78,7 +78,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
         body.setLinearVelocity(STRIX_SPEED * 4 * -direction.x, STRIX_SPEED * 4 * -direction.y);
         currentBehavior = GameBehavior.HURT;
-
+        attachedToPlayer = false;
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override

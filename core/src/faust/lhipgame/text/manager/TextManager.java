@@ -43,8 +43,7 @@ public class TextManager {
     public TextManager(AssetManager assetManager) {
 
         // Prepare font
-        mainFont = new BitmapFont(Gdx.files.internal("fonts/main_font.fnt"),
-                Gdx.files.internal("fonts/main_font.png"), false);
+        mainFont = assetManager.get("fonts/main_font.fnt");
 
         mainFont.getData().setScale(FONT_SIZE);
 

@@ -166,5 +166,6 @@ public class GameScreen implements Screen {
         worldManager.dispose();
         textManager.dispose();
         box2DDebugRenderer.dispose();
+        assetManager.dispose();
     }
 }

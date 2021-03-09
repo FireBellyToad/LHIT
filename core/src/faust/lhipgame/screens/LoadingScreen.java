@@ -3,7 +3,9 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.echoes.enums.EchoesActorType;
 
@@ -28,18 +30,13 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/shadow.png", Texture.class);
         assetManager.load("sprites/strix_sheet.png", Texture.class);
 
-        //assetManager.load("splash/splashScreen.json", FileHandle.class);
         assetManager.load("splash/strix_splash.png", Texture.class);
         assetManager.load("splash/morgengabe_splash.png", Texture.class);
         assetManager.load("splash/gameover_splash.png", Texture.class);
         assetManager.load("sprites/hud.png", Texture.class);
 
-        //assetManager.load("mainWorldModel.json", FileHandle.class);
-      ////  assetManager.load("echo.discipulus.json", FileHandle.class);
-//        assetManager.load("textBoxes.json", FileHandle.class);
-       // assetManager.load("fonts/main_font.fnt", FileHandle.class);
+        assetManager.load("fonts/main_font.fnt", BitmapFont.class);
         assetManager.load("fonts/main_font.png", Texture.class);
-
 
         for(EchoesActorType echoActor : EchoesActorType.values()){
             assetManager.load(echoActor.getSpriteFilename(), Texture.class);

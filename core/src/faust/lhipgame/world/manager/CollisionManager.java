@@ -70,7 +70,7 @@ public class CollisionManager implements ContactListener {
                 strixInstance.doPlayerInteraction(playerInstance);
             } else if(BodyDef.BodyType.DynamicBody.equals(strixBody.getType()) && BodyDef.BodyType.KinematicBody.equals(playerBody.getType())){
                 // Hurt by player
-                strixInstance.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6))+1);
+                strixInstance.hurt(Math.max(MathUtils.random(1,6),MathUtils.random(1,6)));
             }
 
         }

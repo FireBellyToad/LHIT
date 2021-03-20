@@ -21,6 +21,8 @@ import faust.lhipgame.world.manager.WorldManager;
 
 public class GameScreen implements Screen {
 
+    public static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/8 second in nanoseconds
+
     private AssetManager assetManager;
     private CameraManager cameraManager;
     private WorldManager worldManager;

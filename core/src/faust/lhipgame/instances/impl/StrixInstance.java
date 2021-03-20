@@ -18,6 +18,7 @@ import faust.lhipgame.gameentities.enums.GameBehavior;
 import faust.lhipgame.gameentities.impl.StrixEntity;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.Interactable;
+import faust.lhipgame.screens.GameScreen;
 
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
     private PlayerInstance target;
     private Timer.Task leechLifeTimer;
+    private boolean isDead = false;
 
     public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new StrixEntity(assetManager));
@@ -45,7 +47,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     @Override
     public void doLogic(float stateTime) {
 
-        hitBox.setTransform(body.getPosition().x, body.getPosition().y+8,0);
+        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
         if (GameBehavior.HURT.equals(currentBehavior))
             return;
@@ -93,8 +95,13 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
      * @return true if the damage is greater or equal than the resitance
      */
     @Override
-    public boolean isDead() {
+    public boolean isDying() {
         return this.damage >= getResistance();
+    }
+
+    @Override
+    public boolean isDead() {
+        return isDead;
     }
 
 
@@ -176,7 +183,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
             }
 
             // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO/6) {
+            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
                 mustFlicker = !mustFlicker;
 
                 // restart flickering timer
@@ -189,7 +196,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     private void leechLife(PlayerInstance playerInstance) {
 
         // Force cancel another one must start
-        if(Objects.nonNull(leechLifeTimer)) {
+        if (Objects.nonNull(leechLifeTimer)) {
             leechLifeTimer.cancel();
         }
 
@@ -200,11 +207,11 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
                 if (attachedToPlayer) {
                     playerInstance.hurt(1);
                     leechLife(playerInstance);
-                    Gdx.app.log("DEBUG", "END leech timer" );
+                    Gdx.app.log("DEBUG", "END leech timer");
                 }
             }
         }, 1);
-        Gdx.app.log("DEBUG", "START leech timer" );
+        Gdx.app.log("DEBUG", "START leech timer");
 
     }
 
@@ -224,9 +231,9 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     public void endPlayerInteraction(PlayerInstance playerInstance) {
         // End leech and cancel timer if present
         attachedToPlayer = false;
-        if(Objects.nonNull(leechLifeTimer)){
+        if (Objects.nonNull(leechLifeTimer)) {
             leechLifeTimer.cancel();
-            Gdx.app.log("DEBUG", "CANCEL leech timer" );
+            Gdx.app.log("DEBUG", "CANCEL leech timer");
         }
     }
 
@@ -237,16 +244,18 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
      */
     @Override
     public void hurt(int damageReceived) {
-        if(!GameBehavior.HURT.equals(currentBehavior)){
+        if (isDying()) {
+            isDead = true;
+        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
             this.damage += Math.min(getResistance(), damageReceived);
-            Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
+            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic();
         }
     }
 
     @Override
     public int getResistance() {
-        return 12;
+        return 9;
     }
 
 }

@@ -12,6 +12,7 @@ import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.POIEntity;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 
@@ -126,7 +127,7 @@ public class POIInstance extends GameInstance {
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (this.enableFlicker && TimeUtils.timeSinceNanos(startTime) > FLICKER_DURATION_IN_NANO) {
+        if (this.enableFlicker && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer

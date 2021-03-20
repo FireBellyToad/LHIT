@@ -54,6 +54,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private int foundMorgengabes = 0;
     private int holyLancePieces = 0;
     private boolean isSubmerged = false;
+    private boolean isDead = false;
 
     private ParticleEffect waterWalkEffect;
 
@@ -72,7 +73,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public int getResistance() {
-        return 12;
+        return 6;
     }
 
     @Override
@@ -148,9 +149,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void hurt(int damageReceived) {
-        if(!GameBehavior.HURT.equals(currentBehavior)){
+        if (isDying()) {
+            isDead = true;
+        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
             this.damage += Math.min(getResistance(), damageReceived);
-            Gdx.app.log("DEBUG","Instance " + this.getClass().getSimpleName() + " total damage "+ damage );
+            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic();
         }
     }
@@ -606,6 +609,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         return foundMorgengabes;
     }
 
+    public void setFoundMorgengabes(int foundMorgengabes) {
+        this.foundMorgengabes = foundMorgengabes;
+    }
+
     /**
      *
      * @return healing timer instance, non null if the player is curing himself
@@ -627,9 +634,15 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @return true if the damage is greater or equal than the resitance
      */
     @Override
-    public boolean isDead() {
+    public boolean isDying() {
         return this.damage >= getResistance();
     }
+
+    @Override
+    public boolean isDead() {
+        return isDead;
+    }
+
 
     public int getDamageDelta() {
         return  getResistance() - damage;

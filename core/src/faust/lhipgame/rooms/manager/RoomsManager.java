@@ -88,6 +88,7 @@ public class RoomsManager {
                 return;
             }
             player.setHolyLancePieces(playerInfo.getInt("lance"));
+            player.setFoundMorgengabes(playerInfo.getInt("morgengabes"));
 
             JsonValue rooms = file.get("rooms");
             if(Objects.isNull(rooms)){
@@ -289,7 +290,9 @@ public class RoomsManager {
         //TODO per nome della partita
         //TODO improve structure
         Json json = new Json();
-        String saveFile = "{ \"playerInfo\" : { \"lance\":" + player.getHolyLancePieces()+ "},";
+        String holyLanceEntry = " \"lance\":" + player.getHolyLancePieces();
+        String morgenabiumsEntry = " \"morgengabes\":" + player.getFoundMorgengabes()+ "";
+        String saveFile = "{ \"playerInfo\" : {"+holyLanceEntry + ", "+ morgenabiumsEntry+ " },";
         saveFile += "\"rooms\":" + json.toJson(saveMap.values())+ " }";
         Gdx.files.local("saves/mainWorldSave.json").writeString(saveFile, false);
     }

@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.GameBehavior;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
+import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.text.manager.TextManager;
 
 import java.util.Objects;
@@ -39,6 +41,8 @@ public class Hud {
     //Healing timer bar
     private final ShapeRenderer cornerBox = new ShapeRenderer();
     private static final Color corner = new Color(0xffffffff);
+    private boolean mustFlicker = false;
+    private long startTime = 0;
 
     public Hud(TextManager textManager, AssetManager assetManager) {
 
@@ -71,14 +75,26 @@ public class Hud {
         batch.end();
 
         batch.begin();
-        // Draw Health meter (red crosses for each hitpoit remaining, hollow ones for each damage point)
-        TextureRegion frame;
-        for (int r = 0; r < player.getResistance(); r++) {
-            frame = hudTexture.getFrame(r < player.getDamageDelta() ?
-                    HudIconsEnum.LIFE_METER_FULL.ordinal() :
-                    HudIconsEnum.LIFE_METER_EMPTY.ordinal() * GameEntity.FRAME_DURATION);
-            batch.draw(frame, meterPosition.x + (r * frame.getRegionWidth()), meterPosition.y);
+        // If not hurt or the flickering POI must be shown, draw the texture
+        if (!mustFlicker) {
+            // Draw Health meter (red crosses for each hitpoit remaining, hollow ones for each damage point)
+            TextureRegion frame;
+            for (int r = 0; r < player.getResistance(); r++) {
+                frame = hudTexture.getFrame(r < player.getDamageDelta() ?
+                        HudIconsEnum.LIFE_METER_FULL.ordinal() :
+                        HudIconsEnum.LIFE_METER_EMPTY.ordinal() * GameEntity.FRAME_DURATION);
+                batch.draw(frame, meterPosition.x + (r * frame.getRegionWidth()), meterPosition.y);
+            }
         }
+
+        // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
+        if (player.isDying() && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO) {
+            mustFlicker = !mustFlicker;
+
+            // restart flickering timer
+            startTime = TimeUtils.nanoTime();
+        }
+
 
         //Morgengabes found count
         batch.draw(hudTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),

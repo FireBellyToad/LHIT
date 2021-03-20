@@ -24,6 +24,11 @@ public interface Killable {
     /**
      * @return true if the damage is greater or equal than the resitance
      */
-    public boolean isDead();
+    boolean isDying();
+
+    /**
+     * @return true if the damage is really dead
+     */
+    boolean isDead();
 
 }

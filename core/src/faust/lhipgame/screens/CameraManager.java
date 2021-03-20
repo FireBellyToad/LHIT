@@ -37,6 +37,10 @@ public class CameraManager {
         return camera;
     }
 
+    /**
+     * Used for rendering a World bodies and collision shape, usually for debug
+     * @param world
+     */
     public void box2DDebugRenderer(World world) {
         Objects.requireNonNull(world);
         box2DDebugRenderer.render(world, camera.combined);
@@ -47,11 +51,13 @@ public class CameraManager {
     }
 
     public void applyAndUpdate() {
-
         viewport.apply();
         camera.update();
     }
 
+    /**
+     * Render blank background
+     */
     public void renderBackground() {
         background.setColor(back);
         background.setProjectionMatrix(camera.combined);

@@ -22,6 +22,7 @@ import faust.lhipgame.world.manager.WorldManager;
 public class GameScreen implements Screen {
 
     private AssetManager assetManager;
+    private CameraManager cameraManager;
     private WorldManager worldManager;
     private PlayerInstance player;
     private TextManager textManager;
@@ -30,26 +31,19 @@ public class GameScreen implements Screen {
     private Hud hud;
     private SplashManager splashManager;
 
-    private OrthographicCamera camera;
-    private Box2DDebugRenderer box2DDebugRenderer;
     private float stateTime = 0f;
-    private Viewport viewport;
-    private ShapeRenderer background;
-    private static final Color back = new Color(0x595959ff);
 
     private final LHIPGame game;
 
     public GameScreen(LHIPGame game) {
         this.game = game;
         this.assetManager = game.getAssetManager();
+        this.cameraManager = game.getCameraManager();
     }
 
     @Override
     public void show() {
         Box2D.init();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
-        viewport = new FillViewport(LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT, camera);
 
         worldManager = new WorldManager(assetManager);
         textManager = new TextManager(assetManager);
@@ -59,11 +53,7 @@ public class GameScreen implements Screen {
         // Creating player and making it available to input processor
         player = new PlayerInstance(assetManager);
 
-        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, camera, assetManager);
-
-        box2DDebugRenderer = new Box2DDebugRenderer();
-
-        background = new ShapeRenderer();
+        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(), assetManager);
     }
 
     @Override
@@ -79,9 +69,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        viewport.apply();
-        camera.update();
-        game.getBatch().setProjectionMatrix(camera.combined);
+        cameraManager.applyAndUpdate();
+        game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
         if (!splashManager.isDrawingSplash()) {
             //Draw gray background
@@ -94,7 +83,7 @@ public class GameScreen implements Screen {
         //Draw all overlays
         drawOverlays();
 
-        //box2DDebugRenderer.render(worldManager.getWorld(), camera.combined);
+        //cameraManager.box2DDebugRenderer(worldManager.getWorld());
 
     }
 
@@ -105,10 +94,10 @@ public class GameScreen implements Screen {
             splashManager.drawSplash(game.getBatch());
             game.getBatch().end();
         } else {
-            hud.drawHud(game.getBatch(), player, camera);
+            hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
         }
         // draw text
-        textManager.renderTextBoxes(game.getBatch(), player, camera, splashManager.isDrawingSplash());
+        textManager.renderTextBoxes(game.getBatch(), player, cameraManager.getCamera(), splashManager.isDrawingSplash());
     }
 
     private void drawGameInstances(float stateTime) {
@@ -122,11 +111,7 @@ public class GameScreen implements Screen {
      */
     private void drawBackGround() {
         game.getBatch().begin();
-        background.setColor(back);
-        background.setProjectionMatrix(camera.combined);
-        background.begin(ShapeRenderer.ShapeType.Filled);
-        background.rect(0, 0, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
-        background.end();
+        cameraManager.renderBackground();
         roomsManager.drawCurrentRoomBackground();
         game.getBatch().end();
     }
@@ -141,7 +126,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        cameraManager.getViewport().update(width, height);
     }
 
     @Override
@@ -165,7 +150,6 @@ public class GameScreen implements Screen {
         roomsManager.dispose();
         worldManager.dispose();
         textManager.dispose();
-        box2DDebugRenderer.dispose();
         assetManager.dispose();
     }
 }

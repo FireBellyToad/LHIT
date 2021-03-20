@@ -71,8 +71,8 @@ public class TextManager {
             currentTimer = null;
         }
 
-        //Create text box given a textKey. If no text is found, use key as text
-        TextBoxData newText = new TextBoxData(messageMap.getString(textKey, textKey));
+        //Create text box given a textKey.
+        TextBoxData newText = new TextBoxData(messageMap.getString(textKey));
         textBoxes.add(newText);
 
         // Hide box after time

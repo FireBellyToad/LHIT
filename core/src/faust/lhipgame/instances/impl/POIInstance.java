@@ -54,8 +54,8 @@ public class POIInstance extends GameInstance {
         //TODO add new examinations results
         String messageKey = ((POIEntity) this.entity).getMessageKey();
 
-        //If is not already examined
-        if (!isAlreadyExamined && MathUtils.randomBoolean()) {
+        //If is not already examined (if randomized, nothing CAN happen)
+        if (!isAlreadyExamined && ( !isRandomizedPOI() || MathUtils.randomBoolean())) {
 
             final ItemEnum itemGiven = ((POIEntity) this.entity).getItemGiven();
 
@@ -85,6 +85,20 @@ public class POIInstance extends GameInstance {
         // Only on the first examination there is a chance to find something
         isAlreadyExamined = true;
 
+    }
+
+    /**
+     *
+     * @return true if the poi is randomized
+     */
+    private boolean isRandomizedPOI() {
+        switch (((POIEntity) entity).getType()){
+            case SKELETON:
+            case BUSH:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override

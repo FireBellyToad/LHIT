@@ -560,7 +560,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 public void run() {
                     availableHealthKits--;
                     isHealingTimer = null;
-                    damage = Math.max(0, damage - 4);
+                    damage = 0;
                     currentBehavior = GameBehavior.IDLE;
                 }
             }, HEALTH_KIT_TIME);

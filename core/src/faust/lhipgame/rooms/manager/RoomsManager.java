@@ -122,7 +122,6 @@ public class RoomsManager {
 
         // Dispose the current room contents if not null
         if (!Objects.isNull(currentRoom)) {
-            saveMap.get(currentRoomPosInWorld).poiCleared = currentRoom.arePoiCleared();
             currentRoom.dispose();
         }
 
@@ -166,6 +165,9 @@ public class RoomsManager {
      */
     public void doRoomContentsLogic(float stateTime) {
         currentRoom.doRoomContentsLogic(stateTime);
+
+        //Check if all poi have been examined
+        saveMap.get(currentRoomPosInWorld).poiCleared = currentRoom.arePoiCleared();
 
         // After room logic, handle the room change
         Vector2 playerPosition = player.getBody().getPosition();

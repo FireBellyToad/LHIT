@@ -18,7 +18,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Livello di oggetti 1">
-  <object id="20" name="DECO" type="CROSS_WOOD" x="37.5833" y="70.2292">
+  <object id="20" name="DECO" type="CROSS_WOOD" x="35.8333" y="84.2292">
    <point/>
   </object>
   <object id="21" name="DECO" type="CROSS_IRON" x="52.75" y="34.5">
@@ -27,7 +27,7 @@
   <object id="22" name="DECO" type="CROSS_IRON" x="131.083" y="97">
    <point/>
   </object>
-  <object id="23" name="DECO" type="CROSS_WOOD" x="77.25" y="96.9167">
+  <object id="23" name="DECO" type="CROSS_WOOD" x="69.25" y="113.917">
    <point/>
   </object>
   <object id="24" name="DECO" type="CROSS_IRON" x="111.667" y="62.5833">
@@ -38,7 +38,7 @@
   </object>
   <object id="47" name="WALL" x="0" y="0" width="16" height="144"/>
   <object id="48" name="WALL" x="16" y="128" width="144" height="16"/>
-  <object id="49" name="POI" type="SOIL" x="41.25" y="113.25">
+  <object id="49" name="POI" type="SOIL" x="69.75" y="73.75">
    <point/>
   </object>
   <object id="55" name="EMERGED" x="-2" y="37.5">

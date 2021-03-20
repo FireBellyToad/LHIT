@@ -1,1 +1,1 @@
-{ "playerInfo" : { "lance":0,  "morgengabes":1 },"rooms":[{class:faust.lhipgame.rooms.RoomSaveEntry,casualNumber:5,x:2,y:0,poiCleared:false}] }
+{ "playerInfo" : { "lance":1,  "morgengabes":0 },"rooms":[{class:faust.lhipgame.rooms.RoomSaveEntry,casualNumber:4,x:2,y:0,poiCleared:true},{class:faust.lhipgame.rooms.RoomSaveEntry,casualNumber:0,x:1,y:0,poiCleared:true},{class:faust.lhipgame.rooms.RoomSaveEntry,casualNumber:0,x:0,y:0,poiCleared:true}] }

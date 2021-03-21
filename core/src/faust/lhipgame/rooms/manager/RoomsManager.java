@@ -22,6 +22,8 @@ public class RoomsManager {
 
     private final SplashManager splashManager;
     private final AssetManager assetManager;
+    private final SaveFileManager saveFileManager = new SaveFileManager();
+
     private AbstractRoom currentRoom;
     private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
 
@@ -289,13 +291,7 @@ public class RoomsManager {
      */
     private void saveOnFile() {
 
-        //TODO per nome della partita
-        //TODO improve structure
-        Json json = new Json();
-        String holyLanceEntry = " \"lance\":" + player.getHolyLancePieces();
-        String morgenabiumsEntry = " \"morgengabes\":" + player.getFoundMorgengabes()+ "";
-        String saveFile = "{ \"playerInfo\" : {"+holyLanceEntry + ", "+ morgenabiumsEntry+ " },";
-        saveFile += "\"rooms\":" + json.toJson(saveMap.values())+ " }";
-        Gdx.files.local("saves/mainWorldSave.json").writeString(saveFile, false);
+        String stringSave = saveFileManager.getStringSaveFile(player, saveMap);
+        Gdx.files.local(saveFileManager.getFileName()).writeString(stringSave, false);
     }
 }

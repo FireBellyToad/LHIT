@@ -92,7 +92,7 @@ public class CollisionManager implements ContactListener {
             enemyInstance.doPlayerInteraction(playerInstance);
         } else if (BodyDef.BodyType.DynamicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.KinematicBody.equals(playerBody.getType())) {
             // Hurt by playergetType
-            double amount = Math.max(MathUtils.random(1, 6), MathUtils.random(1, 6));
+            double amount = playerInstance.damageRoll();
             //If Undead or Otherworldly, halve normal lance damage
             if(halvesNormalLanceDamage && playerInstance.getHolyLancePieces() < 2){
                 amount =  Math.floor(amount / 2);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.gameentities.AnimatedEntity;
@@ -658,6 +659,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setSubmerged(boolean submerged) {
         isSubmerged = submerged;
+    }
+
+    public double damageRoll() {
+        return Math.max(MathUtils.random(1, 6), MathUtils.random(1, 6));
     }
 
     @Override

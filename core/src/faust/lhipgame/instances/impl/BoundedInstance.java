@@ -15,7 +15,8 @@ import faust.lhipgame.gameentities.AnimatedEntity;
 import faust.lhipgame.gameentities.Killable;
 import faust.lhipgame.gameentities.enums.Direction;
 import faust.lhipgame.gameentities.enums.GameBehavior;
-import faust.lhipgame.gameentities.impl.StrixEntity;
+import faust.lhipgame.gameentities.impl.BoundedEntity;
+import faust.lhipgame.gameentities.impl.BoundedEntity;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.Interactable;
 import faust.lhipgame.screens.GameScreen;
@@ -23,21 +24,21 @@ import faust.lhipgame.screens.GameScreen;
 import java.util.Objects;
 
 /**
- * Strix enemy instance class
+ * Bounded enemy instance class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class StrixInstance extends AnimatedInstance implements Interactable, Killable {
+public class BoundedInstance extends AnimatedInstance implements Interactable, Killable {
 
-    private static final float STRIX_SPEED = 30;
-    private boolean attachedToPlayer = false;
-
+    private static final float BOUNDED_SPEED = 30;
+    private static final int LINE_OF_ATTACK = 30;
+    private static final int LINE_OF_SIGHT = 70;
+    
     private PlayerInstance target;
-    private Timer.Task leechLifeTimer;
     private boolean isDead = false;
 
-    public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
-        super(new StrixEntity(assetManager));
+    public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
+        super(new BoundedEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;
@@ -52,7 +53,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         if (GameBehavior.HURT.equals(currentBehavior))
             return;
 
-        if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
+        if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
+                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
             // Normal from strix position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
@@ -62,10 +64,14 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
             currentDirection = extractDirectionFromNormal(direction);
 
             // Move towards target
-            body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
-        } else {
+            body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
+        } else if(target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK){
+            //TODO attack logic
+            currentBehavior = GameBehavior.IDLE;
 
-            currentBehavior = attachedToPlayer ? GameBehavior.ATTACK : GameBehavior.IDLE;
+            body.setLinearVelocity(0, 0);
+        } else {
+            currentBehavior = GameBehavior.IDLE;
 
             body.setLinearVelocity(0, 0);
         }
@@ -78,9 +84,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                 target.getBody().getPosition().y - body.getPosition().y).nor();
 
-        body.setLinearVelocity(STRIX_SPEED * 4 * -direction.x, STRIX_SPEED * 4 * -direction.y);
+        body.setLinearVelocity(BOUNDED_SPEED * 4 * -direction.x, BOUNDED_SPEED * 4 * -direction.y);
         currentBehavior = GameBehavior.HURT;
-        attachedToPlayer = false;
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
@@ -135,13 +140,13 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
         // Hitbox definition
         BodyDef hitBoxDef = new BodyDef();
-        hitBoxDef.type = BodyDef.BodyType.KinematicBody;
+        hitBoxDef.type = BodyDef.BodyType.DynamicBody;
         hitBoxDef.fixedRotation = true;
         hitBoxDef.position.set(x, y);
 
         // Define shape
         PolygonShape hitBoxShape = new PolygonShape();
-        hitBoxShape.setAsBox(4, 6);
+        hitBoxShape.setAsBox(4, 12);
 
         // Define Fixture
         FixtureDef hitBoxFixtureDef = new FixtureDef();
@@ -151,7 +156,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         hitBoxFixtureDef.isSensor = true;
 
         // Associate body to world
-        hitBox = world.createBody(bodyDef);
+        hitBox = world.createBody(hitBoxDef);
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
 
@@ -170,75 +175,37 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
 
         //Draw shadow
-        batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
-        //Draw Strix
-        if (GameBehavior.IDLE.equals(currentBehavior)) {
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
-        } else {
+        //Draw Bounded
 
-            // If not hurt or the flickering POI must be shown, draw the texture
-            if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-                batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
-            }
-
-            // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
-                mustFlicker = !mustFlicker;
-
-                // restart flickering timer
-                startTime = TimeUtils.nanoTime();
-            }
+        // If not hurt or the flickering POI must be shown, draw the texture
+        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
         }
 
-    }
+        // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
+        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+            mustFlicker = !mustFlicker;
 
-    private void leechLife(PlayerInstance playerInstance) {
-
-        // Force cancel another one must start
-        if (Objects.nonNull(leechLifeTimer)) {
-            leechLifeTimer.cancel();
+            // restart flickering timer
+            startTime = TimeUtils.nanoTime();
         }
 
-        //Keep leeching
-        leechLifeTimer = Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                if (attachedToPlayer) {
-                    playerInstance.hurt(1);
-                    leechLife(playerInstance);
-                    Gdx.app.log("DEBUG", "END leech timer");
-                }
-            }
-        }, 1);
-        Gdx.app.log("DEBUG", "START leech timer");
-
-    }
-
-    public boolean isAttachedToPlayer() {
-        return attachedToPlayer;
     }
 
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
-        // Start to leech
-        attachedToPlayer = true;
-        leechLife(playerInstance);
 
     }
 
     @Override
     public void endPlayerInteraction(PlayerInstance playerInstance) {
         // End leech and cancel timer if present
-        attachedToPlayer = false;
-        if (Objects.nonNull(leechLifeTimer)) {
-            leechLifeTimer.cancel();
-            Gdx.app.log("DEBUG", "CANCEL leech timer");
-        }
     }
 
     /**
-     * Method for hurting the LivingEntity
+     * Method for hurting the Bounded
      *
      * @param damageReceived to be subtracted
      */

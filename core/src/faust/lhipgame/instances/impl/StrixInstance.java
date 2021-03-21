@@ -135,7 +135,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
         // Hitbox definition
         BodyDef hitBoxDef = new BodyDef();
-        hitBoxDef.type = BodyDef.BodyType.KinematicBody;
+        hitBoxDef.type = BodyDef.BodyType.DynamicBody;
         hitBoxDef.fixedRotation = true;
         hitBoxDef.position.set(x, y);
 
@@ -151,7 +151,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         hitBoxFixtureDef.isSensor = true;
 
         // Associate body to world
-        hitBox = world.createBody(bodyDef);
+        hitBox = world.createBody(hitBoxDef);
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
 
@@ -174,6 +174,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
         //Draw Strix
         if (GameBehavior.IDLE.equals(currentBehavior)) {
+            // On Idle, the Strix is landed. While walking it flies
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
         } else {
 
@@ -238,7 +239,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     }
 
     /**
-     * Method for hurting the LivingEntity
+     * Method for hurting the Strix
      *
      * @param damageReceived to be subtracted
      */

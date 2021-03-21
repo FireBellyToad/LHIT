@@ -16,10 +16,7 @@ import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.instances.impl.DecorationInstance;
-import faust.lhipgame.instances.impl.POIInstance;
-import faust.lhipgame.instances.impl.PlayerInstance;
-import faust.lhipgame.instances.impl.StrixInstance;
+import faust.lhipgame.instances.impl.*;
 import faust.lhipgame.rooms.areas.EmergedArea;
 import faust.lhipgame.rooms.areas.WallArea;
 import faust.lhipgame.rooms.enums.MapLayersEnum;
@@ -232,12 +229,25 @@ public abstract class AbstractRoom {
      */
     protected void addObjAsEnemy(MapObject obj, AssetManager assetManager) {
 
-        //FIXME add different enemy types
-        enemyList.add(new StrixInstance(
-                (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"),
-                player,
-                assetManager));
+        AnimatedInstance enemyInstance = null;
+
+        //Improve
+        if (MathUtils.randomBoolean()) {
+            enemyInstance = new BoundedInstance(
+                    (float) obj.getProperties().get("x"),
+                    (float) obj.getProperties().get("y"),
+                    player,
+                    assetManager);
+        } else {
+            enemyInstance = new StrixInstance(
+                    (float) obj.getProperties().get("x"),
+                    (float) obj.getProperties().get("y"),
+                    player,
+                    assetManager);
+        }
+
+
+        enemyList.add(enemyInstance);
     }
 
     /**

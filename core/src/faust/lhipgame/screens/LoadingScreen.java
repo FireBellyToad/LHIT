@@ -31,6 +31,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/decorations_sheet.png", Texture.class);
         assetManager.load("sprites/poi_sheet.png", Texture.class);
         assetManager.load("sprites/shadow.png", Texture.class);
+        assetManager.load("sprites/bounded_sheet.png", Texture.class);
         assetManager.load("sprites/strix_sheet.png", Texture.class);
 
         assetManager.load("splash/strix_splash.png", Texture.class);

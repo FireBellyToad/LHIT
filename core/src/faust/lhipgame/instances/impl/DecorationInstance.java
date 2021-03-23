@@ -13,6 +13,7 @@ import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.instances.Interactable;
+import faust.lhipgame.world.manager.CollisionManager;
 
 import java.util.Objects;
 
@@ -117,6 +118,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
         fixtureDef.density = isPassable() ? 0 : 1;
         fixtureDef.friction = isPassable() ? 0 : 1;
         fixtureDef.isSensor = isPassable();
+        fixtureDef.filter.categoryBits = CollisionManager.SOLID_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);

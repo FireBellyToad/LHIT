@@ -239,7 +239,7 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
         } else {
-            enemyInstance = new StrixInstance(
+            enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
                     player,

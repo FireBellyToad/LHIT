@@ -19,6 +19,7 @@ import faust.lhipgame.gameentities.impl.StrixEntity;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.Interactable;
 import faust.lhipgame.screens.GameScreen;
+import faust.lhipgame.world.manager.CollisionManager;
 
 import java.util.Objects;
 
@@ -148,7 +149,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         hitBoxFixtureDef.shape = hitBoxShape;
         hitBoxFixtureDef.density = 0;
         hitBoxFixtureDef.friction = 0;
-        hitBoxFixtureDef.isSensor = true;
+        hitBoxFixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
+        hitBoxFixtureDef.filter.maskBits = CollisionManager.WEAPON_GROUP;
 
         // Associate body to world
         hitBox = world.createBody(hitBoxDef);
@@ -256,7 +258,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
     @Override
     public int getResistance() {
-        return 9;
+        return 99;
     }
 
 }

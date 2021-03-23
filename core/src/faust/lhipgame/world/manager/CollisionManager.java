@@ -17,6 +17,11 @@ import java.util.Objects;
  */
 public class CollisionManager implements ContactListener {
 
+    public static final int SOLID_GROUP = 1;
+    public static final int PLAYER_GROUP = 2;
+    public static final int ENEMY_GROUP = 4;
+    public static final int WEAPON_GROUP = 8;
+
     @Override
     public void beginContact(Contact contact) {
         //FIXME
@@ -125,16 +130,31 @@ public class CollisionManager implements ContactListener {
 
         // Handle Strix Collision end
         if (isContactOfClass(contact, StrixInstance.class)) {
-            //Just free the player from leech grapple
-            Body strixBody = getCorrectFixture(contact, StrixInstance.class).getBody();
-            StrixInstance sInst = (StrixInstance) strixBody.getUserData();
+            handleEnemyCollisionEventEnd(contact, StrixInstance.class);
+        }
 
-            Body playerBody = getCorrectFixture(contact, PlayerInstance.class).getBody();
-            PlayerInstance pInst = (PlayerInstance) playerBody.getUserData();
+        // Handle Bounded Collision end
+        if (isContactOfClass(contact, BoundedInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, BoundedInstance.class);
+        }
+    }
 
-            if (BodyDef.BodyType.DynamicBody.equals(strixBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())) {
-                sInst.endPlayerInteraction(pInst);
-            }
+    /**
+     * Global handler for player and enemy instances collision
+     * @param contact
+     * @param enemyGameInstanceClass
+     * @param <T> an Interactable and Killable instance, usually enemy
+     */
+    private <T extends Interactable & Killable> void handleEnemyCollisionEventEnd(Contact contact,  Class<T>  enemyGameInstanceClass) {
+        //Just free the player from leech grapple
+        Body enemyBody = getCorrectFixture(contact,enemyGameInstanceClass).getBody();
+        T sInst = (T) enemyBody.getUserData();
+
+        Body playerBody = getCorrectFixture(contact, PlayerInstance.class).getBody();
+        PlayerInstance pInst = (PlayerInstance) playerBody.getUserData();
+
+        if (BodyDef.BodyType.DynamicBody.equals(enemyBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())) {
+            sInst.endPlayerInteraction(pInst);
         }
     }
 

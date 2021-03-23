@@ -19,6 +19,7 @@ import faust.lhipgame.gameentities.enums.ItemEnum;
 import faust.lhipgame.gameentities.impl.PlayerEntity;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.world.manager.CollisionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -339,6 +340,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         mainFixtureDef.shape = shape;
         mainFixtureDef.density = 1;
         mainFixtureDef.friction = 1;
+        mainFixtureDef.filter.categoryBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -361,7 +363,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         rightSpearFixtureDef.shape = shape;
         rightSpearFixtureDef.density = 1;
         rightSpearFixtureDef.friction = 1;
-        rightSpearFixtureDef.isSensor = true;
+        rightSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        rightSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
         // Associate body to world
         rightSpearBody = world.createBody(rightSpearDef);
@@ -384,7 +387,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         upSpearFixtureDef.shape = shape;
         upSpearFixtureDef.density = 1;
         upSpearFixtureDef.friction = 1;
-        upSpearFixtureDef.isSensor = true;
+        upSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        upSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
         // Associate body to world
         upSpearBody = world.createBody(upSpearDef);
@@ -407,7 +411,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         leftSpearFixtureDef.shape = shape;
         leftSpearFixtureDef.density = 1;
         leftSpearFixtureDef.friction = 1;
-        leftSpearFixtureDef.isSensor = true;
+        leftSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        leftSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
         // Associate body to world
         leftSpearBody = world.createBody(leftSpearDef);
@@ -430,7 +435,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         downSpearFixtureDef.shape = shape;
         downSpearFixtureDef.density = 1;
         downSpearFixtureDef.friction = 1;
-        downSpearFixtureDef.isSensor = true;
+        downSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        downSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
         // Associate body to world
         downSpearBody = world.createBody(downSpearDef);

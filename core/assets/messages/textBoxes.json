@@ -15,6 +15,8 @@
     "echo.boat.second": "HEEELP MEEE!",
 
     "echo.tree.first": "ORCUS DOMINAT",
-    "echo.tree.second": "PERIT UT VIVAT"
+    "echo.tree.second": "PERIT UT VIVAT",
+
+    "warn.hive.damage": "MY CURRENT WEAPON \nHAS NO EFFECT"
   }
 }

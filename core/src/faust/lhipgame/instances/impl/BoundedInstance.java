@@ -21,6 +21,7 @@ import faust.lhipgame.gameentities.impl.BoundedEntity;
 import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.Interactable;
 import faust.lhipgame.screens.GameScreen;
+import faust.lhipgame.world.manager.CollisionManager;
 
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     private static final float BOUNDED_SPEED = 30;
     private static final int LINE_OF_ATTACK = 30;
     private static final int LINE_OF_SIGHT = 70;
-    
+
     private PlayerInstance target;
     private boolean isDead = false;
 
@@ -66,7 +67,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
 
             // Move towards target
             body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
-        } else if(target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK){
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
             //TODO attack logic
             currentBehavior = GameBehavior.IDLE;
 
@@ -130,13 +131,12 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         fixtureDef.shape = shape;
         fixtureDef.density = 0;
         fixtureDef.friction = 0;
-        fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);
         body.setUserData(this);
         body.createFixture(fixtureDef);
-
         shape.dispose();
 
         // Hitbox definition
@@ -154,13 +154,13 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         hitBoxFixtureDef.shape = hitBoxShape;
         hitBoxFixtureDef.density = 0;
         hitBoxFixtureDef.friction = 0;
-        hitBoxFixtureDef.isSensor = true;
+        hitBoxFixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
+        hitBoxFixtureDef.filter.maskBits = CollisionManager.WEAPON_GROUP;
 
         // Associate body to world
         hitBox = world.createBody(hitBoxDef);
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
-
         hitBoxShape.dispose();
     }
 
@@ -176,7 +176,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
 
         //Draw shadow
-        batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
 
         //Draw Bounded
 
@@ -223,7 +223,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
 
     @Override
     public int getResistance() {
-        return 9;
+        return 99;
     }
 
     public double damageRoll() {

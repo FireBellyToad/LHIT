@@ -445,6 +445,30 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         downSpearBody.setActive(false);
         downSpearShape.dispose();
 
+        // Hitbox definition
+        BodyDef hitBoxDef = new BodyDef();
+        hitBoxDef.type = BodyDef.BodyType.DynamicBody;
+        hitBoxDef.fixedRotation = true;
+        hitBoxDef.position.set(x, y);
+
+        // Define shape
+        PolygonShape hitBoxShape = new PolygonShape();
+        hitBoxShape.setAsBox(4, 12);
+
+        // Define Fixture
+        FixtureDef hitBoxFixtureDef = new FixtureDef();
+        hitBoxFixtureDef.shape = hitBoxShape;
+        hitBoxFixtureDef.density = 0;
+        hitBoxFixtureDef.friction = 0;
+        hitBoxFixtureDef.filter.categoryBits = CollisionManager.PLAYER_GROUP;
+        hitBoxFixtureDef.filter.maskBits = CollisionManager.WEAPON_GROUP;
+
+        // Associate body to world
+        hitBox = world.createBody(hitBoxDef);
+        hitBox.setUserData(this);
+        hitBox.createFixture(hitBoxFixtureDef);
+        hitBoxShape.dispose();
+
 
     }
 

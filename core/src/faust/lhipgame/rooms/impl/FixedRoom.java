@@ -23,7 +23,6 @@ import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +39,7 @@ public class FixedRoom extends AbstractRoom {
     private GameInstance echoTrigger;
 
     public FixedRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry) {
-        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry);
+        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, false);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class FixedRoom extends AbstractRoom {
         POIInstance instance = new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager, assetManager);
+                poiType, player, splashManager, assetManager, guaranteedMorgengabe);
 
         poiList.add(instance);
 

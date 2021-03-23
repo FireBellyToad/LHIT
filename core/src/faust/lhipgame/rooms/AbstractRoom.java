@@ -1,5 +1,6 @@
 package faust.lhipgame.rooms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -61,34 +62,20 @@ public abstract class AbstractRoom {
     protected TextManager textManager;
 
     protected boolean mustClearPOI = false;
-
-    /**
-     * Constructor without additional loader argouments
-     *
-     * @param roomType
-     * @param worldManager
-     * @param textManager
-     * @param splashManager
-     * @param player
-     * @param camera
-     */
-    @SuppressWarnings("unchecked")
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager) {
-        this(roomType, worldManager, textManager, splashManager, player, camera, assetManager, null);
-    }
+    protected boolean guaranteedMorgengabe;
 
     /**
      * Constructor
-     *
-     * @param roomType
+     *  @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
      * @param player
      * @param camera
      * @param roomSaveEntry
+     * @param guaranteedMorgengabe
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry ) {
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -98,6 +85,7 @@ public abstract class AbstractRoom {
         this.roomType = roomType;
         this.roomFileName = "terrains/" + roomType.getMapFileName();
         loadTiledMap(roomSaveEntry);
+        this.guaranteedMorgengabe = guaranteedMorgengabe;
 
         // Extract mapObjects
         mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
@@ -198,10 +186,12 @@ public abstract class AbstractRoom {
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
 
+        Gdx.app.log("DEBUG","guaranteedMorgengabe: " +guaranteedMorgengabe);
+
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager, assetManager));
+                poiType, player, splashManager, assetManager, guaranteedMorgengabe));
     }
 
     ;
@@ -239,7 +229,7 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
         } else {
-            enemyInstance = new BoundedInstance(
+            enemyInstance = new StrixInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
                     player,

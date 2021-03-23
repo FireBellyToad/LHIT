@@ -26,6 +26,7 @@ import java.util.Objects;
 public class POIInstance extends GameInstance {
 
 
+    private boolean guaranteedMorgengabe = false; //flag gor guaranteed morgengabe
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0; // flickering timer
@@ -36,7 +37,7 @@ public class POIInstance extends GameInstance {
     private SplashManager splashManager;
 
 
-    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager) {
+    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {
         super(new POIEntity(poiType, assetManager));
         this.textManager = textManager;
         this.player = player;
@@ -44,18 +45,19 @@ public class POIInstance extends GameInstance {
         this.startY = y;
         this.isAlreadyExamined = false;
         this.splashManager = splashManager;
+        this.guaranteedMorgengabe = guaranteedMorgengabe;
     }
 
     /**
      * Handles the examination from a Player Instance
      */
-    public void examine() {
+    public void examine(PlayerInstance player) {
 
         //TODO add new examinations results
         String messageKey = ((POIEntity) this.entity).getMessageKey();
 
         //If is not already examined (if randomized, nothing CAN happen)
-        if (!isAlreadyExamined && ( !isRandomizedPOI() || MathUtils.randomBoolean())) {
+        if (!isAlreadyExamined && canCollectPOI(player) && ( !isRandomizedPOI() || MathUtils.randomBoolean())) {
 
             final ItemEnum itemGiven = ((POIEntity) this.entity).getItemGiven();
 
@@ -87,6 +89,18 @@ public class POIInstance extends GameInstance {
 
     }
 
+    private boolean canCollectPOI(PlayerInstance player) {
+
+        switch (((POIEntity) entity).getType()){
+            case SKELETON:
+                return player.getFoundMorgengabes() < 9;
+            case SOIL:
+                return player.getHolyLancePieces() < 2; //Should be random only if not guaranteed!
+            default:
+                return true;
+        }
+    }
+
     /**
      *
      * @return true if the poi is randomized
@@ -94,6 +108,7 @@ public class POIInstance extends GameInstance {
     private boolean isRandomizedPOI() {
         switch (((POIEntity) entity).getType()){
             case SKELETON:
+                return !guaranteedMorgengabe; //Should be random only if not guaranteed!
             case BUSH:
                 return true;
             default:

@@ -18,6 +18,11 @@ import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.*;
 
+/**
+ * Room Manager class
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class RoomsManager {
 
     private final SplashManager splashManager;
@@ -69,49 +74,13 @@ public class RoomsManager {
         // Finalize size
         mainWorldSize.set(mainWorldSize.x + 1, mainWorldSize.y + 1);
 
-        loadRoomSaveEntry();
-    }
-
-    /**
-     * Load saved room info
-     */
-    private void loadRoomSaveEntry() {
         //Try to load predefined casualnumbers for casual rooms from file
         try {
-            JsonValue file = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
-
-            if(Objects.isNull(file)){
-                return;
-            }
-
-            //TODO spostare altrove se possibile
-            JsonValue playerInfo = file.get("playerInfo");
-            if(Objects.isNull(playerInfo)){
-                return;
-            }
-            player.setHolyLancePieces(playerInfo.getInt("lance"));
-            player.setFoundMorgengabes(playerInfo.getInt("morgengabes"));
-
-            JsonValue rooms = file.get("rooms");
-            if(Objects.isNull(rooms)){
-                return;
-            }
-
-            rooms.forEach((roomSaveEntry) -> {
-                Vector2 v = new Vector2(roomSaveEntry.getFloat("x"), roomSaveEntry.getFloat("y"));
-                int casualNumberPredefined = roomSaveEntry.getInt("casualNumber");
-                boolean arePoiCleared = roomSaveEntry.getBoolean("poiCleared");
-                Objects.requireNonNull(casualNumberPredefined);
-
-                saveMap.put(v, new RoomSaveEntry(
-                        (int) v.x, (int) v.y, casualNumberPredefined,
-                        arePoiCleared));
-            });
+            saveFileManager.loadSave(player, saveMap);
 
         } catch (SerializationException ex) {
             Gdx.app.log("WARN", "No valid savefile to load");
         }
-
     }
 
     /**
@@ -127,7 +96,6 @@ public class RoomsManager {
             currentRoom.dispose();
         }
 
-
         float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
@@ -137,11 +105,17 @@ public class RoomsManager {
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
 
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld));
+                //If unvisited rooms are less than the number of found morgengabes to find, guarantee them
+                boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
+                        (mainWorldSize.x * mainWorldSize.y)-10  <= (saveMap.size() + (9 -player.getFoundMorgengabes() ));
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), guaranteedMorgengabe);
 
+                Gdx.app.log("DEBUG","(mainWorldSize.x * mainWorldSize.y)-10: " +((mainWorldSize.x * mainWorldSize.y)-10));
+                Gdx.app.log("DEBUG","(saveMap.size() + (9 -player.getFoundMorgengabes() )): " +(saveMap.size() + (9 -player.getFoundMorgengabes() )));
+                Gdx.app.log("DEBUG","guaranteedMorgengabe: " +guaranteedMorgengabe);
                 // Save casualnumber in memory and prepare save on filesystem
                 roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
-                Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y );
+
                 break;
             }
             default: {
@@ -149,6 +123,7 @@ public class RoomsManager {
                 break;
             }
         }
+        Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y );
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld,
                 new RoomSaveEntry(
@@ -227,7 +202,8 @@ public class RoomsManager {
             newYPosInMatrix = 1;
         } else if (((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) || (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY)) &&
                 getCurrentRoomPosInWorld().x == mainWorldSize.x-1 &&
-                getCurrentRoomPosInWorld().y == 0) {
+                getCurrentRoomPosInWorld().y == 0 &&
+                !RoomType.START_POINT.equals(currentRoom.getRoomType())) {
 
             if(playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY ){
                 player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);

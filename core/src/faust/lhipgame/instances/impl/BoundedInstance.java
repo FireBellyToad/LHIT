@@ -223,7 +223,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
 
     @Override
     public int getResistance() {
-        return 99;
+        return 9;
     }
 
     public double damageRoll() {

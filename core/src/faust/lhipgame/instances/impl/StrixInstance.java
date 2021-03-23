@@ -258,7 +258,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
     @Override
     public int getResistance() {
-        return 99;
+        return 9;
     }
 
 }

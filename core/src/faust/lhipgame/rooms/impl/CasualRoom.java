@@ -22,11 +22,11 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
-    public static final int CASUAL_TOTAL = 5;
+    public static final int CASUAL_TOTAL = 6;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
-        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry);
+    public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
+        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, guaranteedMorgengabe);
     }
 
     @Override
@@ -41,10 +41,15 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.poiCleared;
 
         } else {
-            casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
-            //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
-            casualNumber = MathUtils.clamp(casualNumber, 1,CasualRoom.CASUAL_TOTAL);
+            if(!guaranteedMorgengabe){
+                casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
+            } else {
+                //pick only ones with skeleton poi
+                casualNumber = MathUtils.randomBoolean() ? 1 : MathUtils.randomBoolean() ? 6 :5;
+            }
         }
+        //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
+        casualNumber = MathUtils.clamp(casualNumber, 1,CasualRoom.CASUAL_TOTAL);
 
         // Casual maps range from casual1.tmx to casual6.tmx, with a %d to be mapped
         roomFileName = String.format(roomFileName, casualNumber);

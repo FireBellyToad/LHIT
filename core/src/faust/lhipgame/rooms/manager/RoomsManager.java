@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
+import faust.lhipgame.LHIPGame;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.AbstractRoom;
 import faust.lhipgame.rooms.RoomSaveEntry;
@@ -173,10 +174,13 @@ public class RoomsManager {
             player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
                 !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
-                !RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType()) &&
                 !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix++;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
+        } else if (playerPosition.y > LHIPGame.GAME_HEIGHT*0.45 &&
+                RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
+            //ENDGAME!
+            Gdx.app.exit();
         }
 
         // Adjustments for world extremes, semi pacman effect 

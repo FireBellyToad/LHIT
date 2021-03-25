@@ -3,14 +3,8 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.hud.Hud;
 import faust.lhipgame.instances.impl.PlayerInstance;
@@ -78,8 +72,8 @@ public class GameScreen implements Screen {
             //Draw gray background
             drawBackGround();
 
-            //Draw all instances
-            drawGameInstances(stateTime);
+            //Draw Room and all contents
+            drawRoomAndContents(stateTime);
         }
 
         //Draw all overlays
@@ -102,7 +96,7 @@ public class GameScreen implements Screen {
         textManager.renderTextBoxes(game.getBatch(), player, cameraManager.getCamera(), splashManager.isDrawingSplash());
     }
 
-    private void drawGameInstances(float stateTime) {
+    private void drawRoomAndContents(float stateTime) {
         game.getBatch().begin();
         roomsManager.drawCurrentRoomContents(game.getBatch(), stateTime);
         game.getBatch().end();

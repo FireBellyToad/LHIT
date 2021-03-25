@@ -87,6 +87,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 11 + SPEAR_SENSOR_Y_OFFSET, 0);
         leftSpearBody.setTransform(body.getPosition().x - 10, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
         downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 11 + SPEAR_SENSOR_Y_OFFSET, 0);
+        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
 
         // Interrupt healing if moving
         if (GameBehavior.KNEE.equals(currentBehavior) &&
@@ -146,7 +147,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
         }
 
-        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
     }
 
     @Override
@@ -172,7 +172,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Objects.requireNonNull(nearestPOIInstance);
         if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE &&
                 !nearestPOIInstance.isAlreadyExamined()) {
-            nearestPOIInstance.examine();
+            nearestPOIInstance.examine(this);
         }
     }
 

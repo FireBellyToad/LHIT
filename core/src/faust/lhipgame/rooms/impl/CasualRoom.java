@@ -13,6 +13,8 @@ import faust.lhipgame.splash.SplashManager;
 import faust.lhipgame.text.manager.TextManager;
 import faust.lhipgame.world.manager.WorldManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -21,6 +23,12 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class CasualRoom extends AbstractRoom {
+
+    private final List<Integer> morgengabiumMaps = new ArrayList<Integer>(){{
+        this.add(1);
+        this.add(5);
+        this.add(6);
+    }};
 
     public static final int CASUAL_TOTAL = 6;
     private int casualNumber;
@@ -45,7 +53,7 @@ public class CasualRoom extends AbstractRoom {
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             } else {
                 //pick only ones with skeleton poi
-                casualNumber = MathUtils.randomBoolean() ? 1 : MathUtils.randomBoolean() ? 6 :5;
+                casualNumber = morgengabiumMaps.get(MathUtils.random(0,2));
             }
         }
         //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...

@@ -21,6 +21,7 @@ import java.util.Objects;
 public class SaveFileManager {
 
     private final Json jsonParser = new Json();
+    private String selectedFileName = "saves/mainWorldSave.json";
 
     public String getStringSaveFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap){
 
@@ -60,13 +61,11 @@ public class SaveFileManager {
      * @return filename
      */
     public String getFileName() {
-        //TODO valuare diversi filname
-        return "saves/mainWorldSave.json";
+        return selectedFileName;
     }
 
     public void loadSave(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
-        //TODO valuare diversi filname
-        JsonValue file = new JsonReader().parse(Gdx.files.local("saves/mainWorldSave.json"));
+        JsonValue file = new JsonReader().parse(Gdx.files.local(selectedFileName));
 
         if(Objects.isNull(file)){
             return;

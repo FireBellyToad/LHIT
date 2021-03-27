@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.screens.CameraManager;
+import faust.lhipgame.screens.FBTScreen;
 import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.screens.LoadingScreen;
 
@@ -23,10 +24,10 @@ public class LHIPGame extends Game {
         assetManager = new AssetManager();
         cameraManager = new CameraManager();
 
-        assetManager.load("splash/loading_splash.png", Texture.class);
+        assetManager.load("splash/fbt_splash.png", Texture.class);
         assetManager.finishLoading();
 
-        setScreen(new LoadingScreen(this));
+        setScreen(new FBTScreen(this));
     }
 
     @Override

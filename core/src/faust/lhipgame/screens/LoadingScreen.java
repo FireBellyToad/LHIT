@@ -50,7 +50,6 @@ public class LoadingScreen implements Screen {
 
         cameraManager.applyAndUpdate();
         game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
-        cameraManager.renderBackground();
 
         assetManager.update();
         if(assetManager.isFinished()){

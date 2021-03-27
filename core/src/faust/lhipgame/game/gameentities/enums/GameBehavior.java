@@ -1,6 +1,4 @@
-package faust.lhipgame.gameentities.enums;
-
-import faust.lhipgame.rooms.enums.RoomType;
+package faust.lhipgame.game.gameentities.enums;
 
 public enum GameBehavior {
     WALK,

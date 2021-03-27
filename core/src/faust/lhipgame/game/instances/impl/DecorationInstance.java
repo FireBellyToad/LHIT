@@ -1,4 +1,4 @@
-package faust.lhipgame.instances.impl;
+package faust.lhipgame.game.instances.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,13 +7,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import faust.lhipgame.gameentities.impl.DecorationEntity;
-import faust.lhipgame.gameentities.GameEntity;
-import faust.lhipgame.gameentities.SpriteEntity;
-import faust.lhipgame.gameentities.enums.DecorationsEnum;
-import faust.lhipgame.instances.GameInstance;
-import faust.lhipgame.instances.Interactable;
-import faust.lhipgame.world.manager.CollisionManager;
+import faust.lhipgame.game.gameentities.impl.DecorationEntity;
+import faust.lhipgame.game.gameentities.GameEntity;
+import faust.lhipgame.game.gameentities.SpriteEntity;
+import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.game.instances.GameInstance;
+import faust.lhipgame.game.instances.Interactable;
+import faust.lhipgame.game.world.manager.CollisionManager;
 
 import java.util.Objects;
 

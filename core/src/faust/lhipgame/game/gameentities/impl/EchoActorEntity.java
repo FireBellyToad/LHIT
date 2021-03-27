@@ -1,4 +1,4 @@
-package faust.lhipgame.gameentities.impl;
+package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import faust.lhipgame.echoes.enums.EchoesActorType;
-import faust.lhipgame.gameentities.AnimatedEntity;
-import faust.lhipgame.gameentities.enums.Direction;
-import faust.lhipgame.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.echoes.enums.EchoesActorType;
+import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.*;
 

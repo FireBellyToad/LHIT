@@ -1,4 +1,4 @@
-package faust.lhipgame.instances.impl;
+package faust.lhipgame.game.instances.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,16 +12,15 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
-import faust.lhipgame.gameentities.AnimatedEntity;
-import faust.lhipgame.gameentities.Killable;
-import faust.lhipgame.gameentities.enums.Direction;
-import faust.lhipgame.gameentities.enums.GameBehavior;
-import faust.lhipgame.gameentities.impl.BoundedEntity;
-import faust.lhipgame.gameentities.impl.BoundedEntity;
-import faust.lhipgame.instances.AnimatedInstance;
-import faust.lhipgame.instances.Interactable;
+import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.Killable;
+import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.gameentities.impl.BoundedEntity;
+import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.instances.Interactable;
 import faust.lhipgame.screens.GameScreen;
-import faust.lhipgame.world.manager.CollisionManager;
+import faust.lhipgame.game.world.manager.CollisionManager;
 
 import java.util.Objects;
 

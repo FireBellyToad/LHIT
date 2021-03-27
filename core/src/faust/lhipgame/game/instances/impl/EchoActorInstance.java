@@ -1,4 +1,4 @@
-package faust.lhipgame.instances.impl;
+package faust.lhipgame.game.instances.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,12 +7,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import faust.lhipgame.echoes.enums.EchoesActorType;
-import faust.lhipgame.gameentities.AnimatedEntity;
-import faust.lhipgame.gameentities.enums.Direction;
-import faust.lhipgame.gameentities.enums.GameBehavior;
-import faust.lhipgame.gameentities.impl.EchoActorEntity;
-import faust.lhipgame.instances.AnimatedInstance;
+import faust.lhipgame.game.echoes.enums.EchoesActorType;
+import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
+import faust.lhipgame.game.instances.AnimatedInstance;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,10 +1,9 @@
-package faust.lhipgame.gameentities.impl;
+package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import faust.lhipgame.gameentities.SpriteEntity;
-import faust.lhipgame.gameentities.enums.ItemEnum;
-import faust.lhipgame.gameentities.enums.POIEnum;
+import faust.lhipgame.game.gameentities.SpriteEntity;
+import faust.lhipgame.game.gameentities.enums.ItemEnum;
+import faust.lhipgame.game.gameentities.enums.POIEnum;
 
 /**
  * POI Entity class

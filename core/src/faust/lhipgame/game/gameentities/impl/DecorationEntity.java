@@ -1,9 +1,8 @@
-package faust.lhipgame.gameentities.impl;
+package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import faust.lhipgame.gameentities.SpriteEntity;
-import faust.lhipgame.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.game.gameentities.SpriteEntity;
+import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 
 /**
  * Entity class for Decorations

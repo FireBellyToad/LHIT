@@ -1,4 +1,4 @@
-package faust.lhipgame.gameentities.enums;
+package faust.lhipgame.game.gameentities.enums;
 
 public enum DecorationsEnum {
     PLANT,

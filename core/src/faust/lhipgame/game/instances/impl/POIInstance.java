@@ -1,4 +1,4 @@
-package faust.lhipgame.instances.impl;
+package faust.lhipgame.game.instances.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,13 +8,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import faust.lhipgame.gameentities.enums.ItemEnum;
-import faust.lhipgame.gameentities.impl.POIEntity;
-import faust.lhipgame.gameentities.enums.POIEnum;
-import faust.lhipgame.instances.GameInstance;
+import faust.lhipgame.game.gameentities.enums.ItemEnum;
+import faust.lhipgame.game.gameentities.impl.POIEntity;
+import faust.lhipgame.game.gameentities.enums.POIEnum;
+import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.screens.GameScreen;
-import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextBoxManager;
+import faust.lhipgame.game.splash.SplashManager;
+import faust.lhipgame.game.textbox.manager.TextBoxManager;
 
 import java.util.Objects;
 

@@ -48,15 +48,18 @@ public class Menu implements InputProcessor {
         Objects.requireNonNull(currentMenu);
         Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
 
+        //Draw arrow on selected option
+        if(Objects.nonNull(currentMenu.getTitle()))
+            mainFont.draw(batch, currentMenu.getTitle(), MENU_X_OFFSET, MENU_Y_OFFSET);
+
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
             //TODO internazionalizzare
-            mainFont.draw(batch, subItemsArray[i].name().replace('_',' '), MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * i));
+            mainFont.draw(batch, subItemsArray[i].name().replace('_',' '),
+                    MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1+i)));
         }
         //Draw arrow on selected option
-        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * this.selectedMenuVoice));
-        Gdx.app.log("DEBUG", "selectedMenuVoice: " + this.selectedMenuVoice);
-
+        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * (1+this.selectedMenuVoice)));
     }
 
     @Override
@@ -91,22 +94,74 @@ public class Menu implements InputProcessor {
      * Handles selection event
      */
     private void handleSelection() {
-        if(MenuItem.MAIN.equals(currentMenu)){
-            switch (selectedMenuVoice){
-                case 0:{
-                    //New game
-                    saveFileManager.cleanSaveFile();
-                    // We don't need to break here!
-                }
-                case 1:{
-                    //Load game
-                    changeToGameScreen = true;
-                    break;
-                }
-                case 2:{
-                    //Option
-                    break;
-                }
+        switch (currentMenu){
+            case NEW_GAME:
+                handleNewGame();
+                break;
+            case OPTIONS:
+                handleOptions();
+                break;
+            case MAIN:
+                handleMain();
+                break;
+        }
+    }
+
+    private void handleMain() {
+        switch (selectedMenuVoice){
+            case 0:{
+                //New game
+                selectedMenuVoice = 0;
+                currentMenu = MenuItem.NEW_GAME;
+                break;
+            }
+            case 1:{
+                //Load game
+                changeToGameScreen = true;
+                break;
+            }
+            case 2:{
+                //Option
+                selectedMenuVoice = 0;
+                currentMenu = MenuItem.OPTIONS;
+                break;
+            }
+        }
+    }
+
+    private void handleNewGame() {
+        switch (selectedMenuVoice){
+            case 0:{
+                //Yes i'm sure
+                saveFileManager.cleanSaveFile();
+                changeToGameScreen = true;
+                break;
+            }
+            case 1:{
+                //No, back to main
+                currentMenu = MenuItem.MAIN;
+                selectedMenuVoice = 0;
+                break;
+            }
+        }
+    }
+
+
+    private void handleOptions() {
+        switch (selectedMenuVoice){
+            case 0:{
+                //Back to main
+                currentMenu = MenuItem.MAIN;
+                selectedMenuVoice = 0;
+                break;
+            }
+            case 1:{
+                //TODO music toggle
+                break;
+            }
+            case 2:{
+                //TODO sound toggle
+                break;
             }
         }
     }

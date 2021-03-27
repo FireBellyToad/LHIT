@@ -1,4 +1,4 @@
-package faust.lhipgame.menu;
+package faust.lhipgame.menu.enums;
 
 public enum MenuItem {
     MUSIC_TOGGLE,

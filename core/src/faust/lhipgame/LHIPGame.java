@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import faust.lhipgame.rooms.manager.SaveFileManager;
+import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
 import faust.lhipgame.screens.FBTScreen;
 

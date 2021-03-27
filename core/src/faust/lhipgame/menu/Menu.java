@@ -1,6 +1,5 @@
 package faust.lhipgame.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.menu.enums.MenuItem;
-import faust.lhipgame.rooms.manager.SaveFileManager;
+import faust.lhipgame.saves.SaveFileManager;
 
 import java.util.Objects;
 

@@ -6,13 +6,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.hud.Hud;
-import faust.lhipgame.instances.impl.PlayerInstance;
-import faust.lhipgame.rooms.manager.RoomsManager;
-import faust.lhipgame.rooms.manager.SaveFileManager;
-import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextBoxManager;
-import faust.lhipgame.world.manager.WorldManager;
+import faust.lhipgame.game.hud.Hud;
+import faust.lhipgame.game.instances.impl.PlayerInstance;
+import faust.lhipgame.game.rooms.manager.RoomsManager;
+import faust.lhipgame.game.splash.SplashManager;
+import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.world.manager.WorldManager;
 
 public class GameScreen implements Screen {
 

@@ -24,7 +24,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class TextManager {
+public class TextBoxManager {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float MESSAGE_LIMIT = 1;
@@ -40,11 +40,10 @@ public class TextManager {
     private static final Color back = new Color(0x222222ff);
     private Timer.Task currentTimer;
 
-    public TextManager(AssetManager assetManager) {
+    public TextBoxManager(AssetManager assetManager) {
 
         // Prepare font
         mainFont = assetManager.get("fonts/main_font.fnt");
-
         mainFont.getData().setScale(FONT_SIZE);
 
         // Prepare text map

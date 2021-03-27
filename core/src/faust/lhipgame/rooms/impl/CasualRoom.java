@@ -10,7 +10,7 @@ import faust.lhipgame.rooms.AbstractRoom;
 import faust.lhipgame.rooms.RoomSaveEntry;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class CasualRoom extends AbstractRoom {
     public static final int CASUAL_TOTAL = 6;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
+    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
         super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, guaranteedMorgengabe);
     }
 
@@ -70,7 +70,7 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         // FIXME handle multiple POI
         if(mustClearPOI){
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));

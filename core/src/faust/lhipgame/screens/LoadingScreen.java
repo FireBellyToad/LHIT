@@ -37,9 +37,6 @@ public class LoadingScreen implements Screen {
         assetManager.load("splash/gameover_splash.png", Texture.class);
         assetManager.load("sprites/hud.png", Texture.class);
 
-        assetManager.load("fonts/main_font.fnt", BitmapFont.class);
-        assetManager.load("fonts/main_font.png", Texture.class);
-
         for(EchoesActorType echoActor : EchoesActorType.values()){
             assetManager.load(echoActor.getSpriteFilename(), Texture.class);
         }

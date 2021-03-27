@@ -24,7 +24,7 @@ import faust.lhipgame.rooms.enums.MapLayersEnum;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public abstract class AbstractRoom {
     protected RoomType roomType;
     protected String roomFileName;
     protected SplashManager splashManager;
-    protected TextManager textManager;
+    protected TextBoxManager textManager;
 
     protected boolean mustClearPOI = false;
     protected boolean guaranteedMorgengabe;
@@ -75,7 +75,7 @@ public abstract class AbstractRoom {
      * @param roomSaveEntry
      * @param guaranteedMorgengabe
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
+    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -181,7 +181,7 @@ public abstract class AbstractRoom {
      * @param obj
      * @param textManager
      */
-    protected void addObjAsPOI(MapObject obj, TextManager textManager, AssetManager assetManager) {
+    protected void addObjAsPOI(MapObject obj, TextBoxManager textManager, AssetManager assetManager) {
 
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
@@ -249,7 +249,7 @@ public abstract class AbstractRoom {
      * @param splashManager
      * @param camera
      */
-    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
+    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
 
     /**
      * Draws room background

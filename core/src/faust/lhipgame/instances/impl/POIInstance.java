@@ -14,7 +14,7 @@ import faust.lhipgame.gameentities.enums.POIEnum;
 import faust.lhipgame.instances.GameInstance;
 import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 
 import java.util.Objects;
 
@@ -33,11 +33,11 @@ public class POIInstance extends GameInstance {
 
     private boolean isAlreadyExamined;
     private PlayerInstance player;
-    private TextManager textManager;
+    private TextBoxManager textManager;
     private SplashManager splashManager;
 
 
-    public POIInstance(final TextManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {
+    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {
         super(new POIEntity(poiType, assetManager));
         this.textManager = textManager;
         this.player = player;

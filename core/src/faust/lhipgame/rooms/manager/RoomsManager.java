@@ -14,7 +14,7 @@ import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.rooms.impl.CasualRoom;
 import faust.lhipgame.rooms.impl.FixedRoom;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.*;
@@ -28,7 +28,7 @@ public class RoomsManager {
 
     private final SplashManager splashManager;
     private final AssetManager assetManager;
-    private final SaveFileManager saveFileManager = new SaveFileManager();
+    private final SaveFileManager saveFileManager;
 
     private AbstractRoom currentRoom;
     private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
@@ -41,15 +41,16 @@ public class RoomsManager {
     private final Vector2 mainWorldSize = new Vector2(0, 0);
 
     private WorldManager worldManager;
-    private TextManager textManager;
+    private TextBoxManager textManager;
     private PlayerInstance player;
     private OrthographicCamera camera;
 
-    public RoomsManager(WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    public RoomsManager(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, SaveFileManager saveFileManager) {
         this.worldManager = worldManager;
         this.textManager = textManager;
         this.splashManager = splashManager;
         this.assetManager = assetManager;
+        this.saveFileManager = saveFileManager;
         this.player = player;
         this.camera = camera;
 
@@ -261,17 +262,8 @@ public class RoomsManager {
      * Dispose current room contents
      */
     public void dispose() {
-        saveOnFile();
+        saveFileManager.saveOnFile(player, saveMap);
 
         currentRoom.dispose();
-    }
-
-    /**
-     * Save on filesystem the predefined numbers of the casual rooms
-     */
-    private void saveOnFile() {
-
-        String stringSave = saveFileManager.getStringSaveFile(player, saveMap);
-        Gdx.files.local(saveFileManager.getFileName()).writeString(stringSave, false);
     }
 }

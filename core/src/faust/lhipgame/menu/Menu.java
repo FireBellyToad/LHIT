@@ -1,0 +1,152 @@
+package faust.lhipgame.menu;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import faust.lhipgame.LHIPGame;
+import faust.lhipgame.menu.enums.MenuItem;
+import faust.lhipgame.rooms.manager.SaveFileManager;
+
+import java.util.Objects;
+
+/**
+ * Menu class
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
+public class Menu implements InputProcessor {
+
+    private static final float FONT_SIZE = 0.5f;
+    private static final float MENU_X_OFFSET = 50;
+    private static final float MENU_Y_OFFSET = (float) (LHIPGame.GAME_HEIGHT*0.5);
+    private static final float SPAN = 15;
+    private static final String ARROW_CHARACTER = "~";
+
+    private BitmapFont mainFont;
+
+    private MenuItem currentMenu = MenuItem.MAIN;
+    private int selectedMenuVoice = 0;
+    private boolean changeToGameScreen = false;
+    private SaveFileManager saveFileManager;
+
+    public Menu(SaveFileManager saveFileManager) {
+        this.saveFileManager = saveFileManager;
+    }
+
+    public void loadFonts(AssetManager assetManager) {
+
+        // Prepare font
+        mainFont = assetManager.get("fonts/main_font.fnt");
+        mainFont.getData().setScale(FONT_SIZE);
+    }
+
+    public void drawCurrentMenu(SpriteBatch batch) {
+        Objects.requireNonNull(batch);
+        Objects.requireNonNull(currentMenu);
+        Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
+
+        MenuItem[] subItemsArray = currentMenu.getSubItems();
+        for (int i = 0; i < subItemsArray.length; i++) {
+            //TODO internazionalizzare
+            mainFont.draw(batch, subItemsArray[i].name().replace('_',' '), MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * i));
+        }
+        //Draw arrow on selected option
+        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * this.selectedMenuVoice));
+        Gdx.app.log("DEBUG", "selectedMenuVoice: " + this.selectedMenuVoice);
+
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+
+        switch (keycode) {
+            case Input.Keys.W:
+            case Input.Keys.UP: {
+                if(selectedMenuVoice > 0){
+                    selectedMenuVoice--;
+                }
+                break;
+            }
+            case Input.Keys.S:
+            case Input.Keys.DOWN: {
+                if(selectedMenuVoice < currentMenu.getSubItems().length-1){
+                    selectedMenuVoice++;
+                }
+                break;
+            }
+            case Input.Keys.X:
+            case Input.Keys.K:
+            case Input.Keys.ENTER:  {
+                handleSelection();
+                break;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Handles selection event
+     */
+    private void handleSelection() {
+        if(MenuItem.MAIN.equals(currentMenu)){
+            switch (selectedMenuVoice){
+                case 0:{
+                    //New game
+                    saveFileManager.cleanSaveFile();
+                    // We don't need to break here!
+                }
+                case 1:{
+                    //Load game
+                    changeToGameScreen = true;
+                    break;
+                }
+                case 2:{
+                    //Option
+                    break;
+                }
+            }
+        }
+    }
+
+    public boolean isChangeToGameScreen() {
+        return changeToGameScreen;
+    }
+
+    @Override
+    public boolean keyUp(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int i, int i1, int i2) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int i, int i1) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int i) {
+        return false;
+    }
+}

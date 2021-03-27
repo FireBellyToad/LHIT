@@ -19,7 +19,7 @@ import faust.lhipgame.rooms.RoomSaveEntry;
 import faust.lhipgame.rooms.enums.MapObjNameEnum;
 import faust.lhipgame.rooms.enums.RoomType;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class FixedRoom extends AbstractRoom {
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;
 
-    public FixedRoom(final RoomType roomType, final WorldManager worldManager, final TextManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry) {
+    public FixedRoom(final RoomType roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry) {
         super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, false);
     }
 
@@ -55,7 +55,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void initRoom(RoomType roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS
@@ -79,7 +79,7 @@ public class FixedRoom extends AbstractRoom {
      * @param textManager
      */
     @Override
-    protected void addObjAsPOI(MapObject obj, TextManager textManager, AssetManager assetManager) {
+    protected void addObjAsPOI(MapObject obj, TextBoxManager textManager, AssetManager assetManager) {
 
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);

@@ -1,7 +1,6 @@
 package faust.lhipgame.rooms.manager;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
@@ -94,5 +93,22 @@ public class SaveFileManager {
                     (int) v.x, (int) v.y, casualNumberPredefined,
                     arePoiCleared));
         });
+    }
+
+    /**
+     * Save on filesystem the predefined numbers of the casual rooms
+     */
+    public void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
+
+        String stringSave = getStringSaveFile(player, saveMap);
+        Gdx.files.local(getFileName()).writeString(stringSave, false);
+    }
+
+    /**
+     * Clean saveFile for new game
+     */
+    public void cleanSaveFile() {
+
+        Gdx.files.local(getFileName()).writeString("", false);
     }
 }

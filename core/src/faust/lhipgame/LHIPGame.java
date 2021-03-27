@@ -4,10 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import faust.lhipgame.rooms.manager.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
 import faust.lhipgame.screens.FBTScreen;
-import faust.lhipgame.screens.GameScreen;
-import faust.lhipgame.screens.LoadingScreen;
 
 public class LHIPGame extends Game {
 
@@ -17,12 +16,15 @@ public class LHIPGame extends Game {
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;
+    private SaveFileManager saveFileManager;
+
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
         cameraManager = new CameraManager();
+        saveFileManager = new SaveFileManager();
 
         assetManager.load("splash/fbt_splash.png", Texture.class);
         assetManager.finishLoading();
@@ -54,4 +56,6 @@ public class LHIPGame extends Game {
     public CameraManager getCameraManager() {
         return cameraManager;
     }
+
+    public SaveFileManager getSaveFileManager() { return saveFileManager;}
 }

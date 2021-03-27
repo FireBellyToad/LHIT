@@ -3,7 +3,6 @@ package faust.lhipgame.hud;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,10 +12,9 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.gameentities.GameEntity;
 import faust.lhipgame.gameentities.SpriteEntity;
 import faust.lhipgame.gameentities.enums.GameBehavior;
-import faust.lhipgame.instances.AnimatedInstance;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.screens.GameScreen;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 
 import java.util.Objects;
 
@@ -28,7 +26,7 @@ import java.util.Objects;
 public class Hud {
     private SpriteEntity hudTexture;
 
-    private TextManager textManager;
+    private TextBoxManager textManager;
 
     private final Vector2 meterPosition = new Vector2(2.5f, LHIPGame.GAME_HEIGHT - 10);
     private final Vector2 healthKitCountPosition = new Vector2(LHIPGame.GAME_WIDTH - 10, LHIPGame.GAME_HEIGHT - 4);
@@ -44,7 +42,7 @@ public class Hud {
     private boolean mustFlicker = false;
     private long startTime = 0;
 
-    public Hud(TextManager textManager, AssetManager assetManager) {
+    public Hud(TextBoxManager textManager, AssetManager assetManager) {
 
         this.textManager = textManager;
         this.hudTexture = new SpriteEntity(assetManager.get("sprites/hud.png")) {

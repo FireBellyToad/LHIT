@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.rooms.manager.SaveFileManager;
 
 public class FBTScreen implements Screen {
 
@@ -24,10 +26,23 @@ public class FBTScreen implements Screen {
     @Override
     public void show() {
 
-        // Load next screen splash
-        assetManager.load("splash/loading_splash.png", Texture.class);
-
+        // Load next menu sp
+        assetManager.load("splash/title_splash.png", Texture.class);
         assetManager.finishLoading();
+
+        assetManager.load("fonts/main_font.fnt", BitmapFont.class);
+        assetManager.finishLoading();
+
+        assetManager.load("fonts/main_font.png", Texture.class);
+        assetManager.finishLoading();
+
+        //Three seconds splash screen
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                game.setScreen(new MenuScreen(game));
+            }
+        }, 3);
     }
 
     @Override
@@ -36,14 +51,6 @@ public class FBTScreen implements Screen {
         cameraManager.applyAndUpdate();
         game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
         cameraManager.renderBackground();
-
-        //Three seconds splash screen
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                game.setScreen(new LoadingScreen(game));
-            }
-        }, 3);
 
         //Load screen
         game.getBatch().begin();

@@ -9,8 +9,9 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.hud.Hud;
 import faust.lhipgame.instances.impl.PlayerInstance;
 import faust.lhipgame.rooms.manager.RoomsManager;
+import faust.lhipgame.rooms.manager.SaveFileManager;
 import faust.lhipgame.splash.SplashManager;
-import faust.lhipgame.text.manager.TextManager;
+import faust.lhipgame.text.manager.TextBoxManager;
 import faust.lhipgame.world.manager.WorldManager;
 
 public class GameScreen implements Screen {
@@ -21,7 +22,7 @@ public class GameScreen implements Screen {
     private CameraManager cameraManager;
     private WorldManager worldManager;
     private PlayerInstance player;
-    private TextManager textManager;
+    private TextBoxManager textManager;
     private RoomsManager roomsManager;
 
     private Hud hud;
@@ -42,14 +43,15 @@ public class GameScreen implements Screen {
         Box2D.init();
 
         worldManager = new WorldManager(assetManager);
-        textManager = new TextManager(assetManager);
+        textManager = new TextBoxManager(assetManager);
         hud = new Hud(textManager,assetManager);
         splashManager = new SplashManager(textManager,assetManager);
 
         // Creating player and making it available to input processor
         player = new PlayerInstance(assetManager);
 
-        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(), assetManager);
+        roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
+                assetManager, game.getSaveFileManager());
     }
 
     @Override

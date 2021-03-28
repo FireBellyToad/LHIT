@@ -35,7 +35,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
-    private static final float SPEAR_SENSOR_Y_OFFSET = 10;
+    private static final float SPEAR_SENSOR_Y_OFFSET = 9;
     private static final float HEALTH_KIT_TIME = 4;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 9;
 
@@ -83,10 +83,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void doLogic(float stateTime) {
 
         // Setting Attack area position
-        rightSpearBody.setTransform(body.getPosition().x + 10, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        rightSpearBody.setTransform(body.getPosition().x + 11, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
         upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 11 + SPEAR_SENSOR_Y_OFFSET, 0);
-        leftSpearBody.setTransform(body.getPosition().x - 10, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 11 + SPEAR_SENSOR_Y_OFFSET, 0);
+        leftSpearBody.setTransform(body.getPosition().x - 11, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 12 + SPEAR_SENSOR_Y_OFFSET, 0);
+        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
 
         // Interrupt healing if moving
@@ -289,7 +290,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
 
         int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
-        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < 10) {
+        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME+4) {
             switch (currentDirection) {
                 case UP: {
                     upSpearBody.setActive(true);
@@ -347,7 +348,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         body.setUserData(this);
         body.createFixture(mainFixtureDef);
         shape.dispose();
-
 
         BodyDef rightSpearDef = new BodyDef();
         rightSpearDef.type = BodyDef.BodyType.KinematicBody;
@@ -698,6 +698,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public void dispose(){
         super.dispose();
+        rightSpearBody.getFixtureList().forEach(f ->
+                rightSpearBody.destroyFixture(f));
+        upSpearBody.getFixtureList().forEach(f ->
+                upSpearBody.destroyFixture(f));
+        leftSpearBody.getFixtureList().forEach(f ->
+                leftSpearBody.destroyFixture(f));
+        downSpearBody.getFixtureList().forEach(f ->
+                downSpearBody.destroyFixture(f));
         waterWalkEffect.dispose();
     }
 

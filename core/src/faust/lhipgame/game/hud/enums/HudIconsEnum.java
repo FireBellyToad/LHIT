@@ -1,4 +1,4 @@
-package faust.lhipgame.game.hud;
+package faust.lhipgame.game.hud.enums;
 
 public enum HudIconsEnum {
     LIFE_METER_FULL,

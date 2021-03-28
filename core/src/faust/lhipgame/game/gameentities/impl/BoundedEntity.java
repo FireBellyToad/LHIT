@@ -37,7 +37,10 @@ public class BoundedEntity extends AnimatedEntity {
         TextureRegion[] walkFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 5, getTextureColumns() * 6);
         TextureRegion[] walkFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 6, getTextureColumns() * 7);
         TextureRegion[] walkFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 7, getTextureColumns() * 8);
-        //TextureRegion[] attachedFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 8, getTextureColumns() * 9);
+        TextureRegion[] attackFramesDown = Arrays.copyOfRange(allFrames, getTextureColumns() * 8, getTextureColumns() * 9);
+        TextureRegion[] attackFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 9, getTextureColumns() * 10);
+        TextureRegion[] attackFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 10, getTextureColumns() * 11);
+        TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, Direction.DOWN);
@@ -51,7 +54,11 @@ public class BoundedEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.WALK, Direction.UP);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, Direction.RIGHT);
 
-        //addAnimation(new Animation<>(FRAME_DURATION, attachedFrames), GameBehavior.ATTACK);
+        // Initialize the Walk Animation with the frame interval and array of frames
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesDown), GameBehavior.ATTACK, Direction.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesLeft), GameBehavior.ATTACK, Direction.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesUp), GameBehavior.ATTACK, Direction.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesRight), GameBehavior.ATTACK, Direction.RIGHT);
 
         // Initialize the Hurt Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.HURT, Direction.DOWN);
@@ -67,7 +74,7 @@ public class BoundedEntity extends AnimatedEntity {
     }
 
     @Override
-    protected int getTextureRows() { return 8; }
+    protected int getTextureRows() { return 12; }
 
     public Texture getShadowTexture() {
         return shadow;

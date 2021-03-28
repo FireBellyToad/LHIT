@@ -105,6 +105,11 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
         return isDead;
     }
 
+    @Override
+    public double damageRoll() {
+        return 0;
+    }
+
 
     @Override
     public void createBody(World world, float x, float y) {

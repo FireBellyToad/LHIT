@@ -31,4 +31,9 @@ public interface Killable {
      */
     boolean isDead();
 
+    /**
+     * @return a random damage roll INFLICTED BY the Killable
+     */
+    double damageRoll();
+
 }

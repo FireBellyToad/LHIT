@@ -3,6 +3,7 @@ package faust.lhipgame.game.hud;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,6 +13,7 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.GameEntity;
 import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
@@ -24,7 +26,9 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class Hud {
+
     private SpriteEntity hudTexture;
+    private Texture darknessOverlay;
 
     private TextBoxManager textManager;
 
@@ -56,9 +60,9 @@ public class Hud {
                 return 1;
             }
         };
+        darknessOverlay = assetManager.get("sprites/darkness_overlay.png");
 
     }
-
 
     public void drawHud(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
         Objects.requireNonNull(batch);
@@ -75,7 +79,7 @@ public class Hud {
         batch.begin();
         // If not hurt or the flickering POI must be shown, draw the texture
         if (!mustFlicker) {
-            // Draw Health meter (red crosses for each hitpoit remaining, hollow ones for each damage point)
+            // Draw Health meter (red crosses for each hitponit remaining, hollow ones for each damage point)
             TextureRegion frame;
             for (int r = 0; r < player.getResistance(); r++) {
                 frame = hudTexture.getFrame(r < player.getDamageDelta() ?
@@ -149,6 +153,9 @@ public class Hud {
             batch.end();
         }
 
+        batch.begin();
+        batch.draw(darknessOverlay,0,0);
+        batch.end();
 
     }
 }

@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
@@ -31,12 +28,25 @@ import java.util.Objects;
  */
 public class BoundedInstance extends AnimatedInstance implements Interactable, Killable {
 
-    private static final float BOUNDED_SPEED = 30;
-    private static final int LINE_OF_ATTACK = 30;
+    private static final float BOUNDED_SPEED = 35;
+    private static final int LINE_OF_ATTACK = 15;
     private static final int LINE_OF_SIGHT = 70;
+    private static final float CLAW_SENSOR_Y_OFFSET = 10;
+    private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
+    private static final float ATTACK_COOLDOWN_TIME = 1;
+
+    //Body for spear attacks
+    private Body downClawBody;
+    private Body leftClawBody;
+    private Body rightClawBody;
+    private Body upClawBody;
 
     private PlayerInstance target;
     private boolean isDead = false;
+
+    // Time delta between state and start of attack animation
+    private float attackDeltaTime = 0;
+    private boolean attackCooldown = true;
 
     public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new BoundedEntity(assetManager));
@@ -49,6 +59,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     @Override
     public void doLogic(float stateTime) {
 
+        rightClawBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
+        upClawBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        leftClawBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
+        downClawBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
         if (GameBehavior.HURT.equals(currentBehavior))
@@ -56,21 +70,26 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
 
         if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
+            attackDeltaTime = 0;
             currentBehavior = GameBehavior.WALK;
             // Normal from strix position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
 
-            // If not already attached su player
             currentDirection = extractDirectionFromNormal(direction);
 
             // Move towards target
             body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
-            //TODO attack logic
-            currentBehavior = GameBehavior.IDLE;
+        } else if (attackCooldown && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+            currentBehavior = GameBehavior.ATTACK;
+            // Normal from strix position to target
+            Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
+                    target.getBody().getPosition().y - body.getPosition().y).nor();
+            currentDirection = extractDirectionFromNormal(direction);
 
+            attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
+
         } else {
             currentBehavior = GameBehavior.IDLE;
 
@@ -131,12 +150,109 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         fixtureDef.density = 0;
         fixtureDef.friction = 0;
         fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
+        fixtureDef.filter.maskBits = CollisionManager.SOLID_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);
         body.setUserData(this);
         body.createFixture(fixtureDef);
         shape.dispose();
+
+        BodyDef rightClawDef = new BodyDef();
+        rightClawDef.type = BodyDef.BodyType.KinematicBody;
+        rightClawDef.fixedRotation = true;
+        rightClawDef.position.set(x+2, y);
+
+        // Define shape
+        PolygonShape rightClawShape = new PolygonShape();
+        rightClawShape.setAsBox(3, 6);
+
+        // Define Fixtures
+        FixtureDef rightClawFixtureDef = new FixtureDef();
+        rightClawFixtureDef.shape = shape;
+        rightClawFixtureDef.density = 1;
+        rightClawFixtureDef.friction = 1;
+        rightClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        rightClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+
+        // Associate body to world
+        rightClawBody = world.createBody(rightClawDef);
+        rightClawBody.setUserData(this);
+        rightClawBody.createFixture(rightClawFixtureDef);
+        rightClawBody.setActive(false);
+        rightClawShape.dispose();
+
+        BodyDef upClawDef = new BodyDef();
+        upClawDef.type = BodyDef.BodyType.KinematicBody;
+        upClawDef.fixedRotation = true;
+        upClawDef.position.set(x, y-2);
+
+        // Define shape
+        PolygonShape upClawShape = new PolygonShape();
+        upClawShape.setAsBox(6, 3);
+
+        // Define Fixtures
+        FixtureDef upClawFixtureDef = new FixtureDef();
+        upClawFixtureDef.shape = shape;
+        upClawFixtureDef.density = 1;
+        upClawFixtureDef.friction = 1;
+        upClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        upClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+
+        // Associate body to world
+        upClawBody = world.createBody(upClawDef);
+        upClawBody.setUserData(this);
+        upClawBody.createFixture(upClawFixtureDef);
+        upClawBody.setActive(false);
+        upClawShape.dispose();
+
+        BodyDef leftClawDef = new BodyDef();
+        leftClawDef.type = BodyDef.BodyType.KinematicBody;
+        leftClawDef.fixedRotation = true;
+        leftClawDef.position.set(x-2, y);
+
+        // Define shape
+        PolygonShape leftClawShape = new PolygonShape();
+        leftClawShape.setAsBox(3, 6);
+
+        // Define Fixtures
+        FixtureDef leftClawFixtureDef = new FixtureDef();
+        leftClawFixtureDef.shape = shape;
+        leftClawFixtureDef.density = 1;
+        leftClawFixtureDef.friction = 1;
+        leftClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        leftClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+
+        // Associate body to world
+        leftClawBody = world.createBody(leftClawDef);
+        leftClawBody.setUserData(this);
+        leftClawBody.createFixture(leftClawFixtureDef);
+        leftClawBody.setActive(false);
+        leftClawShape.dispose();
+
+        BodyDef downClawDef = new BodyDef();
+        downClawDef.type = BodyDef.BodyType.KinematicBody;
+        downClawDef.fixedRotation = true;
+        downClawDef.position.set(x, y+2);
+
+        // Define shape
+        PolygonShape downClawShape = new PolygonShape();
+        downClawShape.setAsBox(6, 3);
+
+        // Define Fixtures
+        FixtureDef downClawFixtureDef = new FixtureDef();
+        downClawFixtureDef.shape = shape;
+        downClawFixtureDef.density = 1;
+        downClawFixtureDef.friction = 1;
+        downClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        downClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+
+        // Associate body to world
+        downClawBody = world.createBody(downClawDef);
+        downClawBody.setUserData(this);
+        downClawBody.createFixture(downClawFixtureDef);
+        downClawBody.setActive(false);
+        downClawShape.dispose();
 
         // Hitbox definition
         BodyDef hitBoxDef = new BodyDef();
@@ -226,7 +342,74 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     }
 
     public double damageRoll() {
-        return MathUtils.random(1, 6);
+        return 3;
     }
 
+    /**
+     * Handle the attack logic, activating and deactivating attack collision bodies
+     *
+     * @param stateTime
+     */
+    private void attackLogic(float stateTime) {
+
+        //Resitting delta time to extract correct frame
+        if (attackDeltaTime == 0)
+            attackDeltaTime = stateTime;
+
+
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, stateTime - attackDeltaTime);
+        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME+1) {
+            switch (currentDirection) {
+                case UP: {
+                    upClawBody.setActive(true);
+                    break;
+                }
+                case DOWN: {
+                    downClawBody.setActive(true);
+                    break;
+                }
+                case LEFT: {
+                    leftClawBody.setActive(true);
+                    break;
+                }
+                case RIGHT: {
+                    rightClawBody.setActive(true);
+                    break;
+                }
+            }
+        } else if (currentFrame >=  ATTACK_VALID_FRAME+1) {
+            //end delta time on end animation
+            attackDeltaTime = 0;
+            attackCooldown = false;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    attackCooldown = true;
+                }
+            }, ATTACK_COOLDOWN_TIME);
+
+            rightClawBody.setActive(false);
+            upClawBody.setActive(false);
+            leftClawBody.setActive(false);
+            downClawBody.setActive(false);
+        } else {
+            rightClawBody.setActive(false);
+            upClawBody.setActive(false);
+            leftClawBody.setActive(false);
+            downClawBody.setActive(false);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        rightClawBody.getFixtureList().forEach(f ->
+                rightClawBody.destroyFixture(f));
+        leftClawBody.getFixtureList().forEach(f ->
+                leftClawBody.destroyFixture(f));
+        upClawBody.getFixtureList().forEach(f ->
+                upClawBody.destroyFixture(f));
+        downClawBody.getFixtureList().forEach(f ->
+                downClawBody.destroyFixture(f));
+    }
 }

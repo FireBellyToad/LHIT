@@ -101,30 +101,41 @@ public class TextBoxManager {
             return;
         }
 
+        boolean twoline = false;
+        float fontY = 0;
+        float innerBoxHeight = 0;
+        float outerBoxHeight =0;
+
         //Render all the created boxes
-        textBoxes.forEach((box) -> {
+        for(TextBoxData box : textBoxes) {
+
+            //Adjust rendering if text has only one line
+            twoline = box.getText().indexOf("\n") != -1;
+            outerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT : TOTAL_TEXTBOX_HEIGHT/2;
+            innerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT-4 : (TOTAL_TEXTBOX_HEIGHT/2)-4;
+            fontY = twoline ? TOTAL_TEXTBOX_HEIGHT-8 : (TOTAL_TEXTBOX_HEIGHT/2)-6;
 
             //White Corner
             batch.begin();
             cornerBox.setColor(corner);
             cornerBox.setProjectionMatrix(camera.combined);
             cornerBox.begin(ShapeRenderer.ShapeType.Filled);
-            cornerBox.rect(0, 0, LHIPGame.GAME_WIDTH, TOTAL_TEXTBOX_HEIGHT);
+            cornerBox.rect(0, 0, LHIPGame.GAME_WIDTH, outerBoxHeight);
             cornerBox.end();
 
             //Black Background
             backgroundBox.setColor(back);
             backgroundBox.setProjectionMatrix(camera.combined);
             backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH-4, TOTAL_TEXTBOX_HEIGHT -4);
+            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH-4, innerBoxHeight);
             backgroundBox.end();
             batch.end();
 
             //Text
             batch.begin();
-            mainFont.draw(batch, box.getText(), 6, TOTAL_TEXTBOX_HEIGHT-8);
+            mainFont.draw(batch, box.getText(), 6, fontY);
             batch.end();
-        });
+        }
     }
 
     public void dispose() {

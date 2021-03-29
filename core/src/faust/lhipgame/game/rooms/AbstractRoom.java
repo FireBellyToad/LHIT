@@ -118,9 +118,8 @@ public abstract class AbstractRoom {
             }
 
             // Prepare enemy (casual choice)
-            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && MathUtils.randomBoolean()) {
+            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && (guaranteedMorgengabe ||  MathUtils.randomBoolean())) {
                 addObjAsEnemy(obj, assetManager);
-                splashManager.setSplashToShow("splash.strix");
             }
 
             // Prepare enemy (casual choice)
@@ -223,19 +222,23 @@ public abstract class AbstractRoom {
         AnimatedInstance enemyInstance = null;
 
         //Improve
-        if (MathUtils.randomBoolean()) {
+      //  if ((guaranteedMorgengabe && MathUtils.randomBoolean()) || (!guaranteedMorgengabe)) {
+       //    enemyInstance = new StrixInstance(
+       //             (float) obj.getProperties().get("x"),
+       //             (float) obj.getProperties().get("y"),
+      //              player,
+      //              assetManager);
+
+     //       splashManager.setSplashToShow("splash.strix");
+       // } else {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
                     player,
                     assetManager);
-        } else {
-            enemyInstance = new BoundedInstance(
-                    (float) obj.getProperties().get("x"),
-                    (float) obj.getProperties().get("y"),
-                    player,
-                    assetManager);
-        }
+
+            splashManager.setSplashToShow("splash.bounded");
+       // }
 
 
         enemyList.add(enemyInstance);

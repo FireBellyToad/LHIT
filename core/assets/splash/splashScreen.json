@@ -5,6 +5,10 @@
         "splashPath": "splash/strix_splash.png"
     },
     {
+      "splashKey": "splash.bounded",
+      "splashPath": "splash/bounded_splash.png"
+    },
+    {
       "splashKey": "splash.morgengabe",
       "splashPath": "splash/morgengabe_splash.png"
     },

@@ -252,12 +252,15 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
      */
     @Override
     public void hurt(int damageReceived) {
-        if (isDying()) {
-            isDead = true;
-        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-            this.damage += Math.min(getResistance(), damageReceived);
-            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
-            postHurtLogic();
+        //Should not be hurted if attached to player!
+        if(!isAttachedToPlayer()){
+            if (isDying()) {
+                isDead = true;
+            } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+                this.damage += Math.min(getResistance(), damageReceived);
+                Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+                postHurtLogic();
+            }
         }
     }
 

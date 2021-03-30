@@ -302,7 +302,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @param stateTime
      * @return
      */
-    private float mapStateTimeFromBehaviour(float stateTime) {
+    protected float mapStateTimeFromBehaviour(float stateTime) {
         switch (currentBehavior) {
             case ATTACK: {
                 return 2.25f * (stateTime - attackDeltaTime);

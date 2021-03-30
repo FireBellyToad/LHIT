@@ -34,7 +34,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     private static final int LINE_OF_SIGHT = 70;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final float ATTACK_COOLDOWN_TIME = 5;
+    private static final float ATTACK_COOLDOWN_TIME = 2;
 
     //Body for spear attacks
     private Body downClawBody;
@@ -299,7 +299,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
         //Draw shadow
         batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
@@ -371,7 +371,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, stateTime - attackDeltaTime);
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime));
 
         Gdx.app.log("DEBUG","BoundedInstance currentFrame: " + currentFrame);
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME+1) {
@@ -401,7 +401,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         }
 
         // Resetting Behaviour on animation end
-        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, stateTime-attackDeltaTime)) {
+        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
             attackCooldown = false;
 
             if(Objects.isNull(attackCooldownTimer)) {
@@ -428,4 +428,16 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         downClawBody.getFixtureList().forEach(f ->
                 downClawBody.destroyFixture(f));
     }
+
+    @Override
+    protected float mapStateTimeFromBehaviour(float stateTime) {
+
+        switch (currentBehavior) {
+            case ATTACK: {
+                return (stateTime - attackDeltaTime);
+            }
+        }
+        return stateTime;
+    }
+
 }

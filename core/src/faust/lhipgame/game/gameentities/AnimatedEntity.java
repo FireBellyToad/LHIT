@@ -56,6 +56,16 @@ public abstract class AnimatedEntity extends GameEntity {
         this.animations.get(behavior).put(direction, animation);
     }
     /**
+     * Returns frame to render with non looping animation and Unused direction
+     *
+     * @param behavior  The behavior of the animation
+     * @param stateTime state time to render
+     * @return the TextureRegion of the frame
+     */
+    public TextureRegion getFrame(GameBehavior behavior, float stateTime) {
+        return getFrame(behavior, Direction.UNUSED, stateTime, false);
+    }
+    /**
      * Returns frame to render with looping animation
      *
      * @param behavior  The behavior of the animation

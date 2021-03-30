@@ -74,6 +74,11 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     }
 
     @Override
+    protected float mapStateTimeFromBehaviour(float stateTime) {
+        return stateTime;
+    }
+
+    @Override
     public void postHurtLogic(GameInstance attacker) {
 
         // is pushed away while flickering
@@ -175,7 +180,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, stateTime);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
 
         //Draw shadow
         batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);

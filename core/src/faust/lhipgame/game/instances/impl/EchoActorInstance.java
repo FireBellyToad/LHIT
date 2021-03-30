@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.GameEntity;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
@@ -51,12 +52,12 @@ public class EchoActorInstance extends AnimatedInstance {
             deltaTime = stateTime;
 
         //If animation is finished pass to the next step
-       if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,stateTime - deltaTime)){
-           deltaTime = stateTime;
+       if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
            final int index = stepOrder.indexOf(currentBehavior);
            Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " end step "+ currentBehavior);
 
+           deltaTime = stateTime;
            //If is not last step
            if(index+1 < stepOrder.size()){
                currentBehavior = ((EchoActorEntity) entity).getStepOrder().get(index+1);
@@ -65,6 +66,11 @@ public class EchoActorInstance extends AnimatedInstance {
                Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
            }
        }
+    }
+
+    @Override
+    protected float mapStateTimeFromBehaviour(float stateTime) {
+        return stateTime - deltaTime;
     }
 
     @Override
@@ -103,7 +109,7 @@ public class EchoActorInstance extends AnimatedInstance {
         }
 
         // Should not loop!
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, Direction.UNUSED,stateTime - deltaTime,false);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime));
 
         batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 

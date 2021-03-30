@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.Killable;
@@ -20,6 +22,7 @@ import faust.lhipgame.game.gameentities.impl.PlayerEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.world.manager.CollisionManager;
+import faust.lhipgame.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +93,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
 
+        if (GameBehavior.HURT.equals(currentBehavior))
+            return;
+
         // Interrupt healing if moving
         if (GameBehavior.KNEE.equals(currentBehavior) &&
                 (this.body.getLinearVelocity().x != 0 ||
@@ -151,19 +157,35 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     @Override
-    public void hurt(int damageReceived) {
+    public void hurt(GameInstance attacker) {
         if (isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+            double damageReceived = ((Killable) attacker).damageRoll();
             this.damage += Math.min(getResistance(), damageReceived);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
-            postHurtLogic();
+            postHurtLogic(attacker);
         }
     }
 
     @Override
-    public void postHurtLogic() {
-        //Nothing to do here... yet
+    public void postHurtLogic(GameInstance attacker) {
+        // is pushed away while flickering
+        Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
+                attacker.getBody().getPosition().y - body.getPosition().y).nor();
+
+        if(!(attacker instanceof StrixInstance)){
+          //  body.setLinearVelocity(PLAYER_SPEED * 4 * -direction.x, PLAYER_SPEED * 4 * -direction.y);
+        }
+        currentBehavior = GameBehavior.HURT;
+        // Do nothing for half second
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                currentBehavior = GameBehavior.IDLE;
+                body.setLinearVelocity(0,0);
+            }
+        }, 0.20f);
     }
 
     /**
@@ -258,7 +280,18 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw Walfrit
-        batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
+        // If not hurt or the flickering POI must be shown, draw the texture
+        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+            batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
+        }
+
+        // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
+        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+            mustFlicker = !mustFlicker;
+
+            // restart flickering timer
+            startTime = TimeUtils.nanoTime();
+        }
 
 
     }
@@ -484,6 +517,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public boolean keyDown(int keycode) {
+
+        // If hurt, can't do anything
+        if(GameBehavior.HURT.equals(currentBehavior)){
+            return false;
+        }
 
         // Keep the initial velocity
         float horizontalVelocity = this.body.getLinearVelocity().x;

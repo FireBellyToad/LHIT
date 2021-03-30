@@ -67,7 +67,8 @@ public abstract class AbstractRoom {
 
     /**
      * Constructor
-     *  @param roomType
+     *
+     * @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
@@ -105,7 +106,7 @@ public abstract class AbstractRoom {
         emergedAreaList = new ArrayList<>();
 
         // Place objects in room
-        mapObjects.forEach(obj ->{
+        mapObjects.forEach(obj -> {
 
             // Prepare POI
             if (MapObjNameEnum.POI.name().equals(obj.getName())) {
@@ -118,7 +119,7 @@ public abstract class AbstractRoom {
             }
 
             // Prepare enemy (casual choice)
-            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && (guaranteedMorgengabe ||  MathUtils.randomBoolean())) {
+            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && (guaranteedMorgengabe || MathUtils.randomBoolean())) {
                 addObjAsEnemy(obj, assetManager);
             }
 
@@ -148,9 +149,10 @@ public abstract class AbstractRoom {
 
     /**
      * Add invisible walls
+     *
      * @param obj
      */
-    protected void addObjAsWall(MapObject obj){
+    protected void addObjAsWall(MapObject obj) {
 
         RectangleMapObject mapObject = (RectangleMapObject) obj;
 
@@ -159,9 +161,10 @@ public abstract class AbstractRoom {
 
     /**
      * Add invisible emerged areas
+     *
      * @param obj
      */
-    protected void addObjAsEmerged(MapObject obj){
+    protected void addObjAsEmerged(MapObject obj) {
 
         PolygonMapObject mapObject = (PolygonMapObject) obj;
 
@@ -186,7 +189,7 @@ public abstract class AbstractRoom {
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
 
-        Gdx.app.log("DEBUG","guaranteedMorgengabe: " +guaranteedMorgengabe);
+        Gdx.app.log("DEBUG", "guaranteedMorgengabe: " + guaranteedMorgengabe);
 
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
@@ -222,15 +225,7 @@ public abstract class AbstractRoom {
         AnimatedInstance enemyInstance = null;
 
         //Improve
-      //  if ((guaranteedMorgengabe && MathUtils.randomBoolean()) || (!guaranteedMorgengabe)) {
-       //    enemyInstance = new StrixInstance(
-       //             (float) obj.getProperties().get("x"),
-       //             (float) obj.getProperties().get("y"),
-      //              player,
-      //              assetManager);
-
-     //       splashManager.setSplashToShow("splash.strix");
-       // } else {
+        if ((guaranteedMorgengabe || (MathUtils.randomBoolean()) && !guaranteedMorgengabe)) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
@@ -238,7 +233,15 @@ public abstract class AbstractRoom {
                     assetManager);
 
             splashManager.setSplashToShow("splash.bounded");
-       // }
+        } else {
+            enemyInstance = new StrixInstance(
+                    (float) obj.getProperties().get("x"),
+                    (float) obj.getProperties().get("y"),
+                    player,
+                    assetManager);
+
+            splashManager.setSplashToShow("splash.strix");
+        }
 
 
         enemyList.add(enemyInstance);
@@ -342,10 +345,9 @@ public abstract class AbstractRoom {
     }
 
     /**
-     *
      * @return true if all Poi are been examined
      */
-    public boolean arePoiCleared(){
+    public boolean arePoiCleared() {
         //FIXME handle multiple POI
         return this.poiList.stream().allMatch(poiInstance -> poiInstance.isAlreadyExamined());
     }

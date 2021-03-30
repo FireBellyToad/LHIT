@@ -15,6 +15,7 @@ import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
 import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.game.world.manager.CollisionManager;
@@ -33,7 +34,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     private static final int LINE_OF_SIGHT = 70;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final float ATTACK_COOLDOWN_TIME = 1;
+    private static final float ATTACK_COOLDOWN_TIME = 5;
 
     //Body for spear attacks
     private Body downClawBody;
@@ -47,6 +48,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
     private boolean attackCooldown = true;
+    private Timer.Task attackCooldownTimer;
 
     public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new BoundedEntity(assetManager));
@@ -68,9 +70,24 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         if (GameBehavior.HURT.equals(currentBehavior))
             return;
 
-        if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
+        if (attackCooldown && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+
+            //Start animation
+            if(!GameBehavior.ATTACK.equals(currentBehavior)){
+                attackDeltaTime = stateTime;
+                currentBehavior = GameBehavior.ATTACK;
+            }
+
+            // Normal from bounded position to target
+            Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
+                    target.getBody().getPosition().y - body.getPosition().y).nor();
+            currentDirection = extractDirectionFromNormal(direction);
+
+            attackLogic(stateTime);
+            body.setLinearVelocity(0, 0);
+
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
-            attackDeltaTime = 0;
             currentBehavior = GameBehavior.WALK;
             // Normal from strix position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
@@ -80,16 +97,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
 
             // Move towards target
             body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
-        } else if (attackCooldown && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
-            currentBehavior = GameBehavior.ATTACK;
-            // Normal from strix position to target
-            Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
-                    target.getBody().getPosition().y - body.getPosition().y).nor();
-            currentDirection = extractDirectionFromNormal(direction);
-
-            attackLogic(stateTime);
-            body.setLinearVelocity(0, 0);
-
+            rightClawBody.setActive(false);
+            upClawBody.setActive(false);
+            leftClawBody.setActive(false);
+            downClawBody.setActive(false);
         } else {
             currentBehavior = GameBehavior.IDLE;
 
@@ -98,11 +109,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     }
 
     @Override
-    public void postHurtLogic() {
+    public void postHurtLogic(GameInstance attacker) {
 
         // is pushed away while flickering
-        Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
-                target.getBody().getPosition().y - body.getPosition().y).nor();
+        Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
+                attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         body.setLinearVelocity(BOUNDED_SPEED * 4 * -direction.x, BOUNDED_SPEED * 4 * -direction.y);
         currentBehavior = GameBehavior.HURT;
@@ -323,16 +334,24 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     /**
      * Method for hurting the Bounded
      *
-     * @param damageReceived to be subtracted
+     * @param attacker
      */
     @Override
-    public void hurt(int damageReceived) {
+    public void hurt(GameInstance attacker) {
         if (isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-            this.damage += Math.min(getResistance(), damageReceived);
+
+            // Hurt by player
+            double amount = ((Killable)attacker).damageRoll();
+            //If Undead or Otherworldly, halve normal lance damage
+            if(((PlayerInstance) attacker).getHolyLancePieces() < 2){
+                amount =  Math.floor(amount / 2);
+            }
+
+            this.damage += Math.min(getResistance(), amount);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
-            postHurtLogic();
+            postHurtLogic(attacker);
         }
     }
 
@@ -342,7 +361,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     }
 
     public double damageRoll() {
-        return 3;
+        return 0;
     }
 
     /**
@@ -352,12 +371,9 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
      */
     private void attackLogic(float stateTime) {
 
-        //Resitting delta time to extract correct frame
-        if (attackDeltaTime == 0)
-            attackDeltaTime = stateTime;
-
-
         int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, stateTime - attackDeltaTime);
+
+        Gdx.app.log("DEBUG","BoundedInstance currentFrame: " + currentFrame);
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME+1) {
             switch (currentDirection) {
                 case UP: {
@@ -377,26 +393,26 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
                     break;
                 }
             }
-        } else if (currentFrame >=  ATTACK_VALID_FRAME+1) {
-            //end delta time on end animation
-            attackDeltaTime = 0;
-            attackCooldown = false;
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    attackCooldown = true;
-                }
-            }, ATTACK_COOLDOWN_TIME);
-
-            rightClawBody.setActive(false);
-            upClawBody.setActive(false);
-            leftClawBody.setActive(false);
-            downClawBody.setActive(false);
         } else {
             rightClawBody.setActive(false);
             upClawBody.setActive(false);
             leftClawBody.setActive(false);
             downClawBody.setActive(false);
+        }
+
+        // Resetting Behaviour on animation end
+        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, stateTime-attackDeltaTime)) {
+            attackCooldown = false;
+
+            if(Objects.isNull(attackCooldownTimer)) {
+                attackCooldownTimer = Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        attackCooldown = true;
+                        attackCooldownTimer = null;
+                    }
+                }, ATTACK_COOLDOWN_TIME);
+            }
         }
     }
 

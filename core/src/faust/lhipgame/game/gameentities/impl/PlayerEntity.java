@@ -61,6 +61,12 @@ public class PlayerEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesUp), GameBehavior.ATTACK, Direction.UP);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesRight), GameBehavior.ATTACK, Direction.RIGHT);
 
+        // Initialize the Hurt Animation with the frame interval and array of frames
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.HURT, Direction.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesLeft), GameBehavior.HURT, Direction.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.HURT, Direction.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.HURT, Direction.RIGHT);
+
         // Initialize the Knee Animation with the frame interval and array of frames
         addAnimation(new Animation<>(FRAME_DURATION, kneeFrames), GameBehavior.KNEE);
 

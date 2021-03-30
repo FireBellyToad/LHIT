@@ -17,6 +17,7 @@ import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.StrixEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
 import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.game.world.manager.CollisionManager;
@@ -73,11 +74,11 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     }
 
     @Override
-    public void postHurtLogic() {
+    public void postHurtLogic(GameInstance attacker) {
 
         // is pushed away while flickering
-        Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
-                target.getBody().getPosition().y - body.getPosition().y).nor();
+        Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
+                attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         body.setLinearVelocity(STRIX_SPEED * 4 * -direction.x, STRIX_SPEED * 4 * -direction.y);
         currentBehavior = GameBehavior.HURT;
@@ -107,7 +108,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
 
     @Override
     public double damageRoll() {
-        return 0;
+        return 1;
     }
 
 
@@ -213,7 +214,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
             @Override
             public void run() {
                 if (attachedToPlayer) {
-                    playerInstance.hurt(1);
+                    playerInstance.hurt(StrixInstance.this);
                     leechLife(playerInstance);
                     Gdx.app.log("DEBUG", "END leech timer");
                 }
@@ -248,18 +249,20 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Kil
     /**
      * Method for hurting the Strix
      *
-     * @param damageReceived to be subtracted
+     * @param attacker
      */
     @Override
-    public void hurt(int damageReceived) {
+    public void hurt(GameInstance attacker) {
         //Should not be hurted if attached to player!
         if(!isAttachedToPlayer()){
             if (isDying()) {
                 isDead = true;
             } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-                this.damage += Math.min(getResistance(), damageReceived);
+                // Hurt by player
+                double amount = ((Killable)attacker).damageRoll();
+                this.damage += Math.min(getResistance(), amount);
                 Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
-                postHurtLogic();
+                postHurtLogic(attacker);
             }
         }
     }

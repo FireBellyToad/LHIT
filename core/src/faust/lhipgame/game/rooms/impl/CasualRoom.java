@@ -30,7 +30,7 @@ public class CasualRoom extends AbstractRoom {
         this.add(6);
     }};
 
-    public static final int CASUAL_TOTAL = 6;
+    public static final int CASUAL_TOTAL = 7;
     private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
@@ -59,13 +59,12 @@ public class CasualRoom extends AbstractRoom {
         //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
         casualNumber = MathUtils.clamp(casualNumber, 1,CasualRoom.CASUAL_TOTAL);
 
-        // Casual maps range from casual1.tmx to casual6.tmx, with a %d to be mapped
+        // Casual maps range from casual1.tmx to casual7.tmx, with a %d to be mapped
         roomFileName = String.format(roomFileName, casualNumber);
 
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-
 
     }
 

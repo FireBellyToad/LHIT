@@ -5,7 +5,7 @@ import faust.lhipgame.game.instances.GameInstance;
 /**
  * Interface for describing hurting and dying behaviour
  */
-public interface Killable {
+public interface Fightable {
     /**
      *
      * @return the current resitance

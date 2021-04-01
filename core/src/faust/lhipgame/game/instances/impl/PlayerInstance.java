@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Killable;
+import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
@@ -33,7 +33,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class PlayerInstance extends AnimatedInstance implements InputProcessor, Killable {
+public class PlayerInstance extends AnimatedInstance implements InputProcessor, Fightable {
 
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
@@ -58,6 +58,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private Timer.Task isHealingTimer;
     private int foundMorgengabes = 0;
     private int holyLancePieces = 0;
+    private boolean hasArmor = false;
     private boolean isSubmerged = false;
     private boolean isDead = false;
 
@@ -78,7 +79,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public int getResistance() {
-        return 6;
+        return 6 + (hasArmor ? 2 : 0);
     }
 
     @Override
@@ -161,7 +162,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if (isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-            double damageReceived = ((Killable) attacker).damageRoll();
+            double damageReceived = ((Fightable) attacker).damageRoll();
             this.damage += Math.min(getResistance(), damageReceived);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
@@ -175,7 +176,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         if(!(attacker instanceof StrixInstance)){
-          //  body.setLinearVelocity(PLAYER_SPEED * 4 * -direction.x, PLAYER_SPEED * 4 * -direction.y);
+            body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
         currentBehavior = GameBehavior.HURT;
         // Do nothing for half second
@@ -655,6 +656,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
             case HOLY_LANCE: {
                 holyLancePieces++;
+            }
+            case ARMOR: {
+                hasArmor = true;
             }
             default: {
                 Gdx.app.log("WARN", "No implementation for item" + itemFound.name());

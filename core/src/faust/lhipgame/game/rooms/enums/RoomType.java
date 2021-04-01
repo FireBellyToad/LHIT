@@ -18,7 +18,8 @@ public enum RoomType {
     CHURCH_LEFT("churchLeft.tmx"),
     TREE_STUMP("treeStump.tmx"),
     BOAT("boat.tmx"),
-    START_POINT("start.tmx");
+    START_POINT("start.tmx"),
+    CRUCIFIED("crucified.tmx");
 
     private String mapFileName;
 

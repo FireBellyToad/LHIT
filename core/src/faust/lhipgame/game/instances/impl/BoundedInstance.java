@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Killable;
+import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.BoundedEntity;
@@ -27,7 +26,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class BoundedInstance extends AnimatedInstance implements Interactable, Killable {
+public class BoundedInstance extends AnimatedInstance implements Interactable, Fightable {
 
     private static final float BOUNDED_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;
@@ -343,7 +342,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
 
             // Hurt by player
-            double amount = ((Killable)attacker).damageRoll();
+            double amount = ((Fightable)attacker).damageRoll();
             //If Undead or Otherworldly, halve normal lance damage
             if(((PlayerInstance) attacker).getHolyLancePieces() < 2){
                 amount =  Math.floor(amount / 2);
@@ -361,7 +360,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, K
     }
 
     public double damageRoll() {
-        return 0;
+        return 3;
     }
 
     /**

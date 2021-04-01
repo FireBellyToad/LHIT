@@ -12,7 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.gameentities.Killable;
+import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -334,13 +334,13 @@ public abstract class AbstractRoom {
 
             ene.doLogic(stateTime);
 
-            if (((Killable) ene).isDead())
+            if (((Fightable) ene).isDead())
                 ene.dispose();
 
         });
 
         // Remove dead enemies
-        enemyList.removeIf(ene -> ((Killable) ene).isDead());
+        enemyList.removeIf(ene -> ((Fightable) ene).isDead());
 
     }
 

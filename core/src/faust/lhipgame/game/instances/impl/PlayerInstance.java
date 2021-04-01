@@ -18,6 +18,7 @@ import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
+import faust.lhipgame.game.gameentities.impl.ArmoredPlayerEntity;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
@@ -34,6 +35,8 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class PlayerInstance extends AnimatedInstance implements InputProcessor, Fightable {
+
+    private final ArmoredPlayerEntity armoredEntity;
 
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
@@ -66,6 +69,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
+        armoredEntity = new ArmoredPlayerEntity(assetManager);
+        
         currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor(this);
@@ -238,7 +243,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection,
+        TextureRegion frame = mapPlayerEntityToRender().getFrame(currentBehavior, currentDirection,
                 mapStateTimeFromBehaviour(stateTime));
 
         int xOffset = 0;
@@ -295,6 +300,18 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
 
+    }
+
+    /**
+     *
+     * @return the correct PlayerEntityToRender
+     */
+    private AnimatedEntity mapPlayerEntityToRender() {
+
+        if(hasArmor){
+           return armoredEntity;
+        }
+        return ((AnimatedEntity) entity);
     }
 
     /**

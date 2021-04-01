@@ -25,6 +25,7 @@ public class LoadingScreen implements Screen {
     public void show() {
 
         assetManager.load("sprites/walfrit_sheet.png", Texture.class);
+        assetManager.load("sprites/walfrit_armored_sheet.png", Texture.class);
         assetManager.load("sprites/decorations_sheet.png", Texture.class);
         assetManager.load("sprites/poi_sheet.png", Texture.class);
         assetManager.load("sprites/shadow.png", Texture.class);

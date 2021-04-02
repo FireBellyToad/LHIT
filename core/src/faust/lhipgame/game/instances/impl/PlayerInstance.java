@@ -273,7 +273,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if(isSubmerged){
             waterWalkEffect.update(Gdx.graphics.getDeltaTime());
             waterWalkEffect.draw(batch);
-            yOffset +=2;
+            yOffset +=1;
             // Do not loop if is not doing anything
             if(waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)){
                 waterWalkEffect.reset();
@@ -699,6 +699,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         return foundMorgengabes;
     }
 
+    /**
+     *
+     * @return if has found armor
+     */
+    public boolean hasArmor() {
+        return hasArmor;
+    }
+
     public void setFoundMorgengabes(int foundMorgengabes) {
         this.foundMorgengabes = foundMorgengabes;
     }
@@ -718,6 +726,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void setHolyLancePieces(int holyLancePieces) {
         this.holyLancePieces = holyLancePieces;
     }
+
+    public void setHasArmor(boolean armor) {
+        this.hasArmor = armor;
+    }
+
 
 
     /**
@@ -797,4 +810,5 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public boolean scrolled(int amount) {
         return false;
     }
+
 }

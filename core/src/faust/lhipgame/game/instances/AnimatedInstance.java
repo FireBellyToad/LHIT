@@ -67,4 +67,11 @@ public abstract class AnimatedInstance extends GameInstance {
      */
     protected abstract float mapStateTimeFromBehaviour(float stateTime);
 
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 }

@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,9 +26,13 @@ public class SaveFileManager {
     public String getStringSaveFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap){
 
         //Player info
-        String holyLanceEntry = getField("lance", player.getHolyLancePieces());
-        String morgenabiumsEntry = getField("morgengabes", player.getFoundMorgengabes());
-        String playerInfo = getField("playerInfo", holyLanceEntry + "," + morgenabiumsEntry, true);
+        List<String> entries = new ArrayList<>();
+        entries.add(getField("lance", player.getHolyLancePieces()));
+        entries.add(getField("morgengabes", player.getFoundMorgengabes()));
+        entries.add(getField("armor", player.hasArmor()));
+        entries.add(getField("damage", player.getDamage()));
+
+        String playerInfo = getField("playerInfo", String.join( ",",entries), true);
 
         //Append rooms
         return "{" + playerInfo + "," + getField("rooms",jsonParser.toJson(saveMap.values())) + "}";
@@ -75,6 +81,8 @@ public class SaveFileManager {
         }
         player.setHolyLancePieces(playerInfo.getInt("lance"));
         player.setFoundMorgengabes(playerInfo.getInt("morgengabes"));
+        player.setHasArmor(playerInfo.getBoolean("armor"));
+        player.setDamage(playerInfo.getInt("damage"));
 
         //Already visited room Info
         JsonValue rooms = file.get("rooms");

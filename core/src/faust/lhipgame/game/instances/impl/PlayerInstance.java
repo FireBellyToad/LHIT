@@ -99,6 +99,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
 
+        //If hurt, deactivate hitbox and don't do anything
+        hitBox.setActive(!GameBehavior.HURT.equals(currentBehavior));
         if (GameBehavior.HURT.equals(currentBehavior))
             return;
 
@@ -609,6 +611,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public boolean keyUp(int keycode) {
 
+        // If hurt, can't do anything
+        if(GameBehavior.HURT.equals(currentBehavior)){
+            return false;
+        }
         // Keep the initial velocity
         float horizontalVelocity = this.body.getLinearVelocity().x;
         float verticalVelocity = this.body.getLinearVelocity().y;
@@ -672,10 +678,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 break;
             }
             case HOLY_LANCE: {
+                //Increase found holy lance pieces
                 holyLancePieces++;
+                break;
             }
             case ARMOR: {
+                // Find armor
                 hasArmor = true;
+                break;
             }
             default: {
                 Gdx.app.log("WARN", "No implementation for item" + itemFound.name());

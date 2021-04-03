@@ -4,10 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
-import faust.lhipgame.game.instances.impl.BoundedInstance;
-import faust.lhipgame.game.instances.impl.DecorationInstance;
-import faust.lhipgame.game.instances.impl.PlayerInstance;
-import faust.lhipgame.game.instances.impl.StrixInstance;
+import faust.lhipgame.game.instances.impl.*;
 import faust.lhipgame.game.rooms.areas.EmergedArea;
 
 import java.util.Objects;
@@ -67,12 +64,17 @@ public class CollisionManager implements ContactListener {
 
         // Handle Strix Collision
         if (isContactOfClass(contact, StrixInstance.class)) {
-            handleEnemyCollisionEvent(contact, StrixInstance.class, false);
+            handleEnemyCollisionEvent(contact, StrixInstance.class);
         }
 
         // Handle Bounded Collision
         if (isContactOfClass(contact, BoundedInstance.class)) {
-            handleEnemyCollisionEvent(contact, BoundedInstance.class, true);
+            handleEnemyCollisionEvent(contact, BoundedInstance.class);
+        }
+
+        // Handle Hive Collision
+        if (isContactOfClass(contact, HiveInstance.class)) {
+            handleEnemyCollisionEvent(contact, HiveInstance.class);
         }
     }
 
@@ -80,25 +82,27 @@ public class CollisionManager implements ContactListener {
      * Global handler for player and enemy instances collision
      * @param contact
      * @param enemyGameInstanceClass
-     * @param halvesNormalLanceDamage true if halve normal damage
      * @param <T> an Interactable and Killable instance, usually enemy
      */
-    private <T extends Interactable & Fightable> void handleEnemyCollisionEvent(Contact contact, Class<T> enemyGameInstanceClass, boolean halvesNormalLanceDamage) {
+    private <T extends Interactable & Fightable> void handleEnemyCollisionEvent(Contact contact, Class<T> enemyGameInstanceClass) {
 
+        //Get enemy data
         Fixture enemyInstanceFixture = getCorrectFixture(contact, enemyGameInstanceClass);
         Body enemyInstanceBody = enemyInstanceFixture.getBody();
         T enemyInstance = (T) enemyInstanceBody.getUserData();
 
+        //Get player data
         Body playerBody = getCorrectFixture(contact, PlayerInstance.class).getBody();
         PlayerInstance playerInstance = (PlayerInstance) playerBody.getUserData();
 
         if (BodyDef.BodyType.DynamicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())) {
-            // Attacking player
+            // Colliding with player,
             enemyInstance.doPlayerInteraction(playerInstance);
         } else if (BodyDef.BodyType.DynamicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.KinematicBody.equals(playerBody.getType())) {
+            // Enemy hurt by player
             enemyInstance.hurt(playerInstance);
         }else if (BodyDef.BodyType.KinematicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())) {
-            // Player Hurt
+            // Player hurt by enemy
             playerInstance.hurt((GameInstance) enemyInstance);
         }
     }
@@ -133,6 +137,11 @@ public class CollisionManager implements ContactListener {
         // Handle Bounded Collision end
         if (isContactOfClass(contact, BoundedInstance.class)) {
             handleEnemyCollisionEventEnd(contact, BoundedInstance.class);
+        }
+
+        // Handle Hibe Collision end
+        if (isContactOfClass(contact, HiveInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, HiveInstance.class);
         }
     }
 

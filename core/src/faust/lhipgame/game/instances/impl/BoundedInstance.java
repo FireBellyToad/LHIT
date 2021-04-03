@@ -372,7 +372,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
 
         int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime));
 
-        Gdx.app.log("DEBUG","BoundedInstance currentFrame: " + currentFrame);
+        //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
             switch (currentDirection) {
                 case UP: {

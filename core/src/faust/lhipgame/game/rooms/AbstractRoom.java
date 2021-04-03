@@ -119,7 +119,7 @@ public abstract class AbstractRoom {
             }
 
             // Prepare enemy (casual choice)
-            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && (guaranteedMorgengabe || MathUtils.randomBoolean())) {
+            if (MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
                 addObjAsEnemy(obj, assetManager);
             }
 
@@ -223,9 +223,16 @@ public abstract class AbstractRoom {
     protected void addObjAsEnemy(MapObject obj, AssetManager assetManager) {
 
         AnimatedInstance enemyInstance = null;
+        String enemyType = (String) obj.getProperties().get("type");
 
         //Improve
-        if ((guaranteedMorgengabe || (MathUtils.randomBoolean()) && !guaranteedMorgengabe)) {
+        if("HIVE".equals(enemyType)){
+            enemyInstance = new HiveInstance(
+                    (float) obj.getProperties().get("x"),
+                    (float) obj.getProperties().get("y"),
+                    player,
+                    assetManager);
+        }else if (guaranteedMorgengabe) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),

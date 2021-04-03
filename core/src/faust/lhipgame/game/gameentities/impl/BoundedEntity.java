@@ -1,6 +1,7 @@
 package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,11 +18,13 @@ import java.util.Arrays;
  */
 public class BoundedEntity extends AnimatedEntity {
 
-    private Texture shadow;
+    private final Sound hurtCry;
+    private final Texture shadow;
 
     public BoundedEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/bounded_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
+        hurtCry = assetManager.get("sounds/SFX_hit&damage2.wav");
     }
 
     @Override
@@ -78,6 +81,10 @@ public class BoundedEntity extends AnimatedEntity {
 
     public Texture getShadowTexture() {
         return shadow;
+    }
+
+    public void playHurtCry() {
+        hurtCry.play();
     }
 
 }

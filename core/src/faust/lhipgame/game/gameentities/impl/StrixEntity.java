@@ -1,6 +1,7 @@
 package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,11 +19,13 @@ import java.util.Arrays;
  */
 public class StrixEntity extends AnimatedEntity {
 
-    private Texture shadow;
+    private final Sound hurtCry;
+    private final Texture shadow;
 
     public StrixEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/strix_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
+        hurtCry = assetManager.get("sounds/SFX_hit&damage2.wav");
     }
 
     @Override
@@ -74,6 +77,10 @@ public class StrixEntity extends AnimatedEntity {
 
     public Texture getShadowTexture() {
         return shadow;
+    }
+
+    public void playHurtCry() {
+        hurtCry.play();
     }
 
 }

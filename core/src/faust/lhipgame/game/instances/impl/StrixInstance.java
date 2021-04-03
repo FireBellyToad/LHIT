@@ -15,6 +15,7 @@ import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.gameentities.impl.StrixEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
@@ -258,8 +259,11 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
      */
     @Override
     public void hurt(GameInstance attacker) {
+
         //Should not be hurted if attached to player!
         if(!isAttachedToPlayer()){
+            ((StrixEntity) entity).playHurtCry();
+            
             if (isDying()) {
                 isDead = true;
             } else if (!GameBehavior.HURT.equals(currentBehavior)) {

@@ -1,6 +1,7 @@
 package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,6 +10,7 @@ import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Player entity class
@@ -18,10 +20,18 @@ import java.util.Arrays;
 public class PlayerEntity extends AnimatedEntity {
 
     private Texture shadow;
+    private Sound bonus;
+    private Sound hurtCry;
+    private Sound lanceSwing;;
+    private Sound waterSplash;
 
     public PlayerEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/walfrit_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
+        bonus = assetManager.get("sounds/SFX_collect&bonus13.wav");
+        hurtCry = assetManager.get("sounds/SFX_hit&damage13.wav");
+        lanceSwing = assetManager.get("sounds/SFX_swordSwing.wav");
+        waterSplash = assetManager.get("sounds/SFX_waterSplash.wav");
     }
 
     @Override
@@ -87,4 +97,19 @@ public class PlayerEntity extends AnimatedEntity {
         return shadow;
     }
 
+    public void playBonusSound() {
+        bonus.play();
+    }
+
+    public void playHurtCry() {
+        hurtCry.play();
+    }
+
+    public void playLanceSwing() {
+        lanceSwing.play();
+    }
+
+    public void playWaterSplash() {
+        waterSplash.play();
+    }
 }

@@ -19,6 +19,7 @@ import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
 import faust.lhipgame.game.gameentities.impl.ArmoredPlayerEntity;
+import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
@@ -166,6 +167,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void hurt(GameInstance attacker) {
+        ((PlayerEntity) entity).playHurtCry();
+
         if (isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
@@ -275,7 +278,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if(isSubmerged){
             waterWalkEffect.update(Gdx.graphics.getDeltaTime());
             waterWalkEffect.draw(batch);
-            yOffset +=1;
+            yOffset +=2;
             // Do not loop if is not doing anything
             if(waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)){
                 waterWalkEffect.reset();
@@ -591,6 +594,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.J: {
                 //Attacks
                 if (!GameBehavior.ATTACK.equals(currentBehavior)) {
+                    ((PlayerEntity) entity).playLanceSwing();
                     currentBehavior = GameBehavior.ATTACK;
                     attackDeltaTime = 0;
                 }
@@ -666,6 +670,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @param itemFound
      */
     public void foundItem(ItemEnum itemFound) {
+
+        ((PlayerEntity) entity).playBonusSound();
+
         switch (itemFound) {
             case HEALTH_KIT: {
                 //Increase available Kits, max 9
@@ -770,6 +777,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     public void setSubmerged(boolean submerged) {
+        if(submerged && !isSubmerged){
+            //Play sound when Walfrit gets in water
+            ((PlayerEntity) entity).playWaterSplash();
+        }
+
         isSubmerged = submerged;
     }
 

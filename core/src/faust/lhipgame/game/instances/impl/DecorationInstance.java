@@ -143,6 +143,9 @@ public class DecorationInstance extends GameInstance implements Interactable {
 
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
+        if( DecorationsEnum.GRASS.equals(getType()) || DecorationsEnum.PLANT.equals(getType()) ){
+            ((DecorationEntity) entity).playGrassMove();
+        }
         this.interacted = true;
     }
 

@@ -108,7 +108,7 @@ public class RoomsManager {
         //Init room flags
         Map<RoomFlagEnum,Boolean> roomFlags = new HashMap<>();
         final boolean guaranteedBounded = player.getHolyLancePieces() == 2 || (saveMap.size() > (mainWorldSize.x * mainWorldSize.y)/2);
-        roomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, true);
+        roomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, guaranteedBounded);
         roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, false);
 
         int roomCasualNumber = 0;

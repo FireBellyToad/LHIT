@@ -337,6 +337,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
      */
     @Override
     public void hurt(GameInstance attacker) {
+        ((BoundedEntity) entity).playHurtCry();
+
         if (isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {

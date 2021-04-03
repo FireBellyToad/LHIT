@@ -51,11 +51,11 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.poiCleared;
 
         } else {
-            if(!roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)){
-                casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
-            } else {
+            if(roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)){
                 //pick only ones with skeleton poi
                 casualNumber = morgengabiumMaps.get(MathUtils.random(0,2));
+            } else {
+                casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             }
         }
         //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...

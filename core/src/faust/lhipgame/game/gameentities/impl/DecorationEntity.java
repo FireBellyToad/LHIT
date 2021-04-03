@@ -1,6 +1,7 @@
 package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 
@@ -10,11 +11,13 @@ import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 public class DecorationEntity extends SpriteEntity {
 
     private DecorationsEnum type;
+    private Sound grassMove;
 
     public DecorationEntity(DecorationsEnum decorationType, AssetManager assetManager) {
         super(assetManager.get("sprites/decorations_sheet.png"), decorationType.ordinal());
 
         this.type = decorationType;
+        this.grassMove = assetManager.get("sounds/SFX_shot5.wav");
     }
 
     @Override
@@ -45,5 +48,9 @@ public class DecorationEntity extends SpriteEntity {
                 return false;
             }
         }
+    }
+
+    public void playGrassMove(){
+        this.grassMove.play();
     }
 }

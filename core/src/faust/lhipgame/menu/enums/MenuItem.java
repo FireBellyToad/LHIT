@@ -6,10 +6,11 @@ public enum MenuItem {
     BACK,
     MUSIC_TOGGLE,
     SOUND_TOGGLE,
+    CREDITS,
     NEW_GAME("Are you sure?",new MenuItem[]{YES,NO}),
     LOAD_GAME,
     OPTIONS("Options",new MenuItem[]{BACK, MUSIC_TOGGLE,SOUND_TOGGLE}),
-    MAIN(new MenuItem[]{NEW_GAME,LOAD_GAME,OPTIONS});
+    MAIN(new MenuItem[]{NEW_GAME,LOAD_GAME,OPTIONS,CREDITS});
 
     String title;
     MenuItem[] subItems;

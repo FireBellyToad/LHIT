@@ -1,6 +1,7 @@
 package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -18,8 +19,13 @@ import java.util.Arrays;
  */
 public class HiveEntity extends AnimatedEntity {
 
+    private final Sound hurtCry;
+    private final Sound deathCry;
+
     public HiveEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/hive_sheet.png"));
+        hurtCry = assetManager.get("sounds/SFX_hit&damage2.wav");
+        deathCry = assetManager.get("sounds/SFX_creatureDie4.wav");
     }
 
     @Override
@@ -43,4 +49,11 @@ public class HiveEntity extends AnimatedEntity {
         return 1;
     }
 
+    public void playHurtCry() {
+        hurtCry.play();
+    }
+
+    public void playDeathCry() {
+        deathCry.play();
+    }
 }

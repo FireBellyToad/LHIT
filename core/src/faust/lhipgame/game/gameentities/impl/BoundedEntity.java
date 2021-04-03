@@ -19,12 +19,14 @@ import java.util.Arrays;
 public class BoundedEntity extends AnimatedEntity {
 
     private final Sound hurtCry;
+    private final Sound deathCry;
     private final Texture shadow;
 
     public BoundedEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/bounded_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
-        hurtCry = assetManager.get("sounds/SFX_hit&damage2.wav");
+        hurtCry = assetManager.get("sounds/SFX_shot4.wav");
+        deathCry = assetManager.get("sounds/SFX_creatureDie4.wav");
     }
 
     @Override
@@ -86,5 +88,10 @@ public class BoundedEntity extends AnimatedEntity {
     public void playHurtCry() {
         hurtCry.play();
     }
+
+    public void playDeathCry() {
+        deathCry.play();
+    }
+
 
 }

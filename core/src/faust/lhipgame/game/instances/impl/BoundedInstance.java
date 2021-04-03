@@ -13,6 +13,7 @@ import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.BoundedEntity;
+import faust.lhipgame.game.gameentities.impl.HiveEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
@@ -337,11 +338,12 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
      */
     @Override
     public void hurt(GameInstance attacker) {
-        ((BoundedEntity) entity).playHurtCry();
 
         if (isDying()) {
+            ((BoundedEntity) entity).playDeathCry();
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+            ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
             double amount = ((Fightable)attacker).damageRoll();

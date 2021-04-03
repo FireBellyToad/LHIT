@@ -238,6 +238,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Start to leech
         attachedToPlayer = true;
+        ((StrixEntity) entity).playLeechSound();
         leechLife(playerInstance);
 
     }
@@ -246,6 +247,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
     public void endPlayerInteraction(PlayerInstance playerInstance) {
         // End leech and cancel timer if present
         attachedToPlayer = false;
+        ((StrixEntity) entity).stopLeechSound();
         if (Objects.nonNull(leechLifeTimer)) {
             leechLifeTimer.cancel();
             Gdx.app.log("DEBUG", "CANCEL leech timer");
@@ -262,11 +264,12 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
 
         //Should not be hurted if attached to player!
         if(!isAttachedToPlayer()){
-            ((StrixEntity) entity).playHurtCry();
             
             if (isDying()) {
+                ((StrixEntity) entity).playDeathCry();
                 isDead = true;
             } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+                ((StrixEntity) entity).playHurtCry();
                 // Hurt by player
                 double amount = ((Fightable)attacker).damageRoll();
                 this.damage += Math.min(getResistance(), amount);

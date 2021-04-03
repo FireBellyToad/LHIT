@@ -12,6 +12,7 @@ import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.gameentities.impl.HiveEntity;
 import faust.lhipgame.game.gameentities.impl.HiveEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -174,8 +175,10 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
     @Override
     public void hurt(GameInstance attacker) {
         if (isDying()) {
+            ((HiveEntity) entity).playDeathCry();
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+            ((HiveEntity) entity).playHurtCry();
 
             //If Undead or Otherworldly, halve normal lance damage
             if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
@@ -193,7 +196,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
 
     @Override
     public int getResistance() {
-        return 9;
+        return 8;
     }
 
     public double damageRoll() {

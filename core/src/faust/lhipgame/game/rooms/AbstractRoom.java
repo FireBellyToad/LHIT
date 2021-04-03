@@ -10,6 +10,7 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
@@ -243,7 +244,8 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
 
-            splashManager.setSplashToShow("splash.bounded");
+            if(MathUtils.randomBoolean())
+                splashManager.setSplashToShow("splash.bounded");
         } else {
             enemyInstance = new StrixInstance(
                     (float) obj.getProperties().get("x"),
@@ -251,7 +253,8 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
 
-            splashManager.setSplashToShow("splash.strix");
+            if(MathUtils.randomBoolean())
+                splashManager.setSplashToShow("splash.strix");
         }
 
 

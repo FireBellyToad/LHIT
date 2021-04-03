@@ -167,12 +167,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void hurt(GameInstance attacker) {
-        ((PlayerEntity) entity).playHurtCry();
 
-        if (isDying()) {
+        double damageReceived = ((Fightable) attacker).damageRoll();
+        if (damageReceived > 0 && isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-            double damageReceived = ((Fightable) attacker).damageRoll();
+            ((PlayerEntity) entity).playHurtCry();
             this.damage += Math.min(getResistance(), damageReceived);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);

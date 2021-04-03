@@ -22,7 +22,7 @@
   <object id="43" name="EMERGED" x="-15.6477" y="47.0909">
    <polygon points="59.4318,-35.8182 147.386,-34.9091 148.818,69.2727 26.7557,70.0511 27.4205,-18.5568 58.6989,-21.3693"/>
   </object>
-  <object id="44" name="DECO" type="PLANT" x="79.4318" y="77.4545">
+  <object id="44" name="DECO" type="PLANT" x="79.7954" y="73.6363">
    <point/>
   </object>
   <object id="45" name="DECO" type="GRASS" x="25.1363" y="14.8299">

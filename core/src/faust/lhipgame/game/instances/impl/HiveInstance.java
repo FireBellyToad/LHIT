@@ -17,6 +17,7 @@ import faust.lhipgame.game.gameentities.impl.HiveEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
+import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.CollisionManager;
 import faust.lhipgame.screens.GameScreen;
 
@@ -29,15 +30,15 @@ import java.util.Objects;
  */
 public class HiveInstance extends AnimatedInstance implements Interactable, Fightable {
 
-    private PlayerInstance target;
+    private final TextBoxManager textBoxManager;
     private boolean isDead = false;
 
-    public HiveInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
+    public HiveInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager) {
         super(new HiveEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;
-        this.target = target;
+        this.textBoxManager = textBoxManager;
     }
 
     @Override
@@ -139,7 +140,6 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
 
         //Draw Hive
-
         // If not hurt or the flickering Hive must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
@@ -179,7 +179,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
 
             //If Undead or Otherworldly, halve normal lance damage
             if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
-                //TODO show message
+                textBoxManager.addNewTextBox("warn.hive.damage");
                 return;
             }
 
@@ -202,7 +202,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
 
     @Override
     protected float mapStateTimeFromBehaviour(float stateTime) {
-        return stateTime * 0.8f;
+        return stateTime * 0.75f;
     }
 
 }

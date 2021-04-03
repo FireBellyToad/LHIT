@@ -15,15 +15,17 @@ import faust.lhipgame.game.instances.impl.EchoActorInstance;
 import faust.lhipgame.game.instances.impl.POIInstance;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.rooms.AbstractRoom;
+import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.saves.RoomSaveEntry;
 import faust.lhipgame.game.rooms.enums.MapObjNameEnum;
-import faust.lhipgame.game.rooms.enums.RoomType;
+import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.WorldManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -38,8 +40,8 @@ public class FixedRoom extends AbstractRoom {
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;
 
-    public FixedRoom(final RoomType roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry) {
-        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, false);
+    public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags) {
+        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS
@@ -87,7 +89,8 @@ public class FixedRoom extends AbstractRoom {
         POIInstance instance = new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager, assetManager, guaranteedMorgengabe);
+                poiType, player, splashManager, assetManager,
+                roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
 
         poiList.add(instance);
 

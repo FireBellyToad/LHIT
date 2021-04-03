@@ -9,8 +9,9 @@ import com.badlogic.gdx.utils.*;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.rooms.AbstractRoom;
+import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.saves.RoomSaveEntry;
-import faust.lhipgame.game.rooms.enums.RoomType;
+import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.rooms.impl.CasualRoom;
 import faust.lhipgame.game.rooms.impl.FixedRoom;
 import faust.lhipgame.saves.SaveFileManager;
@@ -37,7 +38,7 @@ public class RoomsManager {
     /**
      * MainWorld Matrix
      */
-    private final Map<Vector2, RoomType> mainWorld = new HashMap<>();
+    private final Map<Vector2, RoomTypeEnum> mainWorld = new HashMap<>();
     private final Map<Vector2, RoomSaveEntry> saveMap = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
 
@@ -69,7 +70,7 @@ public class RoomsManager {
 
         terrains.forEach((t) -> {
             Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
-            RoomType type = RoomType.getFromString(t.getString("roomType"));
+            RoomTypeEnum type = RoomTypeEnum.getFromString(t.getString("roomType"));
             Objects.requireNonNull(type);
             mainWorld.put(v, type);
             mainWorldSize.set(Math.max(mainWorldSize.x, v.x), Math.max(mainWorldSize.y, v.y));
@@ -104,14 +105,22 @@ public class RoomsManager {
 
         currentRoomPosInWorld.set(finalX, finalY);
 
+        //Init room flags
+        Map<RoomFlagEnum,Boolean> roomFlags = new HashMap<>();
+        final boolean guaranteedBounded = player.getHolyLancePieces() == 2 || (saveMap.size() > (mainWorldSize.x * mainWorldSize.y)/2);
+        roomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, true);
+        roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, false);
+
         int roomCasualNumber = 0;
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
 
                 //If unvisited rooms are less than the number of found morgengabes to find, guarantee them
-                boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
+                final boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
                         (mainWorldSize.x * mainWorldSize.y)-10  <= (saveMap.size() + (9 -player.getFoundMorgengabes() ));
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), guaranteedMorgengabe);
+                roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
+
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags);
 
                 Gdx.app.log("DEBUG","(mainWorldSize.x * mainWorldSize.y)-10: " +((mainWorldSize.x * mainWorldSize.y)-10));
                 Gdx.app.log("DEBUG","(saveMap.size() + (9 -player.getFoundMorgengabes() )): " +(saveMap.size() + (9 -player.getFoundMorgengabes() )));
@@ -122,7 +131,7 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld));
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags);
                 break;
             }
         }
@@ -159,8 +168,8 @@ public class RoomsManager {
 
         // Check for left or right passage
         if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
-                !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                !RoomType.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
+                !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
+                !RoomTypeEnum.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
             newXPosInMatrix--;
             player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
         } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
@@ -170,17 +179,17 @@ public class RoomsManager {
 
         // Check for top or bottom passage
         if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
-                !RoomType.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                !RoomType.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
+                !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
+                !RoomTypeEnum.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix--;
             player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
         } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
-                !RoomType.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
-                !RoomType.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
+                !RoomTypeEnum.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
+                !RoomTypeEnum.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix++;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
         } else if (playerPosition.y > LHIPGame.GAME_HEIGHT*0.45 &&
-                RoomType.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
+                RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
             //ENDGAME!
             Gdx.app.exit();
         }
@@ -209,7 +218,7 @@ public class RoomsManager {
         } else if (((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) || (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY)) &&
                 getCurrentRoomPosInWorld().x == mainWorldSize.x-1 &&
                 getCurrentRoomPosInWorld().y == 0 &&
-                !RoomType.START_POINT.equals(currentRoom.getRoomType())) {
+                !RoomTypeEnum.START_POINT.equals(currentRoom.getRoomType())) {
 
             if(playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY ){
                 player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);

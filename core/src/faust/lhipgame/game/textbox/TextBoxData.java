@@ -11,8 +11,8 @@ public class TextBoxData {
     public TextBoxData(String text) {
 
         this.text = text;
-        // 1 second plus 1 for each word
-        timeToShow = 1 + text.split(" ").length;
+        // 1 second plus 1 for each word (max 4)
+        timeToShow = Math.min(4,1 + text.split(" ").length);
 
     }
 

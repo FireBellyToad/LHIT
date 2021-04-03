@@ -7,8 +7,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.rooms.AbstractRoom;
+import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.saves.RoomSaveEntry;
-import faust.lhipgame.game.rooms.enums.RoomType;
+import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.WorldManager;
@@ -16,6 +17,7 @@ import faust.lhipgame.game.world.manager.WorldManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Map;
 
 /**
  * Casual Room class
@@ -24,7 +26,7 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
-    private final List<Integer> morgengabiumMaps = new ArrayList<Integer>(){{
+    private static final List<Integer> morgengabiumMaps = new ArrayList<Integer>(){{
         this.add(1);
         this.add(5);
         this.add(6);
@@ -33,8 +35,8 @@ public class CasualRoom extends AbstractRoom {
     public static final int CASUAL_TOTAL = 7;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
-        super(RoomType.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, guaranteedMorgengabe);
+    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map roomFlags) {
+        super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.poiCleared;
 
         } else {
-            if(!guaranteedMorgengabe){
+            if(!roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)){
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             } else {
                 //pick only ones with skeleton poi
@@ -69,7 +71,7 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomType roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         // FIXME handle multiple POI
         if(mustClearPOI){
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));

@@ -5,7 +5,7 @@ package faust.lhipgame.game.rooms.enums;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public enum RoomType {
+public enum RoomTypeEnum {
 
     EMPTY_SPACE(""),
     CASUAL("casual%d.tmx"),
@@ -23,7 +23,7 @@ public enum RoomType {
 
     private String mapFileName;
 
-    RoomType(String mapFileName) {
+    RoomTypeEnum(String mapFileName) {
         this.mapFileName = mapFileName;
     }
 
@@ -31,8 +31,8 @@ public enum RoomType {
         return mapFileName;
     }
 
-    public static RoomType getFromString(String name) {
-        for (RoomType e : RoomType.values()) {
+    public static RoomTypeEnum getFromString(String name) {
+        for (RoomTypeEnum e : RoomTypeEnum.values()) {
             if (e.name().equals(name)) {
                 return e;
             }

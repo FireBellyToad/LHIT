@@ -10,7 +10,6 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
@@ -22,14 +21,16 @@ import faust.lhipgame.game.rooms.areas.EmergedArea;
 import faust.lhipgame.game.rooms.areas.WallArea;
 import faust.lhipgame.game.rooms.enums.MapLayersEnum;
 import faust.lhipgame.game.rooms.enums.MapObjNameEnum;
-import faust.lhipgame.game.rooms.enums.RoomType;
-import faust.lhipgame.saves.RoomSaveEntry;
+import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
+import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.WorldManager;
+import faust.lhipgame.saves.RoomSaveEntry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -57,13 +58,14 @@ public abstract class AbstractRoom {
     protected List<WallArea> wallList;
     protected List<EmergedArea> emergedAreaList;
     protected PlayerInstance player;
-    protected RoomType roomType;
+    protected RoomTypeEnum roomType;
     protected String roomFileName;
     protected SplashManager splashManager;
     protected TextBoxManager textManager;
 
     protected boolean mustClearPOI = false;
-    protected boolean guaranteedMorgengabe;
+
+    protected final Map<RoomFlagEnum, Boolean> roomFlags;
 
     /**
      * Constructor
@@ -75,19 +77,20 @@ public abstract class AbstractRoom {
      * @param player
      * @param camera
      * @param roomSaveEntry
-     * @param guaranteedMorgengabe
+     * @param roomFlags
      */
-    public AbstractRoom(final RoomType roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, boolean guaranteedMorgengabe) {
+    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum,Boolean> roomFlags) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
         Objects.requireNonNull(roomType);
 
+        this.roomFlags = roomFlags;
+
         // Load tiled map by name
         this.roomType = roomType;
         this.roomFileName = "terrains/" + roomType.getMapFileName();
         loadTiledMap(roomSaveEntry);
-        this.guaranteedMorgengabe = guaranteedMorgengabe;
 
         // Extract mapObjects
         mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
@@ -189,12 +192,13 @@ public abstract class AbstractRoom {
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
 
-        Gdx.app.log("DEBUG", "guaranteedMorgengabe: " + guaranteedMorgengabe);
+        Gdx.app.log("DEBUG", "guaranteedMorgengabe: " + roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
 
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager, assetManager, guaranteedMorgengabe));
+                poiType, player, splashManager, assetManager,
+                roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)));
     }
 
     ;
@@ -230,9 +234,9 @@ public abstract class AbstractRoom {
             enemyInstance = new HiveInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
-                    player,
-                    assetManager);
-        }else if (guaranteedMorgengabe) {
+                    assetManager,
+                    textManager);
+        }else if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
@@ -263,7 +267,7 @@ public abstract class AbstractRoom {
      * @param splashManager
      * @param camera
      */
-    protected abstract void initRoom(RoomType roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
+    protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
 
     /**
      * Draws room background
@@ -324,7 +328,7 @@ public abstract class AbstractRoom {
         emergedAreaList.forEach((emergedArea) -> emergedArea.dispose());
     }
 
-    public RoomType getRoomType() {
+    public RoomTypeEnum getRoomType() {
         return roomType;
     }
 

@@ -11,5 +11,5 @@ public enum MapObjNameEnum {
     ENEMY,
     WALL,
     ECHO_ACTOR,
-    EMERGED;
+    EMERGED
 }

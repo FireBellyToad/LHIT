@@ -14,7 +14,7 @@ public class FBTScreen implements Screen {
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
-    private Texture fbtScreen;
+    private final Texture fbtScreen;
 
     public FBTScreen(LHIPGame game) {
         this.game = game;

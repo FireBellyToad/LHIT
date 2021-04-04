@@ -14,9 +14,9 @@ public class MenuScreen implements Screen {
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
-    private Menu menu;
-    private Texture titleTexture;
-    private Music titleMusic;
+    private final Menu menu;
+    private final Texture titleTexture;
+    private final Music titleMusic;
 
     public MenuScreen(LHIPGame game) {
         this.game = game;

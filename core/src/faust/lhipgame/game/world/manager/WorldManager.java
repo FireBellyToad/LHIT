@@ -26,7 +26,7 @@ public class WorldManager {
     private static final int VELOCITY_ITERATIONS = 8;
     private static final int POSITION_ITERATIONS = 3;
 
-    private World world;
+    private final World world;
 
     public WorldManager(AssetManager assetManager) {
         this.world = new World(new Vector2(0, 0), true);

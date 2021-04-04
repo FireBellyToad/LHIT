@@ -6,9 +6,9 @@ public enum POIEnum {
     SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy"),
     CADAVER("poi.cadaver",ItemEnum.ARMOR);
 
-    private String textKey;
-    private ItemEnum itemGiven;
-    private String splashKey;
+    private final String textKey;
+    private final ItemEnum itemGiven;
+    private final String splashKey;
 
     POIEnum(String textKey, ItemEnum itemGiven, String splashKey) {
         this.textKey = textKey;

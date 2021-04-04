@@ -5,8 +5,8 @@ package faust.lhipgame.game.textbox;
  */
 public class TextBoxData {
 
-    private String text;
-    private float timeToShow;
+    private final String text;
+    private final float timeToShow;
 
     public TextBoxData(String text) {
 

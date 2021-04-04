@@ -17,8 +17,8 @@ public class GameScreen implements Screen {
 
     public static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/8 second in nanoseconds
 
-    private AssetManager assetManager;
-    private CameraManager cameraManager;
+    private final AssetManager assetManager;
+    private final CameraManager cameraManager;
     private WorldManager worldManager;
     private PlayerInstance player;
     private TextBoxManager textManager;

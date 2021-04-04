@@ -30,9 +30,9 @@ public class TextBoxManager {
     private static final float MESSAGE_LIMIT = 1;
     private static final int TOTAL_TEXTBOX_HEIGHT = 34;
 
-    private BitmapFont mainFont;
-    private List<TextBoxData> textBoxes = new ArrayList<>();
-    private JsonValue messageMap;
+    private final BitmapFont mainFont;
+    private final List<TextBoxData> textBoxes = new ArrayList<>();
+    private final JsonValue messageMap;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private final ShapeRenderer cornerBox = new ShapeRenderer();
@@ -63,7 +63,7 @@ public class TextBoxManager {
 
         if (textBoxes.size() == MESSAGE_LIMIT) {
             textBoxes.remove(0);
-        };
+        }
 
         if (Objects.nonNull(currentTimer)) {
             currentTimer.cancel();

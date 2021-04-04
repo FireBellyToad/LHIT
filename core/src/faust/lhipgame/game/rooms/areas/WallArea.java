@@ -12,7 +12,7 @@ import java.util.Objects;
 public class WallArea {
 
     private Body body;
-    private Rectangle wallRect;
+    private final Rectangle wallRect;
 
     public WallArea(Rectangle wallRect) {
         this.wallRect = wallRect;

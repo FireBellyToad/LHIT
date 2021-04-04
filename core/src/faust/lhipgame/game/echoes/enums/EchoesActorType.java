@@ -5,8 +5,8 @@ public enum EchoesActorType {
     VICTIM("echo.victim.json","sprites/victim_sheet.png");
    // CADAVER("echo.cadaver.json","sprites/cadaver_sheet.png");
 
-    private String filename;
-    private String spriteFilename;
+    private final String filename;
+    private final String spriteFilename;
 
     EchoesActorType(String filename, String spriteFilename) {
         this.filename = filename;

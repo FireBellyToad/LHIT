@@ -19,11 +19,11 @@ import java.util.Objects;
  */
 public class PlayerEntity extends AnimatedEntity {
 
-    private Texture shadow;
-    private Sound bonus;
-    private Sound hurtCry;
-    private Sound lanceSwing;;
-    private Sound waterSplash;
+    private final Texture shadow;
+    private final Sound bonus;
+    private final Sound hurtCry;
+    private final Sound lanceSwing;
+    private final Sound waterSplash;
 
     public PlayerEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/walfrit_sheet.png"));

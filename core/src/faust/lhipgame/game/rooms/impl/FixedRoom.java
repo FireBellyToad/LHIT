@@ -105,8 +105,6 @@ public class FixedRoom extends AbstractRoom {
         }
     }
 
-    ;
-
     /**
      * Add a object as Decoration, with custom echo logic
      *

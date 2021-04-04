@@ -21,7 +21,7 @@ import java.util.Objects;
 public class SaveFileManager {
 
     private final Json jsonParser = new Json();
-    private String selectedFileName = "saves/mainWorldSave.json";
+    private final String selectedFileName = "saves/mainWorldSave.json";
 
     public String getStringSaveFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap){
 
@@ -47,7 +47,7 @@ public class SaveFileManager {
      * @return
      */
     private String getField(String fieldName, Object fieldValue, boolean hasBrackets) {
-        return "\"" + fieldName + "\": " + (hasBrackets ? "{" + (String) fieldValue + "}" : fieldValue );
+        return "\"" + fieldName + "\": " + (hasBrackets ? "{" + fieldValue + "}" : fieldValue );
     }
 
     /**

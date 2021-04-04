@@ -21,7 +21,7 @@ public enum RoomTypeEnum {
     START_POINT("start.tmx"),
     CRUCIFIED("crucified.tmx");
 
-    private String mapFileName;
+    private final String mapFileName;
 
     RoomTypeEnum(String mapFileName) {
         this.mapFileName = mapFileName;

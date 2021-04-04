@@ -18,11 +18,11 @@ import java.util.Objects;
  */
 public class CameraManager {
 
-    private OrthographicCamera camera;
-    private Box2DDebugRenderer box2DDebugRenderer;
-    private Viewport viewport;
+    private final OrthographicCamera camera;
+    private final Box2DDebugRenderer box2DDebugRenderer;
+    private final Viewport viewport;
 
-    private ShapeRenderer background;
+    private final ShapeRenderer background;
     private static final Color back = new Color(0x595959ff);
 
     public CameraManager() {

@@ -15,10 +15,10 @@ public class POIEntity extends SpriteEntity {
     public static final String FOUND_ITEM_MESSAGE_KEY_SUFFIX = ".success";
     public static final String EXAMINING_ITEM_MESSAGE_KEY_SUFFIX = ".examine";
 
-    private String messageKey;
-    private ItemEnum itemGiven;
-    private String splashKey;
-    private POIEnum type;
+    private final String messageKey;
+    private final ItemEnum itemGiven;
+    private final String splashKey;
+    private final POIEnum type;
 
     public POIEntity(POIEnum type, AssetManager assetManager) {
         super(assetManager.get("sprites/poi_sheet.png"), type.ordinal());

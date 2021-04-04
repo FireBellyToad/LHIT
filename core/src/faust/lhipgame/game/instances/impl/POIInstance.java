@@ -32,9 +32,9 @@ public class POIInstance extends GameInstance {
     private long startTime = 0; // flickering timer
 
     private boolean isAlreadyExamined;
-    private PlayerInstance player;
-    private TextBoxManager textManager;
-    private SplashManager splashManager;
+    private final PlayerInstance player;
+    private final TextBoxManager textManager;
+    private final SplashManager splashManager;
 
 
     public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {

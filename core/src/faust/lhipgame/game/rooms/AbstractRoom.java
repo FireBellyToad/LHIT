@@ -202,8 +202,6 @@ public abstract class AbstractRoom {
                 roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)));
     }
 
-    ;
-
     /**
      * Add a object as Decoration
      *
@@ -366,5 +364,4 @@ public abstract class AbstractRoom {
         return this.poiList.stream().allMatch(poiInstance -> poiInstance.isAlreadyExamined());
     }
 
-    ;
 }

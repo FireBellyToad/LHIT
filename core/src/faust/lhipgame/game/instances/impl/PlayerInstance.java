@@ -66,7 +66,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean isSubmerged = false;
     private boolean isDead = false;
 
-    private ParticleEffect waterWalkEffect;
+    private final ParticleEffect waterWalkEffect;
 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));

@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public class ArmoredPlayerEntity extends AnimatedEntity {
 
-    private Texture shadow;
+    private final Texture shadow;
 
     public ArmoredPlayerEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/walfrit_armored_sheet.png"));

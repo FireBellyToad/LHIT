@@ -27,10 +27,10 @@ import java.util.Objects;
  */
 public class Hud {
 
-    private SpriteEntity hudTexture;
-    private Texture darknessOverlay;
+    private final SpriteEntity hudTexture;
+    private final Texture darknessOverlay;
 
-    private TextBoxManager textManager;
+    private final TextBoxManager textManager;
 
     private final Vector2 meterPosition = new Vector2(2.5f, LHIPGame.GAME_HEIGHT - 10);
     private final Vector2 healthKitCountPosition = new Vector2(LHIPGame.GAME_WIDTH - 10, LHIPGame.GAME_HEIGHT - 4);

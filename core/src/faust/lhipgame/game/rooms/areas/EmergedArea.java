@@ -13,9 +13,9 @@ import java.util.Objects;
 public class EmergedArea {
 
     private Body body;
-    private PolygonShape polygonShape;
-    private float x;
-    private float y;
+    private final PolygonShape polygonShape;
+    private final float x;
+    private final float y;
 
     public EmergedArea(Polygon polygon) {
         this.polygonShape = new PolygonShape();

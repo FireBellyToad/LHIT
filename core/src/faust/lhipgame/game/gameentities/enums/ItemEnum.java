@@ -4,5 +4,5 @@ public enum ItemEnum {
     HEALTH_KIT,
     HOLY_LANCE,
     MORGENGABE,
-    ARMOR;
+    ARMOR
 }

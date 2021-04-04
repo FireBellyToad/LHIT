@@ -10,8 +10,8 @@ import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
  */
 public class DecorationEntity extends SpriteEntity {
 
-    private DecorationsEnum type;
-    private Sound grassMove;
+    private final DecorationsEnum type;
+    private final Sound grassMove;
 
     public DecorationEntity(DecorationsEnum decorationType, AssetManager assetManager) {
         super(assetManager.get("sprites/decorations_sheet.png"), decorationType.ordinal());

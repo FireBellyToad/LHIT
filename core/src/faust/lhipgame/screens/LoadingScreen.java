@@ -13,7 +13,7 @@ public class LoadingScreen implements Screen {
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
-    private Texture loadScreen;
+    private final Texture loadScreen;
 
     public LoadingScreen(LHIPGame game) {
         this.game = game;
@@ -35,7 +35,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/hive_sheet.png", Texture.class);
 
         assetManager.load("sounds/SFX_collect&bonus13.ogg", Sound.class);
-        assetManager.load("sounds/SFX_hit&damage13.ogg", Sound.class);;
+        assetManager.load("sounds/SFX_hit&damage13.ogg", Sound.class);
         assetManager.load("sounds/SFX_hit&damage2.ogg", Sound.class);
         assetManager.load("sounds/SFX_shot4.ogg", Sound.class);
         assetManager.load("sounds/SFX_shot5.ogg", Sound.class);

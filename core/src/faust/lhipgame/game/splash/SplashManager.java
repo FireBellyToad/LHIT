@@ -22,7 +22,7 @@ public class SplashManager {
 
     private final Map<String, GameEntity> splashScreens = new HashMap<>();
     private String splashToShow;
-    private TextBoxManager textManager;
+    private final TextBoxManager textManager;
     private boolean isGameOverSplash;
     private Timer.Task splashTimer;
 

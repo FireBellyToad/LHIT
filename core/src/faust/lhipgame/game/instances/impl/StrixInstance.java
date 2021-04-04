@@ -35,7 +35,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
     private static final float STRIX_SPEED = 30;
     private boolean attachedToPlayer = false;
 
-    private PlayerInstance target;
+    private final PlayerInstance target;
     private Timer.Task leechLifeTimer;
     private boolean isDead = false;
 

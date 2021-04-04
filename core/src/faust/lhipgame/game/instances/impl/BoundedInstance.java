@@ -42,7 +42,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
     private Body rightClawBody;
     private Body upClawBody;
 
-    private PlayerInstance target;
+    private final PlayerInstance target;
     private boolean isDead = false;
 
     // Time delta between state and start of attack animation

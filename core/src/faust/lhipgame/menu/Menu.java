@@ -29,7 +29,7 @@ public class Menu implements InputProcessor {
     private MenuItem currentMenu = MenuItem.MAIN;
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
-    private SaveFileManager saveFileManager;
+    private final SaveFileManager saveFileManager;
 
     public Menu(SaveFileManager saveFileManager) {
         this.saveFileManager = saveFileManager;

@@ -42,10 +42,10 @@ public class RoomsManager {
     private final Map<Vector2, RoomSaveEntry> saveMap = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
 
-    private WorldManager worldManager;
-    private TextBoxManager textManager;
-    private PlayerInstance player;
-    private OrthographicCamera camera;
+    private final WorldManager worldManager;
+    private final TextBoxManager textManager;
+    private final PlayerInstance player;
+    private final OrthographicCamera camera;
 
     public RoomsManager(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, SaveFileManager saveFileManager) {
         this.worldManager = worldManager;

@@ -17,7 +17,7 @@ public class DecorationEntity extends SpriteEntity {
         super(assetManager.get("sprites/decorations_sheet.png"), decorationType.ordinal());
 
         this.type = decorationType;
-        this.grassMove = assetManager.get("sounds/SFX_shot5.wav");
+        this.grassMove = assetManager.get("sounds/SFX_shot5.ogg");
     }
 
     @Override

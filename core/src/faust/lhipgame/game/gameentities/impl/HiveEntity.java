@@ -24,8 +24,8 @@ public class HiveEntity extends AnimatedEntity {
 
     public HiveEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/hive_sheet.png"));
-        hurtCry = assetManager.get("sounds/SFX_hit&damage2.wav");
-        deathCry = assetManager.get("sounds/SFX_creatureDie4.wav");
+        hurtCry = assetManager.get("sounds/SFX_hit&damage2.ogg");
+        deathCry = assetManager.get("sounds/SFX_creatureDie4.ogg");
     }
 
     @Override

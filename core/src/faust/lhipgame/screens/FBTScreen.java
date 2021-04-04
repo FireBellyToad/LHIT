@@ -2,6 +2,7 @@ package faust.lhipgame.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -35,7 +36,7 @@ public class FBTScreen implements Screen {
         assetManager.load("fonts/main_font.png", Texture.class);
         assetManager.finishLoading();
 
-        assetManager.load("music/8-bit-chopin-funeral-march.mp3", Sound.class);
+        assetManager.load("music/8-bit-chopin-funeral-march.ogg", Music.class);
         assetManager.finishLoading();
 
         //Three seconds splash screen

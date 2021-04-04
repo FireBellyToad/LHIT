@@ -28,10 +28,10 @@ public class PlayerEntity extends AnimatedEntity {
     public PlayerEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/walfrit_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
-        bonus = assetManager.get("sounds/SFX_collect&bonus13.wav");
-        hurtCry = assetManager.get("sounds/SFX_hit&damage13.wav");
-        lanceSwing = assetManager.get("sounds/SFX_swordSwing.wav");
-        waterSplash = assetManager.get("sounds/SFX_waterSplash.wav");
+        bonus = assetManager.get("sounds/SFX_collect&bonus13.ogg");
+        hurtCry = assetManager.get("sounds/SFX_hit&damage13.ogg");
+        lanceSwing = assetManager.get("sounds/SFX_swordSwing.ogg");
+        waterSplash = assetManager.get("sounds/SFX_waterSplash.ogg");
     }
 
     @Override

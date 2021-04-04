@@ -34,16 +34,16 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/strix_sheet.png", Texture.class);
         assetManager.load("sprites/hive_sheet.png", Texture.class);
 
-        assetManager.load("sounds/SFX_collect&bonus13.wav", Sound.class);
-        assetManager.load("sounds/SFX_hit&damage13.wav", Sound.class);;
-        assetManager.load("sounds/SFX_hit&damage2.wav", Sound.class);
-        assetManager.load("sounds/SFX_shot4.wav", Sound.class);
-        assetManager.load("sounds/SFX_shot5.wav", Sound.class);
-        assetManager.load("sounds/SFX_shot10.wav", Sound.class);
-        assetManager.load("sounds/SFX_swordSwing.wav", Sound.class);
-        assetManager.load("sounds/SFX_waterSplash.wav", Sound.class);
-        assetManager.load("sounds/SFX_creatureDie4.wav", Sound.class);
-        assetManager.load("sounds/SFX_hit&damage6.wav", Sound.class);
+        assetManager.load("sounds/SFX_collect&bonus13.ogg", Sound.class);
+        assetManager.load("sounds/SFX_hit&damage13.ogg", Sound.class);;
+        assetManager.load("sounds/SFX_hit&damage2.ogg", Sound.class);
+        assetManager.load("sounds/SFX_shot4.ogg", Sound.class);
+        assetManager.load("sounds/SFX_shot5.ogg", Sound.class);
+        assetManager.load("sounds/SFX_shot10.ogg", Sound.class);
+        assetManager.load("sounds/SFX_swordSwing.ogg", Sound.class);
+        assetManager.load("sounds/SFX_waterSplash.ogg", Sound.class);
+        assetManager.load("sounds/SFX_creatureDie4.ogg", Sound.class);
+        assetManager.load("sounds/SFX_hit&damage6.ogg", Sound.class);
 
         assetManager.load("splash/strix_splash.png", Texture.class);
         assetManager.load("splash/bounded_splash.png", Texture.class);

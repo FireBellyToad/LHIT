@@ -27,9 +27,9 @@ public class StrixEntity extends AnimatedEntity {
     public StrixEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/strix_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
-        hurtCry = assetManager.get("sounds/SFX_hit&damage2.wav");
-        deathCry = assetManager.get("sounds/SFX_creatureDie4.wav");
-        leechSound = assetManager.get("sounds/SFX_hit&damage6.wav");
+        hurtCry = assetManager.get("sounds/SFX_hit&damage2.ogg");
+        deathCry = assetManager.get("sounds/SFX_creatureDie4.ogg");
+        leechSound = assetManager.get("sounds/SFX_hit&damage6.ogg");
     }
 
     @Override

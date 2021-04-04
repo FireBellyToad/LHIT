@@ -25,8 +25,8 @@ public class BoundedEntity extends AnimatedEntity {
     public BoundedEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/bounded_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
-        hurtCry = assetManager.get("sounds/SFX_shot4.wav");
-        deathCry = assetManager.get("sounds/SFX_creatureDie4.wav");
+        hurtCry = assetManager.get("sounds/SFX_shot4.ogg");
+        deathCry = assetManager.get("sounds/SFX_creatureDie4.ogg");
     }
 
     @Override

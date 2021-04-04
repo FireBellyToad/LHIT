@@ -143,7 +143,7 @@ public class Hud {
             backgroundBox.end();
 
             //White bar
-            long deltaTimer = (player.getIsHealingTimer().getExecuteTimeMillis() - (System.nanoTime() / 1000000) )/1000;
+            long deltaTimer = (player.getIsHealingTimer().getExecuteTimeMillis() - ( TimeUtils.nanoTime() / 1000000) )/1000;
 
             cornerBox.setColor(corner);
             cornerBox.setProjectionMatrix(camera.combined);

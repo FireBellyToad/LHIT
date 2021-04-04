@@ -62,7 +62,7 @@ public class CasualRoom extends AbstractRoom {
         casualNumber = MathUtils.clamp(casualNumber, 1,CasualRoom.CASUAL_TOTAL);
 
         // Casual maps range from casual1.tmx to casual7.tmx, with a %d to be mapped
-        roomFileName = String.format(roomFileName, casualNumber);
+        roomFileName = roomFileName.replace("%d", Integer.toString(casualNumber));
 
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);

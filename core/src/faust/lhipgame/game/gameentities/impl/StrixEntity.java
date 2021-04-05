@@ -92,7 +92,7 @@ public class StrixEntity extends AnimatedEntity {
     }
 
     public void playLeechSound() {
-        leechSound.loop();
+        leechSound.loop(0.5f);
     }
     public void stopLeechSound() {
         leechSound.pause();

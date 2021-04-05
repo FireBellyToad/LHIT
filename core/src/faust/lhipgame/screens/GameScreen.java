@@ -119,6 +119,10 @@ public class GameScreen implements Screen {
     private void doLogic() {
 
         roomsManager.doRoomContentsLogic(stateTime);
+
+        if(player.isDead()){
+            game.setScreen(new GameOverScreen(game));
+        }
     }
 
     @Override

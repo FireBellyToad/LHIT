@@ -5,8 +5,7 @@
       "textBoxKey": "echo.tree.first"
     },
     {
-      "behaviour": "WALK",
-      "textBoxKey": "echo.tree.second"
+      "behaviour": "WALK"
     }
   ]
 }

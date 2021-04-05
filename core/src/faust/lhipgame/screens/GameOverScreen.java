@@ -4,47 +4,42 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.menu.Menu;
+import faust.lhipgame.menu.enums.MenuItem;
 
-/**
- * Menu screen class
- *
- * @author Jacopo "Faust" Buttiglieri
- */
-public class MenuScreen implements Screen {
+public class GameOverScreen  implements Screen {
 
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final Menu menu;
-    private final Texture titleTexture;
-    private final Music titleMusic;
+    private final Texture gameOverScreen;
+    private final Music gameOverMusic;
 
-    public MenuScreen(LHIPGame game) {
+    public GameOverScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
-        titleTexture = assetManager.get("splash/title_splash.png");
-        titleMusic = assetManager.get("music/8-bit-chopin-funeral-march.ogg");
+        gameOverScreen = assetManager.get("splash/gameover_splash.png");
+        gameOverMusic = assetManager.get("music/8-bit-chopin-funeral-march.ogg");
 
-        menu = new Menu(game.getSaveFileManager());
+        menu = new Menu(game.getSaveFileManager(), MenuItem.GAME_OVER);
     }
 
     @Override
     public void show() {
         //Load next screen image
-        assetManager.load("splash/loading_splash.png", Texture.class);
+        assetManager.load("splash/gameover_splash.png", Texture.class);
         assetManager.finishLoading();
 
         menu.loadFonts(assetManager);
 
         //Loop title music
-        titleMusic.play();
-        titleMusic.setLooping(true);
-        titleMusic.setVolume(0.25f);
+        gameOverMusic.play();
+        gameOverMusic.setLooping(true);
+        gameOverMusic.setVolume(0.25f);
 
         Gdx.input.setInputProcessor(menu);
     }
@@ -52,17 +47,21 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if(menu.isChangeToGameScreen()){
+        if(menu.isChangeToMainScreen()){
             //Stop music and change screen
-            titleMusic.stop();
-            game.setScreen(new LoadingScreen(game));
+            gameOverMusic.stop();
+            game.setScreen(new MenuScreen(game));
+        } else if(menu.isChangeToGameScreen()){
+            //Stop music and change screen
+            gameOverMusic.stop();
+            game.setScreen(new GameScreen(game));
         } else{
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
             //Menu screen render
             game.getBatch().begin();
-            game.getBatch().draw(titleTexture, 0, 0);
+            game.getBatch().draw(gameOverScreen, 0, 0);
             menu.drawCurrentMenu(game.getBatch());
             game.getBatch().end();
         }

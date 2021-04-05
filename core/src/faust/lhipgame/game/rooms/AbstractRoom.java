@@ -337,9 +337,6 @@ public abstract class AbstractRoom {
         // Do Player logic
         if (!player.isDead())
             player.doLogic(stateTime);
-        else {
-            splashManager.setSplashToShow("splash.gameover");
-        }
 
         // Do enemy logic
         enemyList.forEach((ene) -> {

@@ -1,5 +1,6 @@
 package faust.lhipgame.menu;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
@@ -29,10 +30,16 @@ public class Menu implements InputProcessor {
     private MenuItem currentMenu = MenuItem.MAIN;
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
+    private boolean changeToMainScreen = false;
     private final SaveFileManager saveFileManager;
 
     public Menu(SaveFileManager saveFileManager) {
         this.saveFileManager = saveFileManager;
+    }
+
+    public Menu(SaveFileManager saveFileManager, MenuItem currentMenu) {
+        this(saveFileManager);
+        this.currentMenu = currentMenu;
     }
 
     public void loadFonts(AssetManager assetManager) {
@@ -103,10 +110,16 @@ public class Menu implements InputProcessor {
             case MAIN:
                 handleMain();
                 break;
+            case GAME_OVER:
+                handleGameOver();
+                break;
+            case PLAY_GAME:
+                handlePlayGame();
+                break;
         }
     }
 
-    private void handleMain() {
+    private void handlePlayGame() {
         switch (selectedMenuVoice){
             case 0:{
                 //New game
@@ -120,9 +133,35 @@ public class Menu implements InputProcessor {
                 break;
             }
             case 2:{
+                //Back
+                selectedMenuVoice = 0;
+                currentMenu = MenuItem.MAIN;
+                break;
+            }
+        }
+    }
+
+    private void handleMain() {
+        switch (selectedMenuVoice){
+            case 0:{
+                //New game
+                selectedMenuVoice = 0;
+                currentMenu = MenuItem.PLAY_GAME;
+                break;
+            }
+            case 1:{
                 //Option
                 selectedMenuVoice = 0;
                 currentMenu = MenuItem.OPTIONS;
+                break;
+            }
+            case 2:{
+                //TODO credit
+                break;
+            }
+            case 3:{
+                //Exit game
+                Gdx.app.exit(0);
                 break;
             }
         }
@@ -145,7 +184,6 @@ public class Menu implements InputProcessor {
         }
     }
 
-
     private void handleOptions() {
         switch (selectedMenuVoice){
             case 0:{
@@ -165,8 +203,27 @@ public class Menu implements InputProcessor {
         }
     }
 
+    private void handleGameOver() {
+        switch (selectedMenuVoice){
+            case 0:{
+                //Yes, continue last save
+                changeToGameScreen = true;
+                break;
+            }
+            case 1:{
+                //No, back to main
+                changeToMainScreen = true;
+                break;
+            }
+        }
+    }
+
     public boolean isChangeToGameScreen() {
         return changeToGameScreen;
+    }
+
+    public boolean isChangeToMainScreen() {
+        return changeToMainScreen;
     }
 
     @Override

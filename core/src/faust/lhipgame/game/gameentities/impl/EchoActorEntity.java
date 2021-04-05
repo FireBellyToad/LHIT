@@ -1,6 +1,7 @@
 package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -26,8 +27,8 @@ public class EchoActorEntity extends AnimatedEntity {
     private final List<GameBehavior> stepOrder = new ArrayList<>();
     protected Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
 
-    public EchoActorEntity(EchoesActorType echoesActorType) {
-        super(new Texture(echoesActorType.getSpriteFilename()));
+    public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
+        super(assetManager.get(echoesActorType.getSpriteFilename()));
         this.echoesActorType = echoesActorType;
 
         loadEchoActorSteps();

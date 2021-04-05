@@ -62,7 +62,7 @@ public class FixedRoom extends AbstractRoom {
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS
             if (MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
-                addObjAsEchoActor(obj);
+                addObjAsEchoActor(obj, assetManager);
             }
         });
 
@@ -138,15 +138,16 @@ public class FixedRoom extends AbstractRoom {
      * Add a object as Echo Actor
      *
      * @param obj MapObject to add
+     * @param assetManager
      */
-    private void addObjAsEchoActor(MapObject obj) {
+    private void addObjAsEchoActor(MapObject obj, AssetManager assetManager) {
 
         EchoesActorType echoesActorType = EchoesActorType.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(echoesActorType);
 
         echoActors.add(new EchoActorInstance(echoesActorType,
                 (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y")));
+                (float) obj.getProperties().get("y"), assetManager));
 
     }
 
@@ -186,6 +187,10 @@ public class FixedRoom extends AbstractRoom {
             echoActors.forEach(actor -> {
                 actor.doLogic(stateTime);
 
+                if(actor.hasCurrentTextBoxToShow()){
+                    this.textManager.addNewTextBox(actor.getCurrentTextBoxToShow());
+                }
+
                 if (actor.mustRemoveFromRoom()) {
                     actor.dispose();
                 }
@@ -202,7 +207,7 @@ public class FixedRoom extends AbstractRoom {
             //Show echo text if NOW is active
             if(echoIsActivated){
                 echoActors.forEach( echoActorInstance -> {
-                    if(Objects.nonNull(echoActorInstance.getCurrentTextBoxToShow())){
+                    if(echoActorInstance.hasCurrentTextBoxToShow()){
                         this.textManager.addNewTextBox(echoActorInstance.getCurrentTextBoxToShow());
                     }
                 });

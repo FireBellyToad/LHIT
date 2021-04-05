@@ -96,10 +96,10 @@ public class TextBoxManager {
     public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera,boolean splashScreenIsDrawn) {
 
         // Remove box if player is under a certain boundary and there is no splash screen
-        if(!splashScreenIsDrawn && player.getBody().getPosition().y <= TOTAL_TEXTBOX_HEIGHT){
-            textBoxes.clear();
-            return;
-        }
+        //if(!splashScreenIsDrawn && player.getBody().getPosition().y <= TOTAL_TEXTBOX_HEIGHT){
+        //    textBoxes.clear();
+        //    return;
+        //}
 
         boolean twoline = false;
         float fontY = 0;

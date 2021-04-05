@@ -18,7 +18,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Livello di oggetti 1">
-  <object id="34" name="POI" type="SKELETON" x="82.1364" y="113.841">
+  <object id="34" name="POI" type="SKELETON" x="33.8031" y="79.1743">
    <point/>
   </object>
   <object id="35" name="DECO" type="STONE_1" x="100.182" y="79.455">

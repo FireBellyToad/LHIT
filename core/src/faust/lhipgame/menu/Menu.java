@@ -161,7 +161,7 @@ public class Menu implements InputProcessor {
             }
             case 3:{
                 //Exit game
-                Gdx.app.exit(0);
+                Gdx.app.exit();
                 break;
             }
         }

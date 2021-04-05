@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 
@@ -14,6 +18,12 @@ public class LoadingScreen implements Screen {
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final Texture loadScreen;
+
+    private final ShapeRenderer backgroundBox = new ShapeRenderer();
+    private static final Color back = new Color(0x666666ff);
+
+    private final ShapeRenderer cornerBox = new ShapeRenderer();
+    private static final Color corner = new Color(0xffffffff);
 
     public LoadingScreen(LHIPGame game) {
         this.game = game;
@@ -73,6 +83,21 @@ public class LoadingScreen implements Screen {
         //Load screen
         game.getBatch().begin();
         game.getBatch().draw(loadScreen,0,0);
+        game.getBatch().end();
+
+        //Black Corner
+        game.getBatch().begin();
+        backgroundBox.setColor(back);
+        backgroundBox.setProjectionMatrix(cameraManager.getCamera().combined);
+        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+        backgroundBox.rect(10, LHIPGame.GAME_HEIGHT/2-6, LHIPGame.GAME_WIDTH-20,  10);
+        backgroundBox.end();
+
+        cornerBox.setColor(corner);
+        cornerBox.setProjectionMatrix(cameraManager.getCamera().combined);
+        cornerBox.begin(ShapeRenderer.ShapeType.Filled);
+        cornerBox.rect(12, LHIPGame.GAME_HEIGHT/2-5, (float) (LHIPGame.GAME_WIDTH-25 - (100-loadingProgress)), 8);
+        cornerBox.end();
         game.getBatch().end();
 
         Gdx.app.log("DEBUG", "Loading progress: " + loadingProgress + "%" );

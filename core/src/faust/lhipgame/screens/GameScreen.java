@@ -98,9 +98,7 @@ public class GameScreen implements Screen {
     }
 
     private void drawRoomAndContents(float stateTime) {
-        game.getBatch().begin();
         roomsManager.drawCurrentRoomContents(game.getBatch(), stateTime);
-        game.getBatch().end();
     }
 
     /**

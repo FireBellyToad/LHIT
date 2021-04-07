@@ -182,7 +182,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
         Objects.requireNonNull(batch);
 
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
-
+        batch.begin();
         //Draw shadow
         batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
@@ -205,6 +205,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
                 startTime = TimeUtils.nanoTime();
             }
         }
+        batch.end();
 
     }
 

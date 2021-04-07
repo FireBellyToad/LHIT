@@ -247,7 +247,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         TextureRegion frame = mapPlayerEntityToRender().getFrame(currentBehavior, currentDirection,
                 mapStateTimeFromBehaviour(stateTime));
 
@@ -303,7 +303,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             // restart flickering timer
             startTime = TimeUtils.nanoTime();
         }
-
+        batch.end();
 
     }
 

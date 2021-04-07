@@ -147,7 +147,7 @@ public class POIInstance extends GameInstance {
     @Override
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         // If flickering is not enabled or the flickering POI must be shown, draw the texture
         if (!this.enableFlicker || !mustFlicker) {
             batch.draw(((POIEntity) entity).getFrame(stateTime),
@@ -162,7 +162,7 @@ public class POIInstance extends GameInstance {
             // restart flickering timer
             startTime = TimeUtils.nanoTime();
         }
-
+        batch.end();
     }
 
     public void setEnableFlicker(boolean enableFlicker) {

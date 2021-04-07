@@ -36,7 +36,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
     @Override
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         TextureRegion frame;
 
         if (interacted) {
@@ -48,6 +48,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
         //Rivedere
         batch.draw(frame, body.getPosition().x + calculateAdditionalXOffset() - POSITION_OFFSET,
                 body.getPosition().y + +calculateAdditionalYOffset() - POSITION_Y_OFFSET);
+        batch.end();
     }
 
     /**

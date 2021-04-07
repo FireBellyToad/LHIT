@@ -298,7 +298,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
      */
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
         //Draw shadow
@@ -318,7 +318,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
             // restart flickering timer
             startTime = TimeUtils.nanoTime();
         }
-
+        batch.end();
     }
 
     @Override

@@ -104,7 +104,7 @@ public class EchoActorInstance extends AnimatedInstance {
     @Override
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         if(removeFromRoom){
             return;
         }
@@ -113,7 +113,7 @@ public class EchoActorInstance extends AnimatedInstance {
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime));
 
         batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
-
+        batch.end();
     }
 
     public boolean mustRemoveFromRoom() {

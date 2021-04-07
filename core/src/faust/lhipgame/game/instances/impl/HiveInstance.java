@@ -137,7 +137,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
      */
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
 
         //Draw Hive
@@ -153,7 +153,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
             // restart flickering timer
             startTime = TimeUtils.nanoTime();
         }
-
+        batch.end();
     }
 
     @Override

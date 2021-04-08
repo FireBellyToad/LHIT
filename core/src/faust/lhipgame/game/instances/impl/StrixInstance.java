@@ -37,7 +37,6 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
 
     private final PlayerInstance target;
     private Timer.Task leechLifeTimer;
-    private boolean isDead = false;
 
     public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new StrixEntity(assetManager));
@@ -52,7 +51,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
 
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
-        if (GameBehavior.HURT.equals(currentBehavior))
+        if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
         if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
@@ -109,7 +108,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
 
     @Override
     public boolean isDead() {
-        return isDead;
+        return GameBehavior.DEAD.equals(currentBehavior);
     }
 
     @Override
@@ -187,7 +186,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
         batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw Strix
-        if (GameBehavior.IDLE.equals(currentBehavior)) {
+        if (GameBehavior.IDLE.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior)) {
             // On Idle, the Strix is landed. While walking it flies
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
         } else {
@@ -273,7 +272,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
             
             if (isDying()) {
                 ((StrixEntity) entity).playDeathCry();
-                isDead = true;
+                body.setLinearVelocity(0, 0);
+                currentBehavior = GameBehavior.DEAD;
             } else if (!GameBehavior.HURT.equals(currentBehavior)) {
                 ((StrixEntity) entity).playHurtCry();
                 // Hurt by player

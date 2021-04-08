@@ -43,7 +43,6 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
     private Body upClawBody;
 
     private final PlayerInstance target;
-    private boolean isDead = false;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -67,7 +66,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
         downClawBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
-        if (GameBehavior.HURT.equals(currentBehavior))
+        if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
         if (attackCooldown && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
@@ -108,25 +107,6 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
         }
     }
 
-    @Override
-    public void postHurtLogic(GameInstance attacker) {
-
-        // is pushed away while flickering
-        Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
-                attacker.getBody().getPosition().y - body.getPosition().y).nor();
-
-        body.setLinearVelocity(BOUNDED_SPEED * 4 * -direction.x, BOUNDED_SPEED * 4 * -direction.y);
-        currentBehavior = GameBehavior.HURT;
-        // Do nothing for half second
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                currentBehavior = GameBehavior.IDLE;
-            }
-        }, 0.25f);
-    }
-
-
     /**
      * @return true if the damage is greater or equal than the resitance
      */
@@ -137,7 +117,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
 
     @Override
     public boolean isDead() {
-        return isDead;
+        return GameBehavior.DEAD.equals(currentBehavior);
     }
 
 
@@ -341,7 +321,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
 
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
-            isDead = true;
+            body.setLinearVelocity(0, 0);
+            currentBehavior = GameBehavior.DEAD;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
             ((BoundedEntity) entity).playHurtCry();
 
@@ -357,6 +338,25 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
             postHurtLogic(attacker);
         }
     }
+
+    @Override
+    public void postHurtLogic(GameInstance attacker) {
+
+        // is pushed away while flickering
+        Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
+                attacker.getBody().getPosition().y - body.getPosition().y).nor();
+
+        body.setLinearVelocity(BOUNDED_SPEED * 4 * -direction.x, BOUNDED_SPEED * 4 * -direction.y);
+        currentBehavior = GameBehavior.HURT;
+        // Do nothing for half second
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                currentBehavior = GameBehavior.IDLE;
+            }
+        }, 0.25f);
+    }
+
 
     @Override
     public int getResistance() {

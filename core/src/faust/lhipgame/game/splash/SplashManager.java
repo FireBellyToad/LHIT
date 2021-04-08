@@ -51,7 +51,7 @@ public class SplashManager {
 
     public void drawSplash(SpriteBatch batch) {
         Objects.requireNonNull(batch);
-
+        batch.begin();
         batch.draw(this.splashScreens.get(splashToShow), 0, 0);
 
         textManager.addNewTextBox(splashToShow);
@@ -69,7 +69,7 @@ public class SplashManager {
             }, 1.5f);
             Gdx.app.log("DEBUG", "START splash timer" );
         }
-
+        batch.end();
     }
 
     public boolean isDrawingSplash() {

@@ -46,6 +46,7 @@ public class BoundedEntity extends AnimatedEntity {
         TextureRegion[] attackFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 9, getTextureColumns() * 10);
         TextureRegion[] attackFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 10, getTextureColumns() * 11);
         TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
+        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1+(getTextureColumns() * 12));
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, Direction.DOWN);
@@ -71,6 +72,9 @@ public class BoundedEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.HURT, Direction.UP);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.HURT, Direction.RIGHT);
 
+        // Initialize the Dead frame
+        addAnimation(new Animation<>(FRAME_DURATION, deadFrame), GameBehavior.DEAD);
+
     }
 
     @Override
@@ -79,7 +83,7 @@ public class BoundedEntity extends AnimatedEntity {
     }
 
     @Override
-    protected int getTextureRows() { return 12; }
+    protected int getTextureRows() { return 13; }
 
     public Texture getShadowTexture() {
         return shadow;

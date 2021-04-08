@@ -80,7 +80,7 @@ public abstract class AbstractRoom {
      * @param roomSaveEntry
      * @param roomFlags
      */
-    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum,Boolean> roomFlags) {
+    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -229,20 +229,20 @@ public abstract class AbstractRoom {
         String enemyType = (String) obj.getProperties().get("type");
 
         //Improve
-        if("HIVE".equals(enemyType)){
+        if ("HIVE".equals(enemyType)) {
             enemyInstance = new HiveInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
                     assetManager,
                     textManager);
-        }else if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
+        } else if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
                     player,
                     assetManager);
 
-            if(MathUtils.randomBoolean())
+            if (MathUtils.randomBoolean())
                 splashManager.setSplashToShow("splash.bounded");
         } else {
             enemyInstance = new StrixInstance(
@@ -251,7 +251,7 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
 
-            if(MathUtils.randomBoolean())
+            if (MathUtils.randomBoolean())
                 splashManager.setSplashToShow("splash.strix");
         }
 
@@ -303,15 +303,32 @@ public abstract class AbstractRoom {
 
     // Compares two GameInstances by y depth
     protected int compareEntities(GameInstance o1, GameInstance o2) {
-        if (o1.getBody().getPosition().y < o2.getBody().getPosition().y ||
+
+        if ((o2 instanceof Fightable && ((Fightable) o2).isDead()) || (o1 instanceof Fightable && ((Fightable) o1).isDead())) {
+            Gdx.app.log("FBUN", "FEREEEE");
+        }
+
+        //Special conditions to place object always on higher depth, usually
+        //for avoiding that objects laying on the ground cover taller ones
+        if ((o2 instanceof Fightable && ((Fightable) o2).isDead()) ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
                 (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted()) ||
                 (o2 instanceof POIInstance && POIEnum.SKELETON.equals(((POIInstance) o2).getType()))) {
             return 1;
-        } else if (o1.getBody().getPosition().y > o2.getBody().getPosition().y ||
+        }
+
+        if ((o1 instanceof Fightable && ((Fightable) o1).isDead()) ||
                 (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {
             return -1;
         }
+
+        //or else just sort by Y axis
+        if((o1.getBody().getPosition().y < o2.getBody().getPosition().y)){
+            return 1;
+        } else if (o1.getBody().getPosition().y > o2.getBody().getPosition().y) {
+            return -1;
+        }
+
 
         return 0;
     }
@@ -347,9 +364,6 @@ public abstract class AbstractRoom {
                 ene.dispose();
 
         });
-
-        // Remove dead enemies
-        enemyList.removeIf(ene -> ((Fightable) ene).isDead());
 
     }
 

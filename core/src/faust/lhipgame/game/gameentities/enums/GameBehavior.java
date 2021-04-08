@@ -5,7 +5,8 @@ public enum GameBehavior {
     ATTACK,
     HURT,
     KNEE,
-    IDLE;
+    IDLE,
+    DEAD;
 
     public static GameBehavior getFromString(String name) {
         for (GameBehavior e : GameBehavior.values()) {

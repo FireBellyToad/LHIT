@@ -276,4 +276,8 @@ public class RoomsManager {
 
         currentRoom.dispose();
     }
+
+    public Map<Vector2, RoomSaveEntry> getSaveMap() {
+        return saveMap;
+    }
 }

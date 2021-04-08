@@ -226,6 +226,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
                     if(playerInstance.isDead()){
                         ((StrixEntity) entity).stopLeechSound();
                     }
+                    leechLifeTimer = null;
                     leechLife(playerInstance);
                     Gdx.app.log("DEBUG", "END leech timer");
                 }

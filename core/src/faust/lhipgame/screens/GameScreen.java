@@ -119,6 +119,9 @@ public class GameScreen implements Screen {
         roomsManager.doRoomContentsLogic(stateTime);
 
         if(player.isDead()){
+            //Save game and go to game over
+            player.setDamage(0);
+            roomsManager.dispose();
             game.setScreen(new GameOverScreen(game));
         }
     }

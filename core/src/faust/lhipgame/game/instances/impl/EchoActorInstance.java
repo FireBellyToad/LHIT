@@ -13,6 +13,7 @@ import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.world.manager.CollisionManager;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,6 @@ public class EchoActorInstance extends AnimatedInstance {
 
         //get first step
         this.currentBehavior = ((EchoActorEntity)this.entity).getStepOrder().get(0);
-
     }
 
     @Override
@@ -50,6 +50,14 @@ public class EchoActorInstance extends AnimatedInstance {
         //initialize deltatime
         if (deltaTime == 0)
             deltaTime = stateTime;
+
+        //Move if should
+        if(((EchoActorEntity)this.entity).mustMoveInStep(currentBehavior)){
+            //TODO improve
+            body.setLinearVelocity(60,0);
+        } else {
+            body.setLinearVelocity(0,0);
+        }
 
         //If animation is finished pass to the next step
        if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
@@ -79,7 +87,7 @@ public class EchoActorInstance extends AnimatedInstance {
         Objects.requireNonNull(world);
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(x, y);
 
         // Define shape
@@ -92,6 +100,8 @@ public class EchoActorInstance extends AnimatedInstance {
         fixtureDef.density = 1;
         fixtureDef.friction = 1;
         fixtureDef.isSensor = false;
+        fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
+        fixtureDef.filter.maskBits = CollisionManager.SOLID_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -135,5 +145,9 @@ public class EchoActorInstance extends AnimatedInstance {
 
     public boolean hasCurrentTextBoxToShow() {
         return Objects.nonNull(((EchoActorEntity) entity).getTextBoxPerStep(currentBehavior)) && showTextBox;
+    }
+
+    public void playStartingSound() {
+        ((EchoActorEntity) entity).playStartingSound();
     }
 }

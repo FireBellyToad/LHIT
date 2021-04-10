@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.music.enums.TuneEnum;
 
 public class FBTScreen implements Screen {
 
@@ -26,7 +27,7 @@ public class FBTScreen implements Screen {
     @Override
     public void show() {
 
-        // Load next menu sp
+        // Load next menu assets
         assetManager.load("splash/title_splash.png", Texture.class);
         assetManager.finishLoading();
 
@@ -36,16 +37,16 @@ public class FBTScreen implements Screen {
         assetManager.load("fonts/main_font.png", Texture.class);
         assetManager.finishLoading();
 
-        assetManager.load("music/8-bit-chopin-funeral-march.ogg", Music.class);
+        assetManager.load("music/"+TuneEnum.TITLE.getFileName(), Music.class);
         assetManager.finishLoading();
 
-        //Three seconds splash screen
+        //Two seconds splash screen
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 game.setScreen(new MenuScreen(game));
             }
-        }, 3);
+        }, 2);
     }
 
     @Override

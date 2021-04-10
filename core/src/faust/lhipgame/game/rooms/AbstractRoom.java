@@ -304,10 +304,6 @@ public abstract class AbstractRoom {
     // Compares two GameInstances by y depth
     protected int compareEntities(GameInstance o1, GameInstance o2) {
 
-        if ((o2 instanceof Fightable && ((Fightable) o2).isDead()) || (o1 instanceof Fightable && ((Fightable) o1).isDead())) {
-            Gdx.app.log("FBUN", "FEREEEE");
-        }
-
         //Special conditions to place object always on higher depth, usually
         //for avoiding that objects laying on the ground cover taller ones
         if ((o2 instanceof Fightable && ((Fightable) o2).isDead()) ||

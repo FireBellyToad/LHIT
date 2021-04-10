@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public class CasualRoom extends AbstractRoom {
 
-    private static final List<Integer> morgengabiumMaps = new ArrayList<Integer>(){{
+    private static final List<Integer> MORGENGABIUM_MAPS = new ArrayList<Integer>(){{
         this.add(1);
         this.add(5);
         this.add(6);
@@ -53,7 +53,7 @@ public class CasualRoom extends AbstractRoom {
         } else {
             if(roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)){
                 //pick only ones with skeleton poi
-                casualNumber = morgengabiumMaps.get(MathUtils.random(0,2));
+                casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0,2));
             } else {
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             }

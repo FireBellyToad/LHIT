@@ -3,6 +3,7 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
+import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 
 public class LoadingScreen implements Screen {
 
@@ -54,6 +57,14 @@ public class LoadingScreen implements Screen {
         assetManager.load("sounds/SFX_waterSplash.ogg", Sound.class);
         assetManager.load("sounds/SFX_creatureDie4.ogg", Sound.class);
         assetManager.load("sounds/SFX_hit&damage6.ogg", Sound.class);
+        assetManager.load("sounds/horror_scream.ogg", Sound.class);
+
+        for(TuneEnum tune : TuneEnum.values()){
+            //Skipping title, already loaded
+            if(!TuneEnum.TITLE.equals(tune)){
+                assetManager.load("music/" + tune.getFileName(), Music.class);
+            }
+        }
 
         assetManager.load("splash/strix_splash.png", Texture.class);
         assetManager.load("splash/bounded_splash.png", Texture.class);

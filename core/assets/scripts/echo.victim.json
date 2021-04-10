@@ -5,6 +5,15 @@
     },
     {
       "behaviour": "WALK"
+    },
+    {
+      "behaviour": "ATTACK"
+    },
+    {
+      "behaviour": "HURT"
+    },
+    {
+      "behaviour": "DEAD"
     }
   ]
 }

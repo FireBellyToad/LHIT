@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
+import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.impl.DecorationInstance;
 import faust.lhipgame.game.instances.impl.EchoActorInstance;
@@ -207,6 +208,7 @@ public class FixedRoom extends AbstractRoom {
             //Show echo text if NOW is active
             if(echoIsActivated){
                 echoActors.forEach( echoActorInstance -> {
+                    echoActorInstance.playStartingSound();;
                     if(echoActorInstance.hasCurrentTextBoxToShow()){
                         this.textManager.addNewTextBox(echoActorInstance.getCurrentTextBoxToShow());
                     }

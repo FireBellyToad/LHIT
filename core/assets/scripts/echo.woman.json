@@ -2,14 +2,15 @@
   "steps": [
     {
       "behaviour": "IDLE",
-      "textBoxKey": "echo.tree.first"
+      "textBoxKey": "echo.woman.first",
+      "move" : true
     },
     {
-      "behaviour": "WALK"
+      "behaviour": "WALK",
     },
     {
       "behaviour": "ATTACK",
-      "textBoxKey": "echo.tree.second"
+      "textBoxKey": "echo.woman.second"
     },
     {
       "behaviour": "HURT"

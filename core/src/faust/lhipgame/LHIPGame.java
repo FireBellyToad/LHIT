@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
 import faust.lhipgame.screens.FBTScreen;
@@ -17,6 +18,7 @@ public class LHIPGame extends Game {
     private AssetManager assetManager;
     private CameraManager cameraManager;
     private SaveFileManager saveFileManager;
+    private MusicManager musicManager;
 
 
     @Override

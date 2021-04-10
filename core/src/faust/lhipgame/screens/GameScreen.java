@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.hud.Hud;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
+import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.rooms.manager.RoomsManager;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
@@ -23,6 +25,7 @@ public class GameScreen implements Screen {
     private PlayerInstance player;
     private TextBoxManager textManager;
     private RoomsManager roomsManager;
+    private MusicManager musicManager;
 
     private Hud hud;
     private SplashManager splashManager;
@@ -35,6 +38,7 @@ public class GameScreen implements Screen {
         this.game = game;
         this.assetManager = game.getAssetManager();
         this.cameraManager = game.getCameraManager();
+        musicManager = new MusicManager(assetManager);
     }
 
     @Override
@@ -51,6 +55,10 @@ public class GameScreen implements Screen {
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager());
+
+
+        //Loop title music
+        musicManager.playMusic(TuneEnum.AMBIENCE,0.75f);
     }
 
     @Override

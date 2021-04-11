@@ -20,13 +20,13 @@ public class LHIPGame extends Game {
     private SaveFileManager saveFileManager;
     private MusicManager musicManager;
 
-
     @Override
     public void create() {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
         cameraManager = new CameraManager();
         saveFileManager = new SaveFileManager();
+        musicManager = new MusicManager();
 
         assetManager.load("splash/fbt_splash.png", Texture.class);
         assetManager.finishLoading();
@@ -60,4 +60,8 @@ public class LHIPGame extends Game {
     }
 
     public SaveFileManager getSaveFileManager() { return saveFileManager;}
+
+    public MusicManager getMusicManager() {
+        return musicManager;
+    }
 }

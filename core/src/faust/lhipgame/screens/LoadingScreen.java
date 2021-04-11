@@ -20,6 +20,7 @@ public class LoadingScreen implements Screen {
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
+    private final MusicManager musicManager;
     private final Texture loadScreen;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
@@ -32,6 +33,7 @@ public class LoadingScreen implements Screen {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
+        musicManager = game.getMusicManager();
         loadScreen = assetManager.get("splash/loading_splash.png");
     }
 
@@ -59,12 +61,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sounds/SFX_hit&damage6.ogg", Sound.class);
         assetManager.load("sounds/horror_scream.ogg", Sound.class);
 
-        for(TuneEnum tune : TuneEnum.values()){
-            //Skipping title, already loaded
-            if(!TuneEnum.TITLE.equals(tune)){
-                assetManager.load("music/" + tune.getFileName(), Music.class);
-            }
-        }
+        musicManager.loadMusicFromFiles(assetManager);
 
         assetManager.load("splash/strix_splash.png", Texture.class);
         assetManager.load("splash/bounded_splash.png", Texture.class);

@@ -7,6 +7,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 
@@ -21,7 +23,7 @@ public class Menu implements InputProcessor {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float MENU_X_OFFSET = 50;
-    private static final float MENU_Y_OFFSET = (float) (LHIPGame.GAME_HEIGHT*0.5);
+    private static final float MENU_Y_OFFSET = (float) (LHIPGame.GAME_HEIGHT * 0.5);
     private static final float SPAN = 15;
     private static final String ARROW_CHARACTER = "~";
 
@@ -31,14 +33,17 @@ public class Menu implements InputProcessor {
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
     private boolean changeToMainScreen = false;
+    private MusicManager musicManager;
+
     private final SaveFileManager saveFileManager;
 
-    public Menu(SaveFileManager saveFileManager) {
+    public Menu(SaveFileManager saveFileManager, MusicManager musicManager) {
         this.saveFileManager = saveFileManager;
+        this.musicManager = musicManager;
     }
 
     public Menu(SaveFileManager saveFileManager, MenuItem currentMenu) {
-        this(saveFileManager);
+        this.saveFileManager = saveFileManager;
         this.currentMenu = currentMenu;
     }
 
@@ -55,17 +60,17 @@ public class Menu implements InputProcessor {
         Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
 
         //Draw arrow on selected option
-        if(Objects.nonNull(currentMenu.getTitle()))
+        if (Objects.nonNull(currentMenu.getTitle()))
             mainFont.draw(batch, currentMenu.getTitle(), MENU_X_OFFSET, MENU_Y_OFFSET);
 
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
             //TODO internazionalizzare
-            mainFont.draw(batch, subItemsArray[i].name().replace('_',' '),
-                    MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1+i)));
+            mainFont.draw(batch, subItemsArray[i].name().replace('_', ' '),
+                    MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
         }
         //Draw arrow on selected option
-        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * (1+this.selectedMenuVoice)));
+        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * (1 + this.selectedMenuVoice)));
     }
 
     @Override
@@ -74,21 +79,21 @@ public class Menu implements InputProcessor {
         switch (keycode) {
             case Input.Keys.W:
             case Input.Keys.UP: {
-                if(selectedMenuVoice > 0){
+                if (selectedMenuVoice > 0) {
                     selectedMenuVoice--;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
-                if(selectedMenuVoice < currentMenu.getSubItems().length-1){
+                if (selectedMenuVoice < currentMenu.getSubItems().length - 1) {
                     selectedMenuVoice++;
                 }
                 break;
             }
             case Input.Keys.X:
             case Input.Keys.K:
-            case Input.Keys.ENTER:  {
+            case Input.Keys.ENTER: {
                 handleSelection();
                 break;
             }
@@ -100,7 +105,7 @@ public class Menu implements InputProcessor {
      * Handles selection event
      */
     private void handleSelection() {
-        switch (currentMenu){
+        switch (currentMenu) {
             case NEW_GAME:
                 handleNewGame();
                 break;
@@ -120,19 +125,19 @@ public class Menu implements InputProcessor {
     }
 
     private void handlePlayGame() {
-        switch (selectedMenuVoice){
-            case 0:{
+        switch (selectedMenuVoice) {
+            case 0: {
                 //New game
                 selectedMenuVoice = 0;
                 currentMenu = MenuItem.NEW_GAME;
                 break;
             }
-            case 1:{
+            case 1: {
                 //Load game
                 changeToGameScreen = true;
                 break;
             }
-            case 2:{
+            case 2: {
                 //Back
                 selectedMenuVoice = 0;
                 currentMenu = MenuItem.MAIN;
@@ -142,24 +147,24 @@ public class Menu implements InputProcessor {
     }
 
     private void handleMain() {
-        switch (selectedMenuVoice){
-            case 0:{
+        switch (selectedMenuVoice) {
+            case 0: {
                 //New game
                 selectedMenuVoice = 0;
                 currentMenu = MenuItem.PLAY_GAME;
                 break;
             }
-            case 1:{
+            case 1: {
                 //Option
                 selectedMenuVoice = 0;
                 currentMenu = MenuItem.OPTIONS;
                 break;
             }
-            case 2:{
+            case 2: {
                 //TODO credit
                 break;
             }
-            case 3:{
+            case 3: {
                 //Exit game
                 Gdx.app.exit();
                 break;
@@ -168,14 +173,14 @@ public class Menu implements InputProcessor {
     }
 
     private void handleNewGame() {
-        switch (selectedMenuVoice){
-            case 0:{
+        switch (selectedMenuVoice) {
+            case 0: {
                 //Yes i'm sure
                 saveFileManager.cleanSaveFile();
                 changeToGameScreen = true;
                 break;
             }
-            case 1:{
+            case 1: {
                 //No, back to main
                 currentMenu = MenuItem.MAIN;
                 selectedMenuVoice = 0;
@@ -184,19 +189,24 @@ public class Menu implements InputProcessor {
         }
     }
 
+    /**
+     * Option music
+     */
     private void handleOptions() {
-        switch (selectedMenuVoice){
-            case 0:{
+        switch (selectedMenuVoice) {
+            case 0: {
                 //Back to main
                 currentMenu = MenuItem.MAIN;
                 selectedMenuVoice = 0;
                 break;
             }
-            case 1:{
-                //TODO music toggle
+            case 1: {
+                //If music is enabled, we play title music (we are in title screen).
+                if(!musicManager.toggleMusic())
+                    musicManager.playMusic(TuneEnum.TITLE, 0.75f);
                 break;
             }
-            case 2:{
+            case 2: {
                 //TODO sound toggle
                 break;
             }
@@ -204,13 +214,13 @@ public class Menu implements InputProcessor {
     }
 
     private void handleGameOver() {
-        switch (selectedMenuVoice){
-            case 0:{
+        switch (selectedMenuVoice) {
+            case 0: {
                 //Yes, continue last save
                 changeToGameScreen = true;
                 break;
             }
-            case 1:{
+            case 1: {
                 //No, back to main
                 changeToMainScreen = true;
                 break;

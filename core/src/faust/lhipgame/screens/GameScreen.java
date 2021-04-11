@@ -21,11 +21,11 @@ public class GameScreen implements Screen {
 
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
+    private final MusicManager musicManager;
     private WorldManager worldManager;
     private PlayerInstance player;
     private TextBoxManager textManager;
     private RoomsManager roomsManager;
-    private MusicManager musicManager;
 
     private Hud hud;
     private SplashManager splashManager;
@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
         this.game = game;
         this.assetManager = game.getAssetManager();
         this.cameraManager = game.getCameraManager();
-        musicManager = new MusicManager(assetManager);
+        this.musicManager = game.getMusicManager();
     }
 
     @Override
@@ -56,6 +56,7 @@ public class GameScreen implements Screen {
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager());
 
+        musicManager.initTuneMap(assetManager);
 
         //Loop title music
         musicManager.playMusic(TuneEnum.AMBIENCE,0.75f);

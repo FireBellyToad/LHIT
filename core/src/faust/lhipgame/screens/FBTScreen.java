@@ -37,9 +37,6 @@ public class FBTScreen implements Screen {
         assetManager.load("fonts/main_font.png", Texture.class);
         assetManager.finishLoading();
 
-        assetManager.load("music/"+TuneEnum.TITLE.getFileName(), Music.class);
-        assetManager.finishLoading();
-
         //Two seconds splash screen
         Timer.schedule(new Timer.Task() {
             @Override

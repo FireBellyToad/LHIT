@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.menu.Menu;
 
@@ -20,18 +21,20 @@ public class MenuScreen implements Screen {
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
+    private final MusicManager musicManager;
     private final Menu menu;
     private final Texture titleTexture;
-    private final Music titleMusic;
 
     public MenuScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
-        titleTexture = assetManager.get("splash/title_splash.png");
-        titleMusic = assetManager.get("music/"+ TuneEnum.TITLE.getFileName());
+        musicManager = game.getMusicManager();
 
-        menu = new Menu(game.getSaveFileManager());
+        titleTexture = assetManager.get("splash/title_splash.png");
+        musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
+
+        menu = new Menu(game.getSaveFileManager(), musicManager);
     }
 
     @Override
@@ -43,9 +46,7 @@ public class MenuScreen implements Screen {
         menu.loadFonts(assetManager);
 
         //Loop title music
-        titleMusic.play();
-        titleMusic.setLooping(true);
-        titleMusic.setVolume(0.75f);
+        musicManager.playMusic(TuneEnum.TITLE, 0.75f);
 
         Gdx.input.setInputProcessor(menu);
     }
@@ -55,7 +56,7 @@ public class MenuScreen implements Screen {
 
         if(menu.isChangeToGameScreen()){
             //Stop music and change screen
-            titleMusic.stop();
+            musicManager.stopMusic();
             game.setScreen(new LoadingScreen(game));
         } else{
             cameraManager.applyAndUpdate();

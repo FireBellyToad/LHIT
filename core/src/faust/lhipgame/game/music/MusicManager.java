@@ -28,9 +28,9 @@ public class MusicManager {
         Objects.requireNonNull(tune);
         Objects.requireNonNull(assetManager);
 
-        assetManager.load("music/" + tune.getFileName(), Music.class);
+        assetManager.load(tune.getFileName(), Music.class);
         assetManager.finishLoading();
-        musicMap.put(tune, assetManager.get("music/" + tune.getFileName()));
+        musicMap.put(tune, assetManager.get(tune.getFileName()));
     }
 
     /**
@@ -41,7 +41,7 @@ public class MusicManager {
     public void loadMusicFromFiles(AssetManager assetManager) {
         Objects.requireNonNull(assetManager);
         for (TuneEnum tune : TuneEnum.values()) {
-            assetManager.load("music/" + tune.getFileName(), Music.class);
+            assetManager.load(tune.getFileName(), Music.class);
         }
     }
 
@@ -54,7 +54,7 @@ public class MusicManager {
         Objects.requireNonNull(assetManager);
 
         for (TuneEnum tune : TuneEnum.values()) {
-            musicMap.put(tune, assetManager.get("music/" + tune.getFileName()));
+            musicMap.put(tune, assetManager.get(tune.getFileName()));
         }
     }
 
@@ -75,6 +75,15 @@ public class MusicManager {
      */
     public void playMusic(TuneEnum tune, float volume) {
         playMusic(tune, volume, true);
+    }
+
+    /**
+     * Play tune
+     *
+     * @param tune   to play
+     */
+    public void playMusic(TuneEnum tune, boolean loop) {
+        playMusic(tune, 1f, loop);
     }
 
     /**

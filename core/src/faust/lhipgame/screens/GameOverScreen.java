@@ -6,24 +6,26 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 
-public class GameOverScreen  implements Screen {
+public class GameOverScreen implements Screen {
 
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
+    private final MusicManager musicManager;
     private final Menu menu;
     private final Texture gameOverScreen;
-    private final Music gameOverMusic;
 
     public GameOverScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
+        musicManager = game.getMusicManager();
         gameOverScreen = assetManager.get("splash/gameover_splash.png");
-        gameOverMusic = assetManager.get("music/8-bit-chopin-funeral-march.ogg");
 
         menu = new Menu(game.getSaveFileManager(), MenuItem.GAME_OVER);
     }
@@ -37,9 +39,7 @@ public class GameOverScreen  implements Screen {
         menu.loadFonts(assetManager);
 
         //Loop title music
-        gameOverMusic.play();
-        gameOverMusic.setLooping(true);
-        gameOverMusic.setVolume(0.25f);
+        musicManager.playMusic(TuneEnum.GAMEOVER, false);
 
         Gdx.input.setInputProcessor(menu);
     }
@@ -47,15 +47,15 @@ public class GameOverScreen  implements Screen {
     @Override
     public void render(float delta) {
 
-        if(menu.isChangeToMainScreen()){
+        if (menu.isChangeToMainScreen()) {
             //Stop music and change screen
-            gameOverMusic.stop();
+            musicManager.stopMusic();
             game.setScreen(new MenuScreen(game));
-        } else if(menu.isChangeToGameScreen()){
+        } else if (menu.isChangeToGameScreen()) {
             //Stop music and change screen
-            gameOverMusic.stop();
+            musicManager.stopMusic();
             game.setScreen(new GameScreen(game));
-        } else{
+        } else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 

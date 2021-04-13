@@ -3,7 +3,8 @@ package faust.lhipgame.game.music.enums;
 public enum TuneEnum {
 
     TITLE("title.ogg"),
-    AMBIENCE("ambience.ogg");
+    AMBIENCE("ambience.ogg"),
+    GAMEOVER("gameover.ogg");
 //    DANGER("ambience"),
 //    FIGHT("ambience"),
 //    CHURCH("ambience");
@@ -15,6 +16,6 @@ public enum TuneEnum {
     }
 
     public String getFileName() {
-        return fileName;
+        return "music/" +fileName;
     }
 }

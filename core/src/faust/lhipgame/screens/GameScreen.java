@@ -129,6 +129,7 @@ public class GameScreen implements Screen {
             //Save game and go to game over
             player.setDamage(0);
             roomsManager.dispose();
+            musicManager.stopMusic();
             game.setScreen(new GameOverScreen(game));
         }
     }

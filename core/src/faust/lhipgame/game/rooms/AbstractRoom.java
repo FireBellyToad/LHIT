@@ -18,6 +18,7 @@ import faust.lhipgame.game.gameentities.enums.POIEnum;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.impl.*;
+import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.rooms.areas.EmergedArea;
 import faust.lhipgame.game.rooms.areas.WallArea;
 import faust.lhipgame.game.rooms.enums.MapLayersEnum;
@@ -70,8 +71,7 @@ public abstract class AbstractRoom {
 
     /**
      * Constructor
-     *
-     * @param roomType
+     *  @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
@@ -79,8 +79,9 @@ public abstract class AbstractRoom {
      * @param camera
      * @param roomSaveEntry
      * @param roomFlags
+     * @param musicManager
      */
-    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags) {
+    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags, MusicManager musicManager) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -148,7 +149,7 @@ public abstract class AbstractRoom {
         player.changePOIList(poiList);
 
         // Do other stuff
-        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
+        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera, assetManager, musicManager);
     }
 
     /**
@@ -261,14 +262,14 @@ public abstract class AbstractRoom {
 
     /**
      * Method for additional room initialization
-     *
-     * @param roomType
+     *  @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
      * @param camera
+     * @param musicManager
      */
-    protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
+    protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager);
 
     /**
      * Draws room background

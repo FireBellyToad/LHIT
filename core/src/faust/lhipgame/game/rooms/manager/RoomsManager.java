@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
+import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.rooms.AbstractRoom;
 import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.saves.RoomSaveEntry;
@@ -46,13 +47,15 @@ public class RoomsManager {
     private final TextBoxManager textManager;
     private final PlayerInstance player;
     private final OrthographicCamera camera;
+    private final MusicManager musicManager;
 
-    public RoomsManager(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, SaveFileManager saveFileManager) {
+    public RoomsManager(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, SaveFileManager saveFileManager, MusicManager musicManager) {
         this.worldManager = worldManager;
         this.textManager = textManager;
         this.splashManager = splashManager;
         this.assetManager = assetManager;
         this.saveFileManager = saveFileManager;
+        this.musicManager = musicManager;
         this.player = player;
         this.camera = camera;
 
@@ -120,7 +123,7 @@ public class RoomsManager {
                         (mainWorldSize.x * mainWorldSize.y)-10  <= (saveMap.size() + (9 -player.getFoundMorgengabes() ));
                 roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
 
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags);
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
 
                 Gdx.app.log("DEBUG","(mainWorldSize.x * mainWorldSize.y)-10: " +((mainWorldSize.x * mainWorldSize.y)-10));
                 Gdx.app.log("DEBUG","(saveMap.size() + (9 -player.getFoundMorgengabes() )): " +(saveMap.size() + (9 -player.getFoundMorgengabes() )));
@@ -131,7 +134,7 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags);
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
                 break;
             }
         }

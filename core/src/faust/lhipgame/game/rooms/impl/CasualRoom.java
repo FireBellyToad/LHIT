@@ -6,6 +6,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
+import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.rooms.AbstractRoom;
 import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.saves.RoomSaveEntry;
@@ -26,7 +28,7 @@ import java.util.Map;
  */
 public class CasualRoom extends AbstractRoom {
 
-    private static final List<Integer> MORGENGABIUM_MAPS = new ArrayList<Integer>(){{
+    private static final List<Integer> MORGENGABIUM_MAPS = new ArrayList<Integer>() {{
         this.add(1);
         this.add(5);
         this.add(6);
@@ -35,8 +37,8 @@ public class CasualRoom extends AbstractRoom {
     public static final int CASUAL_TOTAL = 7;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map roomFlags) {
-        super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags);
+    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map roomFlags, MusicManager musicManager) {
+        super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags, musicManager);
     }
 
     @Override
@@ -51,15 +53,15 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.poiCleared;
 
         } else {
-            if(roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)){
+            if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
                 //pick only ones with skeleton poi
-                casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0,2));
+                casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0, 2));
             } else {
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             }
         }
         //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
-        casualNumber = MathUtils.clamp(casualNumber, 1,CasualRoom.CASUAL_TOTAL);
+        casualNumber = MathUtils.clamp(casualNumber, 1, CasualRoom.CASUAL_TOTAL);
 
         // Casual maps range from casual1.tmx to casual7.tmx, with a %d to be mapped
         roomFileName = roomFileName.replace("%d", Integer.toString(casualNumber));
@@ -67,14 +69,21 @@ public class CasualRoom extends AbstractRoom {
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-
     }
 
     @Override
-    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager) {
         // FIXME handle multiple POI
-        if(mustClearPOI){
+        if (mustClearPOI) {
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));
+        }
+
+        if (enemyList.size() > 0) {
+            //Loop title music
+            musicManager.playMusic(TuneEnum.DANGER, 0.75f);
+        } else {
+            //Loop title music
+            musicManager.playMusic(TuneEnum.AMBIENCE, 0.75f);
         }
     }
 

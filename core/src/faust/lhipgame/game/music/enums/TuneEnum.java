@@ -4,8 +4,8 @@ public enum TuneEnum {
 
     TITLE("title.ogg"),
     AMBIENCE("ambience.ogg"),
-    GAMEOVER("gameover.ogg");
-//    DANGER("ambience"),
+    GAMEOVER("gameover.ogg"),
+    DANGER("danger.ogg");
 //    FIGHT("ambience"),
 //    CHURCH("ambience");
 

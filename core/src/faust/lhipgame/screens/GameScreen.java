@@ -49,17 +49,15 @@ public class GameScreen implements Screen {
         textManager = new TextBoxManager(assetManager);
         hud = new Hud(textManager,assetManager);
         splashManager = new SplashManager(textManager,assetManager);
+        musicManager.initTuneMap(assetManager);
 
         // Creating player and making it available to input processor
         player = new PlayerInstance(assetManager);
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
-                assetManager, game.getSaveFileManager());
+                assetManager, game.getSaveFileManager(), game.getMusicManager());
 
-        musicManager.initTuneMap(assetManager);
 
-        //Loop title music
-        musicManager.playMusic(TuneEnum.AMBIENCE,0.75f);
     }
 
     @Override

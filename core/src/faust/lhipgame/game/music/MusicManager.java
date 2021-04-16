@@ -100,9 +100,13 @@ public class MusicManager {
             final Music tuneToPlay = musicMap.get(tune);
             Objects.requireNonNull(tuneToPlay);
 
-            tuneToPlay.play();
-            tuneToPlay.setLooping(loop);
-            tuneToPlay.setVolume(volume);
+            //If tune is not already playing, stop previous and play it
+            if(!tuneToPlay.isPlaying()){
+                stopMusic();
+                tuneToPlay.play();
+                tuneToPlay.setLooping(loop);
+                tuneToPlay.setVolume(volume);
+            }
         }
     }
 

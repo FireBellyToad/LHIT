@@ -9,12 +9,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
-import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.impl.DecorationInstance;
 import faust.lhipgame.game.instances.impl.EchoActorInstance;
 import faust.lhipgame.game.instances.impl.POIInstance;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
+import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.rooms.AbstractRoom;
 import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.saves.RoomSaveEntry;
@@ -41,8 +42,8 @@ public class FixedRoom extends AbstractRoom {
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;
 
-    public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags) {
-        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags);
+    public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags, MusicManager musicManager) {
+        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags, musicManager);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager) {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS
@@ -70,11 +71,19 @@ public class FixedRoom extends AbstractRoom {
         worldManager.insertEchoActorsIntoWorld(echoActors);
 
         // FIXME handle multiple POI
-        if(mustClearPOI){
+        if (mustClearPOI) {
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));
         }
 
+        if (enemyList.size() > 0 || echoActors.size() > 0) {
+            //Loop title music
+            musicManager.playMusic(TuneEnum.DANGER, 0.75f);
+        } else {
+            //Loop title music
+            musicManager.playMusic(TuneEnum.AMBIENCE, 0.75f);
+        }
     }
+
     /**
      * Add a object as POI, with custom echo logic
      *
@@ -96,9 +105,9 @@ public class FixedRoom extends AbstractRoom {
         poiList.add(instance);
 
         //Check if is Echo trigger
-        if(Objects.nonNull(obj.getProperties().get("isEchoTrigger"))){
+        if (Objects.nonNull(obj.getProperties().get("isEchoTrigger"))) {
 
-            if(Objects.nonNull(echoTrigger)){
+            if (Objects.nonNull(echoTrigger)) {
                 throw new RuntimeException("More than one echo trigger in the room!");
             }
 
@@ -125,9 +134,9 @@ public class FixedRoom extends AbstractRoom {
         decorationList.add(instance);
 
         //Check if is Echo trigger
-        if(Objects.nonNull(obj.getProperties().get("isEchoTrigger"))){
+        if (Objects.nonNull(obj.getProperties().get("isEchoTrigger"))) {
 
-            if(Objects.nonNull(echoTrigger)){
+            if (Objects.nonNull(echoTrigger)) {
                 throw new RuntimeException("More than one echo trigger in the room!");
             }
 
@@ -138,7 +147,7 @@ public class FixedRoom extends AbstractRoom {
     /**
      * Add a object as Echo Actor
      *
-     * @param obj MapObject to add
+     * @param obj          MapObject to add
      * @param assetManager
      */
     private void addObjAsEchoActor(MapObject obj, AssetManager assetManager) {
@@ -184,11 +193,11 @@ public class FixedRoom extends AbstractRoom {
         super.doRoomContentsLogic(stateTime);
 
         // Manage echo actors
-        if(echoIsActivated){
+        if (echoIsActivated) {
             echoActors.forEach(actor -> {
                 actor.doLogic(stateTime);
 
-                if(actor.hasCurrentTextBoxToShow()){
+                if (actor.hasCurrentTextBoxToShow()) {
                     this.textManager.addNewTextBox(actor.getCurrentTextBoxToShow());
                 }
 
@@ -201,15 +210,16 @@ public class FixedRoom extends AbstractRoom {
         } else {
 
             //activate room echo if needed
-            if(Objects.nonNull(echoTrigger)) {
+            if (Objects.nonNull(echoTrigger)) {
                 echoIsActivated = player.getBody().getPosition().dst(echoTrigger.getBody().getPosition()) <= ECHO_ACTIVATION_DISTANCE;
             }
 
             //Show echo text if NOW is active
-            if(echoIsActivated){
-                echoActors.forEach( echoActorInstance -> {
-                    echoActorInstance.playStartingSound();;
-                    if(echoActorInstance.hasCurrentTextBoxToShow()){
+            if (echoIsActivated) {
+                echoActors.forEach(echoActorInstance -> {
+                    echoActorInstance.playStartingSound();
+                    ;
+                    if (echoActorInstance.hasCurrentTextBoxToShow()) {
                         this.textManager.addNewTextBox(echoActorInstance.getCurrentTextBoxToShow());
                     }
                 });

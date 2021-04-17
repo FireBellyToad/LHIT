@@ -9,7 +9,6 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.hud.Hud;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.music.MusicManager;
-import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.rooms.manager.RoomsManager;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
@@ -78,7 +77,7 @@ public class GameScreen implements Screen {
 
         if (!splashManager.isDrawingSplash()) {
             //Draw gray background
-            drawBackGround();
+            drawBackground();
 
             //Draw Room and all contents
             drawRoomAndContents(stateTime);
@@ -92,6 +91,9 @@ public class GameScreen implements Screen {
     }
 
     private void drawOverlays() {
+        //Draw overlay tiles
+        roomsManager.drawCurrentRoomOverlays();
+
         // Draw splash XOR hud
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(game.getBatch());
@@ -107,13 +109,13 @@ public class GameScreen implements Screen {
     }
 
     /**
-     * Draws the background
+     * Draws the background color and terrain tiles
      */
-    private void drawBackGround() {
+    private void drawBackground() {
         game.getBatch().begin();
         cameraManager.renderBackground();
-        roomsManager.drawCurrentRoomBackground();
         game.getBatch().end();
+        roomsManager.drawCurrentRoomBackground();
     }
 
     /**

@@ -264,7 +264,7 @@ public class RoomsManager {
      * Draws the current room background terrain
      */
     public void drawCurrentRoomBackground() {
-        currentRoom.drawRoomBackground();
+        currentRoom.drawRoomTerrain();
     }
 
     public Vector2 getCurrentRoomPosInWorld() {
@@ -282,5 +282,13 @@ public class RoomsManager {
 
     public Map<Vector2, RoomSaveEntry> getSaveMap() {
         return saveMap;
+    }
+
+    /**
+     * Draws the current room overlay tiles
+     * @param batch
+     */
+    public void drawCurrentRoomOverlays() {
+        currentRoom.drawRoomOverlay();
     }
 }

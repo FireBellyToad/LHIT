@@ -6,6 +6,17 @@ package faust.lhipgame.game.rooms.enums;
  * @author Jacopo "Faust" Buttiglieri
  */
 public enum MapLayersEnum {
-    TILE_LAYER,
-    OBJECT_LAYER
+    TERRAIN_LAYER("terrain"),
+    OVERLAY_LAYER("overlay"),
+    OBJECT_LAYER("objects");
+
+    private final String layerName;
+
+    MapLayersEnum(String layerName) {
+        this.layerName = layerName;
+    }
+
+    public String getLayerName() {
+        return layerName;
+    }
 }

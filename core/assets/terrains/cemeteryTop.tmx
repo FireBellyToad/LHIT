@@ -4,7 +4,7 @@
   <export target="." format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
- <layer id="1" name="Livello tile 1" width="10" height="9">
+ <layer id="1" name="terrain" width="10" height="9">
   <data encoding="csv">
 58,3,0,0,0,0,0,0,0,0,
 59,8,15,16,0,0,0,21,28,0,
@@ -17,7 +17,7 @@
 60,34,34,34,34,34,34,40,31,8
 </data>
  </layer>
- <objectgroup id="2" name="Livello di oggetti 1">
+ <objectgroup id="2" name="objects">
   <object id="20" name="DECO" type="CROSS_WOOD" x="34" y="131">
    <point/>
   </object>
@@ -31,9 +31,6 @@
    <point/>
   </object>
   <object id="41" name="WALL" x="0" y="0" width="16" height="144"/>
-  <object id="42" name="EMERGED" x="271.75" y="-3.75">
-   <polygon points="-1,1 15,-38 55,-52.25 110.5,-19.75 117,48.5 70.5,32.75 32.5,56.5"/>
-  </object>
   <object id="43" name="EMERGED" x="-4" y="38">
    <polygon points="8.75,-32.5 55.5,-8 104.75,22.75 136,18.75 154.75,37.375 163.75,106.5 7,106"/>
   </object>

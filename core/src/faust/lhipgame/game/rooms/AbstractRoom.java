@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.Fightable;
@@ -51,7 +53,7 @@ public abstract class AbstractRoom {
     public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 24;
 
     protected TiledMap tiledMap;
-    protected TiledMapRenderer tiledMapRenderer;
+    protected OrthogonalTiledMapRenderer tiledMapRenderer;
     protected MapObjects mapObjects;
 
     protected List<POIInstance> poiList;
@@ -95,7 +97,7 @@ public abstract class AbstractRoom {
         loadTiledMap(roomSaveEntry);
 
         // Extract mapObjects
-        mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.ordinal()).getObjects();
+        mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.getLayerName()).getObjects();
 
         // Set camera for rendering
         tiledMapRenderer.setView(camera);
@@ -272,10 +274,35 @@ public abstract class AbstractRoom {
     protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager);
 
     /**
-     * Draws room background
+     * Draws room background terrain
      */
-    public void drawRoomBackground() {
-        tiledMapRenderer.render();
+    public void drawRoomTerrain() {
+        MapLayers mapLayers = tiledMap.getLayers();
+        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) mapLayers.get(MapLayersEnum.TERRAIN_LAYER.getLayerName());
+
+        //Overlay layer should is required
+        Objects.requireNonNull(terrainLayer);
+
+        tiledMapRenderer.getBatch().begin();
+        tiledMapRenderer.renderTileLayer(terrainLayer);
+        tiledMapRenderer.getBatch().end();
+    }
+
+    /**
+     * Draws room overlay
+     */
+    public void drawRoomOverlay() {
+        MapLayers mapLayers = tiledMap.getLayers();
+        TiledMapTileLayer overlayLayer = (TiledMapTileLayer) mapLayers.get(MapLayersEnum.OVERLAY_LAYER.getLayerName());
+
+        //Overlay layer should not be required
+        if (Objects.isNull(overlayLayer)) {
+            return;
+        }
+
+        tiledMapRenderer.getBatch().begin();
+        tiledMapRenderer.renderTileLayer(overlayLayer);
+        tiledMapRenderer.getBatch().end();
     }
 
     /**

@@ -4,7 +4,7 @@
   <export target="." format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
- <layer id="1" name="Livello tile 1" width="10" height="9">
+ <layer id="1" name="terrain" width="10" height="9">
   <data encoding="csv">
 42,57,58,59,60,58,59,60,60,49,
 37,42,57,57,57,57,57,57,57,45,
@@ -17,7 +17,7 @@
 0,0,0,0,0,0,26,9,10,13
 </data>
  </layer>
- <objectgroup id="2" name="Livello di oggetti 1">
+ <objectgroup id="2" name="objects">
   <object id="22" name="WALL" x="144" y="0" width="16" height="86"/>
   <object id="23" name="WALL" x="0" y="-0.5" width="144" height="16"/>
   <object id="24" name="EMERGED" x="-4" y="38">

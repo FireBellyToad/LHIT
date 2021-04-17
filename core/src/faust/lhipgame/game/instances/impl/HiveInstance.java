@@ -177,6 +177,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
         if (isDying()) {
             ((HiveEntity) entity).playDeathCry();
             isDead = true;
+            currentBehavior = GameBehavior.DEAD;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
             ((HiveEntity) entity).playHurtCry();
 

@@ -33,9 +33,13 @@ public class HiveEntity extends AnimatedEntity {
 
         TextureRegion[]  allFrames = getFramesFromTexture();
 
+        TextureRegion[] idleFrames = Arrays.copyOfRange(allFrames, 0, getTextureColumns());
+        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() , getTextureColumns() +1);
+
         // Initialize the Idle Animation with the frame interval and array of frames
-        addAnimation(new Animation<>(FRAME_DURATION, allFrames), GameBehavior.IDLE);
-        addAnimation(new Animation<>(FRAME_DURATION, allFrames), GameBehavior.HURT);
+        addAnimation(new Animation<>(FRAME_DURATION, idleFrames), GameBehavior.IDLE);
+        addAnimation(new Animation<>(FRAME_DURATION, idleFrames), GameBehavior.HURT);
+        addAnimation(new Animation<>(FRAME_DURATION, deadFrame), GameBehavior.DEAD);
 
     }
 
@@ -46,7 +50,7 @@ public class HiveEntity extends AnimatedEntity {
 
     @Override
     protected int getTextureRows() {
-        return 1;
+        return 2;
     }
 
     public void playHurtCry() {

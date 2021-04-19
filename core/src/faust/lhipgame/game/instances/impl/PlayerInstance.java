@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -19,6 +18,7 @@ import faust.lhipgame.game.gameentities.enums.ItemEnum;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
+import faust.lhipgame.game.utils.ShaderWrapper;
 import faust.lhipgame.game.world.manager.CollisionManager;
 import faust.lhipgame.screens.GameScreen;
 
@@ -291,19 +291,17 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @param xOffset
      * @param yOffset
      */
-    private void drawWalfritShaded(Batch batch, float stateTime, int xOffset, int yOffset) {
+    private void drawWalfritShaded(SpriteBatch batch, float stateTime, int xOffset, int yOffset) {
 
         // Get frame
         TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirection,
                 mapStateTimeFromBehaviour(stateTime));
 
-        ShaderProgram shader = ((PlayerEntity) entity).getPlayerShaderProgram();
-        shader.begin();
-        shader.setUniformi("hasArmor",hasArmor ? 1 : 0);
-        shader.setUniformi("hasHolyLance",holyLancePieces == 2 ? 1 : 0);
-        shader.end();
+        ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
+        shader.addFlag("hasArmor",hasArmor);
+        shader.addFlag("hasHolyLance",holyLancePieces == 2);
+        shader.setShaderOnBatchWithFlags(batch);
 
-        batch.setShader(((PlayerEntity) entity).getPlayerShaderProgram());
         //Draw shadow
         batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
@@ -323,9 +321,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
 
         //Restore default shader
-        batch.setShader(null);
-        shader.begin();
-        shader.end();
+        shader.resetDefaultShader(batch);
     }
 
     /**

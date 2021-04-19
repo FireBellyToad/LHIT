@@ -1,16 +1,18 @@
 package faust.lhipgame.game.gameentities.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Player entity class
@@ -19,6 +21,7 @@ import java.util.Objects;
  */
 public class PlayerEntity extends AnimatedEntity {
 
+    private final ShaderProgram playerShaderProgram;
     private final Texture shadow;
     private final Sound bonus;
     private final Sound hurtCry;
@@ -32,6 +35,11 @@ public class PlayerEntity extends AnimatedEntity {
         hurtCry = assetManager.get("sounds/SFX_hit&damage13.ogg");
         lanceSwing = assetManager.get("sounds/SFX_swordSwing.ogg");
         waterSplash = assetManager.get("sounds/SFX_waterSplash.ogg");
+
+        final String vertexShader = Gdx.files.internal("shaders/player_vertex.glsl").readString();
+        final String fragmentShader = Gdx.files.internal("shaders/player_fragment.glsl").readString();
+        playerShaderProgram = new ShaderProgram(vertexShader,fragmentShader);
+        if (!playerShaderProgram.isCompiled()) throw new GdxRuntimeException("Couldn't compile shader: " + playerShaderProgram.getLog());
     }
 
     @Override
@@ -111,5 +119,9 @@ public class PlayerEntity extends AnimatedEntity {
 
     public void playWaterSplash() {
         waterSplash.play();
+    }
+
+    public ShaderProgram getPlayerShaderProgram() {
+        return playerShaderProgram;
     }
 }

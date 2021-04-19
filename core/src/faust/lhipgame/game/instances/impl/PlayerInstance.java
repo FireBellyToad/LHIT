@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -18,8 +16,6 @@ import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
-import faust.lhipgame.game.gameentities.impl.ArmoredPlayerEntity;
-import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
@@ -37,12 +33,10 @@ import java.util.Objects;
  */
 public class PlayerInstance extends AnimatedInstance implements InputProcessor, Fightable {
 
-    private final ArmoredPlayerEntity armoredEntity;
-
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
-    private static final float SPEAR_SENSOR_Y_OFFSET = 9;
+    private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final float HEALTH_KIT_TIME = 4;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 9;
 
@@ -70,7 +64,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
-        armoredEntity = new ArmoredPlayerEntity(assetManager);
         
         currentDirection = Direction.DOWN;
 
@@ -93,10 +86,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void doLogic(float stateTime) {
 
         // Setting Attack area position
-        rightSpearBody.setTransform(body.getPosition().x + 11, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 11 + SPEAR_SENSOR_Y_OFFSET, 0);
-        leftSpearBody.setTransform(body.getPosition().x - 11, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 12 + SPEAR_SENSOR_Y_OFFSET, 0);
+        rightSpearBody.setTransform(body.getPosition().x + 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 13 + SPEAR_SENSOR_Y_OFFSET, 0);
+        leftSpearBody.setTransform(body.getPosition().x - 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 14 + SPEAR_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
 
@@ -248,8 +241,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = mapPlayerEntityToRender().getFrame(currentBehavior, currentDirection,
-                mapStateTimeFromBehaviour(stateTime));
 
         int xOffset = 0;
         int yOffset = 0;
@@ -274,26 +265,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
         }
 
-        //Draw watersteps if submerged
-        if(isSubmerged){
-            waterWalkEffect.update(Gdx.graphics.getDeltaTime());
-            waterWalkEffect.draw(batch);
-            yOffset +=2;
-            // Do not loop if is not doing anything
-            if(waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)){
-                waterWalkEffect.reset();
-            }
-        } else {
-            waterWalkEffect.reset();
-        }
-
-        //Draw shadow
-        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw Walfrit
         // If not hurt or the flickering POI must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-            batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
+
+            drawWalfritShaded(batch, stateTime, xOffset, yOffset);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
@@ -308,15 +285,47 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     *
-     * @return the correct PlayerEntityToRender
+     * Draw Walfrit sprites handling shading
+     * @param batch
+     * @param stateTime
+     * @param xOffset
+     * @param yOffset
      */
-    private AnimatedEntity mapPlayerEntityToRender() {
+    private void drawWalfritShaded(Batch batch, float stateTime, int xOffset, int yOffset) {
 
-        if(hasArmor){
-           return armoredEntity;
+        // Get frame
+        TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirection,
+                mapStateTimeFromBehaviour(stateTime));
+
+        ShaderProgram shader = ((PlayerEntity) entity).getPlayerShaderProgram();
+        shader.begin();
+        shader.setUniformi("hasArmor",hasArmor ? 1 : 0);
+        shader.setUniformi("hasHolyLance",holyLancePieces == 2 ? 1 : 0);
+        shader.end();
+
+        batch.setShader(((PlayerEntity) entity).getPlayerShaderProgram());
+        //Draw shadow
+        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+
+        //Draw watersteps if submerged
+        if(isSubmerged){
+            waterWalkEffect.update(Gdx.graphics.getDeltaTime());
+            waterWalkEffect.draw(batch);
+            yOffset +=2;
+            // Do not loop if is not doing anything
+            if(waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)){
+                waterWalkEffect.reset();
+            }
+        } else {
+            waterWalkEffect.reset();
         }
-        return ((AnimatedEntity) entity);
+
+        batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
+
+        //Restore default shader
+        batch.setShader(null);
+        shader.begin();
+        shader.end();
     }
 
     /**
@@ -412,7 +421,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define shape
         PolygonShape rightSpearShape = new PolygonShape();
-        rightSpearShape.setAsBox(6, 3);
+        rightSpearShape.setAsBox(4, 2);
 
         // Define Fixtures
         FixtureDef rightSpearFixtureDef = new FixtureDef();
@@ -436,7 +445,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define shape
         PolygonShape upSpearShape = new PolygonShape();
-        upSpearShape.setAsBox(3, 6);
+        upSpearShape.setAsBox(2, 4);
 
         // Define Fixtures
         FixtureDef upSpearFixtureDef = new FixtureDef();
@@ -460,7 +469,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define shape
         PolygonShape leftSpearShape = new PolygonShape();
-        leftSpearShape.setAsBox(6, 3);
+        leftSpearShape.setAsBox(4, 2);
 
         // Define Fixtures
         FixtureDef leftSpearFixtureDef = new FixtureDef();
@@ -484,7 +493,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define shape
         PolygonShape downSpearShape = new PolygonShape();
-        downSpearShape.setAsBox(3, 6);
+        downSpearShape.setAsBox(2, 4);
 
         // Define Fixtures
         FixtureDef downSpearFixtureDef = new FixtureDef();

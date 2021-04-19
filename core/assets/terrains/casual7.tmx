@@ -34,7 +34,7 @@
   <object id="43" name="EMERGED" x="-16.375" y="46.8182">
    <polygon points="59.4318,-35.8182 147.386,-34.9091 148.818,69.2727 26.7557,70.0511 27.4205,-18.5568 58.6989,-21.3693"/>
   </object>
-  <object id="44" name="DECO" type="PLANT" x="119.25" y="37.909">
+  <object id="44" name="DECO" type="PLANT" x="124.705" y="24.8181">
    <point/>
   </object>
   <object id="45" name="DECO" type="GRASS" x="25.1363" y="14.8299">
@@ -45,9 +45,6 @@
   </object>
   <object id="47" name="WALL" x="48.0908" y="58.7272" width="64.1818" height="21.2614"/>
   <object id="48" name="WALL" x="31.1363" y="80.25" width="80.9091" height="6"/>
-  <object id="49" name="DECO" type="PLANT" x="142.773" y="22.5341">
-   <point/>
-  </object>
   <object id="50" name="DECO" type="PLANT" x="125.091" y="140.182">
    <point/>
   </object>

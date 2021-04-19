@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Shader wrapper class
@@ -38,9 +39,15 @@ public class ShaderWrapper {
      * Add flag
      */
     public void addFlag(String name, Object value){
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(value);
         flags.put(name,value);
     }
 
+    /**
+     * Initialize shader with set flags
+     * @param batch
+     */
     public void setShaderOnBatchWithFlags(SpriteBatch batch) {
 
         shaderProgram.begin();

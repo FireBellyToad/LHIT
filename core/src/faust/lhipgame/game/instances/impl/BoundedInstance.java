@@ -60,11 +60,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
     @Override
     public void doLogic(float stateTime) {
 
-        rightClawBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        upClawBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
-        leftClawBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        downClawBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
-        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
+        translateAccessoryBodies();
 
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
@@ -105,6 +101,17 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
 
             body.setLinearVelocity(0, 0);
         }
+    }
+
+    /**
+     * Translate all accessory body
+     */
+    private void translateAccessoryBodies() {
+        rightClawBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
+        upClawBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        leftClawBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
+        downClawBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
     /**
@@ -319,12 +326,13 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
     @Override
     public void hurt(GameInstance attacker) {
 
-        final boolean canEvade = 15 <= (MathUtils.random(1,6) + MathUtils.random(1,6)+MathUtils.random(1,6)+2);
+        //30% chance of evading attack
+        final boolean canEvade = (MathUtils.random(1,100)) >= 70;
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             currentBehavior = GameBehavior.DEAD;
-        } else if (! canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
+        } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -339,6 +347,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
+            ((BoundedEntity) entity).playEvadeSwift();
             //Just evade
             currentBehavior = GameBehavior.EVADE;
             Gdx.app.log("DEBUG", "Instance EVADED!");
@@ -353,7 +362,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        final int modifier = GameBehavior.HURT.equals(currentBehavior) ? 4: 2;
+        //If evading, the leap is more subtle
+        final int modifier = GameBehavior.HURT.equals(currentBehavior) ? 4: 1;
         body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {

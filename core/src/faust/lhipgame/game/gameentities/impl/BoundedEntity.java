@@ -20,6 +20,7 @@ public class BoundedEntity extends AnimatedEntity {
 
     private final Sound hurtCry;
     private final Sound deathCry;
+    private final Sound evadeSwift;
     private final Texture shadow;
 
     public BoundedEntity(AssetManager assetManager) {
@@ -27,6 +28,7 @@ public class BoundedEntity extends AnimatedEntity {
         shadow = assetManager.get("sprites/shadow.png");
         hurtCry = assetManager.get("sounds/SFX_shot4.ogg");
         deathCry = assetManager.get("sounds/SFX_creatureDie4.ogg");
+        evadeSwift = assetManager.get("sounds/evade.ogg");
     }
 
     @Override
@@ -101,6 +103,10 @@ public class BoundedEntity extends AnimatedEntity {
 
     public void playDeathCry() {
         deathCry.play();
+    }
+
+    public void playEvadeSwift() {
+        evadeSwift.play();
     }
 
 

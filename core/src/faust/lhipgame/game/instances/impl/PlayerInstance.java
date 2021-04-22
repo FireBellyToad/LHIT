@@ -85,15 +85,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     @Override
-
     public void doLogic(float stateTime) {
 
-        // Setting Attack area position
-        rightSpearBody.setTransform(body.getPosition().x + 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 13 + SPEAR_SENSOR_Y_OFFSET, 0);
-        leftSpearBody.setTransform(body.getPosition().x - 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 14 + SPEAR_SENSOR_Y_OFFSET, 0);
-        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
+        translateAccessoryBodies();
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
 
         //If hurt, deactivate hitbox and don't do anything
@@ -158,7 +152,17 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 nearestPOIInstance.setEnableFlicker(true);
             }
         }
+    }
 
+    /**
+     * Translate all accessory body
+     */
+    private void translateAccessoryBodies() {
+        rightSpearBody.setTransform(body.getPosition().x + 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 13 + SPEAR_SENSOR_Y_OFFSET, 0);
+        leftSpearBody.setTransform(body.getPosition().x - 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 14 + SPEAR_SENSOR_Y_OFFSET, 0);
+        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
     @Override

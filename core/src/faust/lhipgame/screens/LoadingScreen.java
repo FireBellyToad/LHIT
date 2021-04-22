@@ -3,17 +3,13 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.music.MusicManager;
-import faust.lhipgame.game.music.enums.TuneEnum;
 
 public class LoadingScreen implements Screen {
 

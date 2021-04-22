@@ -2,9 +2,11 @@ package faust.lhipgame.game.world.manager;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import faust.lhipgame.game.instances.*;
+import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.impl.DecorationInstance;
 import faust.lhipgame.game.instances.impl.EchoActorInstance;
 import faust.lhipgame.game.instances.impl.POIInstance;

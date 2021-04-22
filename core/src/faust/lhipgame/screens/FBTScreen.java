@@ -2,13 +2,10 @@ package faust.lhipgame.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.music.enums.TuneEnum;
 
 public class FBTScreen implements Screen {
 

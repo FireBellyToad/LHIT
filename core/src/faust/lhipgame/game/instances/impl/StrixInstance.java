@@ -15,13 +15,12 @@ import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
-import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.gameentities.impl.StrixEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
-import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.game.world.manager.CollisionManager;
+import faust.lhipgame.screens.GameScreen;
 
 import java.util.Objects;
 

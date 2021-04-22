@@ -10,16 +10,16 @@ import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.rooms.AbstractRoom;
 import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
-import faust.lhipgame.saves.RoomSaveEntry;
 import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.WorldManager;
+import faust.lhipgame.saves.RoomSaveEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Casual Room class

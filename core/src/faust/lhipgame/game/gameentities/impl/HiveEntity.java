@@ -2,11 +2,9 @@ package faust.lhipgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.Arrays;

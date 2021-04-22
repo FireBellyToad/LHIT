@@ -9,12 +9,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
-import faust.lhipgame.game.gameentities.impl.POIEntity;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
+import faust.lhipgame.game.gameentities.impl.POIEntity;
 import faust.lhipgame.game.instances.GameInstance;
-import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.screens.GameScreen;
 
 import java.util.Objects;
 

@@ -5,22 +5,26 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.SerializationException;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.rooms.AbstractRoom;
 import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
-import faust.lhipgame.saves.RoomSaveEntry;
 import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.rooms.impl.CasualRoom;
 import faust.lhipgame.game.rooms.impl.FixedRoom;
-import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.WorldManager;
+import faust.lhipgame.saves.RoomSaveEntry;
+import faust.lhipgame.saves.SaveFileManager;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Room Manager class

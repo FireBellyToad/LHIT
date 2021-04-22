@@ -15,8 +15,8 @@ import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
-import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.screens.GameScreen;
 
 import java.util.Objects;
 

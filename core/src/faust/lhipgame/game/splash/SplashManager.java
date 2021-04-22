@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
-import faust.lhipgame.game.gameentities.GameEntity;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 
 import java.util.HashMap;

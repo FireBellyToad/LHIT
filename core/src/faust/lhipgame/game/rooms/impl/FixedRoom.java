@@ -54,7 +54,7 @@ public class FixedRoom extends AbstractRoom {
 
         // FIXME handle multiple POI
         if (Objects.nonNull(roomSaveEntry)) {
-            mustClearPOI = roomSaveEntry.poiCleared;
+            mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
         }
     }
 

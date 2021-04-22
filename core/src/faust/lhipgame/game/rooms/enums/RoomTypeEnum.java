@@ -27,6 +27,16 @@ public enum RoomTypeEnum {
         this.mapFileName = mapFileName;
     }
 
+    /**
+     *
+     * @param roomTypeEnum
+     * @return true if roomType has echo
+     */
+    public static boolean hasEchoes(RoomTypeEnum roomTypeEnum) {
+        return CRUCIFIED.equals(roomTypeEnum) ||
+                TREE_STUMP.equals(roomTypeEnum);
+    }
+
     public String getMapFileName() {
         return mapFileName;
     }

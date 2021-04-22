@@ -102,10 +102,6 @@ public class RoomsManager {
      */
     public void changeCurrentRoom(int newRoomPosX, int newRoomPosY) {
 
-        // Dispose the current room contents if not null
-        if (!Objects.isNull(currentRoom)) {
-            currentRoom.dispose();
-        }
 
         float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
@@ -113,25 +109,12 @@ public class RoomsManager {
         currentRoomPosInWorld.set(finalX, finalY);
 
         //Init room flags
-        Map<RoomFlagEnum,Boolean> roomFlags = new HashMap<>();
-        final boolean guaranteedBounded = player.getHolyLancePieces() == 2 || (saveMap.size() > (mainWorldSize.x * mainWorldSize.y)/2);
-        roomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, guaranteedBounded);
-        roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, false);
+        Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags(mainWorld.get(currentRoomPosInWorld));
 
         int roomCasualNumber = 0;
         switch (mainWorld.get(currentRoomPosInWorld)) {
             case CASUAL: {
-
-                //If unvisited rooms are less than the number of found morgengabes to find, guarantee them
-                final boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
-                        (mainWorldSize.x * mainWorldSize.y)-10  <= (saveMap.size() + (9 -player.getFoundMorgengabes() ));
-                roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
-
                 currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
-
-                Gdx.app.log("DEBUG","(mainWorldSize.x * mainWorldSize.y)-10: " +((mainWorldSize.x * mainWorldSize.y)-10));
-                Gdx.app.log("DEBUG","(saveMap.size() + (9 -player.getFoundMorgengabes() )): " +(saveMap.size() + (9 -player.getFoundMorgengabes() )));
-                Gdx.app.log("DEBUG","guaranteedMorgengabe: " +guaranteedMorgengabe);
                 // Save casualnumber in memory and prepare save on filesystem
                 roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
 
@@ -142,16 +125,45 @@ public class RoomsManager {
                 break;
             }
         }
-        Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y );
+        Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld,
                 new RoomSaveEntry(
                         (int) finalX,
                         (int) finalY,
                         roomCasualNumber,
-                        currentRoom.arePoiCleared()));
+                        roomFlags));
 
 
+    }
+
+    /**
+     * @param roomTypeEnum room type
+     * @return populated map of flags
+     */
+    private Map<RoomFlagEnum, Boolean> populateRoomFlags(RoomTypeEnum roomTypeEnum) {
+        //default map
+        Map<RoomFlagEnum, Boolean> roomFlags = RoomFlagEnum.generateDefaultRoomFlags();
+
+        if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld))) {
+            //If unvisited rooms are less than the number of found morgengabes to find, guarantee them
+            final boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
+                    (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundMorgengabes()));
+            roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
+
+        } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld))) {
+
+
+        }
+
+        //If this is the room visited, there should be no enemies even if they are in map
+        roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, saveMap.size() < 2);
+
+        //If this is the room visited, there should be no enemies even if they are in map
+        roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, saveMap.size() < 2);
+
+
+        return roomFlags;
     }
 
     /**
@@ -163,7 +175,7 @@ public class RoomsManager {
         currentRoom.doRoomContentsLogic(stateTime);
 
         //Check if all poi have been examined
-        saveMap.get(currentRoomPosInWorld).poiCleared = currentRoom.arePoiCleared();
+        saveMap.get(currentRoomPosInWorld).savedFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, currentRoom.arePoiCleared());
 
         // After room logic, handle the room change
         Vector2 playerPosition = player.getBody().getPosition();
@@ -195,7 +207,7 @@ public class RoomsManager {
                 !RoomTypeEnum.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
             newYPosInMatrix++;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
-        } else if (playerPosition.y > LHIPGame.GAME_HEIGHT*0.45 &&
+        } else if (playerPosition.y > LHIPGame.GAME_HEIGHT * 0.45 &&
                 RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
             //ENDGAME!
             Gdx.app.exit();
@@ -204,45 +216,45 @@ public class RoomsManager {
         // Adjustments for world extremes, semi pacman effect 
         if (((playerPosition.x < AbstractRoom.LEFT_BOUNDARY) || (playerPosition.y > AbstractRoom.TOP_BOUNDARY)) &&
                 getCurrentRoomPosInWorld().x == 0 &&
-                getCurrentRoomPosInWorld().y == mainWorldSize.y-1) {
+                getCurrentRoomPosInWorld().y == mainWorldSize.y - 1) {
 
-            if(playerPosition.y > AbstractRoom.TOP_BOUNDARY ){
+            if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
                 player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
-            }else {
+            } else {
                 player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
             }
 
-            newXPosInMatrix = (int) mainWorldSize.x-1;
+            newXPosInMatrix = (int) mainWorldSize.x - 1;
             newYPosInMatrix = 0;
-        } else if ( playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
+        } else if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
                 getCurrentRoomPosInWorld().x == 0 &&
-                getCurrentRoomPosInWorld().y == mainWorldSize.y-2) {
+                getCurrentRoomPosInWorld().y == mainWorldSize.y - 2) {
 
             player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
 
-            newXPosInMatrix = (int) mainWorldSize.x-1;
+            newXPosInMatrix = (int) mainWorldSize.x - 1;
             newYPosInMatrix = 1;
         } else if (((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) || (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY)) &&
-                getCurrentRoomPosInWorld().x == mainWorldSize.x-1 &&
+                getCurrentRoomPosInWorld().x == mainWorldSize.x - 1 &&
                 getCurrentRoomPosInWorld().y == 0 &&
                 !RoomTypeEnum.START_POINT.equals(currentRoom.getRoomType())) {
 
-            if(playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY ){
+            if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
                 player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
-            }else {
+            } else {
                 player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
             }
 
             newXPosInMatrix = 0;
-            newYPosInMatrix = (int) (mainWorldSize.y-1);
-        } else if ( playerPosition.x > AbstractRoom.RIGHT_BOUNDARY &&
-                getCurrentRoomPosInWorld().x == mainWorldSize.x-1 &&
+            newYPosInMatrix = (int) (mainWorldSize.y - 1);
+        } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY &&
+                getCurrentRoomPosInWorld().x == mainWorldSize.x - 1 &&
                 getCurrentRoomPosInWorld().y == 1) {
 
             player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
 
             newXPosInMatrix = 0;
-            newYPosInMatrix = (int) (mainWorldSize.y-2);
+            newYPosInMatrix = (int) (mainWorldSize.y - 2);
         }
 
         //Change room and clear nearest poi reference
@@ -284,13 +296,8 @@ public class RoomsManager {
         currentRoom.dispose();
     }
 
-    public Map<Vector2, RoomSaveEntry> getSaveMap() {
-        return saveMap;
-    }
-
     /**
      * Draws the current room overlay tiles
-     * @param batch
      */
     public void drawCurrentRoomOverlays() {
         currentRoom.drawRoomOverlay();

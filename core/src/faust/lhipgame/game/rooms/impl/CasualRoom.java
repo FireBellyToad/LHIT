@@ -50,7 +50,7 @@ public class CasualRoom extends AbstractRoom {
             casualNumber = roomSaveEntry.casualNumber;
 
             // FIXME handle multiple POI
-            mustClearPOI = roomSaveEntry.poiCleared;
+            mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
 
         } else {
             if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {

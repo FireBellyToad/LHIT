@@ -125,8 +125,8 @@ public abstract class AbstractRoom {
                 addObjAsDecoration(obj, assetManager);
             }
 
-            // Prepare enemy (casual choice)
-            if (MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
+            // Prepare enemy if they are enabled
+            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && !roomFlags.get(RoomFlagEnum.DISABLED_ENEMIES)) {
                 addObjAsEnemy(obj, assetManager);
             }
 
@@ -231,7 +231,7 @@ public abstract class AbstractRoom {
         AnimatedInstance enemyInstance = null;
         String enemyType = (String) obj.getProperties().get("type");
 
-        //Improve
+        //TODO Improve
         if ("HIVE".equals(enemyType)) {
             enemyInstance = new HiveInstance(
                     (float) obj.getProperties().get("x"),

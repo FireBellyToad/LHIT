@@ -161,8 +161,8 @@ public class RoomsManager {
 
         }
 
-        //If this is the room visited, there should be no enemies even if they are in map
-        roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, saveMap.size() < 2);
+        //Only bounded enemies after 15 rooms are visited
+        roomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, saveMap.size() >= 15);
 
         //If this is the room visited, there should be no enemies even if they are in map
         roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, saveMap.size() < 2);

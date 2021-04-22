@@ -72,6 +72,12 @@ public class BoundedEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.HURT, Direction.UP);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.HURT, Direction.RIGHT);
 
+        // Initialize the Evade Animation with the frame interval and array of frames
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.EVADE, Direction.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesLeft), GameBehavior.EVADE, Direction.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.EVADE, Direction.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.EVADE, Direction.RIGHT);
+
         // Initialize the Dead frame
         addAnimation(new Animation<>(FRAME_DURATION, deadFrame), GameBehavior.DEAD);
 

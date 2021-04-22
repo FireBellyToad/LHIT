@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -65,7 +66,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
         downClawBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
-        if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
         if (attackCooldown && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
@@ -318,11 +319,12 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
     @Override
     public void hurt(GameInstance attacker) {
 
+        final boolean canEvade = 15 <= (MathUtils.random(1,6) + MathUtils.random(1,6)+MathUtils.random(1,6)+2);
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             currentBehavior = GameBehavior.DEAD;
-        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+        } else if (! canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -333,7 +335,13 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
             }
 
             this.damage += Math.min(getResistance(), amount);
+            currentBehavior = GameBehavior.HURT;
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+            postHurtLogic(attacker);
+        } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
+            //Just evade
+            currentBehavior = GameBehavior.EVADE;
+            Gdx.app.log("DEBUG", "Instance EVADED!");
             postHurtLogic(attacker);
         }
     }
@@ -345,8 +353,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        body.setLinearVelocity(BOUNDED_SPEED * 4 * -direction.x, BOUNDED_SPEED * 4 * -direction.y);
-        currentBehavior = GameBehavior.HURT;
+        final int modifier = GameBehavior.HURT.equals(currentBehavior) ? 4: 2;
+        body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override

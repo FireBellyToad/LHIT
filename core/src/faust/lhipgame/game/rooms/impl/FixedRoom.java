@@ -62,8 +62,8 @@ public class FixedRoom extends AbstractRoom {
     protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager) {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
-            // Prepare ECHO ACTORS
-            if (MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
+            // Prepare ECHO ACTORS if not disabled
+            if (!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
                 addObjAsEchoActor(obj, assetManager);
             }
         });
@@ -191,6 +191,11 @@ public class FixedRoom extends AbstractRoom {
 
     public void doRoomContentsLogic(float stateTime) {
         super.doRoomContentsLogic(stateTime);
+
+        //Disable all echoes if there are no echoactor
+        if(!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && echoActors.size() == 0){
+            roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
+        }
 
         // Manage echo actors
         if (echoIsActivated) {

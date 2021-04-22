@@ -73,7 +73,8 @@ public abstract class AbstractRoom {
 
     /**
      * Constructor
-     *  @param roomType
+     *
+     * @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
@@ -126,7 +127,7 @@ public abstract class AbstractRoom {
             }
 
             // Prepare enemy if they are enabled
-            if (MapObjNameEnum.ENEMY.name().equals(obj.getName()) && !roomFlags.get(RoomFlagEnum.DISABLED_ENEMIES)) {
+            if (!roomFlags.get(RoomFlagEnum.DISABLED_ENEMIES) && MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
                 addObjAsEnemy(obj, assetManager);
             }
 
@@ -264,7 +265,8 @@ public abstract class AbstractRoom {
 
     /**
      * Method for additional room initialization
-     *  @param roomType
+     *
+     * @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
@@ -347,7 +349,7 @@ public abstract class AbstractRoom {
         }
 
         //or else just sort by Y axis
-        if((o1.getBody().getPosition().y < o2.getBody().getPosition().y)){
+        if ((o1.getBody().getPosition().y < o2.getBody().getPosition().y)) {
             return 1;
         } else if (o1.getBody().getPosition().y > o2.getBody().getPosition().y) {
             return -1;

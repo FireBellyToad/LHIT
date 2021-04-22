@@ -153,6 +153,11 @@ public class RoomsManager {
 
         } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld))) {
 
+            //If echoes were disabled in this room, disable them
+            if(saveMap.containsKey(currentRoomPosInWorld)){
+                RoomSaveEntry entry = saveMap.get(currentRoomPosInWorld);
+                roomFlags.put(RoomFlagEnum.DISABLED_ECHO, entry.savedFlags.get(RoomFlagEnum.DISABLED_ECHO));
+            };
 
         }
 

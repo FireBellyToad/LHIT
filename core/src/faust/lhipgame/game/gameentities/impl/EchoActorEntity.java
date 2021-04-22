@@ -116,7 +116,7 @@ public class EchoActorEntity extends AnimatedEntity {
     }
 
     public void playStartingSound() {
-        startingSound.play(1.25f);
+        startingSound.play(0.5f);
     }
 
 }

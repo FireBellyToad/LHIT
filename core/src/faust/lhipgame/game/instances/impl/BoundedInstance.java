@@ -363,7 +363,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         //If evading, the leap is more subtle
-        final int modifier = GameBehavior.HURT.equals(currentBehavior) ? 4: 1;
+        final float modifier = GameBehavior.HURT.equals(currentBehavior) ? 4f: 1.5f;
         body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {

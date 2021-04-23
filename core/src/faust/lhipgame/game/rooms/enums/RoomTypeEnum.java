@@ -19,7 +19,8 @@ public enum RoomTypeEnum {
     TREE_STUMP("treeStump.tmx"),
     BOAT("boat.tmx"),
     START_POINT("start.tmx"),
-    CRUCIFIED("crucified.tmx");
+    CRUCIFIED("crucified.tmx"),
+    FINAL("final.tmx");
 
     private final String mapFileName;
 

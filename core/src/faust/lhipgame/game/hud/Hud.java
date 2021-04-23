@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
@@ -39,6 +40,7 @@ public class Hud {
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x222222ff);
+    private static final Color darkness = new Color(0x000000ff);
 
     //Healing timer bar
     private final ShapeRenderer cornerBox = new ShapeRenderer();
@@ -66,6 +68,8 @@ public class Hud {
 
     public void drawHud(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
         Objects.requireNonNull(batch);
+
+        Vector2 playerPosition = player.getBody().getPosition();
 
         //Black Background
         batch.begin();
@@ -133,7 +137,6 @@ public class Hud {
 
         //Draw Healing timer bar if player is curing himself
         if (GameBehavior.KNEE.equals(player.getCurrentBehavior()) && Objects.nonNull(player.getIsHealingTimer())) {
-            Vector2 playerPosition = player.getBody().getPosition();
             //Black Corner
             batch.begin();
             backgroundBox.setColor(back);
@@ -153,9 +156,37 @@ public class Hud {
             batch.end();
         }
 
+        drawDarkness(batch, player, camera);
+
+    }
+
+    /**
+     * @param player
+     * @param batch
+     * @param camera
+     */
+    private void drawDarkness(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
+
+        final float xOffset = Math.max(0, player.getBody().getPosition().x - LHIPGame.GAME_WIDTH/2);
+
         batch.begin();
-        batch.draw(darknessOverlay,0,0);
+        backgroundBox.setColor(darkness);
+        backgroundBox.setProjectionMatrix(camera.combined);
+        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+        backgroundBox.rect(0, 0, Math.max(0,Math.min(16,0 + xOffset)),  LHIPGame.GAME_HEIGHT-12);
+        backgroundBox.end();
         batch.end();
 
+        batch.begin();
+        backgroundBox.setColor(darkness);
+        backgroundBox.setProjectionMatrix(camera.combined);
+        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+        backgroundBox.rect(xOffset+144, 0, 16-xOffset,  LHIPGame.GAME_HEIGHT-12);
+        backgroundBox.end();
+        batch.end();
+
+        batch.begin();
+        batch.draw(darknessOverlay,Math.min(16,0 + xOffset),0);
+        batch.end();
     }
 }

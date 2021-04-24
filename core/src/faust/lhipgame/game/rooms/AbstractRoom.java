@@ -16,11 +16,13 @@ import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.Fightable;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
+import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.impl.*;
 import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.rooms.areas.EmergedArea;
 import faust.lhipgame.game.rooms.areas.WallArea;
 import faust.lhipgame.game.rooms.enums.MapLayersEnum;
@@ -66,6 +68,7 @@ public abstract class AbstractRoom {
     protected String roomFileName;
     protected SplashManager splashManager;
     protected TextBoxManager textManager;
+    protected MusicManager musicManager;
 
     protected boolean mustClearPOI = false;
 
@@ -107,6 +110,7 @@ public abstract class AbstractRoom {
         this.player = player;
         this.splashManager = splashManager;
         this.textManager = textManager;
+        this.musicManager = musicManager;
         poiList = new ArrayList<>();
         decorationList = new ArrayList<>();
         enemyList = new ArrayList<>();
@@ -152,7 +156,7 @@ public abstract class AbstractRoom {
         player.changePOIList(poiList);
 
         // Do other stuff
-        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera, assetManager, musicManager);
+        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
     }
 
     /**
@@ -265,15 +269,13 @@ public abstract class AbstractRoom {
 
     /**
      * Method for additional room initialization
-     *
-     * @param roomType
+     *  @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
      * @param camera
-     * @param musicManager
      */
-    protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager);
+    protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
 
     /**
      * Draws room background terrain
@@ -386,9 +388,12 @@ public abstract class AbstractRoom {
 
             ene.doLogic(stateTime);
 
-            if (((Fightable) ene).isDead())
+            if (((Fightable) ene).isDead()) {
                 ene.dispose();
-
+                musicManager.playMusic(TuneEnum.DANGER, true);
+            } else if(!GameBehavior.IDLE.equals(ene.getCurrentBehavior())){
+                musicManager.playMusic(TuneEnum.ATTACK, 0.5f,true);
+            }
         });
 
     }

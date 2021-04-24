@@ -72,7 +72,7 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, MusicManager musicManager) {
+    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         // FIXME handle multiple POI
         if (mustClearPOI) {
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));

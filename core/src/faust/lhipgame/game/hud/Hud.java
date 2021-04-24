@@ -161,6 +161,7 @@ public class Hud {
     }
 
     /**
+     * Draw darkness
      * @param player
      * @param batch
      * @param camera
@@ -169,6 +170,7 @@ public class Hud {
 
         final float xOffset = Math.max(0, player.getBody().getPosition().x - LHIPGame.GAME_WIDTH/2);
 
+        //Left overflow
         batch.begin();
         backgroundBox.setColor(darkness);
         backgroundBox.setProjectionMatrix(camera.combined);
@@ -177,6 +179,7 @@ public class Hud {
         backgroundBox.end();
         batch.end();
 
+        //Right overflow
         batch.begin();
         backgroundBox.setColor(darkness);
         backgroundBox.setProjectionMatrix(camera.combined);
@@ -185,6 +188,7 @@ public class Hud {
         backgroundBox.end();
         batch.end();
 
+        //Darkness
         batch.begin();
         batch.draw(darknessOverlay,Math.min(16,0 + xOffset),0);
         batch.end();

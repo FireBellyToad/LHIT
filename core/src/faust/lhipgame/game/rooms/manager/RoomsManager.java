@@ -143,32 +143,44 @@ public class RoomsManager {
      */
     private Map<RoomFlagEnum, Boolean> populateRoomFlags(RoomTypeEnum roomTypeEnum) {
         //default map
-        Map<RoomFlagEnum, Boolean> roomFlags = RoomFlagEnum.generateDefaultRoomFlags();
+        Map<RoomFlagEnum, Boolean> newRoomFlags = RoomFlagEnum.generateDefaultRoomFlags();
 
         if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld))) {
             //If unvisited rooms are less than the number of found morgengabes to find, guarantee them
             final boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
                     (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundMorgengabes()));
-            roomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
+            newRoomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
 
         } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld))) {
 
             //If echoes were disabled in this room, disable them
-            if(saveMap.containsKey(currentRoomPosInWorld)){
+            if (saveMap.containsKey(currentRoomPosInWorld)) {
                 RoomSaveEntry entry = saveMap.get(currentRoomPosInWorld);
-                roomFlags.put(RoomFlagEnum.DISABLED_ECHO, entry.savedFlags.get(RoomFlagEnum.DISABLED_ECHO));
-            };
+                newRoomFlags.put(RoomFlagEnum.DISABLED_ECHO, entry.savedFlags.get(RoomFlagEnum.DISABLED_ECHO));
+            }
+            ;
 
         }
 
+        //Avoid showing more than one time enemy splash
+        saveMap.forEach((key, entry) -> {
+            if (entry.savedFlags.get(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED)) {
+                newRoomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED, true);
+            }
+            if (entry.savedFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED)) {
+                newRoomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED, true);
+            }
+        });
+
+
         //Only bounded enemies after 15 rooms are visited
-        roomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, saveMap.size() >= 15);
+        newRoomFlags.put(RoomFlagEnum.GUARDANTEED_BOUNDED, saveMap.size() >= 15);
 
         //If this is the room visited, there should be no enemies even if they are in map
-        roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, saveMap.size() < 2);
+        newRoomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, saveMap.size() < 2);
 
 
-        return roomFlags;
+        return newRoomFlags;
     }
 
     /**

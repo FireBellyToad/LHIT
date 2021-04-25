@@ -250,8 +250,11 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
 
-            if (MathUtils.randomBoolean())
+            //Show splash only the first time
+            if (!roomFlags.get(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED))
                 splashManager.setSplashToShow("splash.bounded");
+
+            roomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED,true);
         } else {
             enemyInstance = new StrixInstance(
                     (float) obj.getProperties().get("x"),
@@ -259,8 +262,11 @@ public abstract class AbstractRoom {
                     player,
                     assetManager);
 
-            if (MathUtils.randomBoolean())
+            //Show splash only the first time
+            if (!roomFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED))
                 splashManager.setSplashToShow("splash.strix");
+
+            roomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED,true);
         }
 
 

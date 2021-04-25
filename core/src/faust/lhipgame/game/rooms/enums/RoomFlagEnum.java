@@ -15,6 +15,8 @@ public enum RoomFlagEnum {
     DISABLED_ENEMIES, //There must be no enemy in this room
     DISABLED_ECHO, //Echoes are disabled
     ALREADY_EXAMINED_POIS, //POIs are disabled
+    FIRST_STRIX_ENCOUNTERED, //POIs are disabled
+    FIRST_BOUNDED_ENCOUNTERED, //First Bounded encountered
     FINAL_ROOM; //Final room of the game
 
     /**

@@ -388,10 +388,11 @@ public abstract class AbstractRoom {
 
             ene.doLogic(stateTime);
 
-            if (((Fightable) ene).isDead()) {
+            //Changing music based on enemy behaviour and number
+            if (enemyList.size() == 1 && ((Fightable) ene).isDead()) {
                 ene.dispose();
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if(!GameBehavior.IDLE.equals(ene.getCurrentBehavior())){
+            } else if(!(ene instanceof HiveInstance) && !GameBehavior.IDLE.equals(ene.getCurrentBehavior())){
                 musicManager.playMusic(TuneEnum.ATTACK, 0.5f,true);
             }
         });

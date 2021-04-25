@@ -31,7 +31,7 @@ import java.util.Objects;
  */
 public class StrixInstance extends AnimatedInstance implements Interactable, Fightable {
 
-    private static final float STRIX_SPEED = 30;
+    private static final float STRIX_SPEED = 35;
     private boolean attachedToPlayer = false;
 
     private final PlayerInstance target;

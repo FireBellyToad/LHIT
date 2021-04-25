@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public class BoundedInstance extends AnimatedInstance implements Interactable, Fightable {
 
-    private static final float BOUNDED_SPEED = 35;
+    private static final float BOUNDED_SPEED = 40;
     private static final int LINE_OF_ATTACK = 15;
     private static final int LINE_OF_SIGHT = 70;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;

@@ -24,13 +24,13 @@
    </properties>
    <point/>
   </object>
-  <object id="25" name="ECHO_ACTOR" type="VICTIM" x="90" y="75.4545">
+  <object id="25" name="ECHO_ACTOR" type="VICTIM" x="90" y="73.4545">
    <point/>
   </object>
-  <object id="26" name="ECHO_ACTOR" type="DISCIPULUS" x="78.3637" y="49.6363">
+  <object id="26" name="ECHO_ACTOR" type="DISCIPULUS" x="78.3637" y="56.6363">
    <point/>
   </object>
-  <object id="33" name="EMERGED" x="26" y="79">
+  <object id="33" name="EMERGED" x="26" y="79" visible="0">
    <polygon points="3,1.72727 19.9091,-34.3636 55,-52.25 105.409,-16.6591 82.8182,17.5909 60.5,32.0227 38.6818,50.8636"/>
   </object>
  </objectgroup>

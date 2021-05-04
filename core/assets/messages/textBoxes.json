@@ -3,15 +3,16 @@
     "poi.success.examine": "I FOUND SOMETHING!",
     "poi.bush.examine": "A WORTHLESS BUSH",
     "poi.bush.success": "I FOUND SOME HERBS",
-    "poi.cadaver.success": "I FOUND A PADDED \nARMOR",
-    "poi.skull.examine": "ITS JUST A PILE OF \nBONES",
-    "poi.stones.examine": "THERE IS NOTHING \nUNDER THESE STONES",
+    "poi.cadaver.success": "I FOUND A PADDED\nARMOR",
+    "poi.skull.examine": "ITS JUST A PILE OF\nBONES",
+    "poi.stones.examine": "THERE IS NOTHING\nUNDER THESE STONES",
+    "poi.brother.examine": "ALL HAVE DIED",
 
     "splash.strix": "A GROTESQUE AVIAN",
     "splash.bounded": "A FLYING CORPSE",
-    "splash.morgengabe": "I FOUND A PRECIOUS \nMORGENGABIUM",
-    "splash.holy.1": "I FOUND A PIECE OF \nA STRANGE LANCE",
-    "splash.holy.2": "I NOW POSSES THE \nMIGHTY HOLY LANCE",
+    "splash.morgengabe": "I FOUND A PRECIOUS\nMORGENGABIUM",
+    "splash.holy.1": "I FOUND A PIECE OF\nA STRANGE LANCE",
+    "splash.holy.2": "I NOW POSSES THE\nMIGHTY HOLY LANCE",
 
     "echo.woman.first": "HEEELP MEEE!",
     "echo.woman.second": "ARGH! -GASP-",
@@ -19,6 +20,6 @@
     "echo.tree.first": "ORCUS DOMINAT",
     "echo.tree.second": "PERIT UT VIVAT",
 
-    "warn.hive.damage": "MY WEAPON HAS\n NO EFFECT"
+    "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT"
   }
 }

@@ -346,6 +346,8 @@ public abstract class AbstractRoom {
         //for avoiding that objects laying on the ground cover taller ones
         if ((o2 instanceof Fightable && ((Fightable) o2).isDead()) ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
+                (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_1.equals(((DecorationInstance) o2).getType())) ||
+                (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_2.equals(((DecorationInstance) o2).getType())) ||
                 (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted()) ||
                 (o2 instanceof POIInstance && POIEnum.SKELETON.equals(((POIInstance) o2).getType()))) {
             return 1;

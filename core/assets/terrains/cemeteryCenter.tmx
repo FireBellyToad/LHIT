@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="56">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="68">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -38,11 +38,50 @@
   </object>
   <object id="47" name="WALL" x="0" y="0" width="16" height="144"/>
   <object id="48" name="WALL" x="16" y="128" width="144" height="16"/>
-  <object id="49" name="POI" type="SOIL" x="69.75" y="73.75">
+  <object id="49" name="POI" type="SOIL" x="70.4773" y="79.0227">
+   <properties>
+    <property name="isEchoTrigger" type="bool" value="true"/>
+   </properties>
    <point/>
   </object>
   <object id="55" name="EMERGED" x="-2" y="37.5">
-   <polygon points="4.75,-36.5 167.25,-38.25 161.75,106.75 3.75,100.25"/>
+   <polygon points="13.8409,-41.7727 167.25,-38.25 164.114,95.2955 15.5682,93.5227"/>
+  </object>
+  <object id="56" name="ECHO_ACTOR" type="DEAD_HAND" x="100" y="108">
+   <point/>
+  </object>
+  <object id="57" name="ECHO_ACTOR" type="DEAD_HAND" x="104.182" y="21.2727">
+   <point/>
+  </object>
+  <object id="58" name="ECHO_ACTOR" type="DEAD_HAND" x="143.273" y="55.8182">
+   <point/>
+  </object>
+  <object id="59" name="ECHO_ACTOR" type="DEAD_HAND" x="29.6364" y="30.1818">
+   <point/>
+  </object>
+  <object id="60" name="ECHO_ACTOR" type="DEAD_HAND" x="30" y="103.818">
+   <point/>
+  </object>
+  <object id="61" name="ECHO_ACTOR" type="DEAD_HAND" x="146.727" y="119.091">
+   <point/>
+  </object>
+  <object id="62" name="ECHO_ACTOR" type="DEAD_HAND" x="122.727" y="24">
+   <point/>
+  </object>
+  <object id="63" name="ECHO_ACTOR" type="DEAD_HAND" x="94.7273" y="60.7273">
+   <point/>
+  </object>
+  <object id="64" name="ECHO_ACTOR" type="DEAD_HAND" x="124" y="71.4545">
+   <point/>
+  </object>
+  <object id="65" name="ECHO_ACTOR" type="DEAD_HAND" x="36" y="48.1818">
+   <point/>
+  </object>
+  <object id="66" name="ECHO_ACTOR" type="DEAD_HAND" x="120.182" y="122">
+   <point/>
+  </object>
+  <object id="67" name="ECHO_ACTOR" type="DEAD_HAND" x="47.0909" y="119.091">
+   <point/>
   </object>
  </objectgroup>
 </map>

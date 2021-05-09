@@ -62,7 +62,13 @@ public class EchoActorInstance extends AnimatedInstance {
         //If animation is finished pass to the next step
        if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
-           final int index = stepOrder.indexOf(currentBehavior);
+           int index = stepOrder.indexOf(currentBehavior);
+
+           //Check goto
+           if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
+               index = stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
+           }
+
            Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " end step "+ currentBehavior);
 
            deltaTime = stateTime;

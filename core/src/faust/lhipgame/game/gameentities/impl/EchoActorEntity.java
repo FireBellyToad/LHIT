@@ -28,6 +28,7 @@ public class EchoActorEntity extends AnimatedEntity {
     private final List<GameBehavior> stepOrder = new ArrayList<>();
     protected Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
     protected Map<GameBehavior, Boolean> mustMoveInStep = new HashMap<>();
+    protected Map<GameBehavior, GameBehavior> gotoToStepFromStep = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
         super(assetManager.get(echoesActorType.getSpriteFilename()));
@@ -55,6 +56,10 @@ public class EchoActorEntity extends AnimatedEntity {
                 textBoxPerStep.put(behaviour, s.getString("textBoxKey"));
             }
             mustMoveInStep.put(behaviour,s.has("move"));
+
+            if (s.has("goToStep")) {
+                gotoToStepFromStep.put(behaviour, GameBehavior.getFromString(s.getString("goToStep")));
+            }
         });
 
     }
@@ -113,6 +118,15 @@ public class EchoActorEntity extends AnimatedEntity {
      */
     public Boolean mustMoveInStep(GameBehavior step) {
         return mustMoveInStep.get(step);
+    }
+
+    /**
+     *
+     * @param fromStep
+     * @return the step
+     */
+    public GameBehavior getGotoToStepFromStep(GameBehavior fromStep) {
+        return gotoToStepFromStep.get(fromStep);
     }
 
     public void playStartingSound() {

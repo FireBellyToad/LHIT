@@ -223,7 +223,7 @@ public class FixedRoom extends AbstractRoom {
             if (echoIsActivated) {
                 echoActors.forEach(echoActorInstance -> {
                     echoActorInstance.playStartingSound();
-                    ;
+
                     if (echoActorInstance.hasCurrentTextBoxToShow()) {
                         this.textManager.addNewTextBox(echoActorInstance.getCurrentTextBoxToShow());
                     }

@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.Attacker;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -24,16 +26,18 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class EchoActorInstance extends AnimatedInstance {
+public class EchoActorInstance extends AnimatedInstance implements Attacker {
 
     private boolean removeFromRoom = false;
     private boolean showTextBox = true;
     private float deltaTime = 0; // Time delta between step start and current
+    private boolean echoIsActive;
 
     public EchoActorInstance(EchoesActorType echoesActorType, float x, float y, AssetManager assetManager) {
         super(new EchoActorEntity(echoesActorType, assetManager));
         this.startX = x;
         this.startY = y;
+        this.echoIsActive = false;
 
         //get first step
         this.currentBehavior = ((EchoActorEntity)this.entity).getStepOrder().get(0);
@@ -45,6 +49,10 @@ public class EchoActorInstance extends AnimatedInstance {
         // If must be removed, avoid logic
         if(removeFromRoom){
             return;
+        }
+
+        if(!echoIsActive){
+            echoIsActive = true;
         }
 
         //initialize deltatime
@@ -98,7 +106,7 @@ public class EchoActorInstance extends AnimatedInstance {
 
         // Define shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(4, 2);
+        shape.setAsBox(8, 6);
 
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -107,7 +115,7 @@ public class EchoActorInstance extends AnimatedInstance {
         fixtureDef.friction = 1;
         fixtureDef.isSensor = false;
         fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
-        fixtureDef.filter.maskBits = CollisionManager.SOLID_GROUP;
+        fixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -120,10 +128,12 @@ public class EchoActorInstance extends AnimatedInstance {
     @Override
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
-        batch.begin();
+
+        //Do not draw if must be removed
         if(removeFromRoom){
             return;
         }
+        batch.begin();
 
         // Should not loop!
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime));
@@ -155,5 +165,24 @@ public class EchoActorInstance extends AnimatedInstance {
 
     public void playStartingSound() {
         ((EchoActorEntity) entity).playStartingSound();
+    }
+
+    @Override
+    public double damageRoll() {
+        //Only certain echoes should harm the player
+        switch (((EchoActorEntity) entity).getEchoesActorType()){
+            case DEAD_HAND:
+                return Math.min(MathUtils.random(1,6),MathUtils.random(1,6));
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     *
+     * @return true if should handle collisions
+     */
+    public boolean shouldCollide(){
+        return /*EchoesActorType.DEAD_HAND.equals(((EchoActorEntity) entity).getEchoesActorType()) && */echoIsActive;
     }
 }

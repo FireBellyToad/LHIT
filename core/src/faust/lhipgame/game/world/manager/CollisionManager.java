@@ -1,6 +1,7 @@
 package faust.lhipgame.game.world.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
+import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
@@ -75,6 +76,16 @@ public class CollisionManager implements ContactListener {
         // Handle Hive Collision
         if (isContactOfClass(contact, HiveInstance.class)) {
             handleEnemyCollisionEvent(contact, HiveInstance.class);
+        }
+
+        // Handle Dead hand Collision
+        if (isContactOfClass(contact, EchoActorInstance.class) ) {
+            EchoActorInstance echoActorInstance = ((EchoActorInstance) getCorrectFixture(contact, EchoActorInstance.class).getBody().getUserData());
+
+            if(echoActorInstance.shouldCollide()){
+                PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+                playerInstance.hurt(echoActorInstance);
+            }
         }
     }
 

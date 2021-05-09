@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.hud.DarknessRenderer;
 import faust.lhipgame.game.hud.Hud;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.music.MusicManager;
@@ -27,6 +28,7 @@ public class GameScreen implements Screen {
     private RoomsManager roomsManager;
 
     private Hud hud;
+    private DarknessRenderer darknessRenderer;
     private SplashManager splashManager;
 
     private float stateTime = 0f;
@@ -49,6 +51,7 @@ public class GameScreen implements Screen {
         hud = new Hud(textManager,assetManager);
         splashManager = new SplashManager(textManager,assetManager);
         musicManager.initTuneMap(assetManager);
+        darknessRenderer = new DarknessRenderer(assetManager);
 
         // Creating player and making it available to input processor
         player = new PlayerInstance(assetManager);
@@ -99,6 +102,7 @@ public class GameScreen implements Screen {
             splashManager.drawSplash(game.getBatch());
         } else {
             hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
+            darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
         }
         // draw text
         textManager.renderTextBoxes(game.getBatch(), player, cameraManager.getCamera(), splashManager.isDrawingSplash());

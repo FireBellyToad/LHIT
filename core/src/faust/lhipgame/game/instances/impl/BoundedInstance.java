@@ -327,8 +327,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     @Override
     public void hurt(GameInstance attacker) {
 
-        //30% chance of evading attack
-        final boolean canEvade = (MathUtils.random(1,100)) >= 70;
+        //50% chance of evading attack
+        final boolean canEvade = (MathUtils.random(1,100)) >= 50;
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);

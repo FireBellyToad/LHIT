@@ -52,6 +52,7 @@ public class POIInstance extends GameInstance {
      * Handles the examination from a Player Instance
      */
     public void examine(PlayerInstance player) {
+        Objects.requireNonNull(player);
 
         //TODO add new examinations results
         String messageKey = ((POIEntity) this.entity).getMessageKey();

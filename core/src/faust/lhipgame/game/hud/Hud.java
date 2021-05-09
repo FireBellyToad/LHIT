@@ -29,7 +29,6 @@ import java.util.Objects;
 public class Hud {
 
     private final SpriteEntity hudTexture;
-    private final Texture darknessOverlay;
 
     private final TextBoxManager textManager;
 
@@ -40,7 +39,6 @@ public class Hud {
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x222222ff);
-    private static final Color darkness = new Color(0x000000ff);
 
     //Healing timer bar
     private final ShapeRenderer cornerBox = new ShapeRenderer();
@@ -49,6 +47,8 @@ public class Hud {
     private long startTime = 0;
 
     public Hud(TextBoxManager textManager, AssetManager assetManager) {
+        Objects.requireNonNull(textManager);
+        Objects.requireNonNull(assetManager);
 
         this.textManager = textManager;
         this.hudTexture = new SpriteEntity(assetManager.get("sprites/hud.png")) {
@@ -62,12 +62,14 @@ public class Hud {
                 return 1;
             }
         };
-        darknessOverlay = assetManager.get("sprites/darkness_overlay.png");
 
     }
 
     public void drawHud(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
         Objects.requireNonNull(batch);
+        Objects.requireNonNull(player);
+        Objects.requireNonNull(camera);
+
 
         Vector2 playerPosition = player.getBody().getPosition();
 
@@ -155,42 +157,5 @@ public class Hud {
             cornerBox.end();
             batch.end();
         }
-
-        drawDarkness(batch, player, camera);
-
-    }
-
-    /**
-     * Draw darkness
-     * @param player
-     * @param batch
-     * @param camera
-     */
-    private void drawDarkness(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
-
-        final float xOffset = Math.max(0, player.getBody().getPosition().x - LHIPGame.GAME_WIDTH/2);
-
-        //Left overflow
-        batch.begin();
-        backgroundBox.setColor(darkness);
-        backgroundBox.setProjectionMatrix(camera.combined);
-        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-        backgroundBox.rect(0, 0, Math.max(0,Math.min(16,0 + xOffset)),  LHIPGame.GAME_HEIGHT-12);
-        backgroundBox.end();
-        batch.end();
-
-        //Right overflow
-        batch.begin();
-        backgroundBox.setColor(darkness);
-        backgroundBox.setProjectionMatrix(camera.combined);
-        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-        backgroundBox.rect(xOffset+144, 0, 16-xOffset,  LHIPGame.GAME_HEIGHT-12);
-        backgroundBox.end();
-        batch.end();
-
-        //Darkness
-        batch.begin();
-        batch.draw(darknessOverlay,Math.min(16,0 + xOffset),0);
-        batch.end();
     }
 }

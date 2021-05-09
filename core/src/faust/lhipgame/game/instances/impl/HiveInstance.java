@@ -30,7 +30,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class HiveInstance extends AnimatedInstance implements Interactable, Hurtable {
+public class HiveInstance extends AnimatedInstance implements Interactable, Hurtable, Attacker {
 
     private final TextBoxManager textBoxManager;
     private boolean isDead = false;

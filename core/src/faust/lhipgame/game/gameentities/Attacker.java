@@ -1,9 +1,7 @@
 package faust.lhipgame.game.gameentities;
 
-import faust.lhipgame.game.instances.GameInstance;
-
 /**
- * Interface for describing hurting and dying behaviour
+ * Interface for describing attacking behaviour
  */
 public interface Attacker {
     /**

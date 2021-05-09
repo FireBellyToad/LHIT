@@ -182,7 +182,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void postHurtLogic(GameInstance attacker) {
-        // is pushed away while flickering
+        // is pushed away while flickering if not attacked by Strix
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
@@ -357,8 +357,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if (attackDeltaTime == 0)
             attackDeltaTime = stateTime;
 
-
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
+        //Activate spear bodies when in right frame
+        final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME+4) {
             switch (currentDirection) {
                 case UP: {

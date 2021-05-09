@@ -15,8 +15,10 @@ import faust.lhipgame.game.gameentities.Attacker;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.instances.Interactable;
 import faust.lhipgame.game.world.manager.CollisionManager;
 
+import java.lang.annotation.Inherited;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +28,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class EchoActorInstance extends AnimatedInstance implements Attacker {
+public class EchoActorInstance extends AnimatedInstance implements Interactable, Attacker {
 
     private boolean removeFromRoom = false;
     private boolean showTextBox = true;
@@ -51,6 +53,7 @@ public class EchoActorInstance extends AnimatedInstance implements Attacker {
             return;
         }
 
+        //Check if echo is active. On first iteration set to true
         if(!echoIsActive){
             echoIsActive = true;
         }
@@ -113,7 +116,7 @@ public class EchoActorInstance extends AnimatedInstance implements Attacker {
         fixtureDef.shape = shape;
         fixtureDef.density = 1;
         fixtureDef.friction = 1;
-        fixtureDef.isSensor = false;
+        fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
         fixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
@@ -178,11 +181,16 @@ public class EchoActorInstance extends AnimatedInstance implements Attacker {
         }
     }
 
-    /**
-     *
-     * @return true if should handle collisions
-     */
-    public boolean shouldCollide(){
-        return /*EchoesActorType.DEAD_HAND.equals(((EchoActorEntity) entity).getEchoesActorType()) && */echoIsActive;
+    @Override
+    public void doPlayerInteraction(PlayerInstance playerInstance) {
+        //If active, hurt player
+        if(echoIsActive){
+            playerInstance.hurt(this);
+        }
+    }
+
+    @Override
+    public void endPlayerInteraction(PlayerInstance playerInstance) {
+        //Nothing to do here... yet
     }
 }

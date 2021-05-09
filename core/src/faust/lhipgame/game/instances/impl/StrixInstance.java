@@ -266,6 +266,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
      */
     @Override
     public void hurt(GameInstance attacker) {
+        Objects.requireNonNull(attacker);
 
         //Should not be hurted if attached to player!
         if(!isAttachedToPlayer()){

@@ -27,6 +27,7 @@ public class SplashManager {
 
     public SplashManager(TextBoxManager textManager, AssetManager assetManager) {
         Objects.requireNonNull(textManager);
+        Objects.requireNonNull(assetManager);
 
         this.textManager = textManager;
 

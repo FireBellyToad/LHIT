@@ -51,7 +51,6 @@ public class CollisionManager implements ContactListener {
             pInst.setSubmerged(false);
         }
 
-
         // Handle Decoration Collision
         if (isContactOfClass(contact, DecorationInstance.class)) {
             //If decoration is passable, just do and Interaction. Else stop the player
@@ -81,11 +80,8 @@ public class CollisionManager implements ContactListener {
         // Handle Dead hand Collision
         if (isContactOfClass(contact, EchoActorInstance.class) ) {
             EchoActorInstance echoActorInstance = ((EchoActorInstance) getCorrectFixture(contact, EchoActorInstance.class).getBody().getUserData());
-
-            if(echoActorInstance.shouldCollide()){
-                PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
-                playerInstance.hurt(echoActorInstance);
-            }
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            echoActorInstance.doPlayerInteraction(playerInstance);
         }
     }
 

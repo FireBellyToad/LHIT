@@ -5,7 +5,7 @@ import faust.lhipgame.game.instances.GameInstance;
 /**
  * Interface for describing hurting and dying behaviour
  */
-public interface Fightable {
+public interface Hurtable {
     /**
      *
      * @return the current resitance
@@ -32,10 +32,5 @@ public interface Fightable {
      * @return true if the damage is really dead
      */
     boolean isDead();
-
-    /**
-     * @return a random damage roll INFLICTED BY the Killable
-     */
-    double damageRoll();
 
 }

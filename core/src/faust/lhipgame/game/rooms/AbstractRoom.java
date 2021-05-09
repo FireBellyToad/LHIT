@@ -12,9 +12,8 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.gameentities.Fightable;
+import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
@@ -344,7 +343,7 @@ public abstract class AbstractRoom {
 
         //Special conditions to place object always on higher depth, usually
         //for avoiding that objects laying on the ground cover taller ones
-        if ((o2 instanceof Fightable && ((Fightable) o2).isDead()) ||
+        if ((o2 instanceof Hurtable && ((Hurtable) o2).isDead()) ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
                 (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_1.equals(((DecorationInstance) o2).getType())) ||
                 (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_2.equals(((DecorationInstance) o2).getType())) ||
@@ -353,7 +352,7 @@ public abstract class AbstractRoom {
             return 1;
         }
 
-        if ((o1 instanceof Fightable && ((Fightable) o1).isDead()) ||
+        if ((o1 instanceof Hurtable && ((Hurtable) o1).isDead()) ||
                 (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {
             return -1;
         }
@@ -397,7 +396,7 @@ public abstract class AbstractRoom {
             ene.doLogic(stateTime);
 
             //Changing music based on enemy behaviour and number
-            if (enemyList.size() == 1 && ((Fightable) ene).isDead()) {
+            if (enemyList.size() == 1 && ((Hurtable) ene).isDead()) {
                 ene.dispose();
                 musicManager.playMusic(TuneEnum.DANGER, true);
             } else if(!(ene instanceof HiveInstance) && !GameBehavior.IDLE.equals(ene.getCurrentBehavior())){

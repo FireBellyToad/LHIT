@@ -11,7 +11,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Fightable;
+import faust.lhipgame.game.gameentities.Attacker;
+import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.HiveEntity;
@@ -29,7 +30,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class HiveInstance extends AnimatedInstance implements Interactable, Fightable {
+public class HiveInstance extends AnimatedInstance implements Interactable, Hurtable {
 
     private final TextBoxManager textBoxManager;
     private boolean isDead = false;
@@ -188,7 +189,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Figh
             }
 
             // Hurt by player
-            double amount = ((Fightable) attacker).damageRoll();
+            double amount = ((Attacker) attacker).damageRoll();
             this.damage += Math.min(getResistance(), amount);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);

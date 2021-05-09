@@ -14,7 +14,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Fightable;
+import faust.lhipgame.game.gameentities.Attacker;
+import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
@@ -34,7 +35,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class PlayerInstance extends AnimatedInstance implements InputProcessor, Fightable {
+public class PlayerInstance extends AnimatedInstance implements InputProcessor, Hurtable, Attacker {
 
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
@@ -168,7 +169,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public void hurt(GameInstance attacker) {
 
-        double damageReceived = ((Fightable) attacker).damageRoll();
+        double damageReceived = ((Attacker) attacker).damageRoll();
         if (damageReceived > 0 && isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {

@@ -1,7 +1,7 @@
 package faust.lhipgame.game.world.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
-import faust.lhipgame.game.gameentities.Fightable;
+import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.Interactable;
 import faust.lhipgame.game.instances.impl.*;
@@ -84,7 +84,7 @@ public class CollisionManager implements ContactListener {
      * @param enemyGameInstanceClass
      * @param <T> an Interactable and Killable instance, usually enemy
      */
-    private <T extends Interactable & Fightable> void handleEnemyCollisionEvent(Contact contact, Class<T> enemyGameInstanceClass) {
+    private <T extends Interactable & Hurtable> void handleEnemyCollisionEvent(Contact contact, Class<T> enemyGameInstanceClass) {
 
         //Get enemy data
         Fixture enemyInstanceFixture = getCorrectFixture(contact, enemyGameInstanceClass);
@@ -151,7 +151,7 @@ public class CollisionManager implements ContactListener {
      * @param enemyGameInstanceClass
      * @param <T> an Interactable and Killable instance, usually enemy
      */
-    private <T extends Interactable & Fightable> void handleEnemyCollisionEventEnd(Contact contact, Class<T>  enemyGameInstanceClass) {
+    private <T extends Interactable & Hurtable> void handleEnemyCollisionEventEnd(Contact contact, Class<T>  enemyGameInstanceClass) {
         //Just free the player from leech grapple
         Body enemyBody = getCorrectFixture(contact,enemyGameInstanceClass).getBody();
         T sInst = (T) enemyBody.getUserData();

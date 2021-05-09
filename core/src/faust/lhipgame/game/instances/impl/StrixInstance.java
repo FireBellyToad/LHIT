@@ -12,7 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Fightable;
+import faust.lhipgame.game.gameentities.Attacker;
+import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.StrixEntity;
@@ -29,7 +30,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class StrixInstance extends AnimatedInstance implements Interactable, Fightable {
+public class StrixInstance extends AnimatedInstance implements Interactable, Hurtable, Attacker {
 
     private static final float STRIX_SPEED = 35;
     private boolean attachedToPlayer = false;
@@ -276,7 +277,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Fig
             } else if (!GameBehavior.HURT.equals(currentBehavior)) {
                 ((StrixEntity) entity).playHurtCry();
                 // Hurt by player
-                double amount = ((Fightable)attacker).damageRoll();
+                double amount = ((Attacker)attacker).damageRoll();
                 this.damage += Math.min(getResistance(), amount);
                 Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
                 postHurtLogic(attacker);

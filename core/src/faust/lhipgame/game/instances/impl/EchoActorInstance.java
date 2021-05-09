@@ -64,7 +64,7 @@ public class EchoActorInstance extends AnimatedInstance {
            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
            int index = stepOrder.indexOf(currentBehavior);
 
-           //Check goto
+           //If has "go to step", handle it correctly
            if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
                index = stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
            }

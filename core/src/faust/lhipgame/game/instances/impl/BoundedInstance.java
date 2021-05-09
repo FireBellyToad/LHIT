@@ -10,7 +10,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Fightable;
+import faust.lhipgame.game.gameentities.Attacker;
+import faust.lhipgame.game.gameentities.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.BoundedEntity;
@@ -27,7 +28,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class BoundedInstance extends AnimatedInstance implements Interactable, Fightable {
+public class BoundedInstance extends AnimatedInstance implements Interactable, Hurtable, Attacker {
 
     private static final float BOUNDED_SPEED = 40;
     private static final int LINE_OF_ATTACK = 15;
@@ -336,7 +337,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, F
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
-            double amount = ((Fightable)attacker).damageRoll();
+            double amount = ((Attacker)attacker).damageRoll();
             //If Undead or Otherworldly, halve normal lance damage
             if(((PlayerInstance) attacker).getHolyLancePieces() < 2){
                 amount =  Math.floor(amount / 2);

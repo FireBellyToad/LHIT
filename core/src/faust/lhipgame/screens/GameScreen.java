@@ -46,7 +46,7 @@ public class GameScreen implements Screen {
     public void show() {
         Box2D.init();
 
-        worldManager = new WorldManager(assetManager);
+        worldManager = new WorldManager();
         textManager = new TextBoxManager(assetManager);
         hud = new Hud(textManager,assetManager);
         splashManager = new SplashManager(textManager,assetManager);

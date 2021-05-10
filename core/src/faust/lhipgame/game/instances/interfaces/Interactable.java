@@ -1,4 +1,4 @@
-package faust.lhipgame.game.instances;
+package faust.lhipgame.game.instances.interfaces;
 
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 

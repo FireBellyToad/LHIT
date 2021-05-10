@@ -30,7 +30,7 @@ public class WorldManager {
 
     private final World world;
 
-    public WorldManager(AssetManager assetManager) {
+    public WorldManager() {
         this.world = new World(new Vector2(0, 0), true);
         world.setContactListener(new CollisionManager());
     }
@@ -88,6 +88,7 @@ public class WorldManager {
      * @param y
      */
     private void insertIntoWorld(final GameInstance instance, float x, float y) {
+        Objects.requireNonNull(instance);
         instance.createBody(this.world, x, y);
     }
 
@@ -96,7 +97,8 @@ public class WorldManager {
      *
      * @param poiList
      */
-    public void insertPOIIntoWorld(List<POIInstance> poiList) {
+    public void insertPOIIntoWorld(final List<POIInstance> poiList) {
+        Objects.requireNonNull(poiList);
 
         poiList.forEach((poi) -> {
             this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY());
@@ -109,6 +111,7 @@ public class WorldManager {
      * @param decorationInstances
      */
     public void insertDecorationsIntoWorld(List<DecorationInstance> decorationInstances) {
+        Objects.requireNonNull(decorationInstances);
 
         decorationInstances.forEach((deco) -> {
             this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY());
@@ -132,6 +135,7 @@ public class WorldManager {
      * @param enemiesInstance
      */
     public void insertEnemiesIntoWorld(List<AnimatedInstance> enemiesInstance) {
+        Objects.requireNonNull(enemiesInstance);
 
         enemiesInstance.forEach((e) -> {
             this.insertIntoWorld(e, e.getStartX(), e.getStartY());
@@ -143,6 +147,8 @@ public class WorldManager {
      * @param wallList
      */
     public void insertWallsIntoWorld(List<WallArea> wallList) {
+        Objects.requireNonNull(wallList);
+
         wallList.forEach((w) -> {
             w.createBody(this.world);
         });
@@ -153,6 +159,8 @@ public class WorldManager {
      * @param areasList
      */
     public void insertEmergedAreasIntoWorld(List<EmergedArea> areasList) {
+        Objects.requireNonNull(areasList);
+
         areasList.forEach((a) -> {
             a.createBody(this.world);
         });
@@ -163,6 +171,7 @@ public class WorldManager {
      * @param echoActors
      */
     public void insertEchoActorsIntoWorld(List<EchoActorInstance> echoActors) {
+        Objects.requireNonNull(echoActors);
 
         echoActors.forEach((a) -> {
             a.createBody(this.world, a.getStartX(), a.getStartY());

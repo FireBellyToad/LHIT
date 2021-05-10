@@ -11,14 +11,13 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.Attacker;
+import faust.lhipgame.game.gameentities.interfaces.Attacker;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
-import faust.lhipgame.game.instances.Interactable;
+import faust.lhipgame.game.instances.interfaces.Interactable;
 import faust.lhipgame.game.world.manager.CollisionManager;
 
-import java.lang.annotation.Inherited;
 import java.util.List;
 import java.util.Objects;
 

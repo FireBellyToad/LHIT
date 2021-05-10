@@ -78,7 +78,7 @@ public class EchoActorEntity extends AnimatedEntity {
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimation(new Animation<>(FRAME_DURATION, idleFrames), GameBehavior.IDLE);
         addAnimation(new Animation<>(FRAME_DURATION, walkFrames), GameBehavior.WALK);
-        addAnimation(new Animation<>(FRAME_DURATION, attackFrames), GameBehavior.ATTACK);;
+        addAnimation(new Animation<>(FRAME_DURATION, attackFrames), GameBehavior.ATTACK);
         addAnimation(new Animation<>(FRAME_DURATION, hurtFrames), GameBehavior.HURT);
         addAnimation(new Animation<>(FRAME_DURATION, deadFrames), GameBehavior.DEAD);
 

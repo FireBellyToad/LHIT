@@ -12,7 +12,7 @@ import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.impl.DecorationEntity;
 import faust.lhipgame.game.instances.GameInstance;
-import faust.lhipgame.game.instances.Interactable;
+import faust.lhipgame.game.instances.interfaces.Interactable;
 import faust.lhipgame.game.world.manager.CollisionManager;
 
 import java.util.Objects;

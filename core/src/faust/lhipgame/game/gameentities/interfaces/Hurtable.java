@@ -1,4 +1,4 @@
-package faust.lhipgame.game.gameentities;
+package faust.lhipgame.game.gameentities.interfaces;
 
 import faust.lhipgame.game.instances.GameInstance;
 

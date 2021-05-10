@@ -9,7 +9,7 @@ public enum TuneEnum {
     ATTACK("attack.ogg");
 //    CHURCH("ambience");
 
-    private String fileName;
+    private final String fileName;
 
     TuneEnum(String fileName) {
         this.fileName = fileName;

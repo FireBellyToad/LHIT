@@ -25,6 +25,8 @@ public class ShaderWrapper {
      * @param fragmentShaderFile
      */
     public ShaderWrapper(String vertexShaderFile, String fragmentShaderFile) {
+        Objects.requireNonNull(vertexShaderFile);
+        Objects.requireNonNull(fragmentShaderFile);
 
         final String vertexShader = Gdx.files.internal(vertexShaderFile).readString();
         final String fragmentShader = Gdx.files.internal(fragmentShaderFile).readString();

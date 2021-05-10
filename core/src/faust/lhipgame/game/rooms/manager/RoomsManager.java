@@ -158,7 +158,6 @@ public class RoomsManager {
                 RoomSaveEntry entry = saveMap.get(currentRoomPosInWorld);
                 newRoomFlags.put(RoomFlagEnum.DISABLED_ECHO, entry.savedFlags.get(RoomFlagEnum.DISABLED_ECHO));
             }
-            ;
 
         }
 

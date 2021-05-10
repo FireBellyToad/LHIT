@@ -109,7 +109,6 @@ public class SaveFileManager {
                     (int) v.x, (int) v.y, casualNumberPredefined,
                     parseJsonFlags(flagsJson)));
         }
-        ;
     }
 
     /**

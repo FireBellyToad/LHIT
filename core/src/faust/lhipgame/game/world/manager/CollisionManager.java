@@ -1,10 +1,9 @@
 package faust.lhipgame.game.world.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
-import faust.lhipgame.game.echoes.enums.EchoesActorType;
-import faust.lhipgame.game.gameentities.Hurtable;
+import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.instances.GameInstance;
-import faust.lhipgame.game.instances.Interactable;
+import faust.lhipgame.game.instances.interfaces.Interactable;
 import faust.lhipgame.game.instances.impl.*;
 import faust.lhipgame.game.rooms.areas.EmergedArea;
 

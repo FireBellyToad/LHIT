@@ -2,6 +2,7 @@ package faust.lhipgame.game.music;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import faust.lhipgame.game.music.enums.TuneEnum;
 
 import java.util.HashMap;

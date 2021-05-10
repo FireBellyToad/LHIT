@@ -1,4 +1,4 @@
-package faust.lhipgame.game.gameentities;
+package faust.lhipgame.game.gameentities.interfaces;
 
 /**
  * Interface for describing attacking behaviour

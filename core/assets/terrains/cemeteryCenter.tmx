@@ -50,7 +50,7 @@
   <object id="56" name="ECHO_ACTOR" type="DEAD_HAND" x="100" y="108">
    <point/>
   </object>
-  <object id="57" name="ECHO_ACTOR" type="DEAD_HAND" x="104.182" y="21.2727">
+  <object id="57" name="ECHO_ACTOR" type="DEAD_DOUBLE_HAND" x="104.182" y="21.2727">
    <point/>
   </object>
   <object id="58" name="ECHO_ACTOR" type="DEAD_HAND" x="143.273" y="55.8182">
@@ -71,16 +71,16 @@
   <object id="63" name="ECHO_ACTOR" type="DEAD_HAND" x="94.7273" y="60.7273">
    <point/>
   </object>
-  <object id="64" name="ECHO_ACTOR" type="DEAD_HAND" x="124" y="71.4545">
+  <object id="64" name="ECHO_ACTOR" type="DEAD_DOUBLE_HAND" x="124" y="71.4545">
    <point/>
   </object>
-  <object id="65" name="ECHO_ACTOR" type="DEAD_HAND" x="36" y="48.1818">
+  <object id="65" name="ECHO_ACTOR" type="DEAD_DOUBLE_HAND" x="36" y="48.1818">
    <point/>
   </object>
-  <object id="66" name="ECHO_ACTOR" type="DEAD_HAND" x="120.182" y="122">
+  <object id="66" name="ECHO_ACTOR" type="DEAD_DOUBLE_HAND" x="120.182" y="122">
    <point/>
   </object>
-  <object id="67" name="ECHO_ACTOR" type="DEAD_HAND" x="47.0909" y="119.091">
+  <object id="67" name="ECHO_ACTOR" type="DEAD_DOUBLE_HAND" x="47.0909" y="119.091">
    <point/>
   </object>
  </objectgroup>

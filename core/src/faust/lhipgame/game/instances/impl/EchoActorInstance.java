@@ -95,7 +95,15 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
     @Override
     protected float mapStateTimeFromBehaviour(float stateTime) {
-        return 0.75f * (stateTime - deltaTime);
+        switch (((EchoActorEntity) entity).getEchoesActorType()){
+            case DEAD_HAND:
+            case DEAD_DOUBLE_HAND:
+                //Glitchy movement for skeletons
+                return (MathUtils.random(1,1.5f) + MathUtils.random(0,1.5f)) * (stateTime - deltaTime);
+
+            default:
+                return 0.75f * (stateTime - deltaTime);
+        }
     }
 
     @Override

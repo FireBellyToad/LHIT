@@ -327,8 +327,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     @Override
     public void hurt(GameInstance attacker) {
 
-        //50% chance of evading attack
-        final boolean canEvade = (MathUtils.random(1,100)) >= 50;
+        //40% chance of evading attack
+        final boolean canEvade = (MathUtils.random(1,100)) >= 60;
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
@@ -363,8 +363,13 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        //If evading, the leap is more subtle
-        final float modifier = GameBehavior.HURT.equals(currentBehavior) ? 4f: 1.5f;
+        float modifier =  4f;
+        //If evading, the leap is more subtle and casual
+        if(GameBehavior.EVADE.equals(currentBehavior)){
+            modifier = 1.5f;
+            direction.x = (float) (MathUtils.randomBoolean() ? Math.sin(direction.x) : Math.cos(direction.x));
+            direction.y = (float) (MathUtils.randomBoolean() ? Math.sin(direction.y) : Math.cos(direction.y));
+        }
         body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {

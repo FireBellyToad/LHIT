@@ -99,7 +99,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             case DEAD_HAND:
             case DEAD_DOUBLE_HAND:
                 //Glitchy movement for skeletons
-                return (MathUtils.random(1,1.5f) + MathUtils.random(0,1.5f)) * (stateTime - deltaTime);
+                return (MathUtils.random(1,2.5f)) * (stateTime - deltaTime);
 
             default:
                 return 0.75f * (stateTime - deltaTime);

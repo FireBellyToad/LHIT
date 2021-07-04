@@ -109,9 +109,6 @@ public class Menu implements InputProcessor {
             case NEW_GAME:
                 handleNewGame();
                 break;
-            case OPTIONS:
-                handleOptions();
-                break;
             case MAIN:
                 handleMain();
                 break;
@@ -155,12 +152,6 @@ public class Menu implements InputProcessor {
                 break;
             }
             case 1: {
-                //Option
-                selectedMenuVoice = 0;
-                currentMenu = MenuItem.OPTIONS;
-                break;
-            }
-            case 2: {
                 //TODO credit
                 break;
             }
@@ -184,30 +175,6 @@ public class Menu implements InputProcessor {
                 //No, back to main
                 currentMenu = MenuItem.MAIN;
                 selectedMenuVoice = 0;
-                break;
-            }
-        }
-    }
-
-    /**
-     * Option music
-     */
-    private void handleOptions() {
-        switch (selectedMenuVoice) {
-            case 0: {
-                //Back to main
-                currentMenu = MenuItem.MAIN;
-                selectedMenuVoice = 0;
-                break;
-            }
-            case 1: {
-                //If music is enabled, we play title music (we are in title screen).
-                if(!musicManager.toggleMusic())
-                    musicManager.playMusic(TuneEnum.TITLE, 0.75f);
-                break;
-            }
-            case 2: {
-                //TODO sound toggle
                 break;
             }
         }

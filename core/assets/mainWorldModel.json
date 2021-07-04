@@ -199,6 +199,11 @@
       "x": 4,
       "y": 7,
       "roomType": "BOAT"
+    },
+    {
+      "x": 2,
+      "y": 8,
+      "roomType": "FINAL"
     }
   ]
 }

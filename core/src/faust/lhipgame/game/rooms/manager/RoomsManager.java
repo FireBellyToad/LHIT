@@ -193,6 +193,11 @@ public class RoomsManager {
         //Check if all poi have been examined
         saveMap.get(currentRoomPosInWorld).savedFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, currentRoom.arePoiCleared());
 
+        // In final room should never change
+        if(RoomTypeEnum.FINAL.equals(currentRoom.getRoomType()) ){
+            return;
+        }
+
         // After room logic, handle the room change
         Vector2 playerPosition = player.getBody().getPosition();
         player.setStartX(playerPosition.x);
@@ -225,8 +230,9 @@ public class RoomsManager {
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
         } else if (playerPosition.y > LHIPGame.GAME_HEIGHT * 0.45 &&
                 RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
-            //ENDGAME!
-            Gdx.app.exit();
+            //Final room
+            newYPosInMatrix++;
+            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
         }
 
         // Adjustments for world extremes, semi pacman effect 

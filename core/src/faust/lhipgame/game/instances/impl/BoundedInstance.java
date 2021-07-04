@@ -364,11 +364,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         float modifier =  4f;
-        //If evading, the leap is more subtle and casual
+        //If evading, the leap is more subtle and perpendicular
         if(GameBehavior.EVADE.equals(currentBehavior)){
             modifier = 1.5f;
-            direction.x = (float) (MathUtils.randomBoolean() ? Math.sin(direction.x) : Math.cos(direction.x));
-            direction.y = (float) (MathUtils.randomBoolean() ? Math.sin(direction.y) : Math.cos(direction.y));
+            direction.x = (float) Math.cos(direction.x);
+            direction.y = (float) Math.cos(direction.y);
         }
         body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
         // Do nothing for half second

@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
         menu.loadFonts(assetManager);
 
         //Loop title music
-        musicManager.playMusic(TuneEnum.TITLE, 0.75f);
+        musicManager.playMusic(TuneEnum.TITLE);
 
         Gdx.input.setInputProcessor(menu);
     }

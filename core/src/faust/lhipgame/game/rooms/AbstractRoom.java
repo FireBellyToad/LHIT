@@ -242,6 +242,12 @@ public abstract class AbstractRoom {
                     (float) obj.getProperties().get("y"),
                     assetManager,
                     textManager);
+        } else if ("SPITTER".equals(enemyType)) {
+            enemyInstance = new SpitterInstance(
+                    (float) obj.getProperties().get("x"),
+                    (float) obj.getProperties().get("y"),
+                    assetManager,
+                    textManager);
         } else if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),

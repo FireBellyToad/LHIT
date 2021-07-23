@@ -232,7 +232,7 @@ public class RoomsManager {
                 RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
             //Final room
             newYPosInMatrix++;
-            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
+            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
         }
 
         // Adjustments for world extremes, semi pacman effect 

@@ -84,7 +84,7 @@ public class Hud {
 
         batch.begin();
         // If not hurt or the flickering POI must be shown, draw the texture
-        if (!mustFlicker) {
+        if (!mustFlicker || player.getDamage() > 0) {
             // Draw Health meter (red crosses for each hitponit remaining, hollow ones for each damage point)
             TextureRegion frame;
             for (int r = 0; r < player.getResistance(); r++) {

@@ -246,8 +246,11 @@ public abstract class AbstractRoom {
             enemyInstance = new SpitterInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
+                    player,
                     assetManager,
                     textManager);
+
+            enemyList.add(((SpitterInstance) enemyInstance).getMeatInstance());
         } else if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),

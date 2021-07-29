@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.interfaces.Attacker;
+import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -27,7 +27,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class EchoActorInstance extends AnimatedInstance implements Interactable, Attacker {
+public class EchoActorInstance extends AnimatedInstance implements Interactable, Damager {
 
     private boolean removeFromRoom = false;
     private boolean showTextBox = true;
@@ -182,6 +182,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         //Only certain echoes should harm the player
         switch (((EchoActorEntity) entity).getEchoesActorType()){
             case DEAD_HAND:
+            case DEAD_DOUBLE_HAND:
                 return Math.min(MathUtils.random(1,6),MathUtils.random(1,6));
             default:
                 return 0;

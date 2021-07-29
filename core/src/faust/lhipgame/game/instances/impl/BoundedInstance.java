@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.interfaces.Attacker;
+import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
@@ -28,14 +28,19 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class BoundedInstance extends AnimatedInstance implements Interactable, Hurtable, Attacker {
+public class BoundedInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final float BOUNDED_SPEED = 40;
     private static final int LINE_OF_ATTACK = 15;
     private static final int LINE_OF_SIGHT = 70;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final float ATTACK_COOLDOWN_TIME = 2;
+    private static final long ATTACK_COOLDOWN_TIME = 2000; // in millis
+
+    // Time delta between state and start of attack animation
+    private float attackDeltaTime = 0;
+
+    private long startAttackCooldown = 0;
 
     //Body for spear attacks
     private Body downClawBody;
@@ -44,11 +49,6 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     private Body upClawBody;
 
     private final PlayerInstance target;
-
-    // Time delta between state and start of attack animation
-    private float attackDeltaTime = 0;
-    private boolean attackCooldown = true;
-    private Timer.Task attackCooldownTimer;
 
     public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new BoundedEntity(assetManager));
@@ -66,7 +66,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (attackCooldown && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+        if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
 
             //Start animation
             if(!GameBehavior.ATTACK.equals(currentBehavior)){
@@ -85,7 +85,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
             currentBehavior = GameBehavior.WALK;
-            // Normal from strix position to target
+            // Normal from Bounded position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
 
@@ -300,11 +300,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
-            startTime = TimeUtils.nanoTime();
+            startToFlickTime = TimeUtils.nanoTime();
         }
         batch.end();
     }
@@ -337,7 +337,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
-            double amount = ((Attacker)attacker).damageRoll();
+            double amount = ((Damager)attacker).damageRoll();
             //If Undead or Otherworldly, halve normal lance damage
             if(((PlayerInstance) attacker).getHolyLancePieces() < 2){
                 amount =  Math.floor(amount / 2);
@@ -387,7 +387,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     }
 
     public double damageRoll() {
-        return 3;
+        return 0;
     }
 
     /**
@@ -428,17 +428,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Resetting Behaviour on animation end
         if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
-            attackCooldown = false;
-
-            if(Objects.isNull(attackCooldownTimer)) {
-                attackCooldownTimer = Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        attackCooldown = true;
-                        attackCooldownTimer = null;
-                    }
-                }, ATTACK_COOLDOWN_TIME);
-            }
+            startAttackCooldown = TimeUtils.nanoTime();
         }
     }
 

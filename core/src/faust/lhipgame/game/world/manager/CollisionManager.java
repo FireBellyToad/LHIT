@@ -82,6 +82,13 @@ public class CollisionManager implements ContactListener {
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
             echoActorInstance.doPlayerInteraction(playerInstance);
         }
+
+        // Handle Meat Collision
+        if (isContactOfClass(contact, MeatInstance.class)) {
+            MeatInstance meatInstance = ((MeatInstance) getCorrectFixture(contact, MeatInstance.class).getBody().getUserData());
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            meatInstance.doPlayerInteraction(playerInstance);
+        }
     }
 
     /**
@@ -145,7 +152,7 @@ public class CollisionManager implements ContactListener {
             handleEnemyCollisionEventEnd(contact, BoundedInstance.class);
         }
 
-        // Handle Hibe Collision end
+        // Handle Hive Collision end
         if (isContactOfClass(contact, HiveInstance.class)) {
             handleEnemyCollisionEventEnd(contact, HiveInstance.class);
         }
@@ -155,7 +162,7 @@ public class CollisionManager implements ContactListener {
      * Global handler for player and enemy instances collision
      * @param contact
      * @param enemyGameInstanceClass
-     * @param <T> an Interactable and Killable instance, usually enemy
+     * @param <T> an Interactable and Hurtable instance, usually enemy
      */
     private <T extends Interactable & Hurtable> void handleEnemyCollisionEventEnd(Contact contact, Class<T>  enemyGameInstanceClass) {
         //Just free the player from leech grapple

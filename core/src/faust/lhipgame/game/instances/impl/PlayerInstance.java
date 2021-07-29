@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.interfaces.Attacker;
+import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
@@ -35,7 +35,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class PlayerInstance extends AnimatedInstance implements InputProcessor, Hurtable, Attacker {
+public class PlayerInstance extends AnimatedInstance implements InputProcessor, Hurtable, Damager {
 
     private static final float PLAYER_SPEED = 50;
     private static final int EXAMINATION_DISTANCE = 40;
@@ -169,7 +169,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public void hurt(GameInstance attacker) {
 
-        double damageReceived = ((Attacker) attacker).damageRoll();
+        double damageReceived = ((Damager) attacker).damageRoll();
         if (damageReceived > 0 && isDying()) {
             isDead = true;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
@@ -282,11 +282,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
-            startTime = TimeUtils.nanoTime();
+            startToFlickTime = TimeUtils.nanoTime();
         }
         batch.end();
 

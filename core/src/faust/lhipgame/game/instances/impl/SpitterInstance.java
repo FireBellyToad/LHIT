@@ -8,14 +8,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.SpitterEntity;
-import faust.lhipgame.game.gameentities.impl.SpitterEntity;
-import faust.lhipgame.game.gameentities.interfaces.Attacker;
+import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
@@ -31,22 +31,53 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class SpitterInstance extends AnimatedInstance implements Interactable, Hurtable, Attacker {
+public class SpitterInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
+
+    private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
 
     private final TextBoxManager textBoxManager;
     private boolean isDead = false;
+    // Time delta between state and start of attack animation
+    private float attackDeltaTime = 0;
 
-    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager) {
+    private final PlayerInstance target;
+    private MeatInstance meatInstance;
+    private long startAttackCooldown = 0;
+
+
+    public SpitterInstance(float x, float y, PlayerInstance target, AssetManager assetManager, TextBoxManager textBoxManager) {
         super(new SpitterEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;
         this.textBoxManager = textBoxManager;
+        this.target = target;
+        this.meatInstance = new MeatInstance(x + 8, y-8, assetManager);
     }
 
     @Override
     public void doLogic(float stateTime) {
-        // TODO spitter
+
+        switch (currentBehavior){
+            case ATTACK:{
+
+                attackLogic(stateTime);
+                break;
+            }
+            case IDLE:{
+                // Every six seconds spits meat
+                if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(6000)) {
+                    attackDeltaTime = stateTime;
+                    currentBehavior = GameBehavior.ATTACK;
+                    startAttackCooldown = TimeUtils.nanoTime();
+                }
+
+                break;
+            }
+            default:{
+                throw new GdxRuntimeException("Unexpected SpitterInstance behaviour!");
+            }
+        }
 
     }
 
@@ -129,6 +160,8 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
         hitBoxShape.dispose();
+
+        meatInstance.createBody(world, x + 8, y-8);
     }
 
     /**
@@ -149,11 +182,11 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
-            startTime = TimeUtils.nanoTime();
+            startToFlickTime = TimeUtils.nanoTime();
         }
         batch.end();
     }
@@ -162,6 +195,10 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
         playerInstance.hurt(this);
+    }
+
+    public MeatInstance getMeatInstance() {
+        return meatInstance;
     }
 
     @Override
@@ -191,7 +228,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             }
 
             // Hurt by player
-            this.damage += ((Attacker) attacker).damageRoll();
+            this.damage += ((Damager) attacker).damageRoll();
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         }
@@ -206,9 +243,33 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         return 0; // harmless! just bounce player
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
-        return stateTime * 0.75f;
+    /**
+     * Handle the attack logic, activating and deactivating attack collision bodies
+     *
+     * @param stateTime
+     */
+    private void attackLogic(float stateTime) {
+
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime));
+
+        //Activate weapon sensor on frame
+        if (currentFrame == ATTACK_VALID_FRAME) {
+            meatInstance.setTarget(this.target.getBody().getPosition());
+        }
+        // Resetting Behaviour on animation end
+        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
+            currentBehavior = GameBehavior.IDLE;
+        }
     }
 
+    @Override
+    protected float mapStateTimeFromBehaviour(float stateTime) {
+
+        switch (currentBehavior) {
+            case ATTACK: {
+                return (stateTime - attackDeltaTime);
+            }
+        }
+        return stateTime;
+    }
 }

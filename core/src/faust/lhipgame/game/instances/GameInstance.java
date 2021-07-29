@@ -22,7 +22,7 @@ public abstract class GameInstance {
 
     // Flicker effect variables
     protected boolean mustFlicker = false;// flag that is true when the Instance must be hidden
-    protected long startTime = 0;
+    protected long startToFlickTime = 0;
 
     protected GameEntity entity;
     protected Body body;

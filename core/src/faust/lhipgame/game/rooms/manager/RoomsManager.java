@@ -106,6 +106,11 @@ public class RoomsManager {
         float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
+        // Safety check on y
+        if(finalY == 8 && finalX != 2){
+            finalY--;
+        }
+
         currentRoomPosInWorld.set(finalX, finalY);
 
         //Init room flags
@@ -128,11 +133,11 @@ public class RoomsManager {
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld,
-                new RoomSaveEntry(
-                        (int) finalX,
-                        (int) finalY,
-                        roomCasualNumber,
-                        roomFlags));
+                    new RoomSaveEntry(
+                            (int) finalX,
+                            (int) finalY,
+                            roomCasualNumber,
+                            roomFlags));
 
 
     }
@@ -194,7 +199,7 @@ public class RoomsManager {
         saveMap.get(currentRoomPosInWorld).savedFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, currentRoom.arePoiCleared());
 
         // In final room should never change
-        if(RoomTypeEnum.FINAL.equals(currentRoom.getRoomType()) ){
+        if (RoomTypeEnum.FINAL.equals(currentRoom.getRoomType())) {
             return;
         }
 
@@ -231,7 +236,8 @@ public class RoomsManager {
         } else if (playerPosition.y > LHIPGame.GAME_HEIGHT * 0.45 &&
                 RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
             //Final room
-            newYPosInMatrix++;
+            newXPosInMatrix = 2;
+            newYPosInMatrix = 8;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
         }
 

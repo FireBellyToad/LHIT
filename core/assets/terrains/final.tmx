@@ -37,16 +37,16 @@
   <object id="56" name="ENEMY" type="SPITTER" x="81.5" y="45">
    <point/>
   </object>
-  <object id="57" name="ENEMY" type="HIVE" x="129" y="37.5">
+  <object id="57" name="ENEMY" type="HIVE" x="104.273" y="36.9545">
    <point/>
   </object>
-  <object id="58" name="ENEMY" type="HIVE" x="127" y="110.5">
+  <object id="58" name="ENEMY" type="HIVE" x="99.3636" y="70.6818">
    <point/>
   </object>
-  <object id="59" name="ENEMY" type="HIVE" x="32.5" y="111.25">
+  <object id="59" name="ENEMY" type="HIVE" x="65.7727" y="70.8864">
    <point/>
   </object>
-  <object id="60" name="ENEMY" type="HIVE" x="32.5" y="37">
+  <object id="60" name="ENEMY" type="HIVE" x="58.6818" y="40.6364">
    <point/>
   </object>
   <object id="62" name="WALL" x="0.5" y="127.5" width="144" height="16"/>

@@ -16,6 +16,8 @@ import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.MeatEntity;
 import faust.lhipgame.game.gameentities.interfaces.Damager;
+import faust.lhipgame.game.gameentities.interfaces.Hurtable;
+import faust.lhipgame.game.gameentities.interfaces.Killable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.interfaces.Interactable;
 import faust.lhipgame.game.world.manager.CollisionManager;
@@ -27,18 +29,21 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class MeatInstance extends AnimatedInstance implements Interactable, Damager {
+public class MeatInstance extends AnimatedInstance implements Interactable, Damager, Killable {
 
     private static final float MEAT_SPEED = 60;
     
-    private Vector2 target; // Target x and y;
+    private final Vector2 target; // Target x and y;
     private long startAttackCooldown = 0;
 
-    public MeatInstance(float x, float y, AssetManager assetManager) {
+    public MeatInstance(float x, float y, PlayerInstance playerInstance, AssetManager assetManager) {
         super(new MeatEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;
+
+        target = playerInstance.getBody().getPosition().cpy();
+        currentBehavior = GameBehavior.WALK;
     }
 
     @Override
@@ -47,8 +52,8 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
         switch (currentBehavior) {
             case ATTACK: {
                 if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(3000)) {
-                    clearTargetAndReset();
-                    currentBehavior = GameBehavior.IDLE;
+                    currentBehavior = GameBehavior.DEAD;
+                    dispose();
                 }
                 break;
             }
@@ -146,13 +151,14 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
         return stateTime * 0.75f;
     }
 
-    public void clearTargetAndReset() {
-        target = null;
-        currentBehavior = GameBehavior.IDLE;
+    @Override
+    public boolean isDying() {
+        //is never dying...
+        return false;
     }
 
-    public void setTarget(Vector2 position) {
-        target = new Vector2(position.x, position.y);
-        currentBehavior = GameBehavior.WALK;
+    @Override
+    public boolean isDead() {
+        return GameBehavior.DEAD.equals(currentBehavior);
     }
 }

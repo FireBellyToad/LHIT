@@ -13,12 +13,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
+import faust.lhipgame.game.gameentities.interfaces.Hurtable;
+import faust.lhipgame.game.gameentities.interfaces.Killable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
+import faust.lhipgame.game.instances.Spawner;
 import faust.lhipgame.game.instances.impl.*;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
@@ -33,17 +35,15 @@ import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.WorldManager;
 import faust.lhipgame.saves.RoomSaveEntry;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 
 /**
  * Abstract room common logic
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class AbstractRoom {
+public abstract class AbstractRoom implements Spawner {
 
     /**
      * Boundaries for room changing
@@ -52,6 +52,10 @@ public abstract class AbstractRoom {
     public static final float BOTTOM_BOUNDARY = 4;
     public static final float RIGHT_BOUNDARY = LHIPGame.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHIPGame.GAME_HEIGHT - 24;
+    static final Map<String, String> permittedInstanceTypes = new HashMap<String, String>() {{
+        this.put("MeatInstance", "MEAT");
+    }};
+
 
     protected TiledMap tiledMap;
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -68,10 +72,13 @@ public abstract class AbstractRoom {
     protected SplashManager splashManager;
     protected TextBoxManager textManager;
     protected MusicManager musicManager;
+    protected AssetManager assetManager;
+    protected WorldManager worldManager;
 
     protected boolean mustClearPOI = false;
 
     protected final Map<RoomFlagEnum, Boolean> roomFlags;
+    private AnimatedInstance addedInstance;
 
     /**
      * Constructor
@@ -91,6 +98,11 @@ public abstract class AbstractRoom {
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
         Objects.requireNonNull(roomType);
+        Objects.requireNonNull(splashManager);
+        Objects.requireNonNull(assetManager);
+
+        this.assetManager = assetManager;
+        this.worldManager = worldManager;
 
         this.roomFlags = roomFlags;
 
@@ -131,7 +143,7 @@ public abstract class AbstractRoom {
 
             // Prepare enemy if they are enabled
             if (!roomFlags.get(RoomFlagEnum.DISABLED_ENEMIES) && MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
-                addObjAsEnemy(obj, assetManager);
+                addObjAsEnemy(obj, assetManager, false);
             }
 
             // Prepare enemy (casual choice)
@@ -228,9 +240,10 @@ public abstract class AbstractRoom {
     /**
      * Add a object as Enemy
      *
-     * @param obj MapObject to add
+     * @param obj            MapObject to add
+     * @param addNewInstance
      */
-    protected void addObjAsEnemy(MapObject obj, AssetManager assetManager) {
+    protected void addObjAsEnemy(MapObject obj, AssetManager assetManager, boolean addNewInstance) {
 
         AnimatedInstance enemyInstance = null;
         String enemyType = (String) obj.getProperties().get("type");
@@ -246,11 +259,15 @@ public abstract class AbstractRoom {
             enemyInstance = new SpitterInstance(
                     (float) obj.getProperties().get("x"),
                     (float) obj.getProperties().get("y"),
-                    player,
-                    assetManager,
-                    textManager);
+                    player, assetManager,
+                    textManager, this);
 
-            enemyList.add(((SpitterInstance) enemyInstance).getMeatInstance());
+        } else if ("MEAT".equals(enemyType)) {
+            enemyInstance = new MeatInstance(
+                    (float) obj.getProperties().get("x"),
+                    (float) obj.getProperties().get("y"),
+                    player, assetManager);
+
         } else if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
             enemyInstance = new BoundedInstance(
                     (float) obj.getProperties().get("x"),
@@ -262,7 +279,7 @@ public abstract class AbstractRoom {
             if (!roomFlags.get(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED))
                 splashManager.setSplashToShow("splash.bounded");
 
-            roomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED,true);
+            roomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED, true);
         } else {
             enemyInstance = new StrixInstance(
                     (float) obj.getProperties().get("x"),
@@ -274,16 +291,21 @@ public abstract class AbstractRoom {
             if (!roomFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED))
                 splashManager.setSplashToShow("splash.strix");
 
-            roomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED,true);
+            roomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED, true);
         }
 
 
-        enemyList.add(enemyInstance);
+        if (addNewInstance) {
+            addedInstance = enemyInstance;
+        } else {
+            enemyList.add(enemyInstance);
+        }
     }
 
     /**
      * Method for additional room initialization
-     *  @param roomType
+     *
+     * @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
@@ -394,7 +416,7 @@ public abstract class AbstractRoom {
         return roomType;
     }
 
-    public void doRoomContentsLogic(float stateTime) {
+    public synchronized void doRoomContentsLogic(float stateTime) {
         // Do Player logic
         if (!player.isDead())
             player.doLogic(stateTime);
@@ -405,14 +427,21 @@ public abstract class AbstractRoom {
             ene.doLogic(stateTime);
 
             //Changing music based on enemy behaviour and number
-            if (enemyList.size() == 1 && ((Hurtable) ene).isDead()) {
+            if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 ene.dispose();
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if(!(ene instanceof HiveInstance) && !GameBehavior.IDLE.equals(ene.getCurrentBehavior())){
-                musicManager.playMusic(TuneEnum.ATTACK, 0.5f,true);
+            } else if (!(ene instanceof HiveInstance) && !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
+                musicManager.playMusic(TuneEnum.ATTACK, 0.75f, true);
             }
         });
 
+        // If there is an instance to add, do it and clean reference
+        if (!Objects.isNull(addedInstance)) {
+            enemyList.add(addedInstance);
+            addedInstance = null;
+        }
+
+        enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
     }
 
     /**
@@ -423,4 +452,20 @@ public abstract class AbstractRoom {
         return this.poiList.stream().allMatch(poiInstance -> poiInstance.isAlreadyExamined());
     }
 
+    @Override
+    public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY) {
+
+        if(!Objects.isNull(addedInstance)){
+            return;
+        }
+
+        MapObject mapObjectStub = new MapObject();
+        mapObjectStub.getProperties().put("x", startX);
+        mapObjectStub.getProperties().put("y", startY);
+        mapObjectStub.getProperties().put("type", permittedInstanceTypes.get(instanceClass.getSimpleName()));
+
+        addObjAsEnemy(mapObjectStub, assetManager, true);
+        //Insert last enemy into world
+        worldManager.insertEnemiesIntoWorld(Arrays.asList(addedInstance));
+    }
 }

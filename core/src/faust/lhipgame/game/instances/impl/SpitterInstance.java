@@ -19,6 +19,7 @@ import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
+import faust.lhipgame.game.instances.Spawner;
 import faust.lhipgame.game.instances.interfaces.Interactable;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.game.world.manager.CollisionManager;
@@ -34,25 +35,29 @@ import java.util.Objects;
 public class SpitterInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
+    private static final long SPITTING_FREQUENCY_IN_MILLIS = 2000;
 
     private final TextBoxManager textBoxManager;
-    private boolean isDead = false;
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
 
     private final PlayerInstance target;
-    private MeatInstance meatInstance;
+    private final Spawner spawner;
+
     private long startAttackCooldown = 0;
 
+    private boolean isDead = false;
+    private boolean canAttack = false;
 
-    public SpitterInstance(float x, float y, PlayerInstance target, AssetManager assetManager, TextBoxManager textBoxManager) {
+
+    public SpitterInstance(float x, float y, PlayerInstance target, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner) {
         super(new SpitterEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;
         this.textBoxManager = textBoxManager;
         this.target = target;
-        this.meatInstance = new MeatInstance(x + 8, y-8, assetManager);
+        this.spawner = spawner;
     }
 
     @Override
@@ -66,9 +71,10 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             }
             case IDLE:{
                 // Every six seconds spits meat
-                if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(6000)) {
+                if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(SPITTING_FREQUENCY_IN_MILLIS)) {
                     attackDeltaTime = stateTime;
                     currentBehavior = GameBehavior.ATTACK;
+                    canAttack = true;
                     startAttackCooldown = TimeUtils.nanoTime();
                 }
 
@@ -160,8 +166,6 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
         hitBoxShape.dispose();
-
-        meatInstance.createBody(world, x + 8, y-8);
     }
 
     /**
@@ -195,10 +199,6 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
         playerInstance.hurt(this);
-    }
-
-    public MeatInstance getMeatInstance() {
-        return meatInstance;
     }
 
     @Override
@@ -253,8 +253,9 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
-        if (currentFrame == ATTACK_VALID_FRAME) {
-            meatInstance.setTarget(this.target.getBody().getPosition());
+        if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
+            spawner.spawnInstance(MeatInstance.class,this.startX,this.startY);
+            canAttack = false;
         }
         // Resetting Behaviour on animation end
         if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
@@ -272,4 +273,5 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         }
         return stateTime;
     }
+
 }

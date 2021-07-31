@@ -132,7 +132,7 @@ public class RoomsManager {
         }
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
-        saveMap.put(currentRoomPosInWorld,
+        saveMap.put(currentRoomPosInWorld.cpy(),
                     new RoomSaveEntry(
                             (int) finalX,
                             (int) finalY,

@@ -387,7 +387,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     }
 
     public double damageRoll() {
-        return 0;
+        return 3;
     }
 
     /**

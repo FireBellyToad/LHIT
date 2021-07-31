@@ -2,6 +2,8 @@ package faust.lhipgame.game.gameentities.interfaces;
 
 /**
  * Interface for describing attacking behaviour
+ *
+ * @author Jacopo "Faust" Buttiglieri
  */
 public interface Damager {
     /**

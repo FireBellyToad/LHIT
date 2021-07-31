@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Class that extends GameEntity and adds animations handling
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public abstract class AnimatedEntity extends GameEntity {
 
     //Animations given Behavior and Direction

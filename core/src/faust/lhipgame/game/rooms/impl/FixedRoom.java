@@ -22,6 +22,7 @@ import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.utils.DepthComparatorUtils;
 import faust.lhipgame.game.world.manager.WorldManager;
 import faust.lhipgame.saves.RoomSaveEntry;
 
@@ -175,7 +176,7 @@ public class FixedRoom extends AbstractRoom {
         }
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
-        allInstance.sort((o1, o2) -> compareEntities(o1, o2));
+        allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> {
             i.draw(batch, stateTime);
@@ -186,7 +187,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     public void dispose() {
         super.dispose();
-        echoActors.forEach(echoActorInstance -> echoActorInstance.dispose());
+        echoActors.forEach(EchoActorInstance::dispose);
     }
 
     public void doRoomContentsLogic(float stateTime) {

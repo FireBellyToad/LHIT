@@ -4,6 +4,8 @@ import faust.lhipgame.game.instances.GameInstance;
 
 /**
  * Interface for describing hurting behaviour
+ *
+ * @author Jacopo "Faust" Buttiglieri
  */
 public interface Hurtable extends Killable {
     /**

@@ -93,10 +93,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
             // Move towards target
             body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
-            rightClawBody.setActive(false);
-            upClawBody.setActive(false);
-            leftClawBody.setActive(false);
-            downClawBody.setActive(false);
+            deactivateAttackBodies();
         } else {
             currentBehavior = GameBehavior.IDLE;
 
@@ -354,6 +351,9 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             Gdx.app.log("DEBUG", "Instance EVADED!");
             postHurtLogic(attacker);
         }
+
+        // When hurt the player cannot hurt anyone
+        deactivateAttackBodies();
     }
 
     @Override
@@ -420,10 +420,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
                 }
             }
         } else {
-            rightClawBody.setActive(false);
-            upClawBody.setActive(false);
-            leftClawBody.setActive(false);
-            downClawBody.setActive(false);
+            deactivateAttackBodies();
         }
 
         // Resetting Behaviour on animation end
@@ -454,6 +451,16 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             }
         }
         return stateTime;
+    }
+
+    /**
+     * Deactivate all attacker bodies
+     */
+    private void deactivateAttackBodies() {
+        rightClawBody.setActive(false);
+        upClawBody.setActive(false);
+        leftClawBody.setActive(false);
+        downClawBody.setActive(false);
     }
 
 }

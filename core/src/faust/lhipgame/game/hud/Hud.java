@@ -3,11 +3,9 @@ package faust.lhipgame.game.hud;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
@@ -138,7 +136,7 @@ public class Hud {
         batch.end();
 
         //Draw Healing timer bar if player is curing himself
-        if (GameBehavior.KNEE.equals(player.getCurrentBehavior()) && Objects.nonNull(player.getIsHealingTimer())) {
+        if (GameBehavior.KNEE.equals(player.getCurrentBehavior()) && Objects.nonNull(player.getStartHealingTime())) {
             //Black Corner
             batch.begin();
             backgroundBox.setColor(back);
@@ -148,12 +146,12 @@ public class Hud {
             backgroundBox.end();
 
             //White bar
-            long deltaTimer = (player.getIsHealingTimer().getExecuteTimeMillis() - ( TimeUtils.nanoTime() / 1000000) )/1000;
+            long deltaTimer = (TimeUtils.nanosToMillis(player.getStartHealingTime()) - ( TimeUtils.nanoTime() / 1000000) )/1000;
 
             cornerBox.setColor(corner);
             cornerBox.setProjectionMatrix(camera.combined);
             cornerBox.begin(ShapeRenderer.ShapeType.Filled);
-            cornerBox.rect(playerPosition.x + 1, playerPosition.y + 18,2 + (deltaTimer * 2), 3);
+            cornerBox.rect(playerPosition.x + 1, playerPosition.y + 18,8 + (deltaTimer * 2), 3);
             cornerBox.end();
             batch.end();
         }

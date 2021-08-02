@@ -83,6 +83,11 @@ public class CollisionManager implements ContactListener {
             echoActorInstance.doPlayerInteraction(playerInstance);
         }
 
+        // Handle Spitter Collision end
+        if (isContactOfClass(contact, SpitterInstance.class)) {
+            handleEnemyCollisionEvent(contact, SpitterInstance.class);
+        }
+
         // Handle Meat Collision
         if (isContactOfClass(contact, MeatInstance.class)) {
             MeatInstance meatInstance = ((MeatInstance) getCorrectFixture(contact, MeatInstance.class).getBody().getUserData());
@@ -155,6 +160,11 @@ public class CollisionManager implements ContactListener {
         // Handle Hive Collision end
         if (isContactOfClass(contact, HiveInstance.class)) {
             handleEnemyCollisionEventEnd(contact, HiveInstance.class);
+        }
+
+        // Handle Spitter Collision end
+        if (isContactOfClass(contact, SpitterInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, SpitterInstance.class);
         }
     }
 

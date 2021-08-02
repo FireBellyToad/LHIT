@@ -41,7 +41,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final int EXAMINATION_DISTANCE = 40;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
-    private static final float HEALTH_KIT_TIME = 4;
+    private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 9;
 
     // Time delta between state and start of attack animation
@@ -57,7 +57,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private POIInstance nearestPOIInstance;
 
     private int availableHealthKits = 0; // available Health Kits
-    private Timer.Task isHealingTimer;
+    private long startHealingTime;
     private int foundMorgengabes = 0;
     private int holyLancePieces = 0;
     private boolean hasArmor = false;
@@ -97,18 +97,24 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             return;
 
         // Interrupt healing if moving
-        if (GameBehavior.KNEE.equals(currentBehavior) &&
-                (this.body.getLinearVelocity().x != 0 ||
-                        this.body.getLinearVelocity().y != 0)) {
-            currentBehavior = GameBehavior.WALK;
+        if (GameBehavior.KNEE.equals(currentBehavior)) {
+            if (TimeUtils.timeSinceNanos(startHealingTime) >= TimeUtils.millisToNanos(HEALTH_KIT_TIME_IN_MILLIS) ){
+                availableHealthKits--;
+                startHealingTime = 0;
+                damage = 0;
+                currentBehavior = GameBehavior.IDLE;
+            }
+            if (this.body.getLinearVelocity().x != 0 ||
+                    this.body.getLinearVelocity().y != 0) {
+                currentBehavior = GameBehavior.WALK;
+            }
         }
 
         // If not healing
         if (!GameBehavior.KNEE.equals(currentBehavior)) {
-            if (!Objects.isNull(isHealingTimer)) {
+            if (startHealingTime > 0) {
                 // Resetting healing timer if healing is interrupted by anything
-                isHealingTimer.cancel();
-                isHealingTimer = null;
+                startHealingTime = 0;
                 currentBehavior = GameBehavior.IDLE;
             }
 
@@ -178,6 +184,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         }
+
+        // When hurt the player cannot hurt anyone
+        deactivateAttackBodies();
     }
 
     @Override
@@ -379,10 +388,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 }
             }
         } else {
-            rightSpearBody.setActive(false);
-            upSpearBody.setActive(false);
-            leftSpearBody.setActive(false);
-            downSpearBody.setActive(false);
+            deactivateAttackBodies();
         }
 
         // Resetting Behaviour on animation end
@@ -662,18 +668,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     private void useHealthKit() {
         //If has at least one healing kit, is not already curing himself and at least 1 damage point
-        if (Objects.isNull(isHealingTimer) && availableHealthKits > 0 && damage > 0) {
+        if (startHealingTime == 0 && availableHealthKits > 0 && damage > 0) {
             //Cures himself if not interrupted
             currentBehavior = GameBehavior.KNEE;
-            isHealingTimer = Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    availableHealthKits--;
-                    isHealingTimer = null;
-                    damage = 0;
-                    currentBehavior = GameBehavior.IDLE;
-                }
-            }, HEALTH_KIT_TIME);
+            startHealingTime = TimeUtils.nanoTime();
         }
     }
 
@@ -745,8 +743,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      *
      * @return healing timer instance, non null if the player is curing himself
      */
-    public Timer.Task getIsHealingTimer() {
-        return isHealingTimer;
+    public long getStartHealingTime() {
+        return startHealingTime;
     }
 
     public int getHolyLancePieces() {
@@ -814,6 +812,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         downSpearBody.getFixtureList().forEach(f ->
                 downSpearBody.destroyFixture(f));
         waterWalkEffect.dispose();
+    }
+
+    /**
+     * Deactivate all attacker bodies
+     */
+    private void deactivateAttackBodies() {
+        rightSpearBody.setActive(false);
+        upSpearBody.setActive(false);
+        leftSpearBody.setActive(false);
+        downSpearBody.setActive(false);
     }
 
     @Override

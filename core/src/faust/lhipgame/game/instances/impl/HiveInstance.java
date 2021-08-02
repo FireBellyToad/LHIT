@@ -94,8 +94,9 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 0;
-        fixtureDef.friction = 0;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 1;
+        fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
         fixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
@@ -113,7 +114,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
 
         // Define shape
         PolygonShape hitBoxShape = new PolygonShape();
-        hitBoxShape.setAsBox(4, 12);
+        hitBoxShape.setAsBox(6, 12);
 
         // Define Fixture
         FixtureDef hitBoxFixtureDef = new FixtureDef();
@@ -160,7 +161,9 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
-        playerInstance.hurt(this);
+        if (!isDead()) {
+            playerInstance.hurt(this);
+        }
     }
 
     @Override

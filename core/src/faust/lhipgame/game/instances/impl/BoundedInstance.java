@@ -84,6 +84,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
+            z
+            deactivateAttackBodies();
             currentBehavior = GameBehavior.WALK;
             // Normal from Bounded position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
@@ -352,8 +354,6 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             postHurtLogic(attacker);
         }
 
-        // When hurt the player cannot hurt anyone
-        deactivateAttackBodies();
     }
 
     @Override

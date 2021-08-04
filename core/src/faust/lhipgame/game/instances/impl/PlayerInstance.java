@@ -123,6 +123,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 setPlayerLinearVelocity(0, 0);
                 attackLogic(stateTime);
             } else {
+                deactivateAttackBodies();
 
                 // If the player has stopped moving, set idle behaviour
                 if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {
@@ -185,8 +186,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             postHurtLogic(attacker);
         }
 
-        // When hurt the player cannot hurt anyone
-        deactivateAttackBodies();
     }
 
     @Override

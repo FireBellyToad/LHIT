@@ -27,7 +27,7 @@ public abstract class GameInstance {
     protected GameEntity entity;
     protected Body body;
     protected float startX = LHIPGame.GAME_WIDTH / 2;
-    protected float startY = LHIPGame.GAME_HEIGHT / 2;
+    protected float startY = LHIPGame.GAME_HEIGHT / 3;
 
     protected ParticleEmitter particleEmitter;
 

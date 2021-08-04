@@ -5,12 +5,15 @@ public enum POIEnum {
     BUSH("poi.bush",ItemEnum.HEALTH_KIT),
     SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy"),
     CADAVER("poi.cadaver",ItemEnum.ARMOR),
-    ALLY("poi.brother",ItemEnum.HEALTH_KIT);
+    BROTHER("poi.brother");
 
     private final String textKey;
     private final ItemEnum itemGiven;
     private final String splashKey;
 
+    POIEnum(String textKey) {
+        this(textKey, null, "");
+    }
     POIEnum(String textKey, ItemEnum itemGiven, String splashKey) {
         this.textKey = textKey;
         this.itemGiven = itemGiven;

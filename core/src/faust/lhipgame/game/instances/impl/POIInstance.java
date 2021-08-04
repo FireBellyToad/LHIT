@@ -63,7 +63,9 @@ public class POIInstance extends GameInstance {
             final ItemEnum itemGiven = ((POIEntity) this.entity).getItemGiven();
 
             //Let player find item
-            player.foundItem(itemGiven);
+            if(itemGiven != null){
+                player.foundItem(itemGiven);
+            }
 
             //If has splash screen
             if(!((POIEntity) this.entity).getSplashKey().isEmpty()){

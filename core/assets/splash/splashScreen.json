@@ -14,11 +14,11 @@
     },
     {
       "splashKey": "splash.holy.1",
-      "splashPath": "splash/morgengabe_splash.png"
+      "splashPath": "splash/holy_splash1.png"
     },
     {
       "splashKey": "splash.holy.2",
-      "splashPath": "splash/morgengabe_splash.png"
+      "splashPath": "splash/holy_splash2.png"
     },
     {
       "splashKey": "splash.gameover",

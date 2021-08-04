@@ -66,6 +66,8 @@ public class LoadingScreen implements Screen {
         assetManager.load("splash/bounded_splash.png", Texture.class);
         assetManager.load("splash/morgengabe_splash.png", Texture.class);
         assetManager.load("splash/gameover_splash.png", Texture.class);
+        assetManager.load("splash/holy_splash1.png", Texture.class);
+        assetManager.load("splash/holy_splash2.png", Texture.class);
         assetManager.load("sprites/hud.png", Texture.class);
         assetManager.load("sprites/darkness_overlay.png", Texture.class);
 

@@ -11,7 +11,12 @@ uniform int hasHolyLance;
 float Walfrit_red_r = 237.0/255.0;
 float Walfrit_red_g = 28.0/255.0;
 float Walfrit_red_b = 36.0/255.0;
+float Walfrit_yellow_r = 255.0/255.0;
+float Walfrit_yellow_g = 219.0/255.0;
+float Walfrit_yellow_b = 92.0/255.0;
+
 vec3 Walfrit_red_color = vec3(Walfrit_red_r, Walfrit_red_g, Walfrit_red_b);
+vec3 Walfrit_yellow_color = vec3(Walfrit_yellow_r, Walfrit_yellow_g, Walfrit_yellow_b);
 
 void main() {
 
@@ -21,8 +26,8 @@ void main() {
     //If has armor, the red is shifted to gray
     if (hasArmor == 1 && color.xyz == Walfrit_red_color){
         color.xyz=vec3(0.5, 0.5, 0.5);
-    } else if (hasHolyLance == 0 && color.xyz == vec3(1, 1, 1)){
-        //If holy lance hasn't benne found, the white is set to black
+    } else if (hasHolyLance == 0 && color.xyz == Walfrit_yellow_color){
+        //If holy lance hasn't been found, the yellow is set to black
         color.xyz=vec3(0,0,0);
     }
 

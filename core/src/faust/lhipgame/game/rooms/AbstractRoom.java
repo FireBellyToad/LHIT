@@ -412,8 +412,12 @@ public abstract class AbstractRoom implements Spawner {
 
             ene.doLogic(stateTime);
 
-            //Changing music based on enemy behaviour and number
-            if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
+            if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
+                ene.dispose();
+                musicManager.stopMusic();
+                //TODO proceed to endgame
+            } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
+                //Changing music based on enemy behaviour and number
                 ene.dispose();
                 musicManager.playMusic(TuneEnum.DANGER, true);
             } else if (!(ene instanceof HiveInstance) && !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
@@ -427,6 +431,7 @@ public abstract class AbstractRoom implements Spawner {
             addedInstance = null;
         }
 
+        // Remove some dead enemies
         enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
     }
 

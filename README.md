@@ -10,3 +10,18 @@ Missing:
 * Italian language
 * At least two more echoes
 * Polishing already done echoes
+
+
+# Credits
+
+2e8u - 8-bit: Chopin, Funeral March
+
+Darkness Speaks by Kevin MacLeod
+Link: https://incompetech.filmmusic.io/song/3617-darkness-speaks
+License: https://filmmusic.io/standard-license
+
+Rolemusic - Shipwreck In The Pacific Ocean - The Pirate And The Dancer
+
+Music & Sounds Effect Library - 8 bit sound effect pack
+
+Retro SFX - Andrea Baroni

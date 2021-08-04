@@ -84,7 +84,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
-            z
+
             deactivateAttackBodies();
             currentBehavior = GameBehavior.WALK;
             // Normal from Bounded position to target

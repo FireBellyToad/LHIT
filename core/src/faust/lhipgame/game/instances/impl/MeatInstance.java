@@ -129,7 +129,9 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
+        if(GameBehavior.ATTACK.equals(currentBehavior)){
         playerInstance.hurt(this);
+        }
     }
 
     @Override

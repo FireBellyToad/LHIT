@@ -63,28 +63,41 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     @Override
     public void doLogic(float stateTime) {
 
-        switch (currentBehavior){
-            case ATTACK:{
+        switch (currentBehavior) {
+            case ATTACK: {
 
                 attackLogic(stateTime);
                 break;
             }
-            case IDLE:{
+            case IDLE: {
                 // Every six seconds spits meat
                 if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(SPITTING_FREQUENCY_IN_MILLIS)) {
-                    attackDeltaTime = stateTime;
-                    currentBehavior = GameBehavior.ATTACK;
-                    canAttack = true;
-                    startAttackCooldown = TimeUtils.nanoTime();
+                    readyToAttack(stateTime);
                 }
 
                 break;
             }
-            default:{
+            case DEAD: {
+                // Stay dead
+                break;
+            }
+            case HURT: {
+                // Spit asap
+                startAttackCooldown = 0;
+                break;
+            }
+            default: {
                 throw new GdxRuntimeException("Unexpected SpitterInstance behaviour!");
             }
         }
 
+    }
+
+    private void readyToAttack(float stateTime) {
+        attackDeltaTime = stateTime;
+        currentBehavior = GameBehavior.ATTACK;
+        canAttack = true;
+        startAttackCooldown = TimeUtils.nanoTime();
     }
 
     @Override
@@ -250,11 +263,12 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
-            spawner.spawnInstance(MeatInstance.class,this.startX,this.startY);
+            ((SpitterEntity) entity).playSpitSound();
+            spawner.spawnInstance(MeatInstance.class, this.startX, this.startY);
             canAttack = false;
         }
         // Resetting Behaviour on animation end

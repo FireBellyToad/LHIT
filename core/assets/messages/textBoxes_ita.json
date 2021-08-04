@@ -1,0 +1,25 @@
+{
+  "messages": {
+    "poi.success.examine": "HO TROVATO QUALCOSA!",
+    "poi.bush.examine": "UN ARBUSTO SENZA\nVALORE",
+    "poi.bush.success": "HO TROVATO DELLE\nERBE",
+    "poi.cadaver.success": "HO TROVATO UN'ARMA-\nTURA IMBOTTITA",
+    "poi.skull.examine": "SOLO UN MUCCHIO\nDI OSSA",
+    "poi.stones.examine": "NON C'E' NULLA\nSOTTO LE PIETRE",
+    "poi.brother.examine": "TUTTI SONO MORTI",
+
+    "splash.strix": "UN GROTTESCO UCCELLO",
+    "splash.bounded": "UN CADAVERE VOLANTE",
+    "splash.morgengabe": "HO TROVATO UN PRE-\nZIOSO MORGENGABIO",
+    "splash.holy.1": "HO TROVATO UN PEZZO\nDI UNA STRANA LANCIA",
+    "splash.holy.2": "ORA POSSEGGO LA\nGRANDE LANCIA SACRA",
+
+    "echo.woman.first": "AIUTATEMIII!",
+    "echo.woman.second": "ARGH! -GASP-",
+
+    "echo.tree.first": "ORCUS DOMINAT",
+    "echo.tree.second": "PERIT UT VIVAT",
+
+    "warn.hive.damage": "LA MIA ARMA\nNON HA EFFETTO"
+  }
+}

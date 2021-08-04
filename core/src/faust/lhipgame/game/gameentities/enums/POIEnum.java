@@ -4,7 +4,8 @@ public enum POIEnum {
     SKELETON("poi.skull",ItemEnum.MORGENGABE,"splash.morgengabe"),
     BUSH("poi.bush",ItemEnum.HEALTH_KIT),
     SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy"),
-    CADAVER("poi.cadaver",ItemEnum.ARMOR);
+    CADAVER("poi.cadaver",ItemEnum.ARMOR),
+    ALLY("poi.brother",ItemEnum.HEALTH_KIT);
 
     private final String textKey;
     private final ItemEnum itemGiven;

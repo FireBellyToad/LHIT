@@ -7,26 +7,26 @@ public enum MenuItem {
     CREDITS,
     EXIT_GAME,
     LOAD_GAME,
-    NEW_GAME("Are you sure?",new MenuItem[]{YES,NO}),
+    NEW_GAME("menu.sure",new MenuItem[]{YES,NO}),
     PLAY_GAME(new MenuItem[]{NEW_GAME,LOAD_GAME,BACK}),
-    GAME_OVER("Continue?", new MenuItem[]{YES,NO}),
+    GAME_OVER("menu.continue", new MenuItem[]{YES,NO}),
     MAIN(new MenuItem[]{PLAY_GAME,CREDITS,EXIT_GAME});
 
-    String title;
+    String titleMessageKey;
     MenuItem[] subItems;
 
     MenuItem() {
-        title = null;
+        titleMessageKey = null;
         subItems = null;
     }
 
     MenuItem(MenuItem[] subItems) {
-        title = null;
+        titleMessageKey = null;
         this.subItems = subItems;
     }
 
     MenuItem(String title, MenuItem[] subItems) {
-        this.title = title;
+        this.titleMessageKey = title;
         this.subItems = subItems;
     }
 
@@ -34,7 +34,7 @@ public enum MenuItem {
         return subItems;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitleMessageKey() {
+        return titleMessageKey;
     }
 }

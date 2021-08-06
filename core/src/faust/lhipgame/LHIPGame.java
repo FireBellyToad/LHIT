@@ -3,8 +3,10 @@ package faust.lhipgame;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.game.music.MusicManager;
+import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
 import faust.lhipgame.screens.FBTScreen;
@@ -19,6 +21,7 @@ public class LHIPGame extends Game {
     private CameraManager cameraManager;
     private SaveFileManager saveFileManager;
     private MusicManager musicManager;
+    private TextBoxManager textBoxManager;
 
     @Override
     public void create() {
@@ -27,6 +30,10 @@ public class LHIPGame extends Game {
         cameraManager = new CameraManager();
         saveFileManager = new SaveFileManager();
         musicManager = new MusicManager();
+
+        assetManager.load("fonts/main_font.fnt", BitmapFont.class);
+        assetManager.finishLoading();
+        textBoxManager = new TextBoxManager(assetManager, "ita");
 
         assetManager.load("splash/fbt_splash.png", Texture.class);
         assetManager.finishLoading();
@@ -59,9 +66,15 @@ public class LHIPGame extends Game {
         return cameraManager;
     }
 
-    public SaveFileManager getSaveFileManager() { return saveFileManager;}
+    public SaveFileManager getSaveFileManager() {
+        return saveFileManager;
+    }
 
     public MusicManager getMusicManager() {
         return musicManager;
+    }
+
+    public TextBoxManager getTextBoxManager() {
+        return textBoxManager;
     }
 }

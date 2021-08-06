@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.textbox.TextBoxData;
+import faust.lhipgame.game.textbox.interfaces.TextLocalizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class TextBoxManager {
+public class TextBoxManager implements TextLocalizer {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float MESSAGE_LIMIT = 1;
@@ -40,14 +41,14 @@ public class TextBoxManager {
     private static final Color back = new Color(0x222222ff);
     private Timer.Task currentTimer;
 
-    public TextBoxManager(AssetManager assetManager) {
+    public TextBoxManager(AssetManager assetManager, String language) {
 
         // Prepare font
         mainFont = assetManager.get("fonts/main_font.fnt");
         mainFont.getData().setScale(FONT_SIZE);
 
         // Prepare text map
-        JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/textBoxes.json"));
+        JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/textBoxes_" + language + ".json"));
         messageMap = root.get("messages");
 
         Objects.requireNonNull(messageMap);
@@ -71,14 +72,14 @@ public class TextBoxManager {
         }
 
         //Create text box given a textKey.
-        TextBoxData newText = new TextBoxData(messageMap.getString(textKey));
+        TextBoxData newText = new TextBoxData(localizeFromKey(textKey));
         textBoxes.add(newText);
 
         // Hide box after time
         currentTimer = Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                if(!textBoxes.isEmpty()){
+                if (!textBoxes.isEmpty()) {
                     textBoxes.remove(newText);
                     currentTimer.cancel();
                     currentTimer = null;
@@ -88,12 +89,22 @@ public class TextBoxManager {
     }
 
     /**
+     * @param textKey
+     * @return
+     */
+    public String localizeFromKey(String textKey) {
+        Objects.requireNonNull(textKey);
+        return messageMap.getString(textKey);
+    }
+
+    /**
      * Render all the generated (right now just one) text boxes
-     *  @param batch
+     *
+     * @param batch
      * @param player
      * @param camera
      */
-    public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera,boolean splashScreenIsDrawn) {
+    public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera, boolean splashScreenIsDrawn) {
 
         // Remove box if player is under a certain boundary and there is no splash screen
         //if(!splashScreenIsDrawn && player.getBody().getPosition().y <= TOTAL_TEXTBOX_HEIGHT){
@@ -104,16 +115,16 @@ public class TextBoxManager {
         boolean twoline = false;
         float fontY = 0;
         float innerBoxHeight = 0;
-        float outerBoxHeight =0;
+        float outerBoxHeight = 0;
 
         //Render all the created boxes
-        for(TextBoxData box : textBoxes) {
+        for (TextBoxData box : textBoxes) {
 
             //Adjust rendering if text has only one line
             twoline = box.getText().indexOf("\n") != -1;
-            outerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT : TOTAL_TEXTBOX_HEIGHT/2;
-            innerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT-4 : (TOTAL_TEXTBOX_HEIGHT/2)-4;
-            fontY = twoline ? TOTAL_TEXTBOX_HEIGHT-8 : (TOTAL_TEXTBOX_HEIGHT/2)-6;
+            outerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT : TOTAL_TEXTBOX_HEIGHT / 2;
+            innerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT - 4 : (TOTAL_TEXTBOX_HEIGHT / 2) - 4;
+            fontY = twoline ? TOTAL_TEXTBOX_HEIGHT - 8 : (TOTAL_TEXTBOX_HEIGHT / 2) - 6;
 
             //White Corner
             batch.begin();
@@ -127,7 +138,7 @@ public class TextBoxManager {
             backgroundBox.setColor(back);
             backgroundBox.setProjectionMatrix(camera.combined);
             backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH-4, innerBoxHeight);
+            backgroundBox.rect(2, 2, LHIPGame.GAME_WIDTH - 4, innerBoxHeight);
             backgroundBox.end();
             batch.end();
 
@@ -143,7 +154,6 @@ public class TextBoxManager {
     }
 
     /**
-     *
      * @return
      */
     public BitmapFont getMainFont() {

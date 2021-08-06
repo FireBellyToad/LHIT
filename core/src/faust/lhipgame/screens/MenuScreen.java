@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
+import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.menu.Menu;
 
 /**
@@ -20,6 +21,7 @@ public class MenuScreen implements Screen {
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
+    private final TextBoxManager textBoxManager;
     private final Menu menu;
     private final Texture titleTexture;
 
@@ -28,11 +30,12 @@ public class MenuScreen implements Screen {
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
+        textBoxManager = game.getTextBoxManager();
 
         titleTexture = assetManager.get("splash/title_splash.png");
         musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
 
-        menu = new Menu(game.getSaveFileManager(), musicManager);
+        menu = new Menu(game.getSaveFileManager());
     }
 
     @Override
@@ -63,7 +66,7 @@ public class MenuScreen implements Screen {
             //Menu screen render
             game.getBatch().begin();
             game.getBatch().draw(titleTexture, 0, 0);
-            menu.drawCurrentMenu(game.getBatch());
+            menu.drawCurrentMenu(game.getBatch(),textBoxManager);
             game.getBatch().end();
         }
 

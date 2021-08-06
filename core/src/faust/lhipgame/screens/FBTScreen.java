@@ -28,9 +28,6 @@ public class FBTScreen implements Screen {
         assetManager.load("splash/title_splash.png", Texture.class);
         assetManager.finishLoading();
 
-        assetManager.load("fonts/main_font.fnt", BitmapFont.class);
-        assetManager.finishLoading();
-
         assetManager.load("fonts/main_font.png", Texture.class);
         assetManager.finishLoading();
 

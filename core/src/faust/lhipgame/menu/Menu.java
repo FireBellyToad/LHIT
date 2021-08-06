@@ -7,8 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.music.MusicManager;
-import faust.lhipgame.game.music.enums.TuneEnum;
+import faust.lhipgame.game.textbox.interfaces.TextLocalizer;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 
@@ -33,13 +32,12 @@ public class Menu implements InputProcessor {
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
     private boolean changeToMainScreen = false;
-    private MusicManager musicManager;
 
     private final SaveFileManager saveFileManager;
 
-    public Menu(SaveFileManager saveFileManager, MusicManager musicManager) {
+    public Menu(SaveFileManager saveFileManager) {
         this.saveFileManager = saveFileManager;
-        this.musicManager = musicManager;
+
     }
 
     public Menu(SaveFileManager saveFileManager, MenuItem currentMenu) {
@@ -54,19 +52,18 @@ public class Menu implements InputProcessor {
         mainFont.getData().setScale(FONT_SIZE);
     }
 
-    public void drawCurrentMenu(SpriteBatch batch) {
+    public void drawCurrentMenu(SpriteBatch batch, TextLocalizer textBoxManager) {
         Objects.requireNonNull(batch);
         Objects.requireNonNull(currentMenu);
         Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
 
         //Draw arrow on selected option
-        if (Objects.nonNull(currentMenu.getTitle()))
-            mainFont.draw(batch, currentMenu.getTitle(), MENU_X_OFFSET, MENU_Y_OFFSET);
+        if (Objects.nonNull(currentMenu.getTitleMessageKey()))
+            mainFont.draw(batch, textBoxManager.localizeFromKey(currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
 
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
-            //TODO internazionalizzare
-            mainFont.draw(batch, subItemsArray[i].name().replace('_', ' '),
+            mainFont.draw(batch, textBoxManager.localizeFromKey(subItemsArray[i].name()),
                     MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
         }
         //Draw arrow on selected option

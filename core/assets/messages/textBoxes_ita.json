@@ -16,10 +16,23 @@
 
     "echo.woman.first": "AIUTATEMIII!",
     "echo.woman.second": "ARGH! -GASP-",
-
     "echo.tree.first": "ORCUS DOMINAT",
     "echo.tree.second": "PERIT UT VIVAT",
 
-    "warn.hive.damage": "LA MIA ARMA\nNON HA EFFETTO"
+    "warn.hive.damage": "LA MIA ARMA\nNON HA EFFETTO",
+
+    "menu.sure": "SEI SICURO?",
+    "menu.continue": "CONTINUARE?",
+
+
+    "YES": "SI",
+    "NO": "NO",
+    "BACK": "INDIETRO",
+    "CREDITS": "CREDITI",
+    "EXIT_GAME": "ESCI",
+    "LOAD_GAME": "CARICA",
+    "NEW_GAME": "NUOVA PARTITA",
+    "PLAY_GAME": "GIOCA",
+    "GAME_OVER": "GAME OVER"
   }
 }

@@ -40,6 +40,7 @@ public class GameScreen implements Screen {
         this.assetManager = game.getAssetManager();
         this.cameraManager = game.getCameraManager();
         this.musicManager = game.getMusicManager();
+        textManager = game.getTextBoxManager();
     }
 
     @Override
@@ -47,7 +48,6 @@ public class GameScreen implements Screen {
         Box2D.init();
 
         worldManager = new WorldManager();
-        textManager = new TextBoxManager(assetManager);
         hud = new Hud(textManager,assetManager);
         splashManager = new SplashManager(textManager,assetManager);
         musicManager.initTuneMap(assetManager);

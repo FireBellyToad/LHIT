@@ -16,10 +16,22 @@
 
     "echo.woman.first": "HEEELP MEEE!",
     "echo.woman.second": "ARGH! -GASP-",
-
     "echo.tree.first": "ORCUS DOMINAT",
     "echo.tree.second": "PERIT UT VIVAT",
 
-    "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT"
+    "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT",
+
+    "menu.sure": "ARE YOU SURE?",
+    "menu.continue": "CONTINUE?",
+
+    "YES": "YES",
+    "NO": "NO",
+    "BACK": "BACK",
+    "CREDITS": "CREDITS",
+    "EXIT_GAME": "EXIT GAME",
+    "LOAD_GAME": "LOAD GAME",
+    "NEW_GAME": "NEW GAME",
+    "PLAY_GAME": "PLAY GAME",
+    "GAME_OVER": "GAME OVER"
   }
 }

@@ -3,75 +3,66 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.menu.Menu;
+import faust.lhipgame.menu.Intro;
 
 /**
- * Menu screen class
+ * Intro screen class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class MenuScreen implements Screen {
+public class IntroScreen implements Screen {
 
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextBoxManager textBoxManager;
-    private final Menu menu;
-    private final Texture titleTexture;
+    private final Intro intro;
 
-    public MenuScreen(LHIPGame game) {
+    private final ShapeRenderer backgroundBox = new ShapeRenderer();
+    private static final Color darkness = new Color(0x000000ff);
+
+    public IntroScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
         textBoxManager = game.getTextBoxManager();
 
-        titleTexture = assetManager.get("splash/title_splash.png");
         musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
 
-        menu = new Menu(game.getSaveFileManager());
+        intro = new Intro();
     }
 
     @Override
     public void show() {
-        //Load next screen image
-        assetManager.load("splash/loading_splash.png", Texture.class);
-        assetManager.finishLoading();
-
-        menu.loadFonts(assetManager);
+        intro.loadFonts(assetManager);
 
         //Loop title music
         musicManager.playMusic(TuneEnum.TITLE);
 
-        Gdx.input.setInputProcessor(menu);
+        Gdx.input.setInputProcessor(intro);
     }
 
     @Override
     public void render(float delta) {
 
-        if(menu.isChangeToIntroScreen()){
-            //Stop music and change screen
-            musicManager.stopMusic();
-            game.setScreen(new IntroScreen(game));
-        } else if(menu.isChangeToGameScreen()){
+        if (intro.isFinished()) {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(new LoadingScreen(game));
-        } else{
+        } else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
-            //Menu screen render
-            game.getBatch().begin();
-            game.getBatch().draw(titleTexture, 0, 0);
-            menu.drawCurrentMenu(game.getBatch(),textBoxManager);
-            game.getBatch().end();
+            //intro screen render
+            intro.drawCurrentintro(game.getBatch(), cameraManager.getCamera(), textBoxManager);
         }
 
     }

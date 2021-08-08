@@ -813,6 +813,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         waterWalkEffect.dispose();
     }
 
+    @Override
+    //Player is never disposable
+    public boolean isDisposable() {
+        return false;
+    }
+
     /**
      * Deactivate all attacker bodies
      */

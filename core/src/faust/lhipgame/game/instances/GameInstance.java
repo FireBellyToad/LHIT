@@ -85,4 +85,9 @@ public abstract class GameInstance {
     public float getStartY() {
         return startY;
     }
+
+    public boolean isDisposable() {
+        return false;
+    }
+
 }

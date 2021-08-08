@@ -443,6 +443,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     }
 
     @Override
+    public boolean isDisposable() {
+        return isDead();
+    }
+
+    @Override
     protected float mapStateTimeFromBehaviour(float stateTime) {
 
         switch (currentBehavior) {
@@ -462,5 +467,6 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         leftClawBody.setActive(false);
         downClawBody.setActive(false);
     }
+
 
 }

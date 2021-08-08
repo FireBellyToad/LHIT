@@ -32,6 +32,7 @@ public class Menu implements InputProcessor {
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
     private boolean changeToMainScreen = false;
+    private boolean changeToIntroScreen = false;
 
     private final SaveFileManager saveFileManager;
 
@@ -165,7 +166,7 @@ public class Menu implements InputProcessor {
             case 0: {
                 //Yes i'm sure
                 saveFileManager.cleanSaveFile();
-                changeToGameScreen = true;
+                changeToIntroScreen = true;
                 break;
             }
             case 1: {
@@ -194,6 +195,10 @@ public class Menu implements InputProcessor {
 
     public boolean isChangeToGameScreen() {
         return changeToGameScreen;
+    }
+
+    public boolean isChangeToIntroScreen() {
+        return changeToIntroScreen;
     }
 
     public boolean isChangeToMainScreen() {

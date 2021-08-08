@@ -1,4 +1,4 @@
-# Langobardia Horribilis: in paludes
+# Langobardia Horribilis: in Trebia
 
 Retro-styled horror game based on the world of [Langobardia Horribilis](https://www.langobardiahorribilis.com/)
 

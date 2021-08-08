@@ -159,6 +159,11 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
     }
 
     @Override
+    public boolean isDisposable() {
+        return isDead();
+    }
+
+    @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
         if (!isDead()) {

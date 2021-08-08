@@ -168,6 +168,12 @@ public class POIInstance extends GameInstance {
         batch.end();
     }
 
+    @Override
+    //Player is never disposable
+    public boolean isDisposable() {
+        return false;
+    }
+
     public void setEnableFlicker(boolean enableFlicker) {
         this.enableFlicker = enableFlicker;
     }

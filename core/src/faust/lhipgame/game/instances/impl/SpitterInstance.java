@@ -209,6 +209,11 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     }
 
     @Override
+    public boolean isDisposable() {
+        return isDead();
+    }
+
+    @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
         playerInstance.hurt(this);

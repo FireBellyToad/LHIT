@@ -208,6 +208,11 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
 
     }
 
+    @Override
+    public boolean isDisposable() {
+        return isDead();
+    }
+
     private void leechLife(PlayerInstance playerInstance) {
 
         // Force cancel another one must start

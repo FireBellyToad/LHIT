@@ -6,8 +6,8 @@ public enum TuneEnum {
     AMBIENCE("ambience.ogg"),
     GAMEOVER("gameover.ogg"),
     DANGER("danger.ogg"),
-    ATTACK("attack.ogg");
-//    CHURCH("ambience");
+    ATTACK("attack.ogg"),
+    FINAL("final.ogg");
 
     private final String fileName;
 

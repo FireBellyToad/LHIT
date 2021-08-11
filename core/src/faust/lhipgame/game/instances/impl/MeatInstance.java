@@ -66,7 +66,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
                 body.setLinearVelocity(MEAT_SPEED * direction.x, MEAT_SPEED * direction.y);
 
                 // If near target, starts attacking
-                if(target.dst(getBody().getPosition()) < 2){
+                if(target.dst(getBody().getPosition()) >1){
                     currentBehavior = GameBehavior.ATTACK;
                     startAttackCooldown = TimeUtils.nanoTime();
                     body.setLinearVelocity(0,0);

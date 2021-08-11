@@ -76,7 +76,10 @@ public class FixedRoom extends AbstractRoom {
             this.poiList.forEach(poi -> poi.setAlreadyExamined(true));
         }
 
-        if (enemyList.size() > 0 || echoActors.size() > 0) {
+        if (RoomTypeEnum.FINAL.equals(roomType)) {
+            //Loop title music
+            musicManager.playMusic(TuneEnum.FINAL, 0.75f);
+        } else if (enemyList.size() > 0 || echoActors.size() > 0) {
             //Loop title music
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);
         } else {

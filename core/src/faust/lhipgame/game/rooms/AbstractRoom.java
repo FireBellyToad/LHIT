@@ -418,7 +418,9 @@ public abstract class AbstractRoom implements Spawner {
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if (!(ene instanceof HiveInstance) && !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
+            } else if (!(ene instanceof SpitterInstance) &&
+                    !(ene instanceof HiveInstance) &&
+                    !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
                 musicManager.playMusic(TuneEnum.ATTACK, 0.75f, true);
             }
         });

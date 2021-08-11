@@ -104,6 +104,10 @@ public abstract class AbstractRoom implements Spawner {
         Objects.requireNonNull(splashManager);
         Objects.requireNonNull(assetManager);
 
+
+        worldManager.clearBodies();
+
+
         this.assetManager = assetManager;
         this.worldManager = worldManager;
 
@@ -161,7 +165,6 @@ public abstract class AbstractRoom implements Spawner {
             }
         });
 
-        worldManager.clearBodies();
         worldManager.insertPlayerIntoWorld(player, player.getStartX(), player.getStartY());
         worldManager.insertPOIIntoWorld(poiList);
         worldManager.insertDecorationsIntoWorld(decorationList);
@@ -252,13 +255,13 @@ public abstract class AbstractRoom implements Spawner {
         // Enemies are usually dynamically determined, with a couple of exceptional cases
         // which should be set as "type" property on MapObject
         EnemyEnum enemyEnum = EnemyEnum.UNDEFINED;
-        if( obj.getProperties().containsKey("type")){
+        if (obj.getProperties().containsKey("type")) {
             enemyEnum = EnemyEnum.getFromString((String) obj.getProperties().get("type"));
             Objects.requireNonNull(enemyEnum);
         }
 
-        switch (enemyEnum){
-            case HIVE:{
+        switch (enemyEnum) {
+            case HIVE: {
                 addedInstance = new HiveInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
@@ -266,7 +269,7 @@ public abstract class AbstractRoom implements Spawner {
                         textManager);
                 break;
             }
-            case MEAT:{
+            case MEAT: {
                 addedInstance = new MeatInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
@@ -274,7 +277,7 @@ public abstract class AbstractRoom implements Spawner {
 
                 break;
             }
-            case SPITTER:{
+            case SPITTER: {
                 addedInstance = new SpitterInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
@@ -282,7 +285,7 @@ public abstract class AbstractRoom implements Spawner {
                         textManager, this);
                 break;
             }
-            default:{
+            default: {
 
                 if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
                     addedInstance = new BoundedInstance(
@@ -418,8 +421,7 @@ public abstract class AbstractRoom implements Spawner {
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if (!(ene instanceof SpitterInstance) &&
-                    !(ene instanceof HiveInstance) &&
+            } else if ((!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)  ) &&
                     !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
                 musicManager.playMusic(TuneEnum.ATTACK, 0.75f, true);
             }
@@ -433,7 +435,7 @@ public abstract class AbstractRoom implements Spawner {
 
         // Dispose enemies
         enemyList.forEach(ene -> {
-            if(ene.isDisposable()) {
+            if (ene.isDisposable()) {
                 ene.dispose();
             }
         });
@@ -453,7 +455,7 @@ public abstract class AbstractRoom implements Spawner {
     @Override
     public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY) {
 
-        if(!Objects.isNull(addedInstance)){
+        if (!Objects.isNull(addedInstance)) {
             return;
         }
 

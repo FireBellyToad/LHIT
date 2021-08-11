@@ -167,7 +167,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define Fixtures
         FixtureDef rightClawFixtureDef = new FixtureDef();
-        rightClawFixtureDef.shape = shape;
+        rightClawFixtureDef.shape = rightClawShape;
         rightClawFixtureDef.density = 1;
         rightClawFixtureDef.friction = 1;
         rightClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -191,7 +191,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define Fixtures
         FixtureDef upClawFixtureDef = new FixtureDef();
-        upClawFixtureDef.shape = shape;
+        upClawFixtureDef.shape = upClawShape;
         upClawFixtureDef.density = 1;
         upClawFixtureDef.friction = 1;
         upClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -215,7 +215,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define Fixtures
         FixtureDef leftClawFixtureDef = new FixtureDef();
-        leftClawFixtureDef.shape = shape;
+        leftClawFixtureDef.shape = leftClawShape;
         leftClawFixtureDef.density = 1;
         leftClawFixtureDef.friction = 1;
         leftClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -239,7 +239,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define Fixtures
         FixtureDef downClawFixtureDef = new FixtureDef();
-        downClawFixtureDef.shape = shape;
+        downClawFixtureDef.shape = downClawShape;
         downClawFixtureDef.density = 1;
         downClawFixtureDef.friction = 1;
         downClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;

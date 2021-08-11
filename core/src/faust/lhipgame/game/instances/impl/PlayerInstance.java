@@ -14,12 +14,12 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.interfaces.Damager;
-import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.gameentities.enums.Direction;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
+import faust.lhipgame.game.gameentities.interfaces.Damager;
+import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.utils.ShaderWrapper;
@@ -68,7 +68,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
-        
+
         currentDirection = Direction.DOWN;
 
         Gdx.input.setInputProcessor(this);
@@ -89,7 +89,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void doLogic(float stateTime) {
 
         translateAccessoryBodies();
-        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x,body.getPosition().y);
+        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
         //If hurt, deactivate hitbox and don't do anything
         hitBox.setActive(!GameBehavior.HURT.equals(currentBehavior));
@@ -98,7 +98,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Interrupt healing if moving
         if (GameBehavior.KNEE.equals(currentBehavior)) {
-            if (TimeUtils.timeSinceNanos(startHealingTime) >= TimeUtils.millisToNanos(HEALTH_KIT_TIME_IN_MILLIS) ){
+            if (TimeUtils.timeSinceNanos(startHealingTime) >= TimeUtils.millisToNanos(HEALTH_KIT_TIME_IN_MILLIS)) {
                 availableHealthKits--;
                 startHealingTime = 0;
                 damage = 0;
@@ -194,7 +194,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        if(!(attacker instanceof StrixInstance)){
+        if (!(attacker instanceof StrixInstance)) {
             body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
         currentBehavior = GameBehavior.HURT;
@@ -203,7 +203,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             @Override
             public void run() {
                 currentBehavior = GameBehavior.IDLE;
-                body.setLinearVelocity(0,0);
+                body.setLinearVelocity(0, 0);
             }
         }, 0.20f);
     }
@@ -302,6 +302,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     /**
      * Draw Walfrit sprites handling shading
+     *
      * @param batch
      * @param stateTime
      * @param xOffset
@@ -314,20 +315,20 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 mapStateTimeFromBehaviour(stateTime));
 
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
-        shader.addFlag("hasArmor",hasArmor);
-        shader.addFlag("hasHolyLance",holyLancePieces == 2);
+        shader.addFlag("hasArmor", hasArmor);
+        shader.addFlag("hasHolyLance", holyLancePieces == 2);
         shader.setShaderOnBatchWithFlags(batch);
 
         //Draw shadow
         batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
 
         //Draw watersteps if submerged
-        if(isSubmerged){
+        if (isSubmerged) {
             waterWalkEffect.update(Gdx.graphics.getDeltaTime());
             waterWalkEffect.draw(batch);
-            yOffset +=2;
+            yOffset += 2;
             // Do not loop if is not doing anything
-            if(waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)){
+            if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
                 waterWalkEffect.reset();
             }
         } else {
@@ -367,7 +368,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Activate spear bodies when in right frame
         final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
-        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME+4) {
+        if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME + 4) {
             switch (currentDirection) {
                 case UP: {
                     upSpearBody.setActive(true);
@@ -398,7 +399,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void createBody(World world, float x, float y) {
-
         Objects.requireNonNull(world);
 
         BodyDef bodyDef = new BodyDef();
@@ -419,6 +419,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Associate body to world
         body = world.createBody(bodyDef);
+
         body.setUserData(this);
         body.createFixture(mainFixtureDef);
         shape.dispose();
@@ -426,7 +427,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef rightSpearDef = new BodyDef();
         rightSpearDef.type = BodyDef.BodyType.KinematicBody;
         rightSpearDef.fixedRotation = true;
-        rightSpearDef.position.set(x+2, y);
+        rightSpearDef.position.set(x + 2, y);
 
         // Define shape
         PolygonShape rightSpearShape = new PolygonShape();
@@ -434,7 +435,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define Fixtures
         FixtureDef rightSpearFixtureDef = new FixtureDef();
-        rightSpearFixtureDef.shape = shape;
+        rightSpearFixtureDef.shape = rightSpearShape;
         rightSpearFixtureDef.density = 1;
         rightSpearFixtureDef.friction = 1;
         rightSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -450,7 +451,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef upSpearDef = new BodyDef();
         upSpearDef.type = BodyDef.BodyType.KinematicBody;
         upSpearDef.fixedRotation = true;
-        upSpearDef.position.set(x, y-2);
+        upSpearDef.position.set(x, y - 2);
 
         // Define shape
         PolygonShape upSpearShape = new PolygonShape();
@@ -458,7 +459,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define Fixtures
         FixtureDef upSpearFixtureDef = new FixtureDef();
-        upSpearFixtureDef.shape = shape;
+        upSpearFixtureDef.shape = upSpearShape;
         upSpearFixtureDef.density = 1;
         upSpearFixtureDef.friction = 1;
         upSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -474,7 +475,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef leftSpearDef = new BodyDef();
         leftSpearDef.type = BodyDef.BodyType.KinematicBody;
         leftSpearDef.fixedRotation = true;
-        leftSpearDef.position.set(x-2, y);
+        leftSpearDef.position.set(x - 2, y);
 
         // Define shape
         PolygonShape leftSpearShape = new PolygonShape();
@@ -482,7 +483,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define Fixtures
         FixtureDef leftSpearFixtureDef = new FixtureDef();
-        leftSpearFixtureDef.shape = shape;
+        leftSpearFixtureDef.shape = leftSpearShape;
         leftSpearFixtureDef.density = 1;
         leftSpearFixtureDef.friction = 1;
         leftSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -498,7 +499,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef downSpearDef = new BodyDef();
         downSpearDef.type = BodyDef.BodyType.KinematicBody;
         downSpearDef.fixedRotation = true;
-        downSpearDef.position.set(x, y+2);
+        downSpearDef.position.set(x, y + 2);
 
         // Define shape
         PolygonShape downSpearShape = new PolygonShape();
@@ -506,7 +507,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define Fixtures
         FixtureDef downSpearFixtureDef = new FixtureDef();
-        downSpearFixtureDef.shape = shape;
+        downSpearFixtureDef.shape = downSpearShape;
         downSpearFixtureDef.density = 1;
         downSpearFixtureDef.friction = 1;
         downSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
@@ -542,8 +543,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         hitBox.setUserData(this);
         hitBox.createFixture(hitBoxFixtureDef);
         hitBoxShape.dispose();
-
-
     }
 
     public void setStartX(float startX) {
@@ -560,7 +559,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public boolean keyDown(int keycode) {
 
         // If hurt, can't do anything
-        if(GameBehavior.HURT.equals(currentBehavior)){
+        if (GameBehavior.HURT.equals(currentBehavior)) {
             return false;
         }
 
@@ -634,7 +633,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public boolean keyUp(int keycode) {
 
         // If hurt, can't do anything
-        if(GameBehavior.HURT.equals(currentBehavior)){
+        if (GameBehavior.HURT.equals(currentBehavior)) {
             return false;
         }
         // Keep the initial velocity
@@ -712,14 +711,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     /**
      * @return current available Health kits
-     *
      */
     public int getAvailableHealthKits() {
         return availableHealthKits;
     }
 
     /**
-     *
      * @return the current number of found morgengabes
      */
     public int getFoundMorgengabes() {
@@ -727,7 +724,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     *
      * @return if has found armor
      */
     public boolean hasArmor() {
@@ -739,7 +735,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     *
      * @return healing timer instance, non null if the player is curing himself
      */
     public long getStartHealingTime() {
@@ -759,7 +754,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
 
-
     /**
      * @return true if the damage is greater or equal than the resitance
      */
@@ -775,19 +769,19 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
 
     public int getDamageDelta() {
-        return  getResistance() - damage;
+        return getResistance() - damage;
     }
 
     public void cleanReferences() {
         nearestPOIInstance = null;
         //Reset particle emitter and change position
         final ParticleEmitter firstEmitter = waterWalkEffect.getEmitters().first();
-        firstEmitter.setPosition(startX,startY);
+        firstEmitter.setPosition(startX, startY);
         firstEmitter.reset();
     }
 
     public void setSubmerged(boolean submerged) {
-        if(submerged && !isSubmerged){
+        if (submerged && !isSubmerged) {
             //Play sound when Walfrit gets in water
             ((PlayerEntity) entity).playWaterSplash();
         }
@@ -800,7 +794,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
         super.dispose();
         rightSpearBody.getFixtureList().forEach(f ->
                 rightSpearBody.destroyFixture(f));

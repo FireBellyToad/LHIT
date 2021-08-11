@@ -25,3 +25,5 @@ Rolemusic - Shipwreck In The Pacific Ocean - The Pirate And The Dancer
 Music & Sounds Effect Library - 8 bit sound effect pack
 
 Retro SFX - Andrea Baroni
+
+RedStone128 - The Final Battle (8-bit Epic) ( https://www.youtube.com/watch?v=_wmT9U1X7Cw )

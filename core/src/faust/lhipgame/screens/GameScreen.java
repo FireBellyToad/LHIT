@@ -67,8 +67,8 @@ public class GameScreen implements Screen {
 
         // Stops game logic if splash screen is shown
         if (!splashManager.isDrawingSplash()) {
-            doLogic();
             worldManager.doStep();
+            doLogic();
         }
 
         stateTime += Gdx.graphics.getDeltaTime();

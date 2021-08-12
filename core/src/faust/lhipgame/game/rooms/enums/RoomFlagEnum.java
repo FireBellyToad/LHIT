@@ -17,6 +17,7 @@ public enum RoomFlagEnum {
     ALREADY_EXAMINED_POIS, //POIs are disabled
     FIRST_STRIX_ENCOUNTERED, //First Strix encountered
     FIRST_BOUNDED_ENCOUNTERED, //First Bounded encountered
+    FIRST_HIVE_ENCOUNTERED, //First Hive encountered
     FINAL_ROOM; //Final room of the game
 
     /**

@@ -59,6 +59,8 @@ public class LoadingScreen implements Screen {
         assetManager.load("sounds/horror_scream.ogg", Sound.class);
         assetManager.load("sounds/spit.ogg", Sound.class);
         assetManager.load("sounds/evade.ogg", Sound.class);
+        assetManager.load("sounds/rattling-bones.ogg", Sound.class);
+        assetManager.load("sounds/terror.ogg", Sound.class);
 
         musicManager.loadMusicFromFiles(assetManager);
 

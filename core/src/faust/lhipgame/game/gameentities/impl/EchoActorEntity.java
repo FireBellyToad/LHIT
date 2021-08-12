@@ -22,7 +22,7 @@ import java.util.*;
 public class EchoActorEntity extends AnimatedEntity {
 
     private final EchoesActorType echoesActorType;
-    private final Sound startingSound;
+    private Sound startingSound;
 
     //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();
@@ -33,8 +33,9 @@ public class EchoActorEntity extends AnimatedEntity {
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
         super(assetManager.get(echoesActorType.getSpriteFilename()));
         this.echoesActorType = echoesActorType;
-        //TODO improve
-        this.startingSound = assetManager.get("sounds/horror_scream.ogg");
+        if (Objects.nonNull(echoesActorType.getSoundFileName())) {
+            this.startingSound = assetManager.get(echoesActorType.getSoundFileName());
+        }
         loadEchoActorSteps();
     }
 
@@ -55,7 +56,7 @@ public class EchoActorEntity extends AnimatedEntity {
             if (s.has("textBoxKey")) {
                 textBoxPerStep.put(behaviour, s.getString("textBoxKey"));
             }
-            mustMoveInStep.put(behaviour,s.has("move"));
+            mustMoveInStep.put(behaviour, s.has("move"));
 
             if (s.has("goToStep")) {
                 gotoToStepFromStep.put(behaviour, GameBehavior.getFromString(s.getString("goToStep")));
@@ -71,9 +72,9 @@ public class EchoActorEntity extends AnimatedEntity {
 
         TextureRegion[] idleFrames = Arrays.copyOfRange(allFrames, 0, getTextureColumns());
         TextureRegion[] walkFrames = Arrays.copyOfRange(allFrames, getTextureColumns(), getTextureColumns() * 2);
-        TextureRegion[] attackFrames = Arrays.copyOfRange(allFrames, getTextureColumns()*2, getTextureColumns() * 3);
-        TextureRegion[] hurtFrames = Arrays.copyOfRange(allFrames, getTextureColumns()*3, getTextureColumns() * 4);
-        TextureRegion[] deadFrames = Arrays.copyOfRange(allFrames, getTextureColumns()*4, getTextureColumns() * 5);
+        TextureRegion[] attackFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 2, getTextureColumns() * 3);
+        TextureRegion[] hurtFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 3, getTextureColumns() * 4);
+        TextureRegion[] deadFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 4, getTextureColumns() * 5);
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimation(new Animation<>(FRAME_DURATION, idleFrames), GameBehavior.IDLE);
@@ -102,17 +103,18 @@ public class EchoActorEntity extends AnimatedEntity {
     public EchoesActorType getEchoesActorType() {
         return echoesActorType;
     }
+
     /**
      * Get text box to show given "step"
+     *
      * @param step
      * @return can be null
      */
-    public String getTextBoxPerStep(GameBehavior step){
+    public String getTextBoxPerStep(GameBehavior step) {
         return textBoxPerStep.get(step);
     }
 
     /**
-     *
      * @param step
      * @return true if must move in this step
      */
@@ -121,7 +123,6 @@ public class EchoActorEntity extends AnimatedEntity {
     }
 
     /**
-     *
      * @param fromStep
      * @return the step
      */
@@ -129,8 +130,19 @@ public class EchoActorEntity extends AnimatedEntity {
         return gotoToStepFromStep.get(fromStep);
     }
 
+    /**
+     * Play starting sound if valid
+     */
     public void playStartingSound() {
-        startingSound.play(0.5f);
+        if (Objects.nonNull(startingSound)) {
+            startingSound.play(0.75f);
+        }
+    }
+
+    public void stopStartingSound() {
+        if (Objects.nonNull(startingSound)) {
+            startingSound.stop();
+        }
     }
 
 }

@@ -141,6 +141,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
         //Do not draw if must be removed
         if(removeFromRoom){
+            ((EchoActorEntity) entity).stopStartingSound();
             return;
         }
         batch.begin();

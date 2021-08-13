@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
     private final MusicManager musicManager;
     private WorldManager worldManager;
     private PlayerInstance player;
-    private TextBoxManager textManager;
+    private final TextBoxManager textManager;
     private RoomsManager roomsManager;
 
     private Hud hud;

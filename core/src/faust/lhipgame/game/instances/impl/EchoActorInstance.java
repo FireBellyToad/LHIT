@@ -35,7 +35,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     private boolean showTextBox = true;
     private float deltaTime = 0; // Time delta between step start and current
     private boolean echoIsActive;
-    private Spawner spawner;
+    private final Spawner spawner;
 
 
     public EchoActorInstance(EchoesActorType echoesActorType, float x, float y, AssetManager assetManager, Spawner spawner) {

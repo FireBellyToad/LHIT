@@ -472,7 +472,7 @@ public abstract class AbstractRoom implements Spawner {
         mapObjectStub.getProperties().put("type", permittedSpawnableInstance.get(instanceClass.getSimpleName()));
 
         //Insert last enemy into world
-        if (instanceClass.equals(AnimatedInstance.class)) {
+        if (instanceClass.equals(MeatInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Arrays.asList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {

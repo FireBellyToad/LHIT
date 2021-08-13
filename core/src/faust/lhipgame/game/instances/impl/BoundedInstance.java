@@ -35,7 +35,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     private static final int LINE_OF_SIGHT = 70;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final long ATTACK_COOLDOWN_TIME = 2000; // in millis
+    private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -66,7 +66,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+        if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
+                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
 
             //Start animation
             if(!GameBehavior.ATTACK.equals(currentBehavior)){
@@ -170,6 +171,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         rightClawFixtureDef.shape = rightClawShape;
         rightClawFixtureDef.density = 1;
         rightClawFixtureDef.friction = 1;
+        rightClawFixtureDef.isSensor = true;
         rightClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         rightClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
@@ -194,6 +196,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         upClawFixtureDef.shape = upClawShape;
         upClawFixtureDef.density = 1;
         upClawFixtureDef.friction = 1;
+        upClawFixtureDef.isSensor = true;
         upClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         upClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
@@ -218,6 +221,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         leftClawFixtureDef.shape = leftClawShape;
         leftClawFixtureDef.density = 1;
         leftClawFixtureDef.friction = 1;
+        leftClawFixtureDef.isSensor = true;
         leftClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         leftClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
@@ -242,6 +246,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         downClawFixtureDef.shape = downClawShape;
         downClawFixtureDef.density = 1;
         downClawFixtureDef.friction = 1;
+        downClawFixtureDef.isSensor = true;
         downClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         downClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
@@ -401,6 +406,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
+            startAttackCooldown = TimeUtils.nanoTime();
             switch (currentDirection) {
                 case UP: {
                     upClawBody.setActive(true);
@@ -423,10 +429,6 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             deactivateAttackBodies();
         }
 
-        // Resetting Behaviour on animation end
-        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
-            startAttackCooldown = TimeUtils.nanoTime();
-        }
     }
 
     @Override

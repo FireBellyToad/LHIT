@@ -440,6 +440,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         rightSpearFixtureDef.shape = rightSpearShape;
         rightSpearFixtureDef.density = 1;
         rightSpearFixtureDef.friction = 1;
+        rightSpearFixtureDef.isSensor = true;
         rightSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         rightSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
@@ -464,6 +465,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         upSpearFixtureDef.shape = upSpearShape;
         upSpearFixtureDef.density = 1;
         upSpearFixtureDef.friction = 1;
+        upSpearFixtureDef.isSensor = true;
         upSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         upSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
@@ -488,6 +490,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         leftSpearFixtureDef.shape = leftSpearShape;
         leftSpearFixtureDef.density = 1;
         leftSpearFixtureDef.friction = 1;
+        leftSpearFixtureDef.isSensor = true;
         leftSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         leftSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 
@@ -512,6 +515,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         downSpearFixtureDef.shape = downSpearShape;
         downSpearFixtureDef.density = 1;
         downSpearFixtureDef.friction = 1;
+        downSpearFixtureDef.isSensor = true;
         downSpearFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
         downSpearFixtureDef.filter.maskBits = CollisionManager.ENEMY_GROUP;
 

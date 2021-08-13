@@ -3,7 +3,6 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 

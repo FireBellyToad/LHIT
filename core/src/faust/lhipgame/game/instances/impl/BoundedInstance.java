@@ -454,8 +454,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             case ATTACK: {
                 return (stateTime - attackDeltaTime);
             }
+            default: {
+                return stateTime;
+            }
         }
-        return stateTime;
     }
 
     /**

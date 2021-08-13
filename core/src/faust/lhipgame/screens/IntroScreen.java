@@ -3,8 +3,6 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
@@ -24,9 +22,6 @@ public class IntroScreen implements Screen {
     private final MusicManager musicManager;
     private final TextBoxManager textBoxManager;
     private final Intro intro;
-
-    private final ShapeRenderer backgroundBox = new ShapeRenderer();
-    private static final Color darkness = new Color(0x000000ff);
 
     public IntroScreen(LHIPGame game) {
         this.game = game;

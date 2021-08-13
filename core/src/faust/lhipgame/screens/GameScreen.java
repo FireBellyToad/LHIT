@@ -105,7 +105,7 @@ public class GameScreen implements Screen {
             darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
         }
         // draw text
-        textManager.renderTextBoxes(game.getBatch(), player, cameraManager.getCamera(), splashManager.isDrawingSplash());
+        textManager.renderTextBoxes(game.getBatch(), cameraManager.getCamera());
     }
 
     private void drawRoomAndContents(float stateTime) {

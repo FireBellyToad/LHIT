@@ -2,7 +2,6 @@ package faust.lhipgame.game.music;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import faust.lhipgame.game.music.enums.TuneEnum;
 
 import java.util.HashMap;
@@ -81,7 +80,7 @@ public class MusicManager {
     /**
      * Play tune
      *
-     * @param tune   to play
+     * @param tune to play
      */
     public void playMusic(TuneEnum tune, boolean loop) {
         playMusic(tune, 1f, loop);
@@ -102,7 +101,7 @@ public class MusicManager {
             Objects.requireNonNull(tuneToPlay);
 
             //If tune is not already playing, stop previous and play it
-            if(!tuneToPlay.isPlaying()){
+            if (!tuneToPlay.isPlaying()) {
                 stopMusic();
                 tuneToPlay.play();
                 tuneToPlay.setLooping(loop);
@@ -131,9 +130,7 @@ public class MusicManager {
      * Stop all music
      */
     public void stopMusic() {
-        musicMap.forEach((tune, music) -> {
-            music.stop();
-        });
+        musicMap.forEach((tune, music) -> music.stop());
     }
 
 }

@@ -41,7 +41,6 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
 
-    private final PlayerInstance target;
     private final Spawner spawner;
 
     private long startAttackCooldown = 0;
@@ -50,13 +49,12 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     private boolean canAttack = false;
 
 
-    public SpitterInstance(float x, float y, PlayerInstance target, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner) {
+    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner) {
         super(new SpitterEntity(assetManager));
         currentDirection = Direction.DOWN;
         this.startX = x;
         this.startY = y;
         this.textBoxManager = textBoxManager;
-        this.target = target;
         this.spawner = spawner;
     }
 
@@ -289,8 +287,10 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             case ATTACK: {
                 return (stateTime - attackDeltaTime);
             }
+            default: {
+                return stateTime;
+            }
         }
-        return stateTime;
     }
 
 }

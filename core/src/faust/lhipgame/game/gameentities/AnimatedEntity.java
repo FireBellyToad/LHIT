@@ -18,7 +18,7 @@ import java.util.Objects;
 public abstract class AnimatedEntity extends GameEntity {
 
     //Animations given Behavior and Direction
-    protected Map<GameBehavior, Map<Direction, Animation>> animations = new HashMap<>();
+    protected final Map<GameBehavior, Map<Direction, Animation>> animations = new HashMap<>();
 
     public AnimatedEntity(Texture texture) {
         super(texture);

@@ -26,21 +26,19 @@ import java.util.Objects;
 public class POIInstance extends GameInstance {
 
 
-    private boolean guaranteedMorgengabe = false; //flag gor guaranteed morgengabe
+    private final boolean guaranteedMorgengabe; //flag gor guaranteed morgengabe
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0; // flickering timer
 
     private boolean isAlreadyExamined;
-    private final PlayerInstance player;
     private final TextBoxManager textManager;
     private final SplashManager splashManager;
 
 
-    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final PlayerInstance player, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {
+    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {
         super(new POIEntity(poiType, assetManager));
         this.textManager = textManager;
-        this.player = player;
         this.startX = x;
         this.startY = y;
         this.isAlreadyExamined = false;

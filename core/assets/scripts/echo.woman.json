@@ -6,7 +6,7 @@
       "move" : true
     },
     {
-      "behaviour": "WALK",
+      "behaviour": "WALK"
     },
     {
       "behaviour": "ATTACK",

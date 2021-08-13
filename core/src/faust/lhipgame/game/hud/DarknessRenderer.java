@@ -5,18 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.gameentities.GameEntity;
-import faust.lhipgame.game.gameentities.SpriteEntity;
-import faust.lhipgame.game.gameentities.enums.GameBehavior;
-import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
-import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.screens.GameScreen;
 
 import java.util.Objects;
 

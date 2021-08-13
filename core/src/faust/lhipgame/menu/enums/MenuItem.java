@@ -12,8 +12,8 @@ public enum MenuItem {
     GAME_OVER("menu.continue", new MenuItem[]{YES,NO}),
     MAIN(new MenuItem[]{PLAY_GAME,CREDITS,EXIT_GAME});
 
-    String titleMessageKey;
-    MenuItem[] subItems;
+    final String titleMessageKey;
+    final MenuItem[] subItems;
 
     MenuItem() {
         titleMessageKey = null;

@@ -26,9 +26,9 @@ public class EchoActorEntity extends AnimatedEntity {
 
     //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();
-    protected Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
-    protected Map<GameBehavior, Boolean> mustMoveInStep = new HashMap<>();
-    protected Map<GameBehavior, GameBehavior> gotoToStepFromStep = new HashMap<>();
+    protected final Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
+    protected final Map<GameBehavior, Boolean> mustMoveInStep = new HashMap<>();
+    protected final Map<GameBehavior, GameBehavior> gotoToStepFromStep = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
         super(assetManager.get(echoesActorType.getSpriteFilename()));

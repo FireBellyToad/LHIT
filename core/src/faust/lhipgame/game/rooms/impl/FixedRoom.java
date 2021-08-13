@@ -43,6 +43,7 @@ public class FixedRoom extends AbstractRoom {
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;
 
+
     public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags, MusicManager musicManager) {
         super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags, musicManager);
     }
@@ -103,7 +104,7 @@ public class FixedRoom extends AbstractRoom {
         POIInstance instance = new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager, assetManager,
+                poiType, splashManager, assetManager,
                 roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
 
         poiList.add(instance);
@@ -181,9 +182,7 @@ public class FixedRoom extends AbstractRoom {
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
-        allInstance.forEach((i) -> {
-            i.draw(batch, stateTime);
-        });
+        allInstance.forEach((i) -> i.draw(batch, stateTime));
 
     }
 

@@ -24,12 +24,12 @@ public abstract class GameInstance {
     protected boolean mustFlicker = false;// flag that is true when the Instance must be hidden
     protected long startToFlickTime = 0;
 
-    protected GameEntity entity;
+    protected final GameEntity entity;
     protected Body body;
     protected float startX = LHIPGame.GAME_WIDTH / 2;
     protected float startY = LHIPGame.GAME_HEIGHT / 3;
 
-    protected ParticleEmitter particleEmitter;
+    protected final ParticleEmitter particleEmitter;
 
     public GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);

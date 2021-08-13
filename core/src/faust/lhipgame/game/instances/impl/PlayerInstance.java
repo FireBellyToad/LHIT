@@ -53,7 +53,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private Body rightSpearBody;
     private Body upSpearBody;
 
-    private final List<GameInstance> roomPoiList = new ArrayList();
+    private final List<GameInstance> roomPoiList = new ArrayList<>();
     private POIInstance nearestPOIInstance;
 
     private int availableHealthKits = 0; // available Health Kits
@@ -352,8 +352,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case ATTACK: {
                 return 2.25f * (stateTime - attackDeltaTime);
             }
+            default: {
+                return stateTime;
+            }
         }
-        return stateTime;
     }
 
     /**

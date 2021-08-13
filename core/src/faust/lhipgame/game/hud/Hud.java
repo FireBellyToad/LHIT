@@ -136,7 +136,7 @@ public class Hud {
         batch.end();
 
         //Draw Healing timer bar if player is curing himself
-        if (GameBehavior.KNEE.equals(player.getCurrentBehavior()) && Objects.nonNull(player.getStartHealingTime())) {
+        if (GameBehavior.KNEE.equals(player.getCurrentBehavior())) {
             //Black Corner
             batch.begin();
             backgroundBox.setColor(back);

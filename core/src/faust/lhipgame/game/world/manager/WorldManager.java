@@ -1,7 +1,5 @@
 package faust.lhipgame.game.world.manager;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -78,14 +76,14 @@ public class WorldManager {
         playerInstance.setStartY(0);
 
         if (!Objects.isNull(verticalVelocity) || !Objects.isNull(horizontalVelocity)) {
-            playerInstance.getBody().setLinearVelocity(horizontalVelocity,verticalVelocity);
+            playerInstance.getBody().setLinearVelocity(horizontalVelocity, verticalVelocity);
         }
     }
 
     /**
      * Inserts a GameInstance into Box2D World
      *
-     * @param instance     the instance to insert
+     * @param instance the instance to insert
      * @param x
      * @param y
      */
@@ -102,9 +100,7 @@ public class WorldManager {
     public void insertPOIIntoWorld(final List<POIInstance> poiList) {
         Objects.requireNonNull(poiList);
 
-        poiList.forEach((poi) -> {
-            this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY());
-        });
+        poiList.forEach((poi) -> this.insertIntoWorld(poi, poi.getStartX(), poi.getStartY()));
     }
 
     /**
@@ -115,9 +111,7 @@ public class WorldManager {
     public void insertDecorationsIntoWorld(List<DecorationInstance> decorationInstances) {
         Objects.requireNonNull(decorationInstances);
 
-        decorationInstances.forEach((deco) -> {
-            this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY());
-        });
+        decorationInstances.forEach((deco) -> this.insertIntoWorld(deco, deco.getStartX(), deco.getStartY()));
     }
 
     /**
@@ -126,9 +120,7 @@ public class WorldManager {
     public void clearBodies() {
         Array<Body> bodies = new Array<>();
         world.getBodies(bodies);
-        bodies.forEach((body) -> {
-            this.world.destroyBody(body);
-        });
+        bodies.forEach(this.world::destroyBody);
     }
 
     /**
@@ -139,44 +131,37 @@ public class WorldManager {
     public void insertEnemiesIntoWorld(List<AnimatedInstance> enemiesInstance) {
         Objects.requireNonNull(enemiesInstance);
 
-        enemiesInstance.forEach((e) -> {
-            this.insertIntoWorld(e, e.getStartX(), e.getStartY());
-        });
+        enemiesInstance.forEach((e) -> this.insertIntoWorld(e, e.getStartX(), e.getStartY()));
     }
 
     /**
      * Insert static walls into world
+     *
      * @param wallList
      */
     public void insertWallsIntoWorld(List<WallArea> wallList) {
         Objects.requireNonNull(wallList);
 
-        wallList.forEach((w) -> {
-            w.createBody(this.world);
-        });
+        wallList.forEach((w) -> w.createBody(this.world));
     }
 
     /**
      * Insert static emerged areas into world
+     *
      * @param areasList
      */
     public void insertEmergedAreasIntoWorld(List<EmergedArea> areasList) {
         Objects.requireNonNull(areasList);
 
-        areasList.forEach((a) -> {
-            a.createBody(this.world);
-        });
+        areasList.forEach((a) -> a.createBody(this.world));
     }
 
     /**
-     *
      * @param echoActors
      */
     public void insertEchoActorsIntoWorld(List<EchoActorInstance> echoActors) {
         Objects.requireNonNull(echoActors);
 
-        echoActors.forEach((a) -> {
-            a.createBody(this.world, a.getStartX(), a.getStartY());
-        });
+        echoActors.forEach((a) -> a.createBody(this.world, a.getStartX(), a.getStartY()));
     }
 }

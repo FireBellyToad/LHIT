@@ -102,6 +102,7 @@ public class CollisionManager implements ContactListener {
      * @param enemyGameInstanceClass
      * @param <T> an Interactable and Killable instance, usually enemy
      */
+    @SuppressWarnings("unchecked")
     private <T extends Interactable & Hurtable> void handleEnemyCollisionEvent(Contact contact, Class<T> enemyGameInstanceClass) {
 
         //Get enemy data
@@ -174,6 +175,7 @@ public class CollisionManager implements ContactListener {
      * @param enemyGameInstanceClass
      * @param <T> an Interactable and Hurtable instance, usually enemy
      */
+    @SuppressWarnings("unchecked")
     private <T extends Interactable & Hurtable> void handleEnemyCollisionEventEnd(Contact contact, Class<T>  enemyGameInstanceClass) {
         //Just free the player from leech grapple
         Body enemyBody = getCorrectFixture(contact,enemyGameInstanceClass).getBody();

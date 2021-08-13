@@ -14,7 +14,7 @@ public abstract class GameEntity {
 
     public static final float FRAME_DURATION = 0.1f;
 
-    protected Texture texture;
+    protected final Texture texture;
 
     public GameEntity(Texture texture) {
         Objects.requireNonNull(texture);

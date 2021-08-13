@@ -92,21 +92,19 @@ public class SaveFileManager {
         }
 
         //Main loop
-        Map<RoomFlagEnum, Boolean> flags;
-        Vector2 v;
-        int casualNumberPredefined = -1;
+        Vector2 roomPositionInCurrentSave;
+        int casualNumberPredefined;
         JsonValue flagsJson;
 
         for (JsonValue roomSaveEntry : rooms) {
-            v = new Vector2(roomSaveEntry.getFloat("x"), roomSaveEntry.getFloat("y"));
+            roomPositionInCurrentSave = new Vector2(roomSaveEntry.getFloat("x"), roomSaveEntry.getFloat("y"));
 
             casualNumberPredefined = roomSaveEntry.getInt("casualNumber");
-            Objects.requireNonNull(casualNumberPredefined);
 
             flagsJson = roomSaveEntry.get("savedFlags");
 
-            saveMap.put(v, new RoomSaveEntry(
-                    (int) v.x, (int) v.y, casualNumberPredefined,
+            saveMap.put(roomPositionInCurrentSave, new RoomSaveEntry(
+                    (int) roomPositionInCurrentSave.x, (int) roomPositionInCurrentSave.y, casualNumberPredefined,
                     parseJsonFlags(flagsJson)));
         }
     }

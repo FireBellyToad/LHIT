@@ -62,21 +62,21 @@ public abstract class AbstractRoom implements Spawner {
 
     protected TiledMap tiledMap;
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
-    protected MapObjects mapObjects;
+    protected final MapObjects mapObjects;
 
-    protected List<POIInstance> poiList;
-    protected List<DecorationInstance> decorationList;
-    protected List<AnimatedInstance> enemyList;
-    protected List<WallArea> wallList;
-    protected List<EmergedArea> emergedAreaList;
-    protected PlayerInstance player;
-    protected RoomTypeEnum roomType;
+    protected final List<POIInstance> poiList;
+    protected final List<DecorationInstance> decorationList;
+    protected final List<AnimatedInstance> enemyList;
+    protected final List<WallArea> wallList;
+    protected final List<EmergedArea> emergedAreaList;
+    protected final PlayerInstance player;
+    protected final RoomTypeEnum roomType;
+    protected final SplashManager splashManager;
+    protected final TextBoxManager textManager;
+    protected final MusicManager musicManager;
+    protected final AssetManager assetManager;
+    protected final WorldManager worldManager;
     protected String roomFileName;
-    protected SplashManager splashManager;
-    protected TextBoxManager textManager;
-    protected MusicManager musicManager;
-    protected AssetManager assetManager;
-    protected WorldManager worldManager;
 
     protected boolean mustClearPOI = false;
 
@@ -104,9 +104,8 @@ public abstract class AbstractRoom implements Spawner {
         Objects.requireNonNull(splashManager);
         Objects.requireNonNull(assetManager);
 
-
+        // Clear world bodies, if present
         worldManager.clearBodies();
-
 
         this.assetManager = assetManager;
         this.worldManager = worldManager;
@@ -224,7 +223,7 @@ public abstract class AbstractRoom implements Spawner {
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, player, splashManager, assetManager,
+                poiType, splashManager, assetManager,
                 roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)));
     }
 
@@ -287,8 +286,7 @@ public abstract class AbstractRoom implements Spawner {
                 addedInstance = new SpitterInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
-                        player, assetManager,
-                        textManager, this);
+                        assetManager,textManager, this);
                 break;
             }
             default: {

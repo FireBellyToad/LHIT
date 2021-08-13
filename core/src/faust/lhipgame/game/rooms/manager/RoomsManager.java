@@ -114,7 +114,7 @@ public class RoomsManager {
         currentRoomPosInWorld.set(finalX, finalY);
 
         //Init room flags
-        Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags(mainWorld.get(currentRoomPosInWorld));
+        Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags();
 
         int roomCasualNumber = 0;
         switch (mainWorld.get(currentRoomPosInWorld)) {
@@ -143,10 +143,9 @@ public class RoomsManager {
     }
 
     /**
-     * @param roomTypeEnum room type
      * @return populated map of flags
      */
-    private Map<RoomFlagEnum, Boolean> populateRoomFlags(RoomTypeEnum roomTypeEnum) {
+    private Map<RoomFlagEnum, Boolean> populateRoomFlags() {
         //default map
         Map<RoomFlagEnum, Boolean> newRoomFlags = RoomFlagEnum.generateDefaultRoomFlags();
 

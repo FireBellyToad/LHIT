@@ -4,17 +4,16 @@ import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Wrapper Class for saving room
  */
 public class RoomSaveEntry implements Serializable {
 
-    public int casualNumber;
-    public int x;
-    public int y;
-    public Map<RoomFlagEnum,Boolean> savedFlags;
+    public final int casualNumber;
+    public final int x;
+    public final int y;
+    public final Map<RoomFlagEnum,Boolean> savedFlags;
 
     public RoomSaveEntry(int x, int y, int casualNumber, Map<RoomFlagEnum,Boolean> savedFlags) {
         this.casualNumber = casualNumber;

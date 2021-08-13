@@ -33,9 +33,7 @@ public class SplashManager {
 
         //Extract all splash screens
         JsonValue splash = new JsonReader().parse(Gdx.files.internal("splash/splashScreen.json")).get("splashScreens");
-        splash.forEach((s) -> {
-            this.splashScreens.put(s.getString("splashKey"), assetManager.get(s.getString("splashPath")));
-        });
+        splash.forEach((s) -> this.splashScreens.put(s.getString("splashKey"), assetManager.get(s.getString("splashPath"))));
     }
 
     public void setSplashToShow(String splashScreen) {

@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.instances.impl.PlayerInstance;
 import faust.lhipgame.game.textbox.TextBoxData;
 import faust.lhipgame.game.textbox.interfaces.TextLocalizer;
 
@@ -101,27 +100,21 @@ public class TextBoxManager implements TextLocalizer {
      * Render all the generated (right now just one) text boxes
      *
      * @param batch
-     * @param player
      * @param camera
      */
-    public void renderTextBoxes(final SpriteBatch batch, PlayerInstance player, OrthographicCamera camera, boolean splashScreenIsDrawn) {
+    public void renderTextBoxes(final SpriteBatch batch, OrthographicCamera camera) {
 
         // Remove box if player is under a certain boundary and there is no splash screen
-        //if(!splashScreenIsDrawn && player.getBody().getPosition().y <= TOTAL_TEXTBOX_HEIGHT){
-        //    textBoxes.clear();
-        //    return;
-        //}
-
-        boolean twoline = false;
-        float fontY = 0;
-        float innerBoxHeight = 0;
-        float outerBoxHeight = 0;
+        boolean twoline;
+        float fontY;
+        float innerBoxHeight;
+        float outerBoxHeight;
 
         //Render all the created boxes
         for (TextBoxData box : textBoxes) {
 
             //Adjust rendering if text has only one line
-            twoline = box.getText().indexOf("\n") != -1;
+            twoline = box.getText().contains("\n");
             outerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT : TOTAL_TEXTBOX_HEIGHT / 2;
             innerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT - 4 : (TOTAL_TEXTBOX_HEIGHT / 2) - 4;
             fontY = twoline ? TOTAL_TEXTBOX_HEIGHT - 8 : (TOTAL_TEXTBOX_HEIGHT / 2) - 6;

@@ -66,7 +66,7 @@ public class SplashManager {
                     textManager.removeAllBoxes();
                     splashTimer = null;
                 }
-            }, 1.5f);
+            }, 2f);
             Gdx.app.log("DEBUG", "START splash timer" );
         }
         batch.end();

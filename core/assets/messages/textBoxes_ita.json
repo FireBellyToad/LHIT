@@ -3,16 +3,18 @@
     "poi.success.examine": "HO TROVATO QUALCOSA!",
     "poi.bush.examine": "UN ARBUSTO SENZA\nVALORE",
     "poi.bush.success": "HO TROVATO DELLE\nERBE",
-    "poi.cadaver.success": "HO TROVATO UN'ARMA-\nTURA IMBOTTITA",
+    "poi.cadaver.success": "HO TROVATO UN'\nARMATURA IMBOTTITA",
     "poi.skull.examine": "SOLO UN MUCCHIO\nDI OSSA",
     "poi.stones.examine": "NON C'E' NULLA\nSOTTO LE PIETRE",
-    "poi.brother.success": "SONO MORTI TUTTI",
+    "poi.brother.success": "SONO TUTTI MORTI",
 
     "splash.strix": "UN GROTTESCO UCCELLO",
     "splash.bounded": "UN CADAVERE VOLANTE",
-    "splash.morgengabe": "HO TROVATO UN PRE-\nZIOSO MORGENGABIO",
+    "splash.morgengabe": "HO TROVATO UN \nMORGENGABIO D'ORO",
     "splash.holy.1": "HO TROVATO UN PEZZO\nDI UNA STRANA LANCIA",
-    "splash.holy.2": "ORA POSSEGGO LA\nGRANDE LANCIA SACRA",
+    "splash.holy.2": "ORA POSSIEDO LA\nPOTENTE LANCIA SACRA",
+    "splash.hive": "UN MURO DI CARNE",
+
 
     "echo.woman.first": "AIUTATEMIII!",
     "echo.woman.second": "ARGH! -GASP-",

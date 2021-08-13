@@ -267,6 +267,12 @@ public abstract class AbstractRoom implements Spawner {
                         (float) obj.getProperties().get("y"),
                         assetManager,
                         textManager);
+
+                //Show splash only the first time
+                if (!roomFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED))
+                    splashManager.setSplashToShow("splash.hive");
+
+                roomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);
                 break;
             }
             case MEAT: {

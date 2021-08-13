@@ -1,12 +1,16 @@
 {
   "splashScreens": [
     {
-        "splashKey": "splash.strix",
-        "splashPath": "splash/strix_splash.png"
+      "splashKey": "splash.strix",
+      "splashPath": "splash/strix_splash.png"
     },
     {
       "splashKey": "splash.bounded",
       "splashPath": "splash/bounded_splash.png"
+    },
+    {
+      "splashKey": "splash.hive",
+      "splashPath": "splash/hive_splash.png"
     },
     {
       "splashKey": "splash.morgengabe",
@@ -14,11 +18,11 @@
     },
     {
       "splashKey": "splash.holy.1",
-      "splashPath": "splash/holy_splash1.png"
+      "splashPath": "splash/morgengabe_splash.png"
     },
     {
       "splashKey": "splash.holy.2",
-      "splashPath": "splash/holy_splash2.png"
+      "splashPath": "splash/morgengabe_splash.png"
     },
     {
       "splashKey": "splash.gameover",

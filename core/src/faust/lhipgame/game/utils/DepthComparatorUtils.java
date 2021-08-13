@@ -16,6 +16,7 @@ public class DepthComparatorUtils {
         //Special conditions to place object always on higher depth, usually
         //for avoiding that objects laying on the ground cover taller ones
         if ((o2 instanceof Hurtable && ((Hurtable) o2).isDead()) ||
+                (o1 instanceof POIInstance && o2 instanceof DecorationInstance) ||
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
                 (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_1.equals(((DecorationInstance) o2).getType())) ||
                 (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_2.equals(((DecorationInstance) o2).getType())) ||
@@ -25,6 +26,7 @@ public class DepthComparatorUtils {
         }
 
         if ((o1 instanceof Hurtable && ((Hurtable) o1).isDead()) ||
+                (o2 instanceof POIInstance && o1 instanceof DecorationInstance) ||
                 (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {
             return -1;
         }

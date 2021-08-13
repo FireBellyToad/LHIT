@@ -17,7 +17,6 @@ import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.EnemyEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
-import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.gameentities.interfaces.Killable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
@@ -58,6 +57,7 @@ public abstract class AbstractRoom implements Spawner {
     // Permitted spawnable instances
     protected static final Map<String, String> permittedSpawnableInstance = new HashMap<String, String>() {{
         this.put(MeatInstance.class.getSimpleName(), EnemyEnum.MEAT.name());
+        this.put(POIInstance.class.getSimpleName(), POIEnum.ECHO_CORPSE.name());
     }};
 
     protected TiledMap tiledMap;
@@ -81,7 +81,7 @@ public abstract class AbstractRoom implements Spawner {
     protected boolean mustClearPOI = false;
 
     protected final Map<RoomFlagEnum, Boolean> roomFlags;
-    private AnimatedInstance addedInstance;
+    private GameInstance addedInstance; //Buffer for new enemies spawned during gameplay
 
     /**
      * Constructor
@@ -324,7 +324,7 @@ public abstract class AbstractRoom implements Spawner {
 
         // If is not a spawned instance (usually MeatInstance), add it right now
         if (!addNewInstance) {
-            enemyList.add(addedInstance);
+            enemyList.add((AnimatedInstance) addedInstance);
             addedInstance = null;
         }
     }
@@ -427,7 +427,7 @@ public abstract class AbstractRoom implements Spawner {
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if ((!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)  ) &&
+            } else if ((!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)) &&
                     !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
                 musicManager.playMusic(TuneEnum.ATTACK, 0.75f, true);
             }
@@ -435,7 +435,7 @@ public abstract class AbstractRoom implements Spawner {
 
         // If there is an instance to add, do it and clean reference
         if (!Objects.isNull(addedInstance)) {
-            enemyList.add(addedInstance);
+            enemyList.add((AnimatedInstance) addedInstance);
             addedInstance = null;
         }
 
@@ -471,8 +471,16 @@ public abstract class AbstractRoom implements Spawner {
         mapObjectStub.getProperties().put("y", startY);
         mapObjectStub.getProperties().put("type", permittedSpawnableInstance.get(instanceClass.getSimpleName()));
 
-        addObjAsEnemy(mapObjectStub, assetManager, true);
         //Insert last enemy into world
-        worldManager.insertEnemiesIntoWorld(Arrays.asList(addedInstance));
+        if (instanceClass.equals(AnimatedInstance.class)) {
+            addObjAsEnemy(mapObjectStub, assetManager, true);
+            worldManager.insertEnemiesIntoWorld(Arrays.asList((AnimatedInstance) addedInstance));
+        } else if (instanceClass.equals(POIInstance.class)) {
+            addObjAsPOI(mapObjectStub,textManager, assetManager);
+            POIInstance lastPOIInstance = poiList.get(poiList.size()-1);
+            worldManager.insertPOIIntoWorld(Arrays.asList(lastPOIInstance));
+            roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS,false);
+            player.changePOIList(poiList);
+        }
     }
 }

@@ -5,7 +5,8 @@ public enum POIEnum {
     BUSH("poi.bush",ItemEnum.HEALTH_KIT),
     SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy"),
     CADAVER("poi.cadaver",ItemEnum.ARMOR),
-    BROTHER("poi.brother");
+    BROTHER("poi.brother"),
+    ECHO_CORPSE("poi.echocorpse");
 
     private final String textKey;
     private final ItemEnum itemGiven;

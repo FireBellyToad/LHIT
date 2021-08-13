@@ -161,7 +161,7 @@ public class FixedRoom extends AbstractRoom {
 
         echoActors.add(new EchoActorInstance(echoesActorType,
                 (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"), assetManager));
+                (float) obj.getProperties().get("y"), assetManager,this));
 
     }
 

@@ -11,10 +11,11 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
+import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.instances.AnimatedInstance;
+import faust.lhipgame.game.instances.Spawner;
 import faust.lhipgame.game.instances.interfaces.Interactable;
 import faust.lhipgame.game.world.manager.CollisionManager;
 
@@ -29,16 +30,21 @@ import java.util.Objects;
  */
 public class EchoActorInstance extends AnimatedInstance implements Interactable, Damager {
 
+    private final EchoesActorType echoesActorType;
     private boolean removeFromRoom = false;
     private boolean showTextBox = true;
     private float deltaTime = 0; // Time delta between step start and current
     private boolean echoIsActive;
+    private Spawner spawner;
 
-    public EchoActorInstance(EchoesActorType echoesActorType, float x, float y, AssetManager assetManager) {
+
+    public EchoActorInstance(EchoesActorType echoesActorType, float x, float y, AssetManager assetManager, Spawner spawner) {
         super(new EchoActorEntity(echoesActorType, assetManager));
         this.startX = x;
         this.startY = y;
         this.echoIsActive = false;
+        this.spawner = spawner;
+        this.echoesActorType = echoesActorType;
 
         //get first step
         this.currentBehavior = ((EchoActorEntity)this.entity).getStepOrder().get(0);
@@ -88,6 +94,9 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                showTextBox = true;
            } else {
                removeFromRoom = true;
+               if(EchoesActorType.VICTIM.equals(echoesActorType)){
+                   spawner.spawnInstance(POIInstance.class,startX,startY+7);
+               }
                Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
            }
        }

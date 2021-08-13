@@ -95,7 +95,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
            } else {
                removeFromRoom = true;
                if(EchoesActorType.VICTIM.equals(echoesActorType)){
-                   spawner.spawnInstance(POIInstance.class,startX,startY+7);
+                   spawner.spawnInstance(POIInstance.class,startX,startY+8);
                }
                Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
            }

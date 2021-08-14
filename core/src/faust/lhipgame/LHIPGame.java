@@ -10,6 +10,7 @@ import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
 import faust.lhipgame.screens.FBTScreen;
+import faust.lhipgame.screens.LanguageScreen;
 
 public class LHIPGame extends Game {
 
@@ -33,12 +34,10 @@ public class LHIPGame extends Game {
 
         assetManager.load("fonts/main_font.fnt", BitmapFont.class);
         assetManager.finishLoading();
-        textBoxManager = new TextBoxManager(assetManager, "ita");
 
-        assetManager.load("splash/fbt_splash.png", Texture.class);
-        assetManager.finishLoading();
+        textBoxManager = new TextBoxManager(assetManager);
 
-        setScreen(new FBTScreen(this));
+        setScreen(new LanguageScreen(this));
     }
 
     @Override

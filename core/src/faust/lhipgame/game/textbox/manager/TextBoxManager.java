@@ -32,7 +32,7 @@ public class TextBoxManager implements TextLocalizer {
 
     private final BitmapFont mainFont;
     private final List<TextBoxData> textBoxes = new ArrayList<>();
-    private final JsonValue messageMap;
+    private JsonValue messageMap;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private final ShapeRenderer cornerBox = new ShapeRenderer();
@@ -40,11 +40,19 @@ public class TextBoxManager implements TextLocalizer {
     private static final Color back = new Color(0x222222ff);
     private Timer.Task currentTimer;
 
-    public TextBoxManager(AssetManager assetManager, String language) {
+    public TextBoxManager(AssetManager assetManager) {
 
         // Prepare font
         mainFont = assetManager.get("fonts/main_font.fnt");
         mainFont.getData().setScale(FONT_SIZE);
+
+    }
+
+    /**
+     * Load all game text
+     * @param language
+     */
+    public void loadTextFromLanguage(String language){
 
         // Prepare text map
         JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/textBoxes_" + language + ".json"));

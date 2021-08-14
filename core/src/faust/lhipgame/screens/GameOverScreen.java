@@ -11,6 +11,11 @@ import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 
+/**
+ * Class for game over screen
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class GameOverScreen implements Screen {
 
     private final LHIPGame game;
@@ -64,7 +69,7 @@ public class GameOverScreen implements Screen {
             //Menu screen render
             game.getBatch().begin();
             game.getBatch().draw(gameOverScreen, 0, 0);
-            menu.drawCurrentMenu(game.getBatch(), textBoxManager);
+            menu.drawCurrentMenuLocalized(game.getBatch(), textBoxManager);
             game.getBatch().end();
         }
 

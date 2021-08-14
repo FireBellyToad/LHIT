@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -119,8 +120,9 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         // Define Fixture
         FixtureDef hitBoxFixtureDef = new FixtureDef();
         hitBoxFixtureDef.shape = hitBoxShape;
-        hitBoxFixtureDef.density = 0;
-        hitBoxFixtureDef.friction = 0;
+        hitBoxFixtureDef.density = 1;
+        hitBoxFixtureDef.friction = 1;
+        hitBoxFixtureDef.isSensor = true;
         hitBoxFixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
         hitBoxFixtureDef.filter.maskBits = CollisionManager.WEAPON_GROUP;
 
@@ -145,7 +147,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         //Draw Hive
         // If not hurt or the flickering Hive must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET+4);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

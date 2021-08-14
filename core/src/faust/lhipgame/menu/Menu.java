@@ -53,12 +53,18 @@ public class Menu implements InputProcessor {
         mainFont.getData().setScale(FONT_SIZE);
     }
 
-    public void drawCurrentMenu(SpriteBatch batch, TextLocalizer textBoxManager) {
+    /**
+     * Draw current Menu with localized voices
+     *
+     * @param batch
+     * @param textBoxManager
+     */
+    public void drawCurrentMenuLocalized(SpriteBatch batch, TextLocalizer textBoxManager) {
         Objects.requireNonNull(batch);
         Objects.requireNonNull(currentMenu);
         Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
 
-        //Draw arrow on selected option
+        //Title
         if (Objects.nonNull(currentMenu.getTitleMessageKey()))
             mainFont.draw(batch, textBoxManager.localizeFromKey(currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
 
@@ -70,6 +76,25 @@ public class Menu implements InputProcessor {
         //Draw arrow on selected option
         mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * (1 + this.selectedMenuVoice)));
     }
+
+    /**
+     * Draw current menu without localization
+     * @param batch
+     */
+    public void drawCurrentMenu(SpriteBatch batch) {
+        Objects.requireNonNull(batch);
+        Objects.requireNonNull(currentMenu);
+        Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
+
+        MenuItem[] subItemsArray = currentMenu.getSubItems();
+        for (int i = 0; i < subItemsArray.length; i++) {
+            mainFont.draw(batch, subItemsArray[i].name().replace('_',' '),
+                    MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
+        }
+        //Draw arrow on selected option
+        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * (1 + this.selectedMenuVoice)));
+    }
+
 
     @Override
     public boolean keyDown(int keycode) {
@@ -116,6 +141,9 @@ public class Menu implements InputProcessor {
             case PLAY_GAME:
                 handlePlayGame();
                 break;
+            case LANGUAGE:
+                handleLanguage();
+                break;
         }
     }
 
@@ -153,7 +181,7 @@ public class Menu implements InputProcessor {
                 //TODO credit
                 break;
             }
-            case 3: {
+            case 2: {
                 //Exit game
                 Gdx.app.exit();
                 break;
@@ -191,6 +219,15 @@ public class Menu implements InputProcessor {
                 break;
             }
         }
+    }
+
+
+    private void handleLanguage() {
+        changeToMainScreen = true;
+    }
+
+    public int getSelectedMenuVoice() {
+        return selectedMenuVoice;
     }
 
     public boolean isChangeToGameScreen() {

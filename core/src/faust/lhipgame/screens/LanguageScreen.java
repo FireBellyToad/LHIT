@@ -3,51 +3,44 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.music.MusicManager;
-import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.menu.Menu;
+import faust.lhipgame.menu.enums.MenuItem;
 
 /**
- * Menu screen class
+ * Class for game over screen
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class MenuScreen implements Screen {
+public class LanguageScreen implements Screen {
 
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
-    private final MusicManager musicManager;
-    private final TextBoxManager textBoxManager;
     private final Menu menu;
-    private final Texture titleTexture;
 
-    public MenuScreen(LHIPGame game) {
+    private final ShapeRenderer backgroundBox = new ShapeRenderer();
+    private static final Color darkness = new Color(0x000000ff);
+
+    public LanguageScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
-        musicManager = game.getMusicManager();
-        textBoxManager = game.getTextBoxManager();
 
-        titleTexture = assetManager.get("splash/title_splash.png");
-        musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
-
-        menu = new Menu(game.getSaveFileManager());
+        menu = new Menu(game.getSaveFileManager(), MenuItem.LANGUAGE);
     }
 
     @Override
     public void show() {
         //Load next screen image
-        assetManager.load("splash/loading_splash.png", Texture.class);
+        assetManager.load("splash/fbt_splash.png", Texture.class);
         assetManager.finishLoading();
 
         menu.loadFonts(assetManager);
-
-        //Loop title music
-        musicManager.playMusic(TuneEnum.TITLE);
 
         Gdx.input.setInputProcessor(menu);
     }
@@ -55,22 +48,26 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if(menu.isChangeToIntroScreen()){
-            //Stop music and change screen
-            musicManager.stopMusic();
-            game.setScreen(new IntroScreen(game));
-        } else if(menu.isChangeToGameScreen()){
-            //Stop music and change screen
-            musicManager.stopMusic();
-            game.setScreen(new LoadingScreen(game));
-        } else{
+        if (menu.isChangeToMainScreen()) {
+            //Set language and Change screen
+            game.getTextBoxManager().loadTextFromLanguage( menu.getSelectedMenuVoice() == 0 ? "eng" : "ita");
+            game.setScreen(new FBTScreen(game));
+        } else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
+            //Black background
+            game.getBatch().begin();
+            backgroundBox.setColor(darkness);
+            backgroundBox.setProjectionMatrix(cameraManager.getCamera().combined);
+            backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+            backgroundBox.rect(0, 0, LHIPGame.GAME_WIDTH,  LHIPGame.GAME_HEIGHT);
+            backgroundBox.end();
+            game.getBatch().end();
+
             //Menu screen render
             game.getBatch().begin();
-            game.getBatch().draw(titleTexture, 0, 0);
-            menu.drawCurrentMenuLocalized(game.getBatch(),textBoxManager);
+            menu.drawCurrentMenu(game.getBatch());
             game.getBatch().end();
         }
 

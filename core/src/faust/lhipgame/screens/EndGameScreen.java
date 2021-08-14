@@ -5,49 +5,61 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.gameentities.SpriteEntity;
+import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.menu.Menu;
+import faust.lhipgame.menu.enums.MenuItem;
+import faust.lhipgame.saves.SaveFileManager;
 
-/**
- * Menu screen class
- *
- * @author Jacopo "Faust" Buttiglieri
- */
-public class MenuScreen implements Screen {
+public class EndGameScreen implements Screen {
 
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextBoxManager textBoxManager;
+    private final SaveFileManager saveFileManager;
     private final Menu menu;
-    private final Texture titleTexture;
+    private final Texture endGameScreen;
+    private final SpriteEntity itemsTexture;
 
-    public MenuScreen(LHIPGame game) {
+    public EndGameScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
         textBoxManager = game.getTextBoxManager();
+        saveFileManager = game.getSaveFileManager();
+        endGameScreen = assetManager.get("splash/gameover_splash.png");
 
-        titleTexture = assetManager.get("splash/title_splash.png");
-        musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
+        this.itemsTexture = new SpriteEntity(assetManager.get("sprites/hud.png")) {
+            @Override
+            protected int getTextureColumns() {
+                return HudIconsEnum.values().length;
+            }
 
-        menu = new Menu(game.getSaveFileManager());
+            @Override
+            protected int getTextureRows() {
+                return 1;
+            }
+        };
+
+        menu = new Menu(game.getSaveFileManager(), MenuItem.END_GAME);
     }
 
     @Override
     public void show() {
         //Load next screen image
-        assetManager.load("splash/loading_splash.png", Texture.class);
+        assetManager.load("splash/gameover_splash.png", Texture.class);
         assetManager.finishLoading();
 
         menu.loadFonts(assetManager);
 
         //Loop title music
-        musicManager.playMusic(TuneEnum.TITLE);
+        musicManager.playMusic(TuneEnum.ENDGAME, false);
 
         Gdx.input.setInputProcessor(menu);
     }
@@ -55,22 +67,18 @@ public class MenuScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if(menu.isChangeToIntroScreen()){
+        if (menu.isChangeToMainScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
-            game.setScreen(new IntroScreen(game));
-        } else if(menu.isChangeToGameScreen()){
-            //Stop music and change screen
-            musicManager.stopMusic();
-            game.setScreen(new LoadingScreen(game));
-        } else{
+            game.setScreen(new MenuScreen(game));
+        } else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
             //Menu screen render
             game.getBatch().begin();
-            game.getBatch().draw(titleTexture, 0, 0);
-            menu.drawCurrentMenuLocalized(game.getBatch(),textBoxManager);
+            game.getBatch().draw(endGameScreen, 0, 0);
+            menu.drawCurrentMenuLocalized(game.getBatch(), textBoxManager);
             game.getBatch().end();
         }
 

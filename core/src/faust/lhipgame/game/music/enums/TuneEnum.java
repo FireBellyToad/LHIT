@@ -7,7 +7,8 @@ public enum TuneEnum {
     GAMEOVER("gameover.ogg"),
     DANGER("danger.ogg"),
     ATTACK("attack.ogg"),
-    FINAL("final.ogg");
+    FINAL("final.ogg"),
+    ENDGAME("gameover.ogg"); // FIXME
 
     private final String fileName;
 

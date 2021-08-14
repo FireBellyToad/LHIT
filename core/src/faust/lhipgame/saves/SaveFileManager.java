@@ -64,7 +64,14 @@ public class SaveFileManager {
         return selectedFileName;
     }
 
-    public void loadSave(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
+    /**
+     * Load game and populate game instances with the loaded values
+     *
+     * @param player
+     * @param saveMap
+     * @throws SerializationException
+     */
+    public void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
         JsonValue file = new JsonReader().parse(Gdx.files.local(selectedFileName));
 
         if (Objects.isNull(file)) {
@@ -161,5 +168,31 @@ public class SaveFileManager {
     public void cleanSaveFile() {
 
         Gdx.files.local(getFileName()).writeString("", false);
+    }
+
+    /**
+     * Load game and put raw loaded values in map
+     * @return
+     */
+    public Map<String, Object> loadRawValues() {
+
+        JsonValue file = new JsonReader().parse(Gdx.files.local(selectedFileName));
+
+        if (Objects.isNull(file)) {
+            return null;
+        }
+
+        JsonValue playerInfo = file.get("playerInfo");
+        if (Objects.isNull(playerInfo)) {
+            return null;
+        }
+
+        Map<String,Object> rawValuesMap = new HashMap<>();
+
+        rawValuesMap.put("lance", playerInfo.getInt("lance"));
+        rawValuesMap.put("morgengabes",playerInfo.getInt("morgengabes"));
+        rawValuesMap.put("armor", playerInfo.getBoolean("armor"));
+
+        return rawValuesMap;
     }
 }

@@ -87,7 +87,7 @@ public class RoomsManager {
 
         //Try to load predefined casualnumbers for casual rooms from file
         try {
-            saveFileManager.loadSave(player, saveMap);
+            saveFileManager.loadSaveForGame(player, saveMap);
 
         } catch (SerializationException ex) {
             Gdx.app.log("WARN", "No valid savefile to load");

@@ -54,7 +54,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (menu.isChangeToMainScreen()) {
+        if (menu.isChangeToNextScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(new MenuScreen(game));

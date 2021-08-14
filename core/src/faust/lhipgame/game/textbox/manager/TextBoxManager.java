@@ -55,7 +55,7 @@ public class TextBoxManager implements TextLocalizer {
     public void loadTextFromLanguage(String language){
 
         // Prepare text map
-        JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/textBoxes_" + language + ".json"));
+        JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/messages_" + language + ".json"));
         messageMap = root.get("messages");
 
         Objects.requireNonNull(messageMap);
@@ -68,6 +68,7 @@ public class TextBoxManager implements TextLocalizer {
      */
     public void addNewTextBox(final String textKey) {
         Objects.requireNonNull(textKey);
+        Objects.requireNonNull(messageMap, "messageMap is null: messages file has not been loaded");
 
         if (textBoxes.size() == MESSAGE_LIMIT) {
             textBoxes.remove(0);

@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.EnemyEnum;
@@ -421,6 +422,7 @@ public abstract class AbstractRoom implements Spawner {
 
             if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
+                player.setReadyToFinish(true);
                 //TODO proceed to endgame
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number

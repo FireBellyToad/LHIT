@@ -13,8 +13,8 @@ public enum MenuItem {
     PLAY_GAME(new MenuItem[]{NEW_GAME, LOAD_GAME, BACK}),
     GAME_OVER("menu.continue", new MenuItem[]{YES, NO}),
     MAIN(new MenuItem[]{PLAY_GAME, CREDITS, EXIT_GAME}),
-    END_GAME("menu.continue", new MenuItem[]{BACK}),
-    LANGUAGE("menu.continue", new MenuItem[]{ENGLISH, ITALIANO});
+    END_GAME(new MenuItem[]{BACK}),
+    LANGUAGE(new MenuItem[]{ENGLISH, ITALIANO});
 
     final String titleMessageKey;
     final MenuItem[] subItems;

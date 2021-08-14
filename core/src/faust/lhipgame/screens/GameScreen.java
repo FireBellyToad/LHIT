@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.hud.DarknessRenderer;
 import faust.lhipgame.game.hud.Hud;
@@ -135,6 +136,9 @@ public class GameScreen implements Screen {
             roomsManager.dispose();
             musicManager.stopMusic();
             game.setScreen(new GameOverScreen(game));
+        } else if (player.isReadyToFinish()){
+            //FIXME improve
+            game.setScreen(new EndGameScreen(game));
         }
     }
 

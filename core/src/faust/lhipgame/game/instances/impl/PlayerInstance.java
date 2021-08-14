@@ -63,6 +63,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean hasArmor = false;
     private boolean isSubmerged = false;
     private boolean isDead = false;
+    private boolean isReadyToFinish = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -823,6 +824,18 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         upSpearBody.setActive(false);
         leftSpearBody.setActive(false);
         downSpearBody.setActive(false);
+    }
+
+    /**
+     *
+     * @return true if game is ending
+     */
+    public boolean isReadyToFinish() {
+        return isReadyToFinish;
+    }
+
+    public void setReadyToFinish(boolean readyToFinish) {
+        isReadyToFinish = readyToFinish;
     }
 
     @Override

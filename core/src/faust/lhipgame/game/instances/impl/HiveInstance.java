@@ -147,7 +147,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         //Draw Hive
         // If not hurt or the flickering Hive must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET+4);
+            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET-4);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

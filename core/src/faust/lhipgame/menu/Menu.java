@@ -31,7 +31,7 @@ public class Menu implements InputProcessor {
     private MenuItem currentMenu = MenuItem.MAIN;
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
-    private boolean changeToMainScreen = false;
+    private boolean changeToNextScreen = false;
     private boolean changeToIntroScreen = false;
 
     private final SaveFileManager saveFileManager;
@@ -141,8 +141,8 @@ public class Menu implements InputProcessor {
             case PLAY_GAME:
                 handlePlayGame();
                 break;
-            case LANGUAGE:
-                handleLanguage();
+            default:
+                handleDefaults();
                 break;
         }
     }
@@ -215,15 +215,17 @@ public class Menu implements InputProcessor {
             }
             case 1: {
                 //No, back to main
-                changeToMainScreen = true;
+                changeToNextScreen = true;
                 break;
             }
         }
     }
 
-
-    private void handleLanguage() {
-        changeToMainScreen = true;
+    /**
+     * Just go to next Screen
+     */
+    private void handleDefaults() {
+        changeToNextScreen = true;
     }
 
     public int getSelectedMenuVoice() {
@@ -238,8 +240,8 @@ public class Menu implements InputProcessor {
         return changeToIntroScreen;
     }
 
-    public boolean isChangeToMainScreen() {
-        return changeToMainScreen;
+    public boolean isChangeToNextScreen() {
+        return changeToNextScreen;
     }
 
     @Override

@@ -3,8 +3,11 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.gameentities.GameEntity;
 import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.music.MusicManager;
@@ -14,7 +17,15 @@ import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 
+import java.util.Map;
+
 public class EndGameScreen implements Screen {
+
+    private final ShapeRenderer backgroundBox = new ShapeRenderer();
+    private static final Color darkness = new Color(0x000000ff);
+
+    private static final float X_OFFSET = 50;
+    private static final float Y_OFFSET = (float) (LHIPGame.GAME_HEIGHT * 0.66);
 
     private final LHIPGame game;
     private final AssetManager assetManager;
@@ -23,8 +34,8 @@ public class EndGameScreen implements Screen {
     private final TextBoxManager textBoxManager;
     private final SaveFileManager saveFileManager;
     private final Menu menu;
-    private final Texture endGameScreen;
     private final SpriteEntity itemsTexture;
+    private final Map<String, Object> valuesMap;
 
     public EndGameScreen(LHIPGame game) {
         this.game = game;
@@ -33,7 +44,7 @@ public class EndGameScreen implements Screen {
         musicManager = game.getMusicManager();
         textBoxManager = game.getTextBoxManager();
         saveFileManager = game.getSaveFileManager();
-        endGameScreen = assetManager.get("splash/gameover_splash.png");
+        valuesMap = saveFileManager.loadRawValues();
 
         this.itemsTexture = new SpriteEntity(assetManager.get("sprites/hud.png")) {
             @Override
@@ -52,10 +63,6 @@ public class EndGameScreen implements Screen {
 
     @Override
     public void show() {
-        //Load next screen image
-        assetManager.load("splash/gameover_splash.png", Texture.class);
-        assetManager.finishLoading();
-
         menu.loadFonts(assetManager);
 
         //Loop title music
@@ -67,7 +74,7 @@ public class EndGameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (menu.isChangeToMainScreen()) {
+        if (menu.isChangeToNextScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(new MenuScreen(game));
@@ -75,13 +82,48 @@ public class EndGameScreen implements Screen {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
+            //Black background
+            drawBlackBackground(game.getBatch());
+
+            //Draw items
+            drawItems(game.getBatch());
+
             //Menu screen render
             game.getBatch().begin();
-            game.getBatch().draw(endGameScreen, 0, 0);
             menu.drawCurrentMenuLocalized(game.getBatch(), textBoxManager);
             game.getBatch().end();
         }
 
+    }
+
+    private void drawItems(SpriteBatch batch) {
+
+        batch.begin();
+        //Morgengabes found count. Set in red if all has been found
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
+                X_OFFSET,
+                Y_OFFSET);
+
+        textBoxManager.getMainFont().draw(batch,
+                " : " + valuesMap.get("morgengabes") + " " + textBoxManager.localizeFromKey("endgame.of") + " 9",
+                X_OFFSET + 10,
+                Y_OFFSET + 6);
+        batch.end();
+
+    }
+
+    /**
+     *
+     * @param batch
+     */
+    private void drawBlackBackground(SpriteBatch batch) {
+        batch.begin();
+        backgroundBox.setColor(darkness);
+        backgroundBox.setProjectionMatrix(cameraManager.getCamera().combined);
+        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+        backgroundBox.rect(0, 0, LHIPGame.GAME_WIDTH,  LHIPGame.GAME_HEIGHT);
+        backgroundBox.end();
+        batch.end();
     }
 
     @Override

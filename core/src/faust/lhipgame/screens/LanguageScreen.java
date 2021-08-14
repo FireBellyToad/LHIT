@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 
@@ -18,13 +17,13 @@ import faust.lhipgame.menu.enums.MenuItem;
  */
 public class LanguageScreen implements Screen {
 
+    private final ShapeRenderer backgroundBox = new ShapeRenderer();
+    private static final Color darkness = new Color(0x000000ff);
+
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final Menu menu;
-
-    private final ShapeRenderer backgroundBox = new ShapeRenderer();
-    private static final Color darkness = new Color(0x000000ff);
 
     public LanguageScreen(LHIPGame game) {
         this.game = game;
@@ -48,7 +47,7 @@ public class LanguageScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        if (menu.isChangeToMainScreen()) {
+        if (menu.isChangeToNextScreen()) {
             //Set language and Change screen
             game.getTextBoxManager().loadTextFromLanguage( menu.getSelectedMenuVoice() == 0 ? "eng" : "ita");
             game.setScreen(new FBTScreen(game));

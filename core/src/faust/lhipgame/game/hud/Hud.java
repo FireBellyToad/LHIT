@@ -37,7 +37,6 @@ public class Hud {
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x222222ff);
-    private static final Color maxNumberFoundColor = new Color(0xee0000ff);
 
     //Healing timer bar
     private final ShapeRenderer cornerBox = new ShapeRenderer();
@@ -68,8 +67,6 @@ public class Hud {
         Objects.requireNonNull(batch);
         Objects.requireNonNull(player);
         Objects.requireNonNull(camera);
-
-        final Color colorBackup = textManager.getMainFont().getColor().cpy();
 
         Vector2 playerPosition = player.getBody().getPosition();
 
@@ -109,36 +106,20 @@ public class Hud {
                 morgengabeCountPosition.x - 10,
                 morgengabeCountPosition.y - 6);
 
-        if(player.getFoundMorgengabes() >= 9){
-            textManager.getMainFont().setColor(maxNumberFoundColor);
-        }
-
         textManager.getMainFont().draw(batch,
                 String.valueOf(player.getFoundMorgengabes()),
                 morgengabeCountPosition.x,
                 morgengabeCountPosition.y);
-
-        if(player.getFoundMorgengabes() >= 9){
-            textManager.getMainFont().setColor(colorBackup);
-        }
 
         //Holy lance pieces found count. Set in red if all has been found
         batch.draw(hudTexture.getFrame(HudIconsEnum.LANCE.ordinal() * GameEntity.FRAME_DURATION),
                 holyLancePiecesPosition.x - 10,
                 holyLancePiecesPosition.y - 6);
 
-        if(player.getHolyLancePieces() >= 2){
-            textManager.getMainFont().setColor(maxNumberFoundColor);
-        }
-
         textManager.getMainFont().draw(batch,
                 String.valueOf(player.getHolyLancePieces()),
                 holyLancePiecesPosition.x,
                 holyLancePiecesPosition.y);
-
-        if(player.getHolyLancePieces() >= 2){
-            textManager.getMainFont().setColor(colorBackup);
-        }
 
         //Healthkits found count
         batch.draw(hudTexture.getFrame(HudIconsEnum.HEALTH_KIT.ordinal() * GameEntity.FRAME_DURATION),

@@ -1,48 +1,45 @@
 {
   "messages": {
-    "poi.success.examine": "HO TROVATO QUALCOSA!",
-    "poi.bush.examine": "UN ARBUSTO SENZA\nVALORE",
-    "poi.bush.success": "HO TROVATO DELLE\nERBE",
-    "poi.cadaver.success": "HO TROVATO UN'\nARMATURA IMBOTTITA",
-    "poi.skull.examine": "SOLO UN MUCCHIO\nDI OSSA",
-    "poi.stones.examine": "NON C'E' NULLA\nSOTTO LE PIETRE",
-    "poi.brother.success": "SONO TUTTI MORTI",
-    "poi.echocorpse.success": "ERA UNO DEI NOSTRI\nMIGLIORI GUERRIERI",
-
-    "splash.strix": "UN GROTTESCO UCCELLO",
-    "splash.bounded": "UN CADAVERE VOLANTE",
-    "splash.morgengabe": "HO TROVATO UN \nMORGENGABIO D'ORO",
-    "splash.holy.1": "HO TROVATO UN PEZZO\nDI UNA STRANA LANCIA",
-    "splash.holy.2": "ORA POSSIEDO LA\nPOTENTE LANCIA SACRA",
-    "splash.hive": "UN MURO DI CARNE",
-
-
-    "echo.woman.first": "AIUTATEMIII!",
-    "echo.woman.second": "ARGH! -GASP-",
-    "echo.tree.first": "ORCUS DOMINAT",
-    "echo.tree.second": "PERIT UT VIVAT",
-
-    "warn.hive.damage": "LA MIA ARMA\nNON HA EFFETTO",
-
-    "menu.sure": "SEI SICURO?",
-    "menu.continue": "CONTINUARE?",
-
-
-    "YES": "SI",
-    "NO": "NO",
-    "BACK": "INDIETRO",
-    "CREDITS": "CREDITI",
-    "EXIT_GAME": "ESCI",
-    "LOAD_GAME": "CARICA",
-    "NEW_GAME": "NUOVA PARTITA",
-    "PLAY_GAME": "GIOCA",
-    "GAME_OVER": "GAME OVER",
-
-    "intro.text.1": "ERAVAMO STATI\nMANDATI DAL PAPA\nNELLE TERRE DELLA\nLANGOBARDIA\nHORRIBILIS.\nDOVEVAMO TROVARE\nLA LANCIA SACRA...",
-    "intro.text.2": "ARRIVAMMO INFINE\nNELLE ACQUE DEL\nFIUME TREBIA, VICINO\nALLA CHIESA DI\nSANCTI COLUMBANI...",
-    "intro.text.3": "MA IL FIUME STRARIPO'\nE IL NOSTRO GRUPPO FU\nCATTURATO DALLE\nCREATURE DELLE\nTENEBRE...",
-    "intro.text.4": "SON RIMASTO SOLO, MA\nTROVERO' LA VIA FINO\nALLA CHIESA.\nDIO, VEGLIA SU DI ME.",
-
-    "endgame.of": "SU"
+    "boxes": {
+      "poi.success.examine": "HO TROVATO QUALCOSA!",
+      "poi.bush.examine": "UN ARBUSTO SENZA\nVALORE",
+      "poi.bush.success": "HO TROVATO DELLE\nERBE",
+      "poi.cadaver.success": "HO TROVATO UN'\nARMATURA IMBOTTITA",
+      "poi.skull.examine": "SOLO UN MUCCHIO\nDI OSSA",
+      "poi.stones.examine": "NON C'E' NULLA\nSOTTO LE PIETRE",
+      "poi.brother.success": "SONO TUTTI MORTI",
+      "poi.echocorpse.success": "ERA UNO DEI NOSTRI\nMIGLIORI GUERRIERI",
+      "splash.strix": "UN GROTTESCO UCCELLO",
+      "splash.bounded": "UN CADAVERE VOLANTE",
+      "splash.morgengabe": "HO TROVATO UN \nMORGENGABIO D'ORO",
+      "splash.holy.1": "HO TROVATO UN PEZZO\nDI UNA STRANA LANCIA",
+      "splash.holy.2": "ORA POSSIEDO LA\nPOTENTE LANCIA SACRA",
+      "splash.hive": "UN MURO DI CARNE",
+      "echo.woman.first": "AIUTATEMIII!",
+      "echo.woman.second": "ARGH! -GASP-",
+      "echo.tree.first": "ORCUS DOMINAT",
+      "echo.tree.second": "PERIT UT VIVAT",
+      "warn.hive.damage": "LA MIA ARMA\nNON HA EFFETTO",
+      "endgame.of": "SU"
+    },
+    "cutscenes": {
+      "intro.text.1": "ERAVAMO STATI\nMANDATI DAL PAPA\nNELLE TERRE DELLA\nLANGOBARDIA\nHORRIBILIS.\nDOVEVAMO TROVARE\nLA LANCIA SACRA...",
+      "intro.text.2": "ARRIVAMMO INFINE\nNELLE ACQUE DEL\nFIUME TREBIA, VICINO\nALLA CHIESA DI\nSANCTI COLUMBANI...",
+      "intro.text.3": "MA IL FIUME STRARIPO'\nE IL NOSTRO GRUPPO FU\nCATTURATO DALLE\nCREATURE DELLE\nTENEBRE...",
+      "intro.text.4": "SON RIMASTO SOLO, MA\nTROVERO' LA VIA FINO\nALLA CHIESA.\nDIO, VEGLIA SU DI ME."
+    },
+    "menu": {
+      "menu.sure": "SEI SICURO?",
+      "menu.continue": "CONTINUARE?",
+      "YES": "SI",
+      "NO": "NO",
+      "BACK": "INDIETRO",
+      "CREDITS": "CREDITI",
+      "EXIT_GAME": "ESCI",
+      "LOAD_GAME": "CARICA",
+      "NEW_GAME": "NUOVA PARTITA",
+      "PLAY_GAME": "GIOCA",
+      "GAME_OVER": "GAME OVER"
+    }
   }
 }

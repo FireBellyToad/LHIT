@@ -1,19 +1,16 @@
 package faust.lhipgame.game.textbox.manager;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.textbox.TextBoxData;
-import faust.lhipgame.game.textbox.interfaces.TextLocalizer;
+import faust.lhipgame.game.utils.TextLocalizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class TextBoxManager implements TextLocalizer {
+public class TextBoxManager {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float MESSAGE_LIMIT = 1;
@@ -32,33 +29,22 @@ public class TextBoxManager implements TextLocalizer {
 
     private final BitmapFont mainFont;
     private final List<TextBoxData> textBoxes = new ArrayList<>();
-    private JsonValue messageMap;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private final ShapeRenderer cornerBox = new ShapeRenderer();
     private static final Color corner = new Color(0xffffffff);
     private static final Color back = new Color(0x222222ff);
     private Timer.Task currentTimer;
+    private TextLocalizer textLocalizer;
 
-    public TextBoxManager(AssetManager assetManager) {
+    public TextBoxManager(AssetManager assetManager, TextLocalizer textLocalizer) {
 
         // Prepare font
         mainFont = assetManager.get("fonts/main_font.fnt");
         mainFont.getData().setScale(FONT_SIZE);
 
-    }
+        this.textLocalizer = textLocalizer;
 
-    /**
-     * Load all game text
-     * @param language
-     */
-    public void loadTextFromLanguage(String language){
-
-        // Prepare text map
-        JsonValue root = new JsonReader().parse(Gdx.files.internal("messages/messages_" + language + ".json"));
-        messageMap = root.get("messages");
-
-        Objects.requireNonNull(messageMap);
     }
 
     /**
@@ -68,7 +54,6 @@ public class TextBoxManager implements TextLocalizer {
      */
     public void addNewTextBox(final String textKey) {
         Objects.requireNonNull(textKey);
-        Objects.requireNonNull(messageMap, "messageMap is null: messages file has not been loaded");
 
         if (textBoxes.size() == MESSAGE_LIMIT) {
             textBoxes.remove(0);
@@ -80,7 +65,7 @@ public class TextBoxManager implements TextLocalizer {
         }
 
         //Create text box given a textKey.
-        TextBoxData newText = new TextBoxData(localizeFromKey(textKey));
+        TextBoxData newText = new TextBoxData(textLocalizer.localizeFromKey("boxes",textKey));
         textBoxes.add(newText);
 
         // Hide box after time
@@ -94,15 +79,6 @@ public class TextBoxManager implements TextLocalizer {
                 }
             }
         }, newText.getTimeToShow());
-    }
-
-    /**
-     * @param textKey
-     * @return
-     */
-    public String localizeFromKey(String textKey) {
-        Objects.requireNonNull(textKey);
-        return messageMap.getString(textKey);
     }
 
     /**

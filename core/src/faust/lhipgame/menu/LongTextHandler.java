@@ -8,32 +8,38 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.JsonValue;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.utils.TextLocalizer;
 
 import java.util.Objects;
 
 /**
- * Menu class
+ * Long text handler class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class Intro implements InputProcessor {
+public class LongTextHandler implements InputProcessor {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float X_OFFSET = 5;
     private static final float Y_OFFSET = 10;
-    private static final String INTRO_TEXT_KEY = "intro.text.";
-    private static final int INTRO_LAST_STEP = 4;
+    private final TextLocalizer textLocalizer;
+
+    //FIXME
+    private String longTextKey = "intro.text.";
+    private int lontTextLastStep = 4;
 
     private BitmapFont mainFont;
+    private JsonValue messageMap;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color darkness = new Color(0x000000ff);
 
     private int currentIntroStep = 0;
 
-    public Intro() {
+    public LongTextHandler(TextLocalizer textLocalizer) {
+        this.textLocalizer = textLocalizer;
     }
 
     public void loadFonts(AssetManager assetManager) {
@@ -42,7 +48,7 @@ public class Intro implements InputProcessor {
         mainFont.getData().setScale(FONT_SIZE);
     }
 
-    public void drawCurrentintro(SpriteBatch batch, OrthographicCamera camera, TextBoxManager textBoxManager) {
+    public void drawCurrentintro(SpriteBatch batch, OrthographicCamera camera) {
         Objects.requireNonNull(batch);
 
         //Left overflow
@@ -56,8 +62,8 @@ public class Intro implements InputProcessor {
 
         batch.begin();
         //TODO maybe should be nice to have fading text?
-        mainFont.draw(batch, textBoxManager.localizeFromKey(INTRO_TEXT_KEY + (currentIntroStep + 1)),
-                 X_OFFSET, LHIPGame.GAME_HEIGHT - Y_OFFSET);
+        mainFont.draw(batch, textLocalizer.localizeFromKey("cutscenes", longTextKey + (currentIntroStep + 1)),
+                X_OFFSET, LHIPGame.GAME_HEIGHT - Y_OFFSET);
         batch.end();
     }
 
@@ -111,6 +117,6 @@ public class Intro implements InputProcessor {
     }
 
     public boolean isFinished() {
-        return currentIntroStep >= INTRO_LAST_STEP;
+        return currentIntroStep >= lontTextLastStep;
     }
 }

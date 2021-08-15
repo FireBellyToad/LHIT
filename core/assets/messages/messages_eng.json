@@ -1,46 +1,45 @@
 {
   "messages": {
-    "poi.success.examine": "I FOUND SOMETHING!",
-    "poi.bush.examine": "A WORTHLESS BUSH",
-    "poi.bush.success": "I FOUND SOME HERBS",
-    "poi.cadaver.success": "I FOUND A PADDED\nARMOR",
-    "poi.skull.examine": "JUST A PILE OF\nBONES",
-    "poi.stones.examine": "THERE IS NOTHING\nUNDER THESE STONES",
-    "poi.brother.success": "ALL HAVE DIED",
-    "poi.echocorpse.success": "HE WAS ONE OF OUR\nBEST WARRIORS",
-
-    "splash.strix": "A GROTESQUE AVIAN",
-    "splash.bounded": "A FLYING CORPSE",
-    "splash.morgengabe": "I FOUND A GOLDEN\nMORGENGABIUM",
-    "splash.holy.1": "I FOUND A PIECE OF\nA STRANGE LANCE",
-    "splash.holy.2": "I NOW POSSES THE\nMIGHTY HOLY LANCE",
-    "splash.hive": "A WALL OF MEAT",
-
-    "echo.woman.first": "HEEELP MEEE!",
-    "echo.woman.second": "ARGH! -GASP-",
-    "echo.tree.first": "ORCUS DOMINAT",
-    "echo.tree.second": "PERIT UT VIVAT",
-
-    "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT",
-
-    "menu.sure": "ARE YOU SURE?",
-    "menu.continue": "CONTINUE?",
-
-    "YES": "YES",
-    "NO": "NO",
-    "BACK": "BACK",
-    "CREDITS": "CREDITS",
-    "EXIT_GAME": "EXIT GAME",
-    "LOAD_GAME": "LOAD GAME",
-    "NEW_GAME": "NEW GAME",
-    "PLAY_GAME": "PLAY GAME",
-    "GAME_OVER": "GAME OVER",
-
-    "intro.text.1": "WE WERE SENT BY THE\nPOPE INTO THE LANDS\nOF LANGOBARDIA \nHORRIBILIS. OUR\nMISSION WAS TO\nFIND THE HOLY\nLANCE...",
-    "intro.text.2": "WE FINALLY ARRIVED\nIN THE WATERS\nOF TREBIA RIVER,\nCLOSE TO SANCTI\nCOLUMBANI CHURCH...",
-    "intro.text.3": "HOWEVER, THE RIVER\nFLOODED THE LANDS,\nAND OUR GROUP WAS\nCAUGHT BY THE FORCES\nOF DARKNESS...",
-    "intro.text.4": "I AM ALONE,BUT I\nWILL FIND THE\nWAY TO THE CHURCH.\nGOD, LOOK UPON ME.",
-
-    "endgame.of": "OF"
+    "boxes": {
+      "poi.success.examine": "I FOUND SOMETHING!",
+      "poi.bush.examine": "A WORTHLESS BUSH",
+      "poi.bush.success": "I FOUND SOME HERBS",
+      "poi.cadaver.success": "I FOUND A PADDED\nARMOR",
+      "poi.skull.examine": "JUST A PILE OF\nBONES",
+      "poi.stones.examine": "THERE IS NOTHING\nUNDER THESE STONES",
+      "poi.brother.success": "ALL HAVE DIED",
+      "poi.echocorpse.success": "HE WAS ONE OF OUR\nBEST WARRIORS",
+      "splash.strix": "A GROTESQUE AVIAN",
+      "splash.bounded": "A FLYING CORPSE",
+      "splash.morgengabe": "I FOUND A GOLDEN\nMORGENGABIUM",
+      "splash.holy.1": "I FOUND A PIECE OF\nA STRANGE LANCE",
+      "splash.holy.2": "I NOW POSSES THE\nMIGHTY HOLY LANCE",
+      "splash.hive": "A WALL OF MEAT",
+      "echo.woman.first": "HEEELP MEEE!",
+      "echo.woman.second": "ARGH! -GASP-",
+      "echo.tree.first": "ORCUS DOMINAT",
+      "echo.tree.second": "PERIT UT VIVAT",
+      "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT",
+      "endgame.of": "OF"
+    },
+    "cutscenes": {
+      "intro.text.1": "WE WERE SENT BY THE\nPOPE INTO THE LANDS\nOF LANGOBARDIA \nHORRIBILIS. OUR\nMISSION WAS TO\nFIND THE HOLY\nLANCE...",
+      "intro.text.2": "WE FINALLY ARRIVED\nIN THE WATERS\nOF TREBIA RIVER,\nCLOSE TO SANCTI\nCOLUMBANI CHURCH...",
+      "intro.text.3": "HOWEVER, THE RIVER\nFLOODED THE LANDS,\nAND OUR GROUP WAS\nCAUGHT BY THE FORCES\nOF DARKNESS...",
+      "intro.text.4": "I AM ALONE,BUT I\nWILL FIND THE\nWAY TO THE CHURCH.\nGOD, LOOK UPON ME."
+    },
+    "menu": {
+      "menu.sure": "ARE YOU SURE?",
+      "menu.continue": "CONTINUE?",
+      "YES": "YES",
+      "NO": "NO",
+      "BACK": "BACK",
+      "CREDITS": "CREDITS",
+      "EXIT_GAME": "EXIT GAME",
+      "LOAD_GAME": "LOAD GAME",
+      "NEW_GAME": "NEW GAME",
+      "PLAY_GAME": "PLAY GAME",
+      "GAME_OVER": "GAME OVER"
+    }
   }
 }

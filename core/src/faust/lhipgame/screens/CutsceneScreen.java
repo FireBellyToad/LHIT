@@ -6,49 +6,50 @@ import com.badlogic.gdx.assets.AssetManager;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
-import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.menu.Intro;
+import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.menu.LongTextHandler;
 
 /**
  * Intro screen class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class IntroScreen implements Screen {
+public class CutsceneScreen implements Screen {
 
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
-    private final TextBoxManager textBoxManager;
-    private final Intro intro;
+    private final LongTextHandler longTextHandler;
+    private final TextLocalizer textLocalizer;
 
-    public IntroScreen(LHIPGame game) {
+    public CutsceneScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
-        textBoxManager = game.getTextBoxManager();
+        textLocalizer = game.getTextLocalizer();
 
         musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
 
-        intro = new Intro();
+        longTextHandler = new LongTextHandler(textLocalizer);
     }
 
     @Override
     public void show() {
-        intro.loadFonts(assetManager);
+        longTextHandler.loadFonts(assetManager);
+        textLocalizer.loadTextFromLanguage();
 
         //Loop title music
         musicManager.playMusic(TuneEnum.TITLE);
 
-        Gdx.input.setInputProcessor(intro);
+        Gdx.input.setInputProcessor(longTextHandler);
     }
 
     @Override
     public void render(float delta) {
 
-        if (intro.isFinished()) {
+        if (longTextHandler.isFinished()) {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(new LoadingScreen(game));
@@ -57,7 +58,7 @@ public class IntroScreen implements Screen {
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
             //intro screen render
-            intro.drawCurrentintro(game.getBatch(), cameraManager.getCamera(), textBoxManager);
+            longTextHandler.drawCurrentintro(game.getBatch(), cameraManager.getCamera());
         }
 
     }

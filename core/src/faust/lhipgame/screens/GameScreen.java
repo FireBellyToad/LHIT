@@ -14,6 +14,7 @@ import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.rooms.manager.RoomsManager;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.game.world.manager.WorldManager;
 
 public class GameScreen implements Screen {
@@ -23,6 +24,7 @@ public class GameScreen implements Screen {
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
+    private final TextLocalizer textLocalizer;
     private WorldManager worldManager;
     private PlayerInstance player;
     private final TextBoxManager textManager;
@@ -41,12 +43,14 @@ public class GameScreen implements Screen {
         this.assetManager = game.getAssetManager();
         this.cameraManager = game.getCameraManager();
         this.musicManager = game.getMusicManager();
-        textManager = game.getTextBoxManager();
+        this.textLocalizer = game.getTextLocalizer();
+        textManager = new TextBoxManager(assetManager,textLocalizer);
     }
 
     @Override
     public void show() {
         Box2D.init();
+        textLocalizer.loadTextFromLanguage();
 
         worldManager = new WorldManager();
         hud = new Hud(textManager,assetManager);
@@ -90,7 +94,7 @@ public class GameScreen implements Screen {
         //Draw all overlays
         drawOverlays();
 
-       cameraManager.box2DDebugRenderer(worldManager.getWorld());
+//       cameraManager.box2DDebugRenderer(worldManager.getWorld());
 
     }
 

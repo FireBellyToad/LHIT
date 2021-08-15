@@ -12,7 +12,7 @@ import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
-import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
@@ -31,18 +31,19 @@ public class EndGameScreen implements Screen {
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
-    private final TextBoxManager textBoxManager;
+    private final TextLocalizer textLocalizer;
     private final SaveFileManager saveFileManager;
     private final Menu menu;
     private final SpriteEntity itemsTexture;
     private final Map<String, Object> valuesMap;
+
 
     public EndGameScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
-        textBoxManager = game.getTextBoxManager();
+        textLocalizer = game.getTextLocalizer();
         saveFileManager = game.getSaveFileManager();
         valuesMap = saveFileManager.loadRawValues();
 
@@ -57,6 +58,7 @@ public class EndGameScreen implements Screen {
                 return 1;
             }
         };
+
 
         menu = new Menu(game.getSaveFileManager(), MenuItem.END_GAME);
     }
@@ -90,7 +92,7 @@ public class EndGameScreen implements Screen {
 
             //Menu screen render
             game.getBatch().begin();
-            menu.drawCurrentMenuLocalized(game.getBatch(), textBoxManager);
+            menu.drawCurrentMenuLocalized(game.getBatch(), textLocalizer);
             game.getBatch().end();
         }
 
@@ -104,8 +106,8 @@ public class EndGameScreen implements Screen {
                 X_OFFSET,
                 Y_OFFSET);
 
-        textBoxManager.getMainFont().draw(batch,
-                " : " + valuesMap.get("morgengabes") + " " + textBoxManager.localizeFromKey("endgame.of") + " 9",
+        menu.getMainFont().draw(batch,
+                " : " + valuesMap.get("morgengabes") + " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 9",
                 X_OFFSET + 10,
                 Y_OFFSET + 6);
         batch.end();

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
 import faust.lhipgame.screens.FBTScreen;
@@ -17,12 +18,13 @@ public class LHIPGame extends Game {
     public static final int GAME_WIDTH = 160;
     public static final int GAME_HEIGHT = 144;
 
+    private String language = "eng";
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;
     private SaveFileManager saveFileManager;
     private MusicManager musicManager;
-    private TextBoxManager textBoxManager;
+    private TextLocalizer textLocalizer;
 
     @Override
     public void create() {
@@ -35,7 +37,7 @@ public class LHIPGame extends Game {
         assetManager.load("fonts/main_font.fnt", BitmapFont.class);
         assetManager.finishLoading();
 
-        textBoxManager = new TextBoxManager(assetManager);
+        textLocalizer = new TextLocalizer();
 
         setScreen(new LanguageScreen(this));
     }
@@ -73,7 +75,7 @@ public class LHIPGame extends Game {
         return musicManager;
     }
 
-    public TextBoxManager getTextBoxManager() {
-        return textBoxManager;
+    public TextLocalizer getTextLocalizer() {
+        return textLocalizer;
     }
 }

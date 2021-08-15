@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 
@@ -23,12 +24,14 @@ public class LanguageScreen implements Screen {
     private final LHIPGame game;
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
+    private final TextLocalizer textLocalizer;
     private final Menu menu;
 
     public LanguageScreen(LHIPGame game) {
         this.game = game;
         assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
+        textLocalizer = game.getTextLocalizer();
 
         menu = new Menu(game.getSaveFileManager(), MenuItem.LANGUAGE);
     }
@@ -49,7 +52,7 @@ public class LanguageScreen implements Screen {
 
         if (menu.isChangeToNextScreen()) {
             //Set language and Change screen
-            game.getTextBoxManager().loadTextFromLanguage( menu.getSelectedMenuVoice() == 0 ? "eng" : "ita");
+            textLocalizer.setLanguage( menu.getSelectedMenuVoice() == 0 ? "eng" : "ita");
             game.setScreen(new FBTScreen(game));
         } else {
             cameraManager.applyAndUpdate();

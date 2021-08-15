@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.textbox.interfaces.TextLocalizer;
+import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 
@@ -57,20 +58,20 @@ public class Menu implements InputProcessor {
      * Draw current Menu with localized voices
      *
      * @param batch
-     * @param textBoxManager
+     * @param textLocalizer
      */
-    public void drawCurrentMenuLocalized(SpriteBatch batch, TextLocalizer textBoxManager) {
+    public void drawCurrentMenuLocalized(SpriteBatch batch, TextLocalizer textLocalizer) {
         Objects.requireNonNull(batch);
         Objects.requireNonNull(currentMenu);
         Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
 
         //Title
         if (Objects.nonNull(currentMenu.getTitleMessageKey()))
-            mainFont.draw(batch, textBoxManager.localizeFromKey(currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
+            mainFont.draw(batch, textLocalizer.localizeFromKey("menu",currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
 
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
-            mainFont.draw(batch, textBoxManager.localizeFromKey(subItemsArray[i].name()),
+            mainFont.draw(batch, textLocalizer.localizeFromKey("menu",subItemsArray[i].name()),
                     MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
         }
         //Draw arrow on selected option
@@ -242,6 +243,10 @@ public class Menu implements InputProcessor {
 
     public boolean isChangeToNextScreen() {
         return changeToNextScreen;
+    }
+
+    public BitmapFont getMainFont() {
+        return mainFont;
     }
 
     @Override

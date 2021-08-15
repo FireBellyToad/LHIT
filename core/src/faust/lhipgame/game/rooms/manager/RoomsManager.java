@@ -92,6 +92,8 @@ public class RoomsManager {
         } catch (SerializationException ex) {
             Gdx.app.log("WARN", "No valid savefile to load");
         }
+        //Init gamefile if no valid one has found
+        saveFileManager.saveOnFile(player,saveMap);
     }
 
     /**

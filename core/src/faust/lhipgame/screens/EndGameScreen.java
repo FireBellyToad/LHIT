@@ -18,6 +18,7 @@ import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class EndGameScreen implements Screen {
 
@@ -99,6 +100,7 @@ public class EndGameScreen implements Screen {
     }
 
     private void drawItems(SpriteBatch batch) {
+        Objects.requireNonNull(valuesMap);
 
         batch.begin();
         //Morgengabes found count. Set in red if all has been found

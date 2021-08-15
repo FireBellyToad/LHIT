@@ -20,8 +20,10 @@ public class CutsceneScreen implements Screen {
     private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
-    private final LongTextHandler longTextHandler;
     private final TextLocalizer textLocalizer;
+
+    private LongTextHandler longTextHandler;
+    private Screen nextScreen;
 
     public CutsceneScreen(LHIPGame game) {
         this.game = game;
@@ -30,9 +32,21 @@ public class CutsceneScreen implements Screen {
         musicManager = game.getMusicManager();
         textLocalizer = game.getTextLocalizer();
 
-        musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
+        musicManager.loadSingleTune(TuneEnum.DANGER, assetManager);
 
-        longTextHandler = new LongTextHandler(textLocalizer);
+    }
+
+    /**
+     * Init the cutscene to be shown
+     * FIXME maybe use enum or json?
+     * @param name
+     * @param maxstep
+     */
+    public void initCutscene(String name, int maxstep, Screen nextScreen){
+
+        longTextHandler = new LongTextHandler(textLocalizer,name,maxstep);
+        this.nextScreen = nextScreen;
+
     }
 
     @Override
@@ -41,7 +55,7 @@ public class CutsceneScreen implements Screen {
         textLocalizer.loadTextFromLanguage();
 
         //Loop title music
-        musicManager.playMusic(TuneEnum.TITLE);
+        musicManager.playMusic(TuneEnum.DANGER);
 
         Gdx.input.setInputProcessor(longTextHandler);
     }
@@ -52,7 +66,7 @@ public class CutsceneScreen implements Screen {
         if (longTextHandler.isFinished()) {
             //Stop music and change screen
             musicManager.stopMusic();
-            game.setScreen(new LoadingScreen(game));
+            game.setScreen(nextScreen);
         } else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);

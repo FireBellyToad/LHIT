@@ -35,7 +35,7 @@ public class TextBoxManager {
     private static final Color corner = new Color(0xffffffff);
     private static final Color back = new Color(0x222222ff);
     private Timer.Task currentTimer;
-    private TextLocalizer textLocalizer;
+    private final TextLocalizer textLocalizer;
 
     public TextBoxManager(AssetManager assetManager, TextLocalizer textLocalizer) {
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.utils.JsonValue;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.utils.TextLocalizer;
 
@@ -26,20 +25,20 @@ public class LongTextHandler implements InputProcessor {
     private static final float Y_OFFSET = 10;
     private final TextLocalizer textLocalizer;
 
-    //FIXME
-    private String longTextKey = "intro.text.";
-    private int lontTextLastStep = 4;
+    private String longTextKey = "intro";
+    private int longTextLastStep = 4;
 
     private BitmapFont mainFont;
-    private JsonValue messageMap;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color darkness = new Color(0x000000ff);
 
     private int currentIntroStep = 0;
 
-    public LongTextHandler(TextLocalizer textLocalizer) {
+    public LongTextHandler(TextLocalizer textLocalizer, String longTextKey, int longTextLastStep) {
         this.textLocalizer = textLocalizer;
+        this.longTextKey = longTextKey;
+        this.longTextLastStep = longTextLastStep;
     }
 
     public void loadFonts(AssetManager assetManager) {
@@ -62,7 +61,7 @@ public class LongTextHandler implements InputProcessor {
 
         batch.begin();
         //TODO maybe should be nice to have fading text?
-        mainFont.draw(batch, textLocalizer.localizeFromKey("cutscenes", longTextKey + (currentIntroStep + 1)),
+        mainFont.draw(batch, textLocalizer.localizeFromKey("cutscenes", longTextKey + ".text." + (currentIntroStep + 1)),
                 X_OFFSET, LHIPGame.GAME_HEIGHT - Y_OFFSET);
         batch.end();
     }
@@ -117,6 +116,6 @@ public class LongTextHandler implements InputProcessor {
     }
 
     public boolean isFinished() {
-        return currentIntroStep >= lontTextLastStep;
+        return currentIntroStep >= longTextLastStep;
     }
 }

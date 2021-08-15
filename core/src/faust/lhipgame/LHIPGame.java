@@ -18,7 +18,7 @@ public class LHIPGame extends Game {
     public static final int GAME_WIDTH = 160;
     public static final int GAME_HEIGHT = 144;
 
-    private String language = "eng";
+    private final String language = "eng";
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;

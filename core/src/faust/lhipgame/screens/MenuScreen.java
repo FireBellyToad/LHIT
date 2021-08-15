@@ -59,7 +59,9 @@ public class MenuScreen implements Screen {
         if (menu.isChangeToIntroScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
-            game.setScreen(new CutsceneScreen(game));
+            CutsceneScreen screen = new CutsceneScreen(game);
+            screen.initCutscene("intro",4, new LoadingScreen(game));
+            game.setScreen(screen);
         } else if (menu.isChangeToGameScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.hud.DarknessRenderer;
@@ -141,8 +142,9 @@ public class GameScreen implements Screen {
             musicManager.stopMusic();
             game.setScreen(new GameOverScreen(game));
         } else if (player.isReadyToFinish()){
-            //FIXME improve
-            game.setScreen(new EndGameScreen(game));
+            CutsceneScreen scene = new CutsceneScreen(game);
+            scene.initCutscene("endgame",4,new EndGameScreen(game));
+            game.setScreen(scene);
         }
     }
 

@@ -35,7 +35,7 @@ import java.util.Objects;
 public class SpitterInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
-    private static final long SPITTING_FREQUENCY_IN_MILLIS = 2000;
+    private static final long SPITTING_FREQUENCY_IN_MILLIS = 1750;
 
     private final TextBoxManager textBoxManager;
     // Time delta between state and start of attack animation

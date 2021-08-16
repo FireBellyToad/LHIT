@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.LHIPGame;
@@ -12,6 +12,7 @@ import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,22 +30,31 @@ public class Menu implements InputProcessor {
 
     private BitmapFont mainFont;
 
-    private MenuItem currentMenu = MenuItem.MAIN;
+    private MenuItem currentMenu;
     private int selectedMenuVoice = 0;
     private boolean changeToGameScreen = false;
     private boolean changeToNextScreen = false;
     private boolean changeToIntroScreen = false;
 
     private final SaveFileManager saveFileManager;
+    private Sound voiceChange;
+    private Sound wrongVoice;
 
-    public Menu(SaveFileManager saveFileManager) {
-        this.saveFileManager = saveFileManager;
-
+    public Menu(SaveFileManager saveFileManager,AssetManager assetManager) {
+        this(saveFileManager, MenuItem.MAIN, assetManager);
     }
 
-    public Menu(SaveFileManager saveFileManager, MenuItem currentMenu) {
+    public Menu(SaveFileManager saveFileManager, MenuItem currentMenu, AssetManager assetManager) {
         this.saveFileManager = saveFileManager;
         this.currentMenu = currentMenu;
+
+        assetManager.load("sounds/SFX_UIGeneric13.ogg",Sound.class);
+        assetManager.finishLoading();
+        assetManager.load("sounds/SFX_UIGeneric15.ogg",Sound.class);
+        assetManager.finishLoading();
+
+        this.voiceChange = assetManager.get("sounds/SFX_UIGeneric13.ogg");
+        this.wrongVoice = assetManager.get("sounds/SFX_UIGeneric15.ogg");
     }
 
     public void loadFonts(AssetManager assetManager) {
@@ -105,6 +115,7 @@ public class Menu implements InputProcessor {
             case Input.Keys.UP: {
                 if (selectedMenuVoice > 0) {
                     selectedMenuVoice--;
+                    voiceChange.play();
                 }
                 break;
             }
@@ -112,6 +123,7 @@ public class Menu implements InputProcessor {
             case Input.Keys.DOWN: {
                 if (selectedMenuVoice < currentMenu.getSubItems().length - 1) {
                     selectedMenuVoice++;
+                    voiceChange.play();
                 }
                 break;
             }
@@ -119,6 +131,7 @@ public class Menu implements InputProcessor {
             case Input.Keys.K:
             case Input.Keys.ENTER: {
                 handleSelection();
+                voiceChange.play();
                 break;
             }
         }
@@ -157,8 +170,14 @@ public class Menu implements InputProcessor {
                 break;
             }
             case 1: {
-                //Load game
-                changeToGameScreen = true;
+                //Load game if present, else do nothing
+                Map<String, Object> rawData = saveFileManager.loadRawValues();
+                if(rawData == null || rawData.isEmpty()){
+                    wrongVoice.play();
+                    selectedMenuVoice = 0;
+                } else {
+                    changeToGameScreen = true;
+                }
                 break;
             }
             case 2: {

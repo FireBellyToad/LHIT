@@ -61,7 +61,7 @@ public class EndGameScreen implements Screen {
         };
 
 
-        menu = new Menu(game.getSaveFileManager(), MenuItem.END_GAME);
+        menu = new Menu(game.getSaveFileManager(), MenuItem.END_GAME, assetManager);
     }
 
     @Override

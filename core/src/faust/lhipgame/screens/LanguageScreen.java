@@ -33,7 +33,7 @@ public class LanguageScreen implements Screen {
         cameraManager = game.getCameraManager();
         textLocalizer = game.getTextLocalizer();
 
-        menu = new Menu(game.getSaveFileManager(), MenuItem.LANGUAGE);
+        menu = new Menu(game.getSaveFileManager(), MenuItem.LANGUAGE, assetManager);
     }
 
     @Override

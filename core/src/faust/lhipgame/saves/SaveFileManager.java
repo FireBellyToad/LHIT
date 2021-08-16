@@ -1,6 +1,7 @@
 package faust.lhipgame.saves;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
@@ -176,13 +177,20 @@ public class SaveFileManager {
      */
     public Map<String, Object> loadRawValues() {
 
-        JsonValue file = new JsonReader().parse(Gdx.files.local(selectedFileName));
+        FileHandle file = Gdx.files.local(selectedFileName);
 
-        if (Objects.isNull(file)) {
+        JsonValue fileRead = null;
+        try {
+            fileRead= new JsonReader().parse(file);
+        } catch (Exception e){
+            Gdx.app.log("DEBUG", e.getMessage());
+        }
+
+        if (Objects.isNull(fileRead)) {
             return null;
         }
 
-        JsonValue playerInfo = file.get("playerInfo");
+        JsonValue playerInfo = fileRead.get("playerInfo");
         if (Objects.isNull(playerInfo)) {
             return null;
         }

@@ -35,7 +35,7 @@ public class MenuScreen implements Screen {
         titleTexture = assetManager.get("splash/title_splash.png");
         musicManager.loadSingleTune(TuneEnum.TITLE, assetManager);
 
-        menu = new Menu(game.getSaveFileManager());
+        menu = new Menu(game.getSaveFileManager(),assetManager);
     }
 
     @Override

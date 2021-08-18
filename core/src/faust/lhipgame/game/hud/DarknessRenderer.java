@@ -30,34 +30,61 @@ public class DarknessRenderer {
 
     }
 
-    public void drawDarkness(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera)  {
+    public void drawDarkness(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
         Objects.requireNonNull(batch);
         Objects.requireNonNull(player);
         Objects.requireNonNull(camera);
 
-        final float xOffset = Math.max(0, player.getBody().getPosition().x - LHIPGame.GAME_WIDTH/2);
+        final float xOffset = player.getBody().getPosition().x + 6 - LHIPGame.GAME_WIDTH / 2;
+        final float yOffset = player.getBody().getPosition().y + 8 - LHIPGame.GAME_HEIGHT / 2;
 
         //Left overflow
-        batch.begin();
-        backgroundBox.setColor(darkness);
-        backgroundBox.setProjectionMatrix(camera.combined);
-        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-        backgroundBox.rect(0, 0, Math.max(0,Math.min(16,0 + xOffset)),  LHIPGame.GAME_HEIGHT-12);
-        backgroundBox.end();
-        batch.end();
+        if (0 + xOffset > 0) {
+            batch.begin();
+            backgroundBox.setColor(darkness);
+            backgroundBox.setProjectionMatrix(camera.combined);
+            backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+            backgroundBox.rect(0, 0, 0 + xOffset, LHIPGame.GAME_HEIGHT - 12);
+            backgroundBox.end();
+            batch.end();
+        }
 
         //Right overflow
-        batch.begin();
-        backgroundBox.setColor(darkness);
-        backgroundBox.setProjectionMatrix(camera.combined);
-        backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-        backgroundBox.rect(xOffset+144, 0, 16-xOffset,  LHIPGame.GAME_HEIGHT-12);
-        backgroundBox.end();
-        batch.end();
+        if (16 - xOffset > 0) {
+            batch.begin();
+            backgroundBox.setColor(darkness);
+            backgroundBox.setProjectionMatrix(camera.combined);
+            backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+            backgroundBox.rect(xOffset + 144, 0, 16 - xOffset, LHIPGame.GAME_HEIGHT - 12);
+            backgroundBox.end();
+            batch.end();
+        }
+
+        //Up overflow
+        if (yOffset < 1) {
+            batch.begin();
+            backgroundBox.setColor(darkness);
+            backgroundBox.setProjectionMatrix(camera.combined);
+            backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+            backgroundBox.rect(0 + xOffset, LHIPGame.GAME_HEIGHT - 12, LHIPGame.GAME_WIDTH + (16 - xOffset), yOffset);
+            backgroundBox.end();
+            batch.end();
+        }
+
+        //Down overflow
+        if (yOffset > 0) {
+            batch.begin();
+            backgroundBox.setColor(darkness);
+            backgroundBox.setProjectionMatrix(camera.combined);
+            backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
+            backgroundBox.rect(0 + xOffset, 0, LHIPGame.GAME_WIDTH + (16 - xOffset), yOffset);
+            backgroundBox.end();
+            batch.end();
+        }
 
         //Darkness
         batch.begin();
-        batch.draw(darknessOverlay,Math.min(16,0 + xOffset),0);
+        batch.draw(darknessOverlay, 0 + xOffset, 0 + yOffset);
         batch.end();
     }
 }

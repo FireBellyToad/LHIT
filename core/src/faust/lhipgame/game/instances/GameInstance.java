@@ -17,8 +17,8 @@ import java.util.Objects;
  */
 public abstract class GameInstance {
 
-    protected final static int POSITION_OFFSET = 16;
-    protected final static int POSITION_Y_OFFSET = 8;
+    public final static int POSITION_OFFSET = 16;
+    public final static int POSITION_Y_OFFSET = 8;
 
     // Flicker effect variables
     protected boolean mustFlicker = false;// flag that is true when the Instance must be hidden

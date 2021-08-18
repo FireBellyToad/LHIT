@@ -5,8 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.hud.DarknessRenderer;
 import faust.lhipgame.game.hud.Hud;
@@ -107,8 +105,8 @@ public class GameScreen implements Screen {
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(game.getBatch());
         } else {
-            hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
             darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
+            hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
         }
         // draw text
         textManager.renderTextBoxes(game.getBatch(), cameraManager.getCamera());

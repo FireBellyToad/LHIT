@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
+import faust.lhipgame.game.utils.CutsceneEnum;
 import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 
@@ -59,9 +60,7 @@ public class MenuScreen implements Screen {
         if (menu.isChangeToIntroScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
-            CutsceneScreen screen = new CutsceneScreen(game);
-            screen.initCutscene("intro",4, new LoadingScreen(game));
-            game.setScreen(screen);
+            game.setScreen(new CutsceneScreen(game,CutsceneEnum.INTRO));
         } else if (menu.isChangeToGameScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();

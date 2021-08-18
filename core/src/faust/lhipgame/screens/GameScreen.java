@@ -13,6 +13,7 @@ import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.rooms.manager.RoomsManager;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
+import faust.lhipgame.game.utils.CutsceneEnum;
 import faust.lhipgame.game.utils.TextLocalizer;
 import faust.lhipgame.game.world.manager.WorldManager;
 
@@ -44,25 +45,23 @@ public class GameScreen implements Screen {
         this.musicManager = game.getMusicManager();
         this.textLocalizer = game.getTextLocalizer();
         textManager = new TextBoxManager(assetManager,textLocalizer);
+        hud = new Hud(textManager,assetManager);
+        splashManager = new SplashManager(textManager,assetManager);
+        darknessRenderer = new DarknessRenderer(assetManager);
+        worldManager = new WorldManager();
+        player = new PlayerInstance(assetManager);
+
+
     }
 
     @Override
     public void show() {
         Box2D.init();
         textLocalizer.loadTextFromLanguage();
-
-        worldManager = new WorldManager();
-        hud = new Hud(textManager,assetManager);
-        splashManager = new SplashManager(textManager,assetManager);
         musicManager.initTuneMap(assetManager);
-        darknessRenderer = new DarknessRenderer(assetManager);
-
-        // Creating player and making it available to input processor
-        player = new PlayerInstance(assetManager);
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager(), game.getMusicManager());
-
 
     }
 
@@ -140,9 +139,7 @@ public class GameScreen implements Screen {
             musicManager.stopMusic();
             game.setScreen(new GameOverScreen(game));
         } else if (player.isReadyToFinish()){
-            CutsceneScreen scene = new CutsceneScreen(game);
-            scene.initCutscene("endgame",4,new EndGameScreen(game));
-            game.setScreen(scene);
+            game.setScreen( new CutsceneScreen(game, CutsceneEnum.ENDGAME));
         }
     }
 

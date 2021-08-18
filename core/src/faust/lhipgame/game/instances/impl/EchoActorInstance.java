@@ -5,12 +5,14 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhipgame.game.gameentities.interfaces.Damager;
@@ -69,8 +71,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
         //Move if should
         if(((EchoActorEntity)this.entity).mustMoveInStep(currentBehavior)){
-            //TODO improve
-            body.setLinearVelocity(60,0);
+            body.setLinearVelocity(getVelocityOfStep(((EchoActorEntity)this.entity).getDirection(currentBehavior)));
         } else {
             body.setLinearVelocity(0,0);
         }
@@ -100,6 +101,25 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
            }
        }
+    }
+
+    /**
+     *
+     * @param currentBehavior
+     * @return velocity of movement to do in Vector2 format
+     */
+    private Vector2 getVelocityOfStep(DirectionEnum currentBehavior) {
+        switch (currentBehavior){
+            case UP:
+                return new Vector2(0,60);
+            case DOWN:
+                return new Vector2(0,-60);
+            case RIGHT:
+                return new Vector2(60,0);
+            case LEFT:
+                return new Vector2(-60,0);
+        }
+        return null;
     }
 
     @Override

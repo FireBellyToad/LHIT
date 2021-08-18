@@ -3,7 +3,7 @@ package faust.lhipgame.game.gameentities;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.Objects;
 public abstract class AnimatedEntity extends GameEntity {
 
     //Animations given Behavior and Direction
-    protected final Map<GameBehavior, Map<Direction, Animation>> animations = new HashMap<>();
+    protected final Map<GameBehavior, Map<DirectionEnum, Animation>> animations = new HashMap<>();
 
     public AnimatedEntity(Texture texture) {
         super(texture);
@@ -39,7 +39,7 @@ public abstract class AnimatedEntity extends GameEntity {
      * @param behavior  the behaviour associated to the animation
      */
     protected void addAnimation(Animation animation, GameBehavior behavior) {
-        this.addAnimationForDirection(animation, behavior, Direction.UNUSED);
+        this.addAnimationForDirection(animation, behavior, DirectionEnum.UNUSED);
     }
 
 
@@ -48,17 +48,17 @@ public abstract class AnimatedEntity extends GameEntity {
      *
      * @param animation the animation itself
      * @param behavior  the behaviour associated to the animation
-     * @param direction the direction of the animation
+     * @param directionEnum the direction of the animation
      */
-    protected void addAnimationForDirection(Animation animation, GameBehavior behavior, Direction direction) {
+    protected void addAnimationForDirection(Animation animation, GameBehavior behavior, DirectionEnum directionEnum) {
         Objects.requireNonNull(behavior);
-        Objects.requireNonNull(direction);
+        Objects.requireNonNull(directionEnum);
 
         if (!this.animations.containsKey(behavior)) {
             this.animations.put(behavior, new HashMap<>());
         }
 
-        this.animations.get(behavior).put(direction, animation);
+        this.animations.get(behavior).put(directionEnum, animation);
     }
     /**
      * Returns frame to render with non looping animation and Unused direction
@@ -68,7 +68,7 @@ public abstract class AnimatedEntity extends GameEntity {
      * @return the TextureRegion of the frame
      */
     public TextureRegion getFrame(GameBehavior behavior, float stateTime) {
-        return getFrame(behavior, Direction.UNUSED, stateTime, false);
+        return getFrame(behavior, DirectionEnum.UNUSED, stateTime, false);
     }
 
     /**
@@ -80,44 +80,44 @@ public abstract class AnimatedEntity extends GameEntity {
      * @return the TextureRegion of the frame
      */
     public TextureRegion getFrame(GameBehavior behavior, float stateTime, boolean looping) {
-        return getFrame(behavior, Direction.UNUSED, stateTime, looping);
+        return getFrame(behavior, DirectionEnum.UNUSED, stateTime, looping);
     }
     /**
      * Returns frame to render with looping animation
      *
      * @param behavior  The behavior of the animation
-     * @param direction the direction of the animation
+     * @param directionEnum the direction of the animation
      * @param stateTime state time to render
      * @return the TextureRegion of the frame
      */
-    public TextureRegion getFrame(GameBehavior behavior, Direction direction, float stateTime) {
-        return getFrame(behavior, direction, stateTime, true);
+    public TextureRegion getFrame(GameBehavior behavior, DirectionEnum directionEnum, float stateTime) {
+        return getFrame(behavior, directionEnum, stateTime, true);
     }
 
     /**
      * Returns frame to render
      *
      * @param behavior  The behavior of the animation
-     * @param direction the direction of the animation
+     * @param directionEnum the direction of the animation
      * @param stateTime state time to render
      * @param looping   true if must loop
      * @return the TextureRegion of the frame
      */
-    public TextureRegion getFrame(GameBehavior behavior, Direction direction, float stateTime, boolean looping) {
+    public TextureRegion getFrame(GameBehavior behavior, DirectionEnum directionEnum, float stateTime, boolean looping) {
         Objects.requireNonNull(behavior);
-        Objects.requireNonNull(direction);
+        Objects.requireNonNull(directionEnum);
 
         // Get all animations for behaviour
-        Map<Direction, Animation> behaviorAnimations = this.animations.get(behavior);
+        Map<DirectionEnum, Animation> behaviorAnimations = this.animations.get(behavior);
 
         Objects.requireNonNull(behaviorAnimations);
 
         TextureRegion toReturn;
         // If the animations doesn't have any direction, then return the unused one
-        if (behaviorAnimations.containsKey(Direction.UNUSED)) {
-            toReturn = (TextureRegion) behaviorAnimations.get(Direction.UNUSED).getKeyFrame(stateTime, looping);
+        if (behaviorAnimations.containsKey(DirectionEnum.UNUSED)) {
+            toReturn = (TextureRegion) behaviorAnimations.get(DirectionEnum.UNUSED).getKeyFrame(stateTime, looping);
         } else {
-            toReturn = (TextureRegion) behaviorAnimations.get(direction).getKeyFrame(stateTime, looping);
+            toReturn = (TextureRegion) behaviorAnimations.get(directionEnum).getKeyFrame(stateTime, looping);
         }
 
         Objects.requireNonNull(toReturn);
@@ -129,25 +129,25 @@ public abstract class AnimatedEntity extends GameEntity {
      * Returns current frame Index
      *
      * @param behavior  The behavior of the animation
-     * @param direction the direction of the animation
+     * @param directionEnum the direction of the animation
      * @param stateTime state time to render
      * @return true if animation is finished
      */
-    public int getFrameIndex(GameBehavior behavior, Direction direction, float stateTime) {
+    public int getFrameIndex(GameBehavior behavior, DirectionEnum directionEnum, float stateTime) {
         Objects.requireNonNull(behavior);
-        Objects.requireNonNull(direction);
+        Objects.requireNonNull(directionEnum);
 
         // Get all animations for behaviour
-        Map<Direction, Animation> behaviorAnimations = this.animations.get(behavior);
+        Map<DirectionEnum, Animation> behaviorAnimations = this.animations.get(behavior);
 
         Objects.requireNonNull(behaviorAnimations);
 
         int toReturn;
         // If the animations doesn't have any direction, then return the unused one
-        if (behaviorAnimations.containsKey(Direction.UNUSED)) {
-            toReturn = behaviorAnimations.get(Direction.UNUSED).getKeyFrameIndex(stateTime);
+        if (behaviorAnimations.containsKey(DirectionEnum.UNUSED)) {
+            toReturn = behaviorAnimations.get(DirectionEnum.UNUSED).getKeyFrameIndex(stateTime);
         } else {
-            toReturn = behaviorAnimations.get(direction).getKeyFrameIndex(stateTime);
+            toReturn = behaviorAnimations.get(directionEnum).getKeyFrameIndex(stateTime);
         }
 
         return toReturn;
@@ -157,25 +157,25 @@ public abstract class AnimatedEntity extends GameEntity {
      * Returns if current Animation is finished
      *
      * @param behavior  The behavior of the animation
-     * @param direction the direction of the animation
+     * @param directionEnum the direction of the animation
      * @param stateTime state time to render
      * @return true if animation is finished
      */
-    public boolean isAnimationFinished(GameBehavior behavior, Direction direction, float stateTime) {
+    public boolean isAnimationFinished(GameBehavior behavior, DirectionEnum directionEnum, float stateTime) {
         Objects.requireNonNull(behavior);
-        Objects.requireNonNull(direction);
+        Objects.requireNonNull(directionEnum);
 
         // Get all animations for behaviour
-        Map<Direction, Animation> behaviorAnimations = this.animations.get(behavior);
+        Map<DirectionEnum, Animation> behaviorAnimations = this.animations.get(behavior);
 
         Objects.requireNonNull(behaviorAnimations);
 
         boolean toReturn;
         // If the animations doesn't have any direction, then return the unused one
-        if (behaviorAnimations.containsKey(Direction.UNUSED)) {
-            toReturn = behaviorAnimations.get(Direction.UNUSED).isAnimationFinished(stateTime);
+        if (behaviorAnimations.containsKey(DirectionEnum.UNUSED)) {
+            toReturn = behaviorAnimations.get(DirectionEnum.UNUSED).isAnimationFinished(stateTime);
         } else {
-            toReturn = behaviorAnimations.get(direction).isAnimationFinished(stateTime);
+            toReturn = behaviorAnimations.get(directionEnum).isAnimationFinished(stateTime);
         }
 
         return toReturn;
@@ -189,6 +189,6 @@ public abstract class AnimatedEntity extends GameEntity {
      * @return true if animation is finished
      */
     public boolean isAnimationFinished(GameBehavior behavior, float stateTime) {
-        return isAnimationFinished(behavior,Direction.UNUSED,stateTime);
+        return isAnimationFinished(behavior, DirectionEnum.UNUSED,stateTime);
     }
 }

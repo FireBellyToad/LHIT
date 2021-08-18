@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import faust.lhipgame.game.echoes.enums.EchoesActorType;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.*;
@@ -27,7 +28,7 @@ public class EchoActorEntity extends AnimatedEntity {
     //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();
     protected final Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
-    protected final Map<GameBehavior, Boolean> mustMoveInStep = new HashMap<>();
+    protected final Map<GameBehavior, DirectionEnum> mustMoveInStep = new HashMap<>();
     protected final Map<GameBehavior, GameBehavior> gotoToStepFromStep = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
@@ -56,7 +57,9 @@ public class EchoActorEntity extends AnimatedEntity {
             if (s.has("textBoxKey")) {
                 textBoxPerStep.put(behaviour, s.getString("textBoxKey"));
             }
-            mustMoveInStep.put(behaviour, s.has("move"));
+            if (s.has("move")) {
+              mustMoveInStep.put(behaviour, DirectionEnum.getFromString(s.getString("move")));
+            }
 
             if (s.has("goToStep")) {
                 gotoToStepFromStep.put(behaviour, GameBehavior.getFromString(s.getString("goToStep")));
@@ -119,6 +122,13 @@ public class EchoActorEntity extends AnimatedEntity {
      * @return true if must move in this step
      */
     public Boolean mustMoveInStep(GameBehavior step) {
+        return mustMoveInStep.containsKey(step);
+    }
+    /**
+     * @param step
+     * @return DirectionEnum of movement
+     */
+    public DirectionEnum getDirection(GameBehavior step) {
         return mustMoveInStep.get(step);
     }
 

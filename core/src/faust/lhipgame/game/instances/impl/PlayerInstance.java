@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.ItemEnum;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
@@ -70,7 +70,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
 
-        currentDirection = Direction.DOWN;
+        currentDirectionEnum = DirectionEnum.DOWN;
 
         Gdx.input.setInputProcessor(this);
 
@@ -135,16 +135,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
                 // Set horizontal direction if horizontal velocity is not zero
                 if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
-                    this.currentDirection = Direction.RIGHT;
+                    this.currentDirectionEnum = DirectionEnum.RIGHT;
                 } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
-                    this.currentDirection = Direction.LEFT;
+                    this.currentDirectionEnum = DirectionEnum.LEFT;
                 }
 
                 // Set vertical direction if vertical velocity is not zero
                 if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
-                    this.currentDirection = Direction.UP;
+                    this.currentDirectionEnum = DirectionEnum.UP;
                 } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
-                    this.currentDirection = Direction.DOWN;
+                    this.currentDirectionEnum = DirectionEnum.DOWN;
                 }
 
             }
@@ -263,7 +263,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         int yOffset = 0;
 
         if (GameBehavior.ATTACK.equals(currentBehavior)) {
-            switch (currentDirection) {
+            switch (currentDirectionEnum) {
                 case LEFT: {
                     xOffset = 1;
                     yOffset = 0;
@@ -312,7 +312,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private void drawWalfritShaded(SpriteBatch batch, float stateTime, int xOffset, int yOffset) {
 
         // Get frame
-        TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirection,
+        TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirectionEnum,
                 mapStateTimeFromBehaviour(stateTime));
 
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
@@ -370,9 +370,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             attackDeltaTime = stateTime;
 
         //Activate spear bodies when in right frame
-        final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
+        final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME + 4) {
-            switch (currentDirection) {
+            switch (currentDirectionEnum) {
                 case UP: {
                     upSpearBody.setActive(true);
                     break;
@@ -395,7 +395,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         // Resetting Behaviour on animation end
-        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime))) {
+        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
             currentBehavior = GameBehavior.IDLE;
         }
     }

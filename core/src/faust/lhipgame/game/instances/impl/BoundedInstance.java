@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.BoundedEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -52,7 +52,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
     public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new BoundedEntity(assetManager));
-        currentDirection = Direction.DOWN;
+        currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
         this.target = target;
@@ -78,7 +78,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             // Normal from bounded position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
-            currentDirection = extractDirectionFromNormal(direction);
+            currentDirectionEnum = extractDirectionFromNormal(direction);
 
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
@@ -92,7 +92,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
 
-            currentDirection = extractDirectionFromNormal(direction);
+            currentDirectionEnum = extractDirectionFromNormal(direction);
 
             // Move towards target
             body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
@@ -291,7 +291,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum,  mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
         //Draw shadow
         batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
@@ -402,12 +402,12 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirection,  mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum,  mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
-            switch (currentDirection) {
+            switch (currentDirectionEnum) {
                 case UP: {
                     upClawBody.setActive(true);
                     break;

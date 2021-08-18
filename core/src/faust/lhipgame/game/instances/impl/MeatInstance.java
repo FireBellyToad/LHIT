@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.MeatEntity;
 import faust.lhipgame.game.gameentities.interfaces.Damager;
@@ -36,7 +36,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
 
     public MeatInstance(float x, float y, PlayerInstance playerInstance, AssetManager assetManager) {
         super(new MeatEntity(assetManager));
-        currentDirection = Direction.DOWN;
+        currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
 
@@ -58,7 +58,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
             case WALK: {
                 Vector2 direction = new Vector2(target.x - body.getPosition().x, target.y - body.getPosition().y).nor();
 
-                currentDirection = extractDirectionFromNormal(direction);
+                currentDirectionEnum = extractDirectionFromNormal(direction);
 
                 // Move towards target
                 body.setLinearVelocity(MEAT_SPEED * direction.x, MEAT_SPEED * direction.y);

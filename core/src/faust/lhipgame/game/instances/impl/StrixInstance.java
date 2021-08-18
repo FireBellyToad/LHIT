@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.StrixEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -40,7 +40,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
 
     public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new StrixEntity(assetManager));
-        currentDirection = Direction.DOWN;
+        currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
         this.target = target;
@@ -61,7 +61,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
                     target.getBody().getPosition().y - body.getPosition().y).nor();
 
             // If not already attached su player
-            currentDirection = extractDirectionFromNormal(direction);
+            currentDirectionEnum = extractDirectionFromNormal(direction);
 
             // Move towards target
             body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
@@ -180,7 +180,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirection, mapStateTimeFromBehaviour(stateTime));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         batch.begin();
         //Draw shadow
         batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);

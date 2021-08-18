@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.impl.HiveEntity;
 import faust.lhipgame.game.instances.AnimatedInstance;
@@ -37,7 +37,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
 
     public HiveInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager) {
         super(new HiveEntity(assetManager));
-        currentDirection = Direction.DOWN;
+        currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
         this.textBoxManager = textBoxManager;

@@ -3,7 +3,7 @@ package faust.lhipgame.game.instances;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import faust.lhipgame.game.gameentities.GameEntity;
-import faust.lhipgame.game.gameentities.enums.Direction;
+import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ public abstract class AnimatedInstance extends GameInstance {
     protected int damage = 0;
 
     protected GameBehavior currentBehavior = GameBehavior.IDLE;
-    protected Direction currentDirection = Direction.UNUSED;
+    protected DirectionEnum currentDirectionEnum = DirectionEnum.UNUSED;
 
     protected Body hitBox;
 
@@ -31,18 +31,18 @@ public abstract class AnimatedInstance extends GameInstance {
     /**
      * Utility for extracting Direction from a directionNormal normal
      */
-    protected Direction extractDirectionFromNormal(Vector2 directionNormal) {
+    protected DirectionEnum extractDirectionFromNormal(Vector2 directionNormal) {
 
         if (directionNormal.x <= -0.5) {
-            return Direction.LEFT;
+            return DirectionEnum.LEFT;
         } else if (directionNormal.x > 0.5) {
-            return Direction.RIGHT;
+            return DirectionEnum.RIGHT;
         }
 
         if (directionNormal.y < 0) {
-            return Direction.DOWN;
+            return DirectionEnum.DOWN;
         } else {
-            return Direction.UP;
+            return DirectionEnum.UP;
         }
     }
 

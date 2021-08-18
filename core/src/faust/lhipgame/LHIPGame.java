@@ -2,15 +2,12 @@ package faust.lhipgame;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.game.music.MusicManager;
-import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.screens.CameraManager;
-import faust.lhipgame.screens.FBTScreen;
 import faust.lhipgame.screens.LanguageScreen;
 
 public class LHIPGame extends Game {

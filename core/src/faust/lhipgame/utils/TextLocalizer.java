@@ -1,4 +1,4 @@
-package faust.lhipgame.game.utils;
+package faust.lhipgame.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.GdxRuntimeException;

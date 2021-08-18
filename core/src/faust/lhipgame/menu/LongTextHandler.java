@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.TextLocalizer;
 
 import java.util.Objects;
 

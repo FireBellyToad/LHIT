@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 

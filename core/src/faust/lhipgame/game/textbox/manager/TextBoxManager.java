@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.textbox.TextBoxData;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.TextLocalizer;
 
 import java.util.ArrayList;
 import java.util.List;

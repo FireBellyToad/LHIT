@@ -13,8 +13,8 @@ import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.rooms.manager.RoomsManager;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.game.utils.CutsceneEnum;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.CutsceneEnum;
+import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.game.world.manager.WorldManager;
 
 public class GameScreen implements Screen {

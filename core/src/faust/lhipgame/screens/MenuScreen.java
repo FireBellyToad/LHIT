@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
-import faust.lhipgame.game.utils.CutsceneEnum;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.CutsceneEnum;
+import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 
 /**

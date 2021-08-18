@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.EnemyEnum;
@@ -33,7 +32,7 @@ import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.game.utils.DepthComparatorUtils;
+import faust.lhipgame.utils.DepthComparatorUtils;
 import faust.lhipgame.game.world.manager.WorldManager;
 import faust.lhipgame.saves.RoomSaveEntry;
 

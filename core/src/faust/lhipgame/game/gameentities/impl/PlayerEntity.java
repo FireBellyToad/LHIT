@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhipgame.game.gameentities.AnimatedEntity;
 import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
-import faust.lhipgame.game.utils.ShaderWrapper;
+import faust.lhipgame.utils.ShaderWrapper;
 
 import java.util.Arrays;
 

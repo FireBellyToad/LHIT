@@ -8,7 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;
 

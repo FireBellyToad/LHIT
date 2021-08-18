@@ -22,7 +22,7 @@ import faust.lhipgame.game.gameentities.interfaces.Damager;
 import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.instances.AnimatedInstance;
 import faust.lhipgame.game.instances.GameInstance;
-import faust.lhipgame.game.utils.ShaderWrapper;
+import faust.lhipgame.utils.ShaderWrapper;
 import faust.lhipgame.game.world.manager.CollisionManager;
 import faust.lhipgame.screens.GameScreen;
 

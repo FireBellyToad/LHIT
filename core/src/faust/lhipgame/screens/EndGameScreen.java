@@ -12,7 +12,7 @@ import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
-import faust.lhipgame.game.utils.TextLocalizer;
+import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
 import faust.lhipgame.saves.SaveFileManager;

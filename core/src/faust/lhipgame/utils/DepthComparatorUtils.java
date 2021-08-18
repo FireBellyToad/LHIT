@@ -1,4 +1,4 @@
-package faust.lhipgame.game.utils;
+package faust.lhipgame.utils;
 
 import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.POIEnum;

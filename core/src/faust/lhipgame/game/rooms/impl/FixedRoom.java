@@ -22,7 +22,7 @@ import faust.lhipgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhipgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhipgame.game.splash.SplashManager;
 import faust.lhipgame.game.textbox.manager.TextBoxManager;
-import faust.lhipgame.game.utils.DepthComparatorUtils;
+import faust.lhipgame.utils.DepthComparatorUtils;
 import faust.lhipgame.game.world.manager.WorldManager;
 import faust.lhipgame.saves.RoomSaveEntry;
 

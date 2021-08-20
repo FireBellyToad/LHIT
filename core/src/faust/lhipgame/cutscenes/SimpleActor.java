@@ -37,7 +37,7 @@ public class SimpleActor {
         if (entity instanceof AnimatedEntity) {
             frame = ((AnimatedEntity) entity).getFrame(currentBehavior, direction, stateTime, true);
         } else if (entity instanceof SpriteEntity) {
-            ((SpriteEntity) entity).getFrame(stateTime);
+            frame = ((SpriteEntity) entity).getFrame(stateTime);
         }
 
         Objects.requireNonNull(frame);

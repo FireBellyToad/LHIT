@@ -100,6 +100,7 @@ public class EndGameScreen implements Screen {
         Objects.requireNonNull(valuesMap);
 
         batch.begin();
+
         //Morgengabes found count. Set in red if all has been found
         batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET,

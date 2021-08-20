@@ -33,6 +33,7 @@
       "endgame.text.4": "MENTRE I MIEI OCCHI\nSI CHIUDONO E LA MIA\nCARNE BRUCIA, VEDO\nUNA LUCE LONTANA.\nDIO, PERCHE' MI HAI\nABBANDONATO?"
     },
     "menu": {
+      "menu.endgame": "FINE",
       "menu.sure": "SEI SICURO?",
       "menu.continue": "CONTINUARE?",
       "YES": "SI",

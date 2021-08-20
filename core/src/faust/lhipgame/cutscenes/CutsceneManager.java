@@ -10,8 +10,12 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.game.gameentities.GameEntity;
+import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
+import faust.lhipgame.game.gameentities.enums.POIEnum;
+import faust.lhipgame.game.gameentities.impl.DecorationEntity;
+import faust.lhipgame.game.gameentities.impl.POIEntity;
 import faust.lhipgame.game.gameentities.impl.PlayerEntity;
 import faust.lhipgame.game.gameentities.impl.PortalEntity;
 import faust.lhipgame.game.rooms.enums.MapLayersEnum;
@@ -139,10 +143,16 @@ public class CutsceneManager implements InputProcessor {
                 if (Objects.isNull(direction)) {
                     direction = DirectionEnum.UNUSED;
                 }
-            } else {
+            } else if (obj.getName().equals(PortalEntity.class.getSimpleName())) {
                 entity = new PortalEntity(assetManager);
                 behavior = GameBehavior.IDLE;
                 direction = DirectionEnum.UNUSED;
+            } else if (obj.getName().equals(DecorationEntity.class.getSimpleName())) {
+                DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+                entity = new DecorationEntity(decoType,assetManager);
+            } else if (obj.getName().equals(POIEntity.class.getSimpleName())) {
+                POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
+                entity = new POIEntity(poiType,assetManager);
             }
 
             Objects.requireNonNull(entity);

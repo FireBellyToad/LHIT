@@ -111,6 +111,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         hitBoxDef.type = BodyDef.BodyType.DynamicBody;
         hitBoxDef.fixedRotation = true;
         hitBoxDef.position.set(x, y);
+        hitBoxDef.allowSleep = false; // Needed, or else sensor will stop working after a while!
 
         // Define shape
         PolygonShape hitBoxShape = new PolygonShape();
@@ -121,7 +122,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         hitBoxFixtureDef.shape = hitBoxShape;
         hitBoxFixtureDef.density = 1;
         hitBoxFixtureDef.friction = 1;
-        hitBoxFixtureDef.isSensor = true;
+        hitBoxFixtureDef.isSensor = true; // Needed, or else the box will do useless physics handling
         hitBoxFixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
         hitBoxFixtureDef.filter.maskBits = CollisionManager.WEAPON_GROUP;
 

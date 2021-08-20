@@ -33,6 +33,7 @@
       "endgame.text.4": "WHILE MY EYES CLOSE\nAND MY FLESH BURNS,\nI SEE A DISTANT LIGHT.\nGOD, WHY HAST THOU\nFORSAKEN ME?"
     },
     "menu": {
+      "menu.endgame": "THE END",
       "menu.sure": "ARE YOU SURE?",
       "menu.continue": "CONTINUE?",
       "YES": "YES",

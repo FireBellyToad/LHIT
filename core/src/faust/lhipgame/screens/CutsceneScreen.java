@@ -3,13 +3,15 @@ package faust.lhipgame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.cutscenes.CutsceneManager;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
 import faust.lhipgame.utils.CutsceneEnum;
-import faust.lhipgame.utils.TextLocalizer;
-import faust.lhipgame.menu.LongTextHandler;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;
@@ -21,28 +23,31 @@ import java.util.Objects;
  */
 public class CutsceneScreen implements Screen {
 
+    private static final Color back = new Color(0x000000ff);
+
     private final LHIPGame game;
-    private final AssetManager assetManager;
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
-    private final TextLocalizer textLocalizer;
+    private final ShapeRenderer background;
 
-    private LongTextHandler longTextHandler;
-    private Screen nextScreen;
+    private final CutsceneManager cutsceneManager;
+    private final Screen nextScreen;
+
+    private float stateTime = 0f;
 
     public CutsceneScreen(LHIPGame game, CutsceneEnum cutsceneEnum) {
         this.game = game;
-        assetManager = game.getAssetManager();
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
-        textLocalizer = game.getTextLocalizer();
 
-        musicManager.loadSingleTune(TuneEnum.DANGER, assetManager);
+        musicManager.loadSingleTune(TuneEnum.DANGER, game.getAssetManager());
+        background = new ShapeRenderer();
 
         //Init cutscene
         Objects.requireNonNull(cutsceneEnum);
 
-        longTextHandler = new LongTextHandler(textLocalizer,cutsceneEnum.getKey(),cutsceneEnum.getStepsNumber());
+        cutsceneManager = new CutsceneManager(cutsceneEnum, game.getAssetManager(), game.getTextLocalizer(),cameraManager.getCamera());
+
         try {
             //Instantiate next screen using reflection
             Constructor ctor = cutsceneEnum.getNextScreenClass().getDeclaredConstructor(LHIPGame.class);
@@ -55,19 +60,18 @@ public class CutsceneScreen implements Screen {
 
     @Override
     public void show() {
-        longTextHandler.loadFonts(assetManager);
-        textLocalizer.loadTextFromLanguage();
+        cutsceneManager.initCutscene();
 
         //Loop title music
         musicManager.playMusic(TuneEnum.DANGER);
 
-        Gdx.input.setInputProcessor(longTextHandler);
+        Gdx.input.setInputProcessor(cutsceneManager);
     }
 
     @Override
     public void render(float delta) {
 
-        if (longTextHandler.isFinished()) {
+        if (cutsceneManager.isFinished()) {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(nextScreen);
@@ -75,10 +79,27 @@ public class CutsceneScreen implements Screen {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
+            stateTime += Gdx.graphics.getDeltaTime();
+            Gdx.gl.glClearColor(0f, 0f, 0f, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            renderBlackBackground();
+
             //intro screen render
-            longTextHandler.drawCurrentintro(game.getBatch(), cameraManager.getCamera());
+            cutsceneManager.draw(game.getBatch(), stateTime, cameraManager.getCamera());
         }
 
+    }
+
+    private void renderBlackBackground() {
+
+        game.getBatch().begin();
+        background.setColor(back);
+        background.setProjectionMatrix(cameraManager.getCamera().combined);
+        background.begin(ShapeRenderer.ShapeType.Filled);
+        background.rect(0, 0, LHIPGame.GAME_WIDTH, LHIPGame.GAME_HEIGHT);
+        background.end();
+        game.getBatch().end();
     }
 
     @Override

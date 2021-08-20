@@ -30,11 +30,15 @@ public class FBTScreen implements Screen {
         assetManager.load("fonts/main_font.png", Texture.class);
         assetManager.finishLoading();
 
+        //Load next screen image
+        assetManager.load("splash/loading_splash.png", Texture.class);
+        assetManager.finishLoading();
+
         //Two seconds splash screen
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                game.setScreen(new MenuScreen(game));
+                game.setScreen(new LoadingScreen(game));
             }
         }, 2);
     }

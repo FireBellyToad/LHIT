@@ -38,7 +38,7 @@ import java.util.Objects;
  */
 public class FixedRoom extends AbstractRoom {
 
-    private static final float ECHO_ACTIVATION_DISTANCE = 35;
+    private static final float ECHO_ACTIVATION_DISTANCE = 40;
     private List<EchoActorInstance> echoActors; //Can have Echo actors
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;

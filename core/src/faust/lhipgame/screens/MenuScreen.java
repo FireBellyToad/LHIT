@@ -41,10 +41,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        //Load next screen image
-        assetManager.load("splash/loading_splash.png", Texture.class);
-        assetManager.finishLoading();
-
         menu.loadFonts(assetManager);
         textLocalizer.loadTextFromLanguage();
 
@@ -60,11 +56,11 @@ public class MenuScreen implements Screen {
         if (menu.isChangeToIntroScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
-            game.setScreen(new CutsceneScreen(game,CutsceneEnum.INTRO));
+            game.setScreen(new CutsceneScreen(game, CutsceneEnum.INTRO));
         } else if (menu.isChangeToGameScreen()) {
             //Stop music and change screen
             musicManager.stopMusic();
-            game.setScreen(new LoadingScreen(game));
+            game.setScreen(new GameScreen(game));
         } else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);

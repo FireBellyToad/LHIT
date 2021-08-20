@@ -45,6 +45,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/hive_sheet.png", Texture.class);
         assetManager.load("sprites/spitter_sheet.png", Texture.class);
         assetManager.load("sprites/meat_sheet.png", Texture.class);
+        assetManager.load("sprites/portal_sheet.png", Texture.class);
 
         assetManager.load("sounds/SFX_collect&bonus13.ogg", Sound.class);
         assetManager.load("sounds/SFX_hit&damage13.ogg", Sound.class);
@@ -87,7 +88,7 @@ public class LoadingScreen implements Screen {
 
         assetManager.update();
         if(assetManager.isFinished()){
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new MenuScreen(game));
         }
 
         double loadingProgress = Math.floor(assetManager.getProgress()*100);

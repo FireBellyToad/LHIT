@@ -2,6 +2,7 @@ package faust.lhipgame.utils;
 
 import com.badlogic.gdx.Screen;
 import faust.lhipgame.screens.EndGameScreen;
+import faust.lhipgame.screens.GameScreen;
 import faust.lhipgame.screens.LoadingScreen;
 
 /**
@@ -10,7 +11,7 @@ import faust.lhipgame.screens.LoadingScreen;
  * @author Jacopo "Faust" Buttiglieri
  */
 public enum CutsceneEnum {
-    INTRO("intro", 4, LoadingScreen.class),
+    INTRO("intro", 4, GameScreen.class),
     ENDGAME("endgame", 4, EndGameScreen.class);
 
     private String key; // string key in messages.cutscenes

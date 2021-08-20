@@ -37,8 +37,8 @@ public class Menu implements InputProcessor {
     private boolean changeToIntroScreen = false;
 
     private final SaveFileManager saveFileManager;
-    private Sound voiceChange;
-    private Sound wrongVoice;
+    private final Sound voiceChange;
+    private final Sound wrongVoice;
 
     public Menu(SaveFileManager saveFileManager,AssetManager assetManager) {
         this(saveFileManager, MenuItem.MAIN, assetManager);

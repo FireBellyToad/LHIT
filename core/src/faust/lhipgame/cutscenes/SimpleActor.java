@@ -18,10 +18,10 @@ import java.util.Objects;
  */
 public class SimpleActor {
 
-    private GameEntity entity;
-    private Vector2 position;
-    private GameBehavior currentBehavior;
-    private DirectionEnum direction;
+    private final GameEntity entity;
+    private final Vector2 position;
+    private final GameBehavior currentBehavior;
+    private final DirectionEnum direction;
 
     public SimpleActor(GameEntity entity, GameBehavior currentBehavior, DirectionEnum direction, float x, float y) {
         this.entity = entity;

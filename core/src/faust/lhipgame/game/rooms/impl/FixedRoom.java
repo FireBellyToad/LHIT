@@ -214,7 +214,7 @@ public class FixedRoom extends AbstractRoom {
                 }
             });
 
-            echoActors.removeIf(actor -> actor.mustRemoveFromRoom());
+            echoActors.removeIf(EchoActorInstance::mustRemoveFromRoom);
         } else {
 
             //activate room echo if needed

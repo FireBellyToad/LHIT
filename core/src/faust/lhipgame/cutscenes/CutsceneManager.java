@@ -5,10 +5,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhipgame.game.gameentities.GameEntity;
@@ -40,8 +38,8 @@ public class CutsceneManager implements InputProcessor {
 
     private TiledMap tiledScene;
     private OrthogonalTiledMapRenderer tiledSceneRenderer;
-    private List<SimpleActor> actors = new ArrayList<>();
-    private OrthographicCamera camera;
+    private final List<SimpleActor> actors = new ArrayList<>();
+    private final OrthographicCamera camera;
 
     public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera) {
         this.textLocalizer = textLocalizer;

@@ -25,14 +25,14 @@ public class GameScreen implements Screen {
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextLocalizer textLocalizer;
-    private WorldManager worldManager;
-    private PlayerInstance player;
+    private final WorldManager worldManager;
+    private final PlayerInstance player;
     private final TextBoxManager textManager;
     private RoomsManager roomsManager;
 
-    private Hud hud;
-    private DarknessRenderer darknessRenderer;
-    private SplashManager splashManager;
+    private final Hud hud;
+    private final DarknessRenderer darknessRenderer;
+    private final SplashManager splashManager;
 
     private float stateTime = 0f;
 

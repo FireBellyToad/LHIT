@@ -12,10 +12,9 @@ import faust.lhipgame.game.gameentities.SpriteEntity;
 import faust.lhipgame.game.hud.enums.HudIconsEnum;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
-import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.menu.Menu;
 import faust.lhipgame.menu.enums.MenuItem;
-import faust.lhipgame.saves.SaveFileManager;
+import faust.lhipgame.utils.TextLocalizer;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +32,6 @@ public class EndGameScreen implements Screen {
     private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextLocalizer textLocalizer;
-    private final SaveFileManager saveFileManager;
     private final Menu menu;
     private final SpriteEntity itemsTexture;
     private final Map<String, Object> valuesMap;
@@ -45,8 +43,7 @@ public class EndGameScreen implements Screen {
         cameraManager = game.getCameraManager();
         musicManager = game.getMusicManager();
         textLocalizer = game.getTextLocalizer();
-        saveFileManager = game.getSaveFileManager();
-        valuesMap = saveFileManager.loadRawValues();
+        valuesMap = game.getSaveFileManager().loadRawValues();
 
         this.itemsTexture = new SpriteEntity(assetManager.get("sprites/hud.png")) {
             @Override

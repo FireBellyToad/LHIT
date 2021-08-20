@@ -2,7 +2,6 @@ package faust.lhipgame.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -50,7 +49,7 @@ public class CutsceneScreen implements Screen {
 
         try {
             //Instantiate next screen using reflection
-            Constructor ctor = cutsceneEnum.getNextScreenClass().getDeclaredConstructor(LHIPGame.class);
+            Constructor<?> ctor = cutsceneEnum.getNextScreenClass().getDeclaredConstructor(LHIPGame.class);
             this.nextScreen = (Screen) ctor.newInstance(game);
         } catch (Exception e) {
             throw new GdxRuntimeException(e);

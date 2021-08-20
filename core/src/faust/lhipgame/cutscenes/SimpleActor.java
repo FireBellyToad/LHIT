@@ -37,13 +37,13 @@ public class SimpleActor {
         if (entity instanceof AnimatedEntity) {
             frame = ((AnimatedEntity) entity).getFrame(currentBehavior, direction, stateTime, true);
         } else if (entity instanceof SpriteEntity) {
-            frame = ((SpriteEntity) entity).getFrame(stateTime);
+            frame = ((SpriteEntity) entity).getFrame(0);
         }
 
         Objects.requireNonNull(frame);
 
         batch.begin();
-        batch.draw(frame, position.x - 16, position.y-16);
+        batch.draw(frame, position.x - 16, position.y-8);
         batch.end();
     }
 

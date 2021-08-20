@@ -59,6 +59,7 @@ public class GameScreen implements Screen {
         Box2D.init();
         textLocalizer.loadTextFromLanguage();
         musicManager.initTuneMap(assetManager);
+        Gdx.input.setInputProcessor(player);
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager(), game.getMusicManager());

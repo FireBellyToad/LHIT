@@ -93,7 +93,7 @@ public class RoomsManager {
             Gdx.app.log("WARN", "No valid savefile to load");
         }
         //Init gamefile if no valid one has found
-        saveFileManager.saveOnFile(player,saveMap);
+        saveFileManager.saveOnFile(player, saveMap);
     }
 
     /**
@@ -109,7 +109,7 @@ public class RoomsManager {
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
         // Safety check on y
-        if(finalY == 8 && finalX != 2){
+        if (finalY == 8 && finalX != 2) {
             finalY--;
         }
 
@@ -135,11 +135,11 @@ public class RoomsManager {
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld.cpy(),
-                    new RoomSaveEntry(
-                            (int) finalX,
-                            (int) finalY,
-                            roomCasualNumber,
-                            roomFlags));
+                new RoomSaveEntry(
+                        (int) finalX,
+                        (int) finalY,
+                        roomCasualNumber,
+                        roomFlags));
 
 
     }
@@ -287,6 +287,12 @@ public class RoomsManager {
 
             newXPosInMatrix = 0;
             newYPosInMatrix = (int) (mainWorldSize.y - 2);
+        } else if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
+                getCurrentRoomPosInWorld().x == 3 &&
+                getCurrentRoomPosInWorld().y == 0) {
+            newXPosInMatrix = 0;
+            newYPosInMatrix = 7;
+            player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
         }
 
         //Change room and clear nearest poi reference

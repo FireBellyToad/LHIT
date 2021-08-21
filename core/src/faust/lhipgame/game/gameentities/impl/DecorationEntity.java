@@ -41,6 +41,7 @@ public class DecorationEntity extends SpriteEntity {
     public boolean isPassable() {
         switch (type){
             case GRASS:
+            case TUMOR:
             case PLANT:{
                 return true;
             }

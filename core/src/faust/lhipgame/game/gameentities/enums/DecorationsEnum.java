@@ -10,7 +10,8 @@ public enum DecorationsEnum {
     TREE_STUMP,
     BOAT,
     ALLY_CORPSE_1,
-    ALLY_CORPSE_2;
+    ALLY_CORPSE_2,
+    TUMOR;
 
     public static DecorationsEnum getFromString(String name) {
         for (DecorationsEnum e : DecorationsEnum.values()) {

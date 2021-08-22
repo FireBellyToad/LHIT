@@ -63,7 +63,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean hasArmor = false;
     private boolean isSubmerged = false;
     private boolean isDead = false;
-    private boolean isReadyToFinish = false;
+    private boolean prepareEndgame = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -830,12 +830,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      *
      * @return true if game is ending
      */
-    public boolean isReadyToFinish() {
-        return isReadyToFinish;
+    public boolean isPrepareEndgame() {
+        return prepareEndgame;
     }
 
-    public void setReadyToFinish(boolean readyToFinish) {
-        isReadyToFinish = readyToFinish;
+    public void setPrepareEndgame(boolean prepareEndgame) {
+        this.prepareEndgame = prepareEndgame;
     }
 
     @Override

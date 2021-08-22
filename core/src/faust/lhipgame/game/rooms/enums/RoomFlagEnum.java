@@ -18,7 +18,7 @@ public enum RoomFlagEnum {
     FIRST_STRIX_ENCOUNTERED, //First Strix encountered
     FIRST_BOUNDED_ENCOUNTERED, //First Bounded encountered
     FIRST_HIVE_ENCOUNTERED, //First Hive encountered
-    FINAL_ROOM; //Final room of the game
+    FINAL_ROOM;  //Final room of the game
 
     /**
      *

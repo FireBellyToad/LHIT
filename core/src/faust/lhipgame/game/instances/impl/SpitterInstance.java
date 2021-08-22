@@ -35,7 +35,7 @@ import java.util.Objects;
 public class SpitterInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
-    private static final long SPITTING_FREQUENCY_IN_MILLIS = 1750;
+    private static final long SPITTING_FREQUENCY_IN_MILLIS = 1500;
 
     private final TextBoxManager textBoxManager;
     // Time delta between state and start of attack animation
@@ -47,6 +47,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
     private boolean isDead = false;
     private boolean canAttack = false;
+    private boolean canBeDamaged = false;
 
 
     public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner) {
@@ -56,6 +57,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         this.startY = y;
         this.textBoxManager = textBoxManager;
         this.spawner = spawner;
+        this.startAttackCooldown = TimeUtils.nanoTime();
     }
 
     @Override
@@ -236,10 +238,9 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
             ((SpitterEntity) entity).playHurtCry();
 
-            //If Undead or Otherworldly, halve normal lance damage
-            //Usually should never happen for spitter
-            if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
-                textBoxManager.addNewTextBox("warn.hive.damage");
+            //If 0 HiveInstance  in room, SpitterInstance can be damaged
+            if (!canBeDamaged) {
+                textBoxManager.addNewTextBox("warn.spitter.damage");
                 return;
             }
 
@@ -293,4 +294,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         }
     }
 
+    public void setCanBeDamaged(boolean canBeDamaged) {
+        this.canBeDamaged = canBeDamaged;
+    }
 }

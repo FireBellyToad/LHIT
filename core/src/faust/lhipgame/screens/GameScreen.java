@@ -139,7 +139,7 @@ public class GameScreen implements Screen {
             roomsManager.dispose();
             musicManager.stopMusic();
             game.setScreen(new GameOverScreen(game));
-        } else if (player.isReadyToFinish()){
+        } else if (player.isPrepareEndgame()){
             game.setScreen( new CutsceneScreen(game, CutsceneEnum.ENDGAME));
         }
     }

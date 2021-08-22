@@ -287,6 +287,8 @@ public abstract class AbstractRoom implements Spawner {
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
                         assetManager,textManager, this);
+
+                splashManager.setSplashToShow("splash.spitter");
                 break;
             }
             default: {
@@ -414,14 +416,20 @@ public abstract class AbstractRoom implements Spawner {
         if (!player.isDead())
             player.doLogic(stateTime);
 
+
+        //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
+        long hiveCount = enemyList.stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
+
         // Do enemy logic
         enemyList.forEach((ene) -> {
 
             ene.doLogic(stateTime);
 
-            if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
+            if (ene instanceof SpitterInstance && !((Killable) ene).isDead()) {
+                ((SpitterInstance) ene).setCanBeDamaged(hiveCount == 0);
+            } else if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
-                player.setReadyToFinish(true);
+                player.setPrepareEndgame(true);
                 //TODO proceed to endgame
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number

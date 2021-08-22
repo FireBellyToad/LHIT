@@ -13,6 +13,10 @@
       "splashPath": "splash/hive_splash.png"
     },
     {
+      "splashKey": "splash.spitter",
+      "splashPath": "splash/spitter_splash.png"
+    },
+    {
       "splashKey": "splash.morgengabe",
       "splashPath": "splash/morgengabe_splash.png"
     },

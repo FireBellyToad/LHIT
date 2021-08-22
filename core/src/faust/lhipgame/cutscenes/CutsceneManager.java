@@ -14,10 +14,7 @@ import faust.lhipgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhipgame.game.gameentities.enums.DirectionEnum;
 import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.gameentities.enums.POIEnum;
-import faust.lhipgame.game.gameentities.impl.DecorationEntity;
-import faust.lhipgame.game.gameentities.impl.POIEntity;
-import faust.lhipgame.game.gameentities.impl.PlayerEntity;
-import faust.lhipgame.game.gameentities.impl.PortalEntity;
+import faust.lhipgame.game.gameentities.impl.*;
 import faust.lhipgame.game.rooms.enums.MapLayersEnum;
 import faust.lhipgame.menu.LongTextHandler;
 import faust.lhipgame.utils.CutsceneEnum;
@@ -135,7 +132,6 @@ public class CutsceneManager implements InputProcessor {
             GameBehavior behavior = null;
             DirectionEnum direction = null;
 
-            //TODO other cases
             if (obj.getName().equals(PlayerEntity.class.getSimpleName())) {
                 entity = new PlayerEntity(assetManager);
                 behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
@@ -143,6 +139,10 @@ public class CutsceneManager implements InputProcessor {
                 if (Objects.isNull(direction)) {
                     direction = DirectionEnum.UNUSED;
                 }
+            } else if (obj.getName().equals(HiveEntity.class.getSimpleName())) {
+                entity = new HiveEntity(assetManager);
+                behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
+                direction = DirectionEnum.UNUSED;
             } else if (obj.getName().equals(PortalEntity.class.getSimpleName())) {
                 entity = new PortalEntity(assetManager);
                 behavior = GameBehavior.IDLE;

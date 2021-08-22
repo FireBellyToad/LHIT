@@ -15,11 +15,13 @@
       "splash.holy.1": "I FOUND A PIECE OF\nA STRANGE LANCE",
       "splash.holy.2": "I NOW POSSES THE\nMIGHTY HOLY LANCE",
       "splash.hive": "A WALL OF MEAT",
+      "splash.spitter": "A PROCREATOR OF EVIL",
       "echo.woman.first": "HEEELP MEEE!",
       "echo.woman.second": "ARGH! -GASP-",
       "echo.tree.first": "ORCUS DOMINAT",
       "echo.tree.second": "PERIT UT VIVAT",
       "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT",
+      "warn.spitter.damage": "IT'S PROTECTED BY\nTHE WALLS OF MEAT",
       "endgame.of": "OF"
     },
     "cutscenes": {

@@ -92,6 +92,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         translateAccessoryBodies();
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
+        //In endgame, idling and do nothing
+        if (isPrepareEndgame()) {
+            currentBehavior = GameBehavior.IDLE;
+            return;
+        }
+
         //If hurt, deactivate hitbox and don't do anything
         hitBox.setActive(!GameBehavior.HURT.equals(currentBehavior));
         if (GameBehavior.HURT.equals(currentBehavior))

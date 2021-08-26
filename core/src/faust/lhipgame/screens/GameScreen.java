@@ -5,7 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
+import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.hud.DarknessRenderer;
 import faust.lhipgame.game.hud.Hud;
 import faust.lhipgame.game.instances.impl.PlayerInstance;
@@ -16,6 +18,8 @@ import faust.lhipgame.game.textbox.manager.TextBoxManager;
 import faust.lhipgame.utils.CutsceneEnum;
 import faust.lhipgame.utils.TextLocalizer;
 import faust.lhipgame.game.world.manager.WorldManager;
+
+import java.util.Objects;
 
 public class GameScreen implements Screen {
 
@@ -37,6 +41,7 @@ public class GameScreen implements Screen {
     private float stateTime = 0f;
 
     private final LHIPGame game;
+    private Timer.Task endGameTimer = null;
 
     public GameScreen(LHIPGame game) {
         this.game = game;
@@ -139,8 +144,14 @@ public class GameScreen implements Screen {
             roomsManager.dispose();
             musicManager.stopMusic();
             game.setScreen(new GameOverScreen(game));
-        } else if (player.isPrepareEndgame()){
-            game.setScreen( new CutsceneScreen(game, CutsceneEnum.ENDGAME));
+        } else if (player.isPrepareEndgame() && Objects.isNull(endGameTimer)){
+            endGameTimer =
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            game.setScreen( new CutsceneScreen(game, CutsceneEnum.ENDGAME));
+                        }
+                    }, 3f);
         }
     }
 

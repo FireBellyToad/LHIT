@@ -35,7 +35,7 @@ import java.util.Objects;
 public class SpitterInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
-    private static final long SPITTING_FREQUENCY_IN_MILLIS = 1500;
+    private static final long SPITTING_FREQUENCY_IN_MILLIS = 1750;
 
     private final TextBoxManager textBoxManager;
     // Time delta between state and start of attack animation
@@ -164,7 +164,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
         // Define shape
         PolygonShape hitBoxShape = new PolygonShape();
-        hitBoxShape.setAsBox(4, 12);
+        hitBoxShape.setAsBox(6, 12);
 
         // Define Fixture
         FixtureDef hitBoxFixtureDef = new FixtureDef();
@@ -233,6 +233,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void hurt(GameInstance attacker) {
         if (isDying()) {
             ((SpitterEntity) entity).playDeathCry();
+            spawner.spawnInstance(PortalInstance.class, this.startX, this.startY);
             isDead = true;
             currentBehavior = GameBehavior.DEAD;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {

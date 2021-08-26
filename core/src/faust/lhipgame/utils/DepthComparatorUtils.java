@@ -6,12 +6,17 @@ import faust.lhipgame.game.gameentities.interfaces.Hurtable;
 import faust.lhipgame.game.instances.GameInstance;
 import faust.lhipgame.game.instances.impl.DecorationInstance;
 import faust.lhipgame.game.instances.impl.POIInstance;
+import faust.lhipgame.game.instances.impl.PortalInstance;
 import faust.lhipgame.game.instances.impl.StrixInstance;
 
 public class DepthComparatorUtils {
 
     // Compares two GameInstances by y depth
     public static int compareEntities(GameInstance o1, GameInstance o2) {
+
+        // PortalInstance has no body... yet
+        if(o1 instanceof PortalInstance || o2 instanceof PortalInstance)
+            return 0;
 
         //Special conditions to place object always on higher depth, usually
         //for avoiding that objects laying on the ground cover taller ones

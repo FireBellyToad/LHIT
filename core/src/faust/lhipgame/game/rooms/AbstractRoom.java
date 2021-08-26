@@ -57,6 +57,7 @@ public abstract class AbstractRoom implements Spawner {
     // Permitted spawnable instances
     protected static final Map<String, String> permittedSpawnableInstance = new HashMap<String, String>() {{
         this.put(MeatInstance.class.getSimpleName(), EnemyEnum.MEAT.name());
+        this.put(PortalInstance.class.getSimpleName(), EnemyEnum.PORTAL.name());
         this.put(POIInstance.class.getSimpleName(), POIEnum.ECHO_CORPSE.name());
     }};
 
@@ -260,6 +261,10 @@ public abstract class AbstractRoom implements Spawner {
         }
 
         switch (enemyEnum) {
+            case PORTAL: {
+                addedInstance = new PortalInstance(assetManager);
+                break;
+            }
             case HIVE: {
                 addedInstance = new HiveInstance(
                         (float) obj.getProperties().get("x"),
@@ -286,7 +291,7 @@ public abstract class AbstractRoom implements Spawner {
                 addedInstance = new SpitterInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
-                        assetManager,textManager, this);
+                        assetManager, textManager, this);
 
                 splashManager.setSplashToShow("splash.spitter");
                 break;
@@ -483,11 +488,13 @@ public abstract class AbstractRoom implements Spawner {
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Arrays.asList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {
-            addObjAsPOI(mapObjectStub,textManager, assetManager);
-            POIInstance lastPOIInstance = poiList.get(poiList.size()-1);
+            addObjAsPOI(mapObjectStub, textManager, assetManager);
+            POIInstance lastPOIInstance = poiList.get(poiList.size() - 1);
             worldManager.insertPOIIntoWorld(Arrays.asList(lastPOIInstance));
-            roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS,false);
+            roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, false);
             player.changePOIList(poiList);
+        } else if (instanceClass.equals(PortalInstance.class)) {
+            addObjAsEnemy(mapObjectStub, assetManager, true);
         }
     }
 }

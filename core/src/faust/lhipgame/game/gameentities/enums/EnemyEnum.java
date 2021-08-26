@@ -6,6 +6,7 @@ public enum EnemyEnum {
     HIVE,
     SPITTER,
     MEAT,
+    PORTAL,
     UNDEFINED;
 
 

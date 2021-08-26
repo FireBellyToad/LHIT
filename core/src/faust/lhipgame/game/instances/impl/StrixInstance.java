@@ -34,6 +34,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
 
     private static final float STRIX_SPEED = 35;
     private boolean attachedToPlayer = false;
+    private boolean isAggressive = false;
 
     private final PlayerInstance target;
     private Timer.Task leechLifeTimer;
@@ -54,8 +55,10 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (!attachedToPlayer && target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
+        if (!attachedToPlayer && ((target.getBody().getPosition().dst(getBody().getPosition()) <= (LINE_OF_SIGHT * 0.75) && !isAggressive) ||
+                (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT && isAggressive))) {
             currentBehavior = GameBehavior.WALK;
+            isAggressive = true;
             // Normal from strix position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();

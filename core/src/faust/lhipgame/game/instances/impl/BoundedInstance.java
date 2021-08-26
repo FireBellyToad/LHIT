@@ -39,6 +39,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
+    private boolean isAggressive = false;
 
     private long startAttackCooldown = 0;
 
@@ -70,7 +71,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
 
             //Start animation
-            if(!GameBehavior.ATTACK.equals(currentBehavior)){
+            if (!GameBehavior.ATTACK.equals(currentBehavior)) {
                 attackDeltaTime = stateTime;
                 currentBehavior = GameBehavior.ATTACK;
             }
@@ -84,9 +85,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             body.setLinearVelocity(0, 0);
 
         } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
-                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT) {
+                ((target.getBody().getPosition().dst(getBody().getPosition()) <= (LINE_OF_SIGHT * 0.75) && !isAggressive) ||
+                (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT && isAggressive))) {
 
             deactivateAttackBodies();
+            isAggressive = true;
             currentBehavior = GameBehavior.WALK;
             // Normal from Bounded position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
@@ -160,7 +163,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         BodyDef rightClawDef = new BodyDef();
         rightClawDef.type = BodyDef.BodyType.KinematicBody;
         rightClawDef.fixedRotation = true;
-        rightClawDef.position.set(x+2, y);
+        rightClawDef.position.set(x + 2, y);
 
         // Define shape
         PolygonShape rightClawShape = new PolygonShape();
@@ -185,7 +188,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         BodyDef upClawDef = new BodyDef();
         upClawDef.type = BodyDef.BodyType.KinematicBody;
         upClawDef.fixedRotation = true;
-        upClawDef.position.set(x, y-2);
+        upClawDef.position.set(x, y - 2);
 
         // Define shape
         PolygonShape upClawShape = new PolygonShape();
@@ -210,7 +213,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         BodyDef leftClawDef = new BodyDef();
         leftClawDef.type = BodyDef.BodyType.KinematicBody;
         leftClawDef.fixedRotation = true;
-        leftClawDef.position.set(x-2, y);
+        leftClawDef.position.set(x - 2, y);
 
         // Define shape
         PolygonShape leftClawShape = new PolygonShape();
@@ -235,7 +238,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         BodyDef downClawDef = new BodyDef();
         downClawDef.type = BodyDef.BodyType.KinematicBody;
         downClawDef.fixedRotation = true;
-        downClawDef.position.set(x, y+2);
+        downClawDef.position.set(x, y + 2);
 
         // Define shape
         PolygonShape downClawShape = new PolygonShape();
@@ -291,7 +294,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum,  mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
         //Draw shadow
         batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
@@ -332,7 +335,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     public void hurt(GameInstance attacker) {
 
         //40% chance of evading attack
-        final boolean canEvade = (MathUtils.random(1,100)) >= 60;
+        final boolean canEvade = (MathUtils.random(1, 100)) >= 60;
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
@@ -341,10 +344,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
-            double amount = ((Damager)attacker).damageRoll();
+            double amount = ((Damager) attacker).damageRoll();
             //If Undead or Otherworldly, halve normal lance damage
-            if(((PlayerInstance) attacker).getHolyLancePieces() < 2){
-                amount =  Math.floor(amount / 2);
+            if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
+                amount = Math.floor(amount / 2);
             }
 
             this.damage += Math.min(getResistance(), amount);
@@ -368,9 +371,9 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        float modifier =  4f;
+        float modifier = 4f;
         //If evading, the leap is more subtle and perpendicular
-        if(GameBehavior.EVADE.equals(currentBehavior)){
+        if (GameBehavior.EVADE.equals(currentBehavior)) {
             modifier = 1.5f;
             direction.x = (float) Math.cos(direction.x);
             direction.y = (float) Math.cos(direction.y);
@@ -402,7 +405,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum,  mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {

@@ -52,7 +52,8 @@ public class LanguageScreen implements Screen {
 
         if (menu.isChangeToNextScreen()) {
             //Set language and Change screen
-            textLocalizer.setLanguage( menu.getSelectedMenuVoice() == 0 ? "eng" : "ita");
+            textLocalizer.setLanguage( menu.getSelectedMenuVoice() == 0 ? "eng" : "ita");;
+            Gdx.input.setInputProcessor(null);
             game.setScreen(new FBTScreen(game));
         } else {
             cameraManager.applyAndUpdate();

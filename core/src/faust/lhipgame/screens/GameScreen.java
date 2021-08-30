@@ -152,6 +152,7 @@ public class GameScreen implements Screen {
                             game.setScreen( new CutsceneScreen(game, CutsceneEnum.ENDGAME));
                         }
                     }, 3f);
+            Gdx.input.setInputProcessor(null);
         }
     }
 

@@ -21,7 +21,7 @@ public class LongTextHandler  {
     private static final float Y_OFFSET = 10;
     private final TextLocalizer textLocalizer;
 
-    private String longTextKey = "intro";
+    private String longTextKey;
 
     private BitmapFont mainFont;
 

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhipgame.LHIPGame;
-import faust.lhipgame.game.gameentities.enums.GameBehavior;
 import faust.lhipgame.game.hud.DarknessRenderer;
 import faust.lhipgame.game.hud.Hud;
 import faust.lhipgame.game.instances.impl.PlayerInstance;

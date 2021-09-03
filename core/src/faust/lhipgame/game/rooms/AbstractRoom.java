@@ -486,11 +486,11 @@ public abstract class AbstractRoom implements Spawner {
         //Insert last enemy into world
         if (instanceClass.equals(MeatInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
-            worldManager.insertEnemiesIntoWorld(Arrays.asList((AnimatedInstance) addedInstance));
+            worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {
             addObjAsPOI(mapObjectStub, textManager, assetManager);
             POIInstance lastPOIInstance = poiList.get(poiList.size() - 1);
-            worldManager.insertPOIIntoWorld(Arrays.asList(lastPOIInstance));
+            worldManager.insertPOIIntoWorld(Collections.singletonList(lastPOIInstance));
             roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, false);
             player.changePOIList(poiList);
         } else if (instanceClass.equals(PortalInstance.class)) {

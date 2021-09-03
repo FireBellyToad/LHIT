@@ -160,9 +160,11 @@ public class CutsceneManager implements InputProcessor {
                 direction = DirectionEnum.UNUSED;
             } else if (obj.getName().equals(DecorationEntity.class.getSimpleName())) {
                 DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+                Objects.requireNonNull(decoType);
                 entity = new DecorationEntity(decoType,assetManager);
             } else if (obj.getName().equals(POIEntity.class.getSimpleName())) {
                 POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
+                Objects.requireNonNull(poiType);
                 entity = new POIEntity(poiType,assetManager);
             }
 

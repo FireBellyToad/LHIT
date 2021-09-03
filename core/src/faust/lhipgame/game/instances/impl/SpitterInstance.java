@@ -43,7 +43,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
     private final Spawner spawner;
 
-    private long startAttackCooldown = 0;
+    private long startAttackCooldown;
 
     private boolean isDead = false;
     private boolean canAttack = false;

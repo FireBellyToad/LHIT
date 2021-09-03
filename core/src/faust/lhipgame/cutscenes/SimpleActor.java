@@ -89,7 +89,7 @@ public class SimpleActor {
         ShaderWrapper shader = null;
 
         if(entity instanceof PlayerEntity) {
-            boolean hasArmor = params.stream().anyMatch(p->SimpleActorParametersEnum.PLAYER_HAS_ARMOR.equals(p));
+            boolean hasArmor = params.stream().anyMatch(SimpleActorParametersEnum.PLAYER_HAS_ARMOR::equals);
             shader = ((PlayerEntity) entity).getPlayerShader();
             shader.addFlag("hasArmor", hasArmor);
             shader.addFlag("hasHolyLance", true);

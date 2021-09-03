@@ -10,6 +10,7 @@ import faust.lhipgame.LHIPGame;
 import faust.lhipgame.cutscenes.CutsceneManager;
 import faust.lhipgame.game.music.MusicManager;
 import faust.lhipgame.game.music.enums.TuneEnum;
+import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.utils.CutsceneEnum;
 
 import java.lang.reflect.Constructor;
@@ -45,7 +46,7 @@ public class CutsceneScreen implements Screen {
         //Init cutscene
         Objects.requireNonNull(cutsceneEnum);
 
-        cutsceneManager = new CutsceneManager(cutsceneEnum, game.getAssetManager(), game.getTextLocalizer(),cameraManager.getCamera());
+        cutsceneManager = new CutsceneManager(cutsceneEnum, game.getAssetManager(), game.getTextLocalizer(),cameraManager.getCamera(),  game.getSaveFileManager());
 
         try {
             //Instantiate next screen using reflection

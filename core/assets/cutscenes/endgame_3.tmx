@@ -21,6 +21,7 @@
   <object id="48" name="PlayerEntity" x="83.2727" y="114.182">
    <properties>
     <property name="behavior" value="DEAD"/>
+    <property name="isShaded" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

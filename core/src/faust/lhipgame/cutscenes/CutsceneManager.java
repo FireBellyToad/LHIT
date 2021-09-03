@@ -17,12 +17,11 @@ import faust.lhipgame.game.gameentities.enums.POIEnum;
 import faust.lhipgame.game.gameentities.impl.*;
 import faust.lhipgame.game.rooms.enums.MapLayersEnum;
 import faust.lhipgame.menu.LongTextHandler;
+import faust.lhipgame.saves.SaveFileManager;
 import faust.lhipgame.utils.CutsceneEnum;
 import faust.lhipgame.utils.TextLocalizer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Class for handling a cutscene
@@ -36,16 +35,18 @@ public class CutsceneManager implements InputProcessor {
     private final int lastStep;
     private final String cutsceneKey;
     private final AssetManager assetManager;
+    private final SaveFileManager saveFileManager;
 
     private TiledMap tiledScene;
     private OrthogonalTiledMapRenderer tiledSceneRenderer;
     private final List<SimpleActor> actors = new ArrayList<>();
     private final OrthographicCamera camera;
 
-    public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera) {
+    public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera, SaveFileManager saveFileManager) {
         this.textLocalizer = textLocalizer;
         this.cutsceneKey = cutsceneEnum.getKey();
         this.assetManager = assetManager;
+        this.saveFileManager = saveFileManager;
         this.camera = camera;
 
         lastStep = cutsceneEnum.getStepsNumber();
@@ -127,12 +128,22 @@ public class CutsceneManager implements InputProcessor {
             actors.clear();
         }
 
+        Map<String, Object> mapFromSaveFile = saveFileManager.loadRawValues();
+        boolean playerHasArmor = Objects.nonNull(mapFromSaveFile) && (boolean) mapFromSaveFile.get("armor");
+
+        //extract mapObject properties and create simpleActor
         actorsMapObjects.forEach(obj -> {
             GameEntity entity = null;
             GameBehavior behavior = null;
             DirectionEnum direction = null;
+            boolean isShaded = false;
+            List<SimpleActorParametersEnum> params = Collections.emptyList();
 
             if (obj.getName().equals(PlayerEntity.class.getSimpleName())) {
+                if(playerHasArmor){
+                    params =  Collections.singletonList(SimpleActorParametersEnum.PLAYER_HAS_ARMOR);
+                    isShaded = true;
+                }
                 entity = new PlayerEntity(assetManager);
                 behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
                 direction = DirectionEnum.getFromString((String) obj.getProperties().get("direction"));
@@ -159,7 +170,8 @@ public class CutsceneManager implements InputProcessor {
 
             actors.add(new SimpleActor(entity, behavior, direction,
                     (float) obj.getProperties().get("x"),
-                    (float) obj.getProperties().get("y")));
+                    (float) obj.getProperties().get("y"),
+                    isShaded, params));
         });
     }
 

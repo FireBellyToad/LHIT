@@ -25,6 +25,7 @@
    <properties>
     <property name="behavior" value="IDLE"/>
     <property name="direction" value="UP"/>
+    <property name="isShaded" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

@@ -417,6 +417,7 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     public synchronized void doRoomContentsLogic(float stateTime) {
+
         // Do Player logic
         if (!player.isDead())
             player.doLogic(stateTime);
@@ -432,6 +433,7 @@ public abstract class AbstractRoom implements Spawner {
 
             if (ene instanceof SpitterInstance && !((Killable) ene).isDead()) {
                 ((SpitterInstance) ene).setCanBeDamaged(hiveCount == 0);
+                ((SpitterInstance) ene).setAggressive(hiveCount < 4);// 4 is max
             } else if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
                 player.setPrepareEndgame(true);

@@ -48,7 +48,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     private boolean isDead = false;
     private boolean canAttack = false;
     private boolean canBeDamaged = false;
-
+    private boolean isAggressive = false;
 
     public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner) {
         super(new SpitterEntity(assetManager));
@@ -71,7 +71,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             }
             case IDLE: {
                 // Every six seconds spits meat
-                if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(SPITTING_FREQUENCY_IN_MILLIS)) {
+                if (isAggressive && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(SPITTING_FREQUENCY_IN_MILLIS)) {
                     readyToAttack(stateTime);
                 }
 
@@ -298,4 +298,9 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void setCanBeDamaged(boolean canBeDamaged) {
         this.canBeDamaged = canBeDamaged;
     }
+
+    public void setAggressive(boolean aggressive) {
+        isAggressive = aggressive;
+    }
+
 }

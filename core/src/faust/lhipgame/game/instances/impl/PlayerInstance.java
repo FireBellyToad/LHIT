@@ -60,10 +60,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private long startHealingTime;
     private int foundMorgengabes = 0;
     private int holyLancePieces = 0;
+
     private boolean hasArmor = false;
     private boolean isSubmerged = false;
     private boolean isDead = false;
     private boolean prepareEndgame = false;
+    private boolean isChangingRoom = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -92,8 +94,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         translateAccessoryBodies();
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
-        //In endgame, idling and do nothing
-        if (isPrepareEndgame()) {
+        //In endgame or roomchange, idling and do nothing
+        if (isChangingRoom || isPrepareEndgame()) {
             currentBehavior = GameBehavior.IDLE;
             return;
         }
@@ -790,7 +792,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     public void setSubmerged(boolean submerged) {
-        if (submerged && !isSubmerged) {
+        if (!isChangingRoom && submerged && !isSubmerged) {
             //Play sound when Walfrit gets in water
             ((PlayerEntity) entity).playWaterSplash();
         }
@@ -842,6 +844,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setPrepareEndgame(boolean prepareEndgame) {
         this.prepareEndgame = prepareEndgame;
+    }
+
+    public void setChangingRoom(boolean changingRoom) {
+        isChangingRoom = changingRoom;
     }
 
     @Override

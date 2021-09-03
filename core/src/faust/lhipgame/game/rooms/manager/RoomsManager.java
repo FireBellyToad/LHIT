@@ -104,6 +104,8 @@ public class RoomsManager {
      */
     public void changeCurrentRoom(int newRoomPosX, int newRoomPosY) {
 
+        //stop logic and sounds
+        player.setChangingRoom(true);
 
         float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
@@ -141,6 +143,8 @@ public class RoomsManager {
                         roomCasualNumber,
                         roomFlags));
 
+
+        player.setChangingRoom(false);
 
     }
 

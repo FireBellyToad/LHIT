@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public class MeatInstance extends AnimatedInstance implements Interactable, Damager, Killable {
 
-    private static final float MEAT_SPEED = 60;
+    private static final float MEAT_SPEED = 65;
     
     private final Vector2 target; // Target x and y;
     private long startAttackCooldown = 0;

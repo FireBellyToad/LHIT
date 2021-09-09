@@ -89,7 +89,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
 
         // Define shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(8, 2);
+        shape.setAsBox(8, 4);
 
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();

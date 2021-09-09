@@ -37,7 +37,7 @@
   <object id="25" name="EMERGED" x="-7.5" y="85.4405">
    <polygon points="7.75,-20.6905 167.5,-20.1531 169.5,58.3095 5.75,57.5034"/>
   </object>
-  <object id="26" name="ENEMY" type="HIVE" x="79.75" y="82">
+  <object id="26" name="ENEMY" type="HIVE" x="79.75" y="84">
    <point/>
   </object>
   <object id="27" name="DECO" type="TUMOR" x="101.188" y="97.5">

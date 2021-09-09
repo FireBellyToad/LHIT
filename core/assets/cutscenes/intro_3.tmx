@@ -20,7 +20,7 @@
  <objectgroup id="2" name="objects">
   <object id="50" name="PlayerEntity" x="101.667" y="102.333">
    <properties>
-    <property name="behavior" value="DEAD"/>
+    <property name="behavior" value="LAYING"/>
    </properties>
    <point/>
   </object>

@@ -83,8 +83,8 @@ public class PlayerEntity extends AnimatedEntity {
         // Initialize the Knee Animation with the frame interval and array of frames
         addAnimation(new Animation<>(FRAME_DURATION, kneeFrames), GameBehavior.KNEE);
 
-        // Initialize the Dead Animation with the frame interval and array of frames
-        addAnimation(new Animation<>(FRAME_DURATION, deadFrames), GameBehavior.DEAD);
+        // Initialize the Laying Animation with the frame interval and array of frames
+        addAnimation(new Animation<>(FRAME_DURATION, deadFrames), GameBehavior.LAYING);
 
 
     }

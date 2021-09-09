@@ -319,9 +319,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     private void drawWalfritShaded(SpriteBatch batch, float stateTime, int xOffset, int yOffset) {
 
-        // Get frame
+        // Get frame (looping if is not dead)
         TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirectionEnum,
-                mapStateTimeFromBehaviour(stateTime));
+                mapStateTimeFromBehaviour(stateTime), !GameBehavior.DEAD.equals(currentBehavior));
 
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
         shader.addFlag("hasArmor", hasArmor);

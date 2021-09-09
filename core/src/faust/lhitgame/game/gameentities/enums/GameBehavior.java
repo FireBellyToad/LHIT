@@ -7,6 +7,7 @@ public enum GameBehavior {
     KNEE,
     IDLE,
     DEAD,
+    LAYING,
     EVADE;
 
     public static GameBehavior getFromString(String name) {

@@ -20,8 +20,7 @@
  <objectgroup id="2" name="objects">
   <object id="48" name="PlayerEntity" x="83.2727" y="114.182">
    <properties>
-    <property name="behavior" value="DEAD"/>
-    <property name="isShaded" type="bool" value="true"/>
+    <property name="behavior" value="LAYING"/>
    </properties>
    <point/>
   </object>

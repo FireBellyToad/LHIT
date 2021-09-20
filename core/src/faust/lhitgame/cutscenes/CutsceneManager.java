@@ -18,7 +18,7 @@ import faust.lhitgame.game.gameentities.impl.*;
 import faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import faust.lhitgame.menu.LongTextHandler;
 import faust.lhitgame.saves.SaveFileManager;
-import faust.lhitgame.utils.CutsceneEnum;
+import faust.lhitgame.enums.cutscenes.CutsceneEnum;
 import faust.lhitgame.utils.TextLocalizer;
 
 import java.util.*;
@@ -141,7 +141,7 @@ public class CutsceneManager implements InputProcessor {
 
             if (obj.getName().equals(PlayerEntity.class.getSimpleName())) {
                 if(playerHasArmor){
-                    params =  Collections.singletonList(SimpleActorParametersEnum.PLAYER_HAS_ARMOR);
+                    params =  Arrays.asList(SimpleActorParametersEnum.PLAYER_HAS_ARMOR);
                     isShaded = true;
                 }
                 entity = new PlayerEntity(assetManager);
@@ -166,7 +166,15 @@ public class CutsceneManager implements InputProcessor {
                 POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(poiType);
                 entity = new POIEntity(poiType,assetManager);
+            } else if (obj.getName().equals(TutorialEntity.class.getSimpleName())) {
+                entity = new TutorialEntity(assetManager);
+                behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
+                direction = DirectionEnum.getFromString((String) obj.getProperties().get("direction"));
+                if (Objects.isNull(direction)) {
+                    direction = DirectionEnum.UNUSED;
+                }
             }
+
 
             Objects.requireNonNull(entity);
 

@@ -1,4 +1,4 @@
-package faust.lhitgame.utils;
+package faust.lhitgame.enums.cutscenes;
 
 import com.badlogic.gdx.Screen;
 import faust.lhitgame.screens.EndGameScreen;
@@ -10,7 +10,7 @@ import faust.lhitgame.screens.GameScreen;
  * @author Jacopo "Faust" Buttiglieri
  */
 public enum CutsceneEnum {
-    INTRO("intro", 4, GameScreen.class),
+    INTRO("intro", 5, GameScreen.class),
     ENDGAME("endgame", 4, EndGameScreen.class);
 
     private final String key; // string key in messages.cutscenes

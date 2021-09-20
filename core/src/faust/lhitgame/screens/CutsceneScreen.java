@@ -10,7 +10,7 @@ import faust.lhitgame.LHITGame;
 import faust.lhitgame.cutscenes.CutsceneManager;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.music.enums.TuneEnum;
-import faust.lhitgame.utils.CutsceneEnum;
+import faust.lhitgame.enums.cutscenes.CutsceneEnum;
 
 import java.lang.reflect.Constructor;
 import java.util.Objects;

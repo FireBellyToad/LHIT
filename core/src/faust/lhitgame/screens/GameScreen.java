@@ -14,7 +14,7 @@ import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.rooms.manager.RoomsManager;
 import faust.lhitgame.game.splash.SplashManager;
 import faust.lhitgame.game.textbox.manager.TextBoxManager;
-import faust.lhitgame.utils.CutsceneEnum;
+import faust.lhitgame.enums.cutscenes.CutsceneEnum;
 import faust.lhitgame.utils.TextLocalizer;
 import faust.lhitgame.game.world.manager.WorldManager;
 

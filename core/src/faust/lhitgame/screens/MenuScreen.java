@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import faust.lhitgame.LHITGame;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.music.enums.TuneEnum;
-import faust.lhitgame.utils.CutsceneEnum;
+import faust.lhitgame.enums.cutscenes.CutsceneEnum;
 import faust.lhitgame.utils.TextLocalizer;
 import faust.lhitgame.menu.Menu;
 

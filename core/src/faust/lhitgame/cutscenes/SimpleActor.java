@@ -90,13 +90,14 @@ public class SimpleActor {
 
         if(entity instanceof PlayerEntity) {
             boolean hasArmor = params.stream().anyMatch(SimpleActorParametersEnum.PLAYER_HAS_ARMOR::equals);
+            boolean hasLance = params.stream().anyMatch(SimpleActorParametersEnum.PLAYER_HAS_LANCE::equals);
             shader = ((PlayerEntity) entity).getPlayerShader();
             shader.addFlag("hasArmor", hasArmor);
-            shader.addFlag("hasHolyLance", true);
+            shader.addFlag("hasHolyLance", hasLance);
             shader.setShaderOnBatchWithFlags(batch);
         }
 
-        Objects.requireNonNull(shader,"Trying to activate a shader without givig a real entity!");
+        Objects.requireNonNull(shader,"Trying to activate a shader without giving a real entity!");
 
         return shader;
     }

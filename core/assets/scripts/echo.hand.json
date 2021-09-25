@@ -1,20 +1,15 @@
 {
   "steps": [
     {
-      "behaviour": "IDLE"
     },
     {
-      "behaviour": "WALK"
     },
     {
-      "behaviour": "ATTACK"
     },
     {
-      "behaviour": "HURT"
     },
     {
-      "behaviour": "DEAD",
-      "goToStep" : "IDLE"
+      "goToStep" : 0
     }
   ]
 }

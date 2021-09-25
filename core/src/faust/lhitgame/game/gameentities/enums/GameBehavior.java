@@ -18,4 +18,8 @@ public enum GameBehavior {
         }
         return null;
     }
+
+    public static GameBehavior getFromOrdinal(int ord) {
+        return GameBehavior.values()[ord];
+    }
 }

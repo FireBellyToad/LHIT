@@ -49,8 +49,11 @@ public class EchoActorEntity extends AnimatedEntity {
 
         Objects.requireNonNull(parsedSteps);
 
-        parsedSteps.forEach((s) -> {
-            GameBehavior behaviour = GameBehavior.getFromString(s.getString("behaviour"));
+        TextureRegion[] allFrames = getFramesFromTexture();
+
+        int stepCounter = 0;
+        for (JsonValue s : parsedSteps) {
+            GameBehavior behaviour = GameBehavior.getFromOrdinal(stepCounter);
             Objects.requireNonNull(behaviour);
             stepOrder.add(behaviour);
 
@@ -58,35 +61,21 @@ public class EchoActorEntity extends AnimatedEntity {
                 textBoxPerStep.put(behaviour, s.getString("textBoxKey"));
             }
             if (s.has("move")) {
-              mustMoveInStep.put(behaviour, DirectionEnum.getFromString(s.getString("move")));
+                mustMoveInStep.put(behaviour, DirectionEnum.getFromString(s.getString("move")));
             }
 
             if (s.has("goToStep")) {
-                gotoToStepFromStep.put(behaviour, GameBehavior.getFromString(s.getString("goToStep")));
+                gotoToStepFromStep.put(behaviour, GameBehavior.getFromOrdinal(s.getInt("goToStep")));
             }
-        });
+            addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * stepCounter, getTextureColumns() * (stepCounter + 1))), behaviour);
 
+            stepCounter++;
+        }
     }
 
     @Override
     protected void initAnimations() {
-
-        TextureRegion[] allFrames = getFramesFromTexture();
-
-        TextureRegion[] idleFrames = Arrays.copyOfRange(allFrames, 0, getTextureColumns());
-        TextureRegion[] walkFrames = Arrays.copyOfRange(allFrames, getTextureColumns(), getTextureColumns() * 2);
-        TextureRegion[] attackFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 2, getTextureColumns() * 3);
-        TextureRegion[] hurtFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 3, getTextureColumns() * 4);
-        TextureRegion[] deadFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 4, getTextureColumns() * 5);
-
-        // Initialize the Idle Animation with the frame interval and array of frames
-        addAnimation(new Animation<>(FRAME_DURATION, idleFrames), GameBehavior.IDLE);
-        addAnimation(new Animation<>(FRAME_DURATION, walkFrames), GameBehavior.WALK);
-        addAnimation(new Animation<>(FRAME_DURATION, attackFrames), GameBehavior.ATTACK);
-        addAnimation(new Animation<>(FRAME_DURATION, hurtFrames), GameBehavior.HURT);
-        addAnimation(new Animation<>(FRAME_DURATION, deadFrames), GameBehavior.DEAD);
-
-
+        //Nothing to do here... initializing animation after load
     }
 
     public List<GameBehavior> getStepOrder() {
@@ -124,6 +113,7 @@ public class EchoActorEntity extends AnimatedEntity {
     public Boolean mustMoveInStep(GameBehavior step) {
         return mustMoveInStep.containsKey(step);
     }
+
     /**
      * @param step
      * @return DirectionEnum of movement

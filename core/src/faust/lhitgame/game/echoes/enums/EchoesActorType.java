@@ -5,7 +5,8 @@ public enum EchoesActorType {
     VICTIM("echo.victim.json","sprites/victim_sheet.png",null),
     WOMAN("echo.woman.json","sprites/woman_sheet.png","sounds/horror_scream.ogg"),
     DEAD_HAND("echo.hand.json","sprites/hand_sheet.png", null),
-    DEAD_DOUBLE_HAND("echo.hands.json","sprites/double_hand_sheet.png", "sounds/rattling-bones.ogg");
+    DEAD_DOUBLE_HAND("echo.hands.json","sprites/double_hand_sheet.png", "sounds/rattling-bones.ogg"),
+    HORROR("echo.horror.json","sprites/horror_sheet.png", "sounds/terror.ogg");
 
     private final String filename;
     private final String spriteFilename;

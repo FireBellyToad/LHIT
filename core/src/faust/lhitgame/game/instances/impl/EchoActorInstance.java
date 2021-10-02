@@ -95,29 +95,37 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                showTextBox = true;
            } else {
                removeFromRoom = true;
-               if(EchoesActorType.VICTIM.equals(echoesActorType)){
-                   spawner.spawnInstance(POIInstance.class,startX,startY+8);
-               }
+               spawnInstancesOnEnd();
                Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
            }
        }
     }
 
+    private void spawnInstancesOnEnd() {
+        switch (echoesActorType){
+            case VICTIM: {
+                spawner.spawnInstance(POIInstance.class,startX,startY+8);
+                break;
+            }
+        }
+    }
+
     /**
      *
-     * @param currentBehavior
+     * @param direction
      * @return velocity of movement to do in Vector2 format
      */
-    private Vector2 getVelocityOfStep(DirectionEnum currentBehavior) {
-        switch (currentBehavior){
+    private Vector2 getVelocityOfStep(DirectionEnum direction) {
+        final Integer speedInCurrentStep = ((EchoActorEntity) this.entity).getSpeedInStep(currentBehavior);
+        switch (direction){
             case UP:
-                return new Vector2(0,60);
+                return new Vector2(0, speedInCurrentStep);
             case DOWN:
-                return new Vector2(0,-60);
+                return new Vector2(0,-speedInCurrentStep);
             case RIGHT:
-                return new Vector2(60,0);
+                return new Vector2(speedInCurrentStep,0);
             case LEFT:
-                return new Vector2(-60,0);
+                return new Vector2(-speedInCurrentStep,0);
         }
         return null;
     }
@@ -213,7 +221,10 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         switch (((EchoActorEntity) entity).getEchoesActorType()){
             case DEAD_HAND:
             case DEAD_DOUBLE_HAND:
+                //Ld6
                 return Math.min(MathUtils.random(1,6),MathUtils.random(1,6));
+            case HORROR:
+                return 1;
             default:
                 return 0;
         }

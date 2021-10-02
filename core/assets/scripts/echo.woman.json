@@ -2,7 +2,8 @@
   "steps": [
     {
       "textBoxKey": "echo.woman.first",
-      "move" : "RIGHT"
+      "move" : "RIGHT",
+      "speed" : 60
     },
     {
     },

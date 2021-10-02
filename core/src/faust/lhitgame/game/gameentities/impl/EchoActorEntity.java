@@ -30,6 +30,7 @@ public class EchoActorEntity extends AnimatedEntity {
     protected final Map<GameBehavior, String> textBoxPerStep = new HashMap<>();
     protected final Map<GameBehavior, DirectionEnum> mustMoveInStep = new HashMap<>();
     protected final Map<GameBehavior, GameBehavior> gotoToStepFromStep = new HashMap<>();
+    protected final Map<GameBehavior, Integer> speedInStep = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
         super(assetManager.get(echoesActorType.getSpriteFilename()));
@@ -62,6 +63,7 @@ public class EchoActorEntity extends AnimatedEntity {
             }
             if (s.has("move")) {
                 mustMoveInStep.put(behaviour, DirectionEnum.getFromString(s.getString("move")));
+                speedInStep.put(behaviour, s.getInt("speed"));
             }
 
             if (s.has("goToStep")) {
@@ -112,6 +114,14 @@ public class EchoActorEntity extends AnimatedEntity {
      */
     public Boolean mustMoveInStep(GameBehavior step) {
         return mustMoveInStep.containsKey(step);
+    }
+
+    /**
+     * @param step
+     * @return true if must move in this step
+     */
+    public Integer getSpeedInStep(GameBehavior step) {
+        return speedInStep.get(step);
     }
 
     /**

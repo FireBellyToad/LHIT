@@ -17,10 +17,12 @@ import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.SpitterEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;
 import faust.lhitgame.game.gameentities.interfaces.Hurtable;
+import faust.lhitgame.game.gameentities.interfaces.Killable;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
 import faust.lhitgame.game.instances.Spawner;
 import faust.lhitgame.game.instances.interfaces.Interactable;
+import faust.lhitgame.game.rooms.AbstractRoom;
 import faust.lhitgame.game.textbox.manager.TextBoxManager;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
@@ -61,7 +63,12 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     }
 
     @Override
-    public void doLogic(float stateTime) {
+    public void doLogic(float stateTime, AbstractRoom currentRoom) {
+
+        //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
+        long hiveCount = currentRoom.getEnemyList().stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
+        canBeDamaged = hiveCount == 0;
+        isAggressive = hiveCount < 4;
 
         switch (currentBehavior) {
             case ATTACK: {
@@ -293,14 +300,6 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
                 return stateTime;
             }
         }
-    }
-
-    public void setCanBeDamaged(boolean canBeDamaged) {
-        this.canBeDamaged = canBeDamaged;
-    }
-
-    public void setAggressive(boolean aggressive) {
-        isAggressive = aggressive;
     }
 
 }

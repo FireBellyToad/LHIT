@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 
 import java.util.*;
@@ -31,6 +32,7 @@ public class EchoActorEntity extends AnimatedEntity {
     protected final Map<GameBehavior, DirectionEnum> mustMoveInStep = new HashMap<>();
     protected final Map<GameBehavior, GameBehavior> gotoToStepFromStep = new HashMap<>();
     protected final Map<GameBehavior, Integer> speedInStep = new HashMap<>();
+    protected final Map<GameBehavior, EnemyEnum> untilAtLeastOneFromStep = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
         super(assetManager.get(echoesActorType.getSpriteFilename()));
@@ -68,6 +70,12 @@ public class EchoActorEntity extends AnimatedEntity {
 
             if (s.has("goToStep")) {
                 gotoToStepFromStep.put(behaviour, GameBehavior.getFromOrdinal(s.getInt("goToStep")));
+
+                if (s.has("untilAtLeastOne")) {
+                    EnemyEnum enemyEnum = EnemyEnum.getFromString(s.getString("untilAtLeastOne"));
+                    Objects.requireNonNull(enemyEnum);
+                    untilAtLeastOneFromStep.put(behaviour, enemyEnum);
+                }
             }
             addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * stepCounter, getTextureColumns() * (stepCounter + 1))), behaviour);
 
@@ -138,6 +146,15 @@ public class EchoActorEntity extends AnimatedEntity {
      */
     public GameBehavior getGotoToStepFromStep(GameBehavior fromStep) {
         return gotoToStepFromStep.get(fromStep);
+    }
+
+    /**
+     *
+     * @param fromStep
+     * @return
+     */
+    public EnemyEnum getUntilAtLeastOneFromStep(GameBehavior fromStep) {
+        return untilAtLeastOneFromStep.get(fromStep);
     }
 
     /**

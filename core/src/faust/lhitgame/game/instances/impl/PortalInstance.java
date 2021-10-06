@@ -8,6 +8,7 @@ import faust.lhitgame.LHITGame;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.impl.PortalEntity;
 import faust.lhitgame.game.instances.AnimatedInstance;
+import faust.lhitgame.game.rooms.AbstractRoom;
 
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class PortalInstance extends AnimatedInstance {
     }
 
     @Override
-    public void doLogic(float stateTime) {
+    public void doLogic(float stateTime, AbstractRoom currentRoom) {
         //Nothing to do here...
     }
 

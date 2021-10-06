@@ -59,6 +59,7 @@ public abstract class AbstractRoom implements Spawner {
         this.put(MeatInstance.class.getSimpleName(), EnemyEnum.MEAT.name());
         this.put(PortalInstance.class.getSimpleName(), EnemyEnum.PORTAL.name());
         this.put(POIInstance.class.getSimpleName(), POIEnum.ECHO_CORPSE.name());
+        this.put(WillowispInstance.class.getSimpleName(), EnemyEnum.WILLOWISP.name());
     }};
 
     protected TiledMap tiledMap;
@@ -420,21 +421,15 @@ public abstract class AbstractRoom implements Spawner {
 
         // Do Player logic
         if (!player.isDead())
-            player.doLogic(stateTime);
+            player.doLogic(stateTime, this);
 
-
-        //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
-        long hiveCount = enemyList.stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
 
         // Do enemy logic
         enemyList.forEach((ene) -> {
 
-            ene.doLogic(stateTime);
+            ene.doLogic(stateTime, this);
 
-            if (ene instanceof SpitterInstance && !((Killable) ene).isDead()) {
-                ((SpitterInstance) ene).setCanBeDamaged(hiveCount == 0);
-                ((SpitterInstance) ene).setAggressive(hiveCount < 4);// 4 is max
-            } else if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
+            if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
                 player.setPrepareEndgame(true);
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
@@ -471,6 +466,14 @@ public abstract class AbstractRoom implements Spawner {
         return this.poiList.stream().allMatch(POIInstance::isAlreadyExamined);
     }
 
+    /**
+     *
+     * @return
+     */
+    public List <AnimatedInstance> getEnemyList(){
+        return enemyList;
+    };
+
     @Override
     public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY) {
 
@@ -485,7 +488,7 @@ public abstract class AbstractRoom implements Spawner {
         mapObjectStub.getProperties().put("type", permittedSpawnableInstance.get(instanceClass.getSimpleName()));
 
         //Insert last enemy into world
-        if (instanceClass.equals(MeatInstance.class)) {
+        if (instanceClass.equals(MeatInstance.class) || instanceClass.equals(WillowispInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {

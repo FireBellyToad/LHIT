@@ -4,17 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
-import faust.lhitgame.game.gameentities.interfaces.Damager;
-import faust.lhitgame.game.gameentities.interfaces.Hurtable;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.BoundedEntity;
+import faust.lhitgame.game.gameentities.impl.WillowispEntity;
+import faust.lhitgame.game.gameentities.interfaces.Damager;
+import faust.lhitgame.game.gameentities.interfaces.Hurtable;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
@@ -25,11 +25,11 @@ import faust.lhitgame.screens.GameScreen;
 import java.util.Objects;
 
 /**
- * Bounded enemy instance class
+ * Will' o wisp enemy instance class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class BoundedInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
+public class WillowispInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final float BOUNDED_SPEED = 40;
     private static final int LINE_OF_ATTACK = 15;
@@ -45,16 +45,16 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     private long startAttackCooldown = 0;
 
     //Body for spear attacks
-    private Body downClawBody;
-    private Body leftClawBody;
-    private Body rightClawBody;
-    private Body upClawBody;
+    private Body downTentacleBody;
+    private Body leftTentacleBody;
+    private Body rightTentacleBody;
+    private Body upTentacleBody;
 
     private final PlayerInstance target;
 
-    public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
-        super(new BoundedEntity(assetManager));
-        currentDirectionEnum = DirectionEnum.DOWN;
+    public WillowispInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
+        super(new WillowispEntity(assetManager));
+        currentDirectionEnum = DirectionEnum.RIGHT;
         this.startX = x;
         this.startY = y;
         this.target = target;
@@ -92,7 +92,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             deactivateAttackBodies();
             isAggressive = true;
             currentBehavior = GameBehavior.WALK;
-            // Normal from Bounded position to target
+            // Normal from Willowisp position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
 
@@ -112,10 +112,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
      * Translate all accessory body
      */
     private void translateAccessoryBodies() {
-        rightClawBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        upClawBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
-        leftClawBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        downClawBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        rightTentacleBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
+        upTentacleBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        leftTentacleBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
+        downTentacleBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
@@ -180,10 +180,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         rightClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        rightClawBody = world.createBody(rightClawDef);
-        rightClawBody.setUserData(this);
-        rightClawBody.createFixture(rightClawFixtureDef);
-        rightClawBody.setActive(false);
+        rightTentacleBody = world.createBody(rightClawDef);
+        rightTentacleBody.setUserData(this);
+        rightTentacleBody.createFixture(rightClawFixtureDef);
+        rightTentacleBody.setActive(false);
         rightClawShape.dispose();
 
         BodyDef upClawDef = new BodyDef();
@@ -205,10 +205,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         upClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        upClawBody = world.createBody(upClawDef);
-        upClawBody.setUserData(this);
-        upClawBody.createFixture(upClawFixtureDef);
-        upClawBody.setActive(false);
+        upTentacleBody = world.createBody(upClawDef);
+        upTentacleBody.setUserData(this);
+        upTentacleBody.createFixture(upClawFixtureDef);
+        upTentacleBody.setActive(false);
         upClawShape.dispose();
 
         BodyDef leftClawDef = new BodyDef();
@@ -230,10 +230,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         leftClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        leftClawBody = world.createBody(leftClawDef);
-        leftClawBody.setUserData(this);
-        leftClawBody.createFixture(leftClawFixtureDef);
-        leftClawBody.setActive(false);
+        leftTentacleBody = world.createBody(leftClawDef);
+        leftTentacleBody.setUserData(this);
+        leftTentacleBody.createFixture(leftClawFixtureDef);
+        leftTentacleBody.setActive(false);
         leftClawShape.dispose();
 
         BodyDef downClawDef = new BodyDef();
@@ -255,10 +255,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         downClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        downClawBody = world.createBody(downClawDef);
-        downClawBody.setUserData(this);
-        downClawBody.createFixture(downClawFixtureDef);
-        downClawBody.setActive(false);
+        downTentacleBody = world.createBody(downClawDef);
+        downTentacleBody.setUserData(this);
+        downTentacleBody.createFixture(downClawFixtureDef);
+        downTentacleBody.setActive(false);
         downClawShape.dispose();
 
         // Hitbox definition
@@ -300,10 +300,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         //Draw shadow
         batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
 
-        //Draw Bounded
-
-        // If not hurt or the flickering POI must be shown, draw the texture
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+        //Draw Will o wisp
+        // While it WALKs, do not show. Is invisible! FIXME use spell
+        // If not hurt or the flickering POI must be shown, draw the texture.
+        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior) ||  !GameBehavior.WALK.equals(currentBehavior)) {
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
         }
 
@@ -335,13 +335,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     @Override
     public void hurt(GameInstance attacker) {
 
-        //40% chance of evading attack
-        final boolean canEvade = (MathUtils.random(1, 100)) >= 60;
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             currentBehavior = GameBehavior.DEAD;
-        } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
+        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -355,14 +353,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             currentBehavior = GameBehavior.HURT;
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
-        } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
-            ((BoundedEntity) entity).playEvadeSwift();
-            //Just evade
-            currentBehavior = GameBehavior.EVADE;
-            Gdx.app.log("DEBUG", "Instance EVADED!");
-            postHurtLogic(attacker);
         }
-
     }
 
     @Override
@@ -413,19 +404,19 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             startAttackCooldown = TimeUtils.nanoTime();
             switch (currentDirectionEnum) {
                 case UP: {
-                    upClawBody.setActive(true);
+                    upTentacleBody.setActive(true);
                     break;
                 }
                 case DOWN: {
-                    downClawBody.setActive(true);
+                    downTentacleBody.setActive(true);
                     break;
                 }
                 case LEFT: {
-                    leftClawBody.setActive(true);
+                    leftTentacleBody.setActive(true);
                     break;
                 }
                 case RIGHT: {
-                    rightClawBody.setActive(true);
+                    rightTentacleBody.setActive(true);
                     break;
                 }
             }
@@ -438,14 +429,14 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     @Override
     public void dispose() {
         super.dispose();
-        rightClawBody.getFixtureList().forEach(f ->
-                rightClawBody.destroyFixture(f));
-        leftClawBody.getFixtureList().forEach(f ->
-                leftClawBody.destroyFixture(f));
-        upClawBody.getFixtureList().forEach(f ->
-                upClawBody.destroyFixture(f));
-        downClawBody.getFixtureList().forEach(f ->
-                downClawBody.destroyFixture(f));
+        rightTentacleBody.getFixtureList().forEach(f ->
+                rightTentacleBody.destroyFixture(f));
+        leftTentacleBody.getFixtureList().forEach(f ->
+                leftTentacleBody.destroyFixture(f));
+        upTentacleBody.getFixtureList().forEach(f ->
+                upTentacleBody.destroyFixture(f));
+        downTentacleBody.getFixtureList().forEach(f ->
+                downTentacleBody.destroyFixture(f));
     }
 
     @Override
@@ -470,10 +461,10 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
      * Deactivate all attacker bodies
      */
     private void deactivateAttackBodies() {
-        rightClawBody.setActive(false);
-        upClawBody.setActive(false);
-        leftClawBody.setActive(false);
-        downClawBody.setActive(false);
+        rightTentacleBody.setActive(false);
+        upTentacleBody.setActive(false);
+        leftTentacleBody.setActive(false);
+        downTentacleBody.setActive(false);
     }
 
 

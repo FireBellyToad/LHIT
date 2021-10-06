@@ -13,12 +13,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;
+import faust.lhitgame.game.gameentities.interfaces.Killable;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.Spawner;
 import faust.lhitgame.game.instances.interfaces.Interactable;
+import faust.lhitgame.game.rooms.AbstractRoom;
 import faust.lhitgame.game.world.manager.CollisionManager;
 
 import java.util.List;
@@ -53,7 +56,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     @Override
-    public void doLogic(float stateTime) {
+    public void doLogic(float stateTime, AbstractRoom currentRoom) {
 
         // If must be removed, avoid logic
         if(removeFromRoom){
@@ -79,12 +82,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         //If animation is finished pass to the next step
        if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
-           int index = stepOrder.indexOf(currentBehavior);
-
-           //If has "go to step", handle it correctly
-           if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
-               index = stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
-           }
+           int index = getNewIndex(stepOrder, currentRoom);
 
            Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " end step "+ currentBehavior);
 
@@ -101,10 +99,48 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
        }
     }
 
+    /**
+     * New step from logics
+     * @param stepOrder
+     * @param currentRoom
+     * @return
+     */
+    private int getNewIndex(List<GameBehavior> stepOrder, AbstractRoom currentRoom) {
+
+        //If has "go to step", handle it correctly
+        if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
+
+            //Check condition on until there is at least one enemy of type is alive in room
+            if(Objects.nonNull(((EchoActorEntity) entity).getUntilAtLeastOneFromStep(currentBehavior))) {
+                //Extract instance class from enum and do check
+                Class<? extends AnimatedInstance> enemyClass = ((EchoActorEntity) entity).getUntilAtLeastOneFromStep(currentBehavior).getInstanceClass();
+                if(currentRoom.getEnemyList().stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable)e).isDead())){
+                    //if true, go to step
+                    return stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
+                }
+            } else {
+                //If no "until" condition, just jump to "go to step" value
+                return stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
+            }
+
+        }
+
+        // or else, just get next
+        return stepOrder.indexOf(currentBehavior);
+    }
+
+    /**
+     * Spawn instance if doable
+     */
     private void spawnInstancesOnEnd() {
+        //FIXME do by script not echotype
         switch (echoesActorType){
             case VICTIM: {
                 spawner.spawnInstance(POIInstance.class,startX,startY+8);
+                break;
+            }
+            case HORROR_BODY:{
+                spawner.spawnInstance(WillowispInstance.class,startX,startY+8);
                 break;
             }
         }

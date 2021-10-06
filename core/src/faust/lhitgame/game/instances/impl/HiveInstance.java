@@ -19,6 +19,7 @@ import faust.lhitgame.game.gameentities.impl.HiveEntity;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
+import faust.lhitgame.game.rooms.AbstractRoom;
 import faust.lhitgame.game.textbox.manager.TextBoxManager;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
@@ -44,7 +45,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
     }
 
     @Override
-    public void doLogic(float stateTime) {
+    public void doLogic(float stateTime, AbstractRoom currentRoom) {
         // just a static passive enemy
 
     }

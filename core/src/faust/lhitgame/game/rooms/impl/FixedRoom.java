@@ -203,7 +203,7 @@ public class FixedRoom extends AbstractRoom {
         // Manage echo actors
         if (echoIsActivated) {
             echoActors.forEach(actor -> {
-                actor.doLogic(stateTime);
+                actor.doLogic(stateTime, this );
 
                 if (actor.hasCurrentTextBoxToShow()) {
                     this.textManager.addNewTextBox(actor.getCurrentTextBoxToShow());

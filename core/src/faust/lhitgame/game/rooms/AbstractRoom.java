@@ -266,6 +266,14 @@ public abstract class AbstractRoom implements Spawner {
                 addedInstance = new PortalInstance(assetManager);
                 break;
             }
+            case WILLOWISP: {
+                addedInstance = new WillowispInstance(
+                        (float) obj.getProperties().get("x"),
+                        (float) obj.getProperties().get("y"),
+                        player,
+                        assetManager);
+                break;
+            }
             case HIVE: {
                 addedInstance = new HiveInstance(
                         (float) obj.getProperties().get("x"),

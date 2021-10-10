@@ -79,7 +79,7 @@ public class WillowispEntity extends AnimatedEntity {
     }
 
     @Override
-    protected int getTextureRows() { return 13; }
+    protected int getTextureRows() { return 9; }
 
     public Texture getShadowTexture() {
         return shadow;

@@ -25,6 +25,7 @@ public class EchoActorEntity extends AnimatedEntity {
 
     private final EchoesActorType echoesActorType;
     private Sound startingSound;
+    private int precalculatedRows =5;
 
     //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();
@@ -40,6 +41,9 @@ public class EchoActorEntity extends AnimatedEntity {
         if (Objects.nonNull(echoesActorType.getSoundFileName())) {
             this.startingSound = assetManager.get(echoesActorType.getSoundFileName());
         }
+        if(echoesActorType.equals(EchoesActorType.HORROR_BODY)){
+            Gdx.app.log("HERE","JERER");
+        }
         loadEchoActorSteps();
     }
 
@@ -51,6 +55,9 @@ public class EchoActorEntity extends AnimatedEntity {
         JsonValue parsedSteps = new JsonReader().parse(Gdx.files.internal("scripts/" + echoesActorType.getFilename())).get("steps");
 
         Objects.requireNonNull(parsedSteps);
+
+        //Precalculate rows from steps
+        precalculatedRows = parsedSteps.size;
 
         TextureRegion[] allFrames = getFramesFromTexture();
 
@@ -99,7 +106,7 @@ public class EchoActorEntity extends AnimatedEntity {
 
     @Override
     protected int getTextureRows() {
-        return 5;
+        return precalculatedRows;
     }
 
     public EchoesActorType getEchoesActorType() {

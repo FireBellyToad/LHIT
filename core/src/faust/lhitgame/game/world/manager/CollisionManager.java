@@ -88,6 +88,11 @@ public class CollisionManager implements ContactListener {
             handleEnemyCollisionEvent(contact, SpitterInstance.class);
         }
 
+        // Handle Willowisp Collision end
+        if (isContactOfClass(contact, WillowispInstance.class)) {
+            handleEnemyCollisionEvent(contact, WillowispInstance.class);
+        }
+
         // Handle Meat Collision
         if (isContactOfClass(contact, MeatInstance.class)) {
             MeatInstance meatInstance = ((MeatInstance) getCorrectFixture(contact, MeatInstance.class).getBody().getUserData());
@@ -166,6 +171,10 @@ public class CollisionManager implements ContactListener {
         // Handle Spitter Collision end
         if (isContactOfClass(contact, SpitterInstance.class)) {
             handleEnemyCollisionEventEnd(contact, SpitterInstance.class);
+        }
+        // Handle Willowisp Collision end
+        if (isContactOfClass(contact, WillowispInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, WillowispInstance.class);
         }
     }
 

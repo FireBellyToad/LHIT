@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Timer;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
-import faust.lhitgame.game.gameentities.impl.BoundedEntity;
 import faust.lhitgame.game.gameentities.impl.WillowispEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;
 import faust.lhitgame.game.gameentities.interfaces.Hurtable;
@@ -31,12 +30,12 @@ import java.util.Objects;
  */
 public class WillowispInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
-    private static final float BOUNDED_SPEED = 40;
+    private static final float WILLOWISP_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;
     private static final int LINE_OF_SIGHT = 70;
-    private static final float CLAW_SENSOR_Y_OFFSET = 10;
-    private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
+    private static final float TENTALCE_SENSOR_Y_OFFSET = 10;
+    private static final int ATTACK_VALID_FRAME = 2; // Frame to activate attack sensor
+    private static final long ATTACK_COOLDOWN_TIME = 850; // in millis
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -99,7 +98,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
             currentDirectionEnum = extractDirectionFromNormal(direction);
 
             // Move towards target
-            body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
+            body.setLinearVelocity(WILLOWISP_SPEED * direction.x, WILLOWISP_SPEED * direction.y);
             deactivateAttackBodies();
         } else {
             currentBehavior = GameBehavior.IDLE;
@@ -112,10 +111,10 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
      * Translate all accessory body
      */
     private void translateAccessoryBodies() {
-        rightTentacleBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        upTentacleBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
-        leftTentacleBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        downTentacleBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        rightTentacleBody.setTransform(body.getPosition().x + 10, body.getPosition().y + TENTALCE_SENSOR_Y_OFFSET, 0);
+        upTentacleBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + TENTALCE_SENSOR_Y_OFFSET, 0);
+        leftTentacleBody.setTransform(body.getPosition().x - 10, body.getPosition().y + TENTALCE_SENSOR_Y_OFFSET, 0);
+        downTentacleBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + TENTALCE_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
@@ -298,12 +297,12 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
         //Draw shadow
-        batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
+        batch.draw(((WillowispEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
 
         //Draw Will o wisp
         // While it WALKs, do not show. Is invisible! FIXME use spell
         // If not hurt or the flickering POI must be shown, draw the texture.
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior) ||  !GameBehavior.WALK.equals(currentBehavior)) {
+        if (!GameBehavior.WALK.equals(currentBehavior) && (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior))) {
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
         }
 
@@ -336,11 +335,11 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
     public void hurt(GameInstance attacker) {
 
         if (isDying()) {
-            ((BoundedEntity) entity).playDeathCry();
+            ((WillowispEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             currentBehavior = GameBehavior.DEAD;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-            ((BoundedEntity) entity).playHurtCry();
+            ((WillowispEntity) entity).playHurtCry();
 
             // Hurt by player
             double amount = ((Damager) attacker).damageRoll();
@@ -370,7 +369,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
             direction.x = (float) Math.cos(direction.x);
             direction.y = (float) Math.cos(direction.y);
         }
-        body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
+        body.setLinearVelocity(WILLOWISP_SPEED * modifier * -direction.x, WILLOWISP_SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
@@ -387,7 +386,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
     }
 
     public double damageRoll() {
-        return 3;
+        return 2;
     }
 
     /**

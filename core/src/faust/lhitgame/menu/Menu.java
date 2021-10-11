@@ -35,12 +35,13 @@ public class Menu implements InputProcessor {
     private boolean changeToGameScreen = false;
     private boolean changeToNextScreen = false;
     private boolean changeToIntroScreen = false;
+    private boolean changeToCreditScreen = false;
 
     private final SaveFileManager saveFileManager;
     private final Sound voiceChange;
     private final Sound wrongVoice;
 
-    public Menu(SaveFileManager saveFileManager,AssetManager assetManager) {
+    public Menu(SaveFileManager saveFileManager, AssetManager assetManager) {
         this(saveFileManager, MenuItem.MAIN, assetManager);
     }
 
@@ -48,9 +49,9 @@ public class Menu implements InputProcessor {
         this.saveFileManager = saveFileManager;
         this.currentMenu = currentMenu;
 
-        assetManager.load("sounds/SFX_UIGeneric13.ogg",Sound.class);
+        assetManager.load("sounds/SFX_UIGeneric13.ogg", Sound.class);
         assetManager.finishLoading();
-        assetManager.load("sounds/SFX_UIGeneric15.ogg",Sound.class);
+        assetManager.load("sounds/SFX_UIGeneric15.ogg", Sound.class);
         assetManager.finishLoading();
 
         this.voiceChange = assetManager.get("sounds/SFX_UIGeneric13.ogg");
@@ -77,11 +78,11 @@ public class Menu implements InputProcessor {
 
         //Title
         if (Objects.nonNull(currentMenu.getTitleMessageKey()))
-            mainFont.draw(batch, textLocalizer.localizeFromKey("menu",currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
+            mainFont.draw(batch, textLocalizer.localizeFromKey("menu", currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
 
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
-            mainFont.draw(batch, textLocalizer.localizeFromKey("menu",subItemsArray[i].name()),
+            mainFont.draw(batch, textLocalizer.localizeFromKey("menu", subItemsArray[i].name()),
                     MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
         }
         //Draw arrow on selected option
@@ -90,6 +91,7 @@ public class Menu implements InputProcessor {
 
     /**
      * Draw current menu without localization
+     *
      * @param batch
      */
     public void drawCurrentMenu(SpriteBatch batch) {
@@ -99,7 +101,7 @@ public class Menu implements InputProcessor {
 
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
-            mainFont.draw(batch, subItemsArray[i].name().replace('_',' '),
+            mainFont.draw(batch, subItemsArray[i].name().replace('_', ' '),
                     MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
         }
         //Draw arrow on selected option
@@ -172,7 +174,7 @@ public class Menu implements InputProcessor {
             case 1: {
                 //Load game if present, else do nothing
                 Map<String, Object> rawData = saveFileManager.loadRawValues();
-                if(rawData == null || rawData.isEmpty()){
+                if (rawData == null || rawData.isEmpty()) {
                     wrongVoice.play();
                     selectedMenuVoice = 0;
                 } else {
@@ -198,7 +200,9 @@ public class Menu implements InputProcessor {
                 break;
             }
             case 1: {
-                //TODO credit
+                //credit
+                selectedMenuVoice = 1;
+                changeToCreditScreen = true;
                 break;
             }
             case 2: {
@@ -262,6 +266,12 @@ public class Menu implements InputProcessor {
 
     public boolean isChangeToNextScreen() {
         return changeToNextScreen;
+    }
+
+    public boolean isChangeToCreditScreen() { return changeToCreditScreen; }
+
+    public void setChangeToCreditScreen(boolean changeToCreditScreen) {
+        this.changeToCreditScreen = changeToCreditScreen;
     }
 
     public BitmapFont getMainFont() {

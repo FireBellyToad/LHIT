@@ -61,7 +61,11 @@ public class MenuScreen implements Screen {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(new GameScreen(game));
-        } else {
+        }  else if (menu.isChangeToCreditScreen()) {
+            //Stop music and change screen
+            musicManager.stopMusic();
+            game.setScreen(new CutsceneScreen(game, CutsceneEnum.CREDITS));
+        }else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 

@@ -3,6 +3,7 @@ package faust.lhitgame.enums.cutscenes;
 import com.badlogic.gdx.Screen;
 import faust.lhitgame.screens.EndGameScreen;
 import faust.lhitgame.screens.GameScreen;
+import faust.lhitgame.screens.MenuScreen;
 
 /**
  * Cutscenes Enum
@@ -11,7 +12,8 @@ import faust.lhitgame.screens.GameScreen;
  */
 public enum CutsceneEnum {
     INTRO("intro", 5, GameScreen.class),
-    ENDGAME("endgame", 4, EndGameScreen.class);
+    ENDGAME("endgame", 4, EndGameScreen.class),
+    CREDITS("credits", 1, MenuScreen.class);
 
     private final String key; // string key in messages.cutscenes
     private final int stepsNumber; // number of steps of the cutscene

@@ -41,9 +41,7 @@ public class EchoActorEntity extends AnimatedEntity {
         if (Objects.nonNull(echoesActorType.getSoundFileName())) {
             this.startingSound = assetManager.get(echoesActorType.getSoundFileName());
         }
-        if(echoesActorType.equals(EchoesActorType.HORROR_BODY)){
-            Gdx.app.log("HERE","JERER");
-        }
+
         loadEchoActorSteps();
     }
 

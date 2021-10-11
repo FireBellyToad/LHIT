@@ -39,8 +39,6 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
-    private boolean isAggressive = false;
-
     private long startAttackCooldown = 0;
 
     //Body for spear attacks
@@ -70,26 +68,30 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
         if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
 
-            //Start animation
-            if (!GameBehavior.ATTACK.equals(currentBehavior)) {
+            //Wait in visible idle before attacking
+            if (!GameBehavior.IDLE.equals(currentBehavior) && !GameBehavior.ATTACK.equals(currentBehavior)) {
+                currentBehavior = GameBehavior.IDLE;
+                attackDeltaTime = stateTime;
+                body.setLinearVelocity(0, 0);
+            } else if (GameBehavior.IDLE.equals(currentBehavior) &&
+                    ((WillowispEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
+                // Start attacking on IDLE end
                 attackDeltaTime = stateTime;
                 currentBehavior = GameBehavior.ATTACK;
+            } else if (GameBehavior.ATTACK.equals(currentBehavior)) {
+                //Start attack animation
+                // Normal from bounded position to target
+                Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
+                        target.getBody().getPosition().y - body.getPosition().y).nor();
+                currentDirectionEnum = extractDirectionFromNormal(direction);
+
+                attackLogic(stateTime);
+                body.setLinearVelocity(0, 0);
             }
 
-            // Normal from bounded position to target
-            Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
-                    target.getBody().getPosition().y - body.getPosition().y).nor();
-            currentDirectionEnum = extractDirectionFromNormal(direction);
-
-            attackLogic(stateTime);
-            body.setLinearVelocity(0, 0);
-
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
-                ((target.getBody().getPosition().dst(getBody().getPosition()) <= (LINE_OF_SIGHT * 0.75) && !isAggressive) ||
-                (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT && isAggressive))) {
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK) {
 
             deactivateAttackBodies();
-            isAggressive = true;
             currentBehavior = GameBehavior.WALK;
             // Normal from Willowisp position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
@@ -100,10 +102,6 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
             // Move towards target
             body.setLinearVelocity(WILLOWISP_SPEED * direction.x, WILLOWISP_SPEED * direction.y);
             deactivateAttackBodies();
-        } else {
-            currentBehavior = GameBehavior.IDLE;
-
-            body.setLinearVelocity(0, 0);
         }
     }
 
@@ -423,6 +421,9 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
             deactivateAttackBodies();
         }
 
+        if (GameBehavior.ATTACK.equals(currentBehavior) && ((WillowispEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
+            currentBehavior = GameBehavior.WALK;
+        }
     }
 
     @Override
@@ -447,6 +448,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
     protected float mapStateTimeFromBehaviour(float stateTime) {
 
         switch (currentBehavior) {
+            case IDLE:
             case ATTACK: {
                 return (stateTime - attackDeltaTime);
             }

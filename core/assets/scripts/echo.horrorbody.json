@@ -1,10 +1,12 @@
 {
   "steps": [
     {
+      "textBoxKey": "echo.horrorbody.first"
     },
     {
     },
     {
+      "textBoxKey": "echo.horrorbody.third"
     }
   ]
 }

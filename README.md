@@ -7,7 +7,7 @@ Retro-styled horror game based on the world of [Langobardia Horribilis](https://
 Missing:
 * Improve player death
 * Improve end game screen
-* At least two more echoes
+* Add credit ingame
 * Polishing already done echoes
 
 

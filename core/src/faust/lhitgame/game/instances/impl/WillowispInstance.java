@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -332,11 +333,13 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
     @Override
     public void hurt(GameInstance attacker) {
 
+        //50% chance of evading attack
+        final boolean canEvade = (MathUtils.random(1, 100)) >= 50;
         if (isDying()) {
             ((WillowispEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             currentBehavior = GameBehavior.DEAD;
-        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+        } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
             ((WillowispEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -349,6 +352,12 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
             this.damage += Math.min(getResistance(), amount);
             currentBehavior = GameBehavior.HURT;
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+            postHurtLogic(attacker);
+        } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
+            ((WillowispEntity) entity).playEvadeSwift();
+            //Just evade
+            currentBehavior = GameBehavior.EVADE;
+            Gdx.app.log("DEBUG", "Instance EVADED!");
             postHurtLogic(attacker);
         }
     }

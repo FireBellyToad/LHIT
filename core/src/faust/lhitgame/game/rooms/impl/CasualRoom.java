@@ -34,7 +34,7 @@ public class CasualRoom extends AbstractRoom {
         this.add(6);
     }};
 
-    public static final int CASUAL_TOTAL = 8;
+    public static final int CASUAL_TOTAL = 9;
     private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum,Boolean> roomFlags, MusicManager musicManager) {

@@ -20,6 +20,7 @@ public class WillowispEntity extends AnimatedEntity {
 
     private final Sound hurtCry;
     private final Sound deathCry;
+    private final Sound evadeSwift;
     private final Texture shadow;
 
     public WillowispEntity(AssetManager assetManager) {
@@ -27,6 +28,7 @@ public class WillowispEntity extends AnimatedEntity {
         shadow = assetManager.get("sprites/shadow.png");
         hurtCry = assetManager.get("sounds/SFX_shot4.ogg");
         deathCry = assetManager.get("sounds/SFX_creatureDie4.ogg");
+        evadeSwift = assetManager.get("sounds/evade.ogg");
     }
 
     @Override
@@ -55,6 +57,12 @@ public class WillowispEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesLeft), GameBehavior.WALK, DirectionEnum.LEFT);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesUp), GameBehavior.WALK, DirectionEnum.UP);
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesRight), GameBehavior.WALK, DirectionEnum.RIGHT);
+
+        // Initialize the Evade Animation with the frame interval and array of frames
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.EVADE, DirectionEnum.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesLeft), GameBehavior.EVADE, DirectionEnum.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesUp), GameBehavior.EVADE, DirectionEnum.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesRight), GameBehavior.EVADE, DirectionEnum.RIGHT);
 
         // Initialize the Walk Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesDown), GameBehavior.ATTACK, DirectionEnum.DOWN);
@@ -93,6 +101,8 @@ public class WillowispEntity extends AnimatedEntity {
         deathCry.play();
     }
 
-
+    public void playEvadeSwift() {
+        evadeSwift.play();
+    }
 
 }

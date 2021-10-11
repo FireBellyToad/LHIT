@@ -130,7 +130,7 @@ public class CutsceneManager implements InputProcessor {
 
         Map<String, Object> mapFromSaveFile = saveFileManager.loadRawValues();
         boolean playerHasArmor = Objects.nonNull(mapFromSaveFile) && (boolean) mapFromSaveFile.get("armor");
-        boolean playerHasLance = Objects.nonNull(mapFromSaveFile) && (boolean) mapFromSaveFile.get("lance");
+        boolean playerHasLance = Objects.nonNull(mapFromSaveFile) && (int) mapFromSaveFile.get("lance") > 1;
 
         //extract mapObject properties and create simpleActor
         actorsMapObjects.forEach(obj -> {
@@ -138,7 +138,7 @@ public class CutsceneManager implements InputProcessor {
             GameBehavior behavior = null;
             DirectionEnum direction = null;
             boolean isShaded = false;
-            List<SimpleActorParametersEnum> params = Collections.emptyList();
+            List<SimpleActorParametersEnum> params = new ArrayList<>();
 
             if (obj.getName().equals(PlayerEntity.class.getSimpleName())) {
                 isShaded = true;

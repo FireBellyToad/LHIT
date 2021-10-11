@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
-import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;

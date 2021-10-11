@@ -480,7 +480,7 @@ public abstract class AbstractRoom implements Spawner {
      */
     public List <AnimatedInstance> getEnemyList(){
         return enemyList;
-    };
+    }
 
     @Override
     public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY) {

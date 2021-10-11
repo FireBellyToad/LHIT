@@ -47,7 +47,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
 
         //Rivedere
         batch.draw(frame, body.getPosition().x + calculateAdditionalXOffset() - POSITION_OFFSET,
-                body.getPosition().y + +calculateAdditionalYOffset() - POSITION_Y_OFFSET);
+                body.getPosition().y + calculateAdditionalYOffset() - POSITION_Y_OFFSET);
         batch.end();
     }
 

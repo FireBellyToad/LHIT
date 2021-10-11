@@ -1,8 +1,6 @@
 package faust.lhitgame.game.gameentities.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import faust.lhitgame.game.gameentities.AnimatedEntity;

@@ -67,6 +67,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean isDead = false;
     private boolean prepareEndgame = false;
     private boolean isChangingRoom = false;
+    private boolean goToGameOver = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -94,6 +95,21 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         translateAccessoryBodies();
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
+
+        //if is Dead, play death animation and then game over
+        if(isDead()){
+            isChangingRoom = true;
+            setPlayerLinearVelocity(0, 0);
+            //Init delta time
+            if(!GameBehavior.DEAD.equals(currentBehavior)){
+                currentBehavior = GameBehavior.DEAD;
+                attackDeltaTime = stateTime;
+            } else if(((PlayerEntity) entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
+                goToGameOver = true;
+            }
+            //Do not do anything else
+            return;
+        }
 
         //In endgame or roomchange, idling and do nothing
         if (isChangingRoom || isPrepareEndgame()) {
@@ -359,6 +375,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     protected float mapStateTimeFromBehaviour(float stateTime) {
         switch (currentBehavior) {
+            case DEAD:{
+                return stateTime - attackDeltaTime;
+            }
             case ATTACK: {
                 return 2.25f * (stateTime - attackDeltaTime);
             }
@@ -833,6 +852,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         upSpearBody.setActive(false);
         leftSpearBody.setActive(false);
         downSpearBody.setActive(false);
+    }
+
+    public boolean goToGameOver(){
+        return goToGameOver;
     }
 
     /**

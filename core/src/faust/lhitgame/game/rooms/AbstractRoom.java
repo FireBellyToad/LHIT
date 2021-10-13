@@ -428,8 +428,7 @@ public abstract class AbstractRoom implements Spawner {
     public synchronized void doRoomContentsLogic(float stateTime) {
 
         // Do Player logic
-        if (!player.isDead())
-            player.doLogic(stateTime, this);
+        player.doLogic(stateTime, this);
 
 
         // Do enemy logic

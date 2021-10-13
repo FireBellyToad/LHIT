@@ -55,6 +55,7 @@ public class PlayerEntity extends AnimatedEntity {
         TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
         TextureRegion[] kneeFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, getTextureColumns() * 13);
         TextureRegion[] deadFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 13, getTextureColumns() * 14);
+        TextureRegion[] dyingFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 14, getTextureColumns() * 15);
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, DirectionEnum.DOWN);
@@ -86,6 +87,9 @@ public class PlayerEntity extends AnimatedEntity {
         // Initialize the Laying Animation with the frame interval and array of frames
         addAnimation(new Animation<>(FRAME_DURATION, deadFrames), GameBehavior.LAYING);
 
+        // Initialize the Dead Animation with the frame interval and array of frames
+        addAnimation(new Animation<>(FRAME_DURATION, dyingFrames), GameBehavior.DEAD);
+
 
     }
 
@@ -96,7 +100,7 @@ public class PlayerEntity extends AnimatedEntity {
 
     @Override
     protected int getTextureRows() {
-        return 14;
+        return 15;
     }
 
     public Texture getShadowTexture() {

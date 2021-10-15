@@ -133,4 +133,14 @@ public class MusicManager {
         musicMap.forEach((tune, music) -> music.stop());
     }
 
+    /**
+     *
+     * @param tune
+     * @return true if is playing
+     */
+    public boolean isPlaying(TuneEnum tune) {
+        final Music tuneToCheck = musicMap.get(tune);
+        Objects.requireNonNull(tuneToCheck);
+        return tuneToCheck.isPlaying();
+    }
 }

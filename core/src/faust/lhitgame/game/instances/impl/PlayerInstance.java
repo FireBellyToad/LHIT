@@ -104,6 +104,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             if(!GameBehavior.DEAD.equals(currentBehavior)){
                 currentBehavior = GameBehavior.DEAD;
                 attackDeltaTime = stateTime;
+                ((PlayerEntity) entity).playDeathCry();
             } else if(((PlayerEntity) entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
                 goToGameOver = true;
             }

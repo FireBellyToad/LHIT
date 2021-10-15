@@ -79,7 +79,7 @@ public class FixedRoom extends AbstractRoom {
 
         if (RoomTypeEnum.FINAL.equals(roomType)) {
             //Loop title music
-            musicManager.playMusic(TuneEnum.FINAL, 0.75f);
+            musicManager.playMusic(TuneEnum.CHURCH, 0.75f);
         } else if (enemyList.size() > 0 || echoActors.size() > 0) {
             //Loop title music
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);

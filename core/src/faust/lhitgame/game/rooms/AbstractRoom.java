@@ -508,4 +508,12 @@ public abstract class AbstractRoom implements Spawner {
             addObjAsEnemy(mapObjectStub, assetManager, true);
         }
     }
+
+    /**
+     *
+     * @return musicManager
+     */
+    public MusicManager getMusicManager() {
+        return musicManager;
+    }
 }

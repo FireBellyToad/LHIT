@@ -33,6 +33,10 @@ public class CasualRoom extends AbstractRoom {
         this.add(5);
         this.add(6);
     }};
+    private static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
+        this.add(3);
+        this.add(9);
+    }};
 
     public static final int CASUAL_TOTAL = 9;
     private int casualNumber;

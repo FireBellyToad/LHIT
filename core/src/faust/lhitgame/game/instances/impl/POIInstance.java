@@ -110,8 +110,6 @@ public class POIInstance extends GameInstance {
         switch (((POIEntity) entity).getType()){
             case SKELETON:
                 return !guaranteedMorgengabe; //Should be random only if not guaranteed!
-            case BUSH:
-                return true;
             default:
                 return false;
         }

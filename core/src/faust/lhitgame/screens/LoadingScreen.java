@@ -60,6 +60,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sounds/SFX_creatureDie4.ogg", Sound.class);
         assetManager.load("sounds/SFX_hit&damage6.ogg", Sound.class);
         assetManager.load("sounds/horror_scream.ogg", Sound.class);
+        assetManager.load("sounds/death_scream.ogg", Sound.class);
         assetManager.load("sounds/spit.ogg", Sound.class);
         assetManager.load("sounds/evade.ogg", Sound.class);
         assetManager.load("sounds/rattling-bones.ogg", Sound.class);

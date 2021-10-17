@@ -34,7 +34,7 @@ public class PlayerEntity extends AnimatedEntity {
         hurtCry = assetManager.get("sounds/SFX_hit&damage13.ogg");
         lanceSwing = assetManager.get("sounds/SFX_swordSwing.ogg");
         waterSplash = assetManager.get("sounds/SFX_waterSplash.ogg");
-        deathCry = assetManager.get("sounds/SFX_waterSplash.ogg");
+        deathCry = assetManager.get("sounds/death_scream.ogg");
         playerShader = new ShaderWrapper("shaders/player_vertex.glsl","shaders/player_fragment.glsl");
    }
 

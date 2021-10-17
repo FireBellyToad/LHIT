@@ -48,9 +48,9 @@ public class GameScreen implements Screen {
         this.cameraManager = game.getCameraManager();
         this.musicManager = game.getMusicManager();
         this.textLocalizer = game.getTextLocalizer();
-        textManager = new TextBoxManager(assetManager,textLocalizer);
-        hud = new Hud(textManager,assetManager);
-        splashManager = new SplashManager(textManager,assetManager);
+        textManager = new TextBoxManager(assetManager, textLocalizer);
+        hud = new Hud(textManager, assetManager);
+        splashManager = new SplashManager(textManager, assetManager);
         darknessRenderer = new DarknessRenderer(assetManager);
         worldManager = new WorldManager();
         player = new PlayerInstance(assetManager);
@@ -137,21 +137,28 @@ public class GameScreen implements Screen {
 
         roomsManager.doRoomContentsLogic(stateTime);
 
-        if(player.goToGameOver()){
-            //Save game and go to game over
-            player.setDamage(0);
-            roomsManager.dispose();
-            musicManager.stopMusic();
-            game.setScreen(new GameOverScreen(game));
-        } else if (player.isPrepareEndgame() && Objects.isNull(endGameTimer)){
-            endGameTimer =
-                    Timer.schedule(new Timer.Task() {
-                        @Override
-                        public void run() {
-                            game.setScreen( new CutsceneScreen(game, CutsceneEnum.ENDGAME));
-                        }
-                    }, 3f);
-            Gdx.input.setInputProcessor(null);
+        if (Objects.isNull(endGameTimer)) {
+
+            if (player.goToGameOver()) {
+                //Save game and go to game over
+                endGameTimer =Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        player.setDamage(0);
+                        roomsManager.dispose();
+                        musicManager.stopMusic();
+                        game.setScreen(new GameOverScreen(game));
+                    }
+                }, 3f);
+            } else if (player.isPrepareEndgame()) {
+                endGameTimer =Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                game.setScreen(new CutsceneScreen(game, CutsceneEnum.ENDGAME));
+                            }
+                        }, 3f);
+                Gdx.input.setInputProcessor(null);
+            }
         }
     }
 

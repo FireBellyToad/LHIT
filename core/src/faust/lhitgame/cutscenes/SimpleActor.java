@@ -72,26 +72,33 @@ public class SimpleActor {
 
         Objects.requireNonNull(frame);
 
-        //Flicker if has MUST_FLICKER param
-        final boolean mustFlickerCheck = params.contains(SimpleActorParametersEnum.MUST_FLICKER);
-        if( !mustFlickerCheck || (mustFlickerCheck && !mustFlicker)){
+        if(canBeDrawn()){
             batch.begin();
             batch.draw(frame, position.x - 16, position.y-8);
             batch.end();
         }
 
+
+        if(params.contains(SimpleActorParametersEnum.IS_SHADED)){
+            //Restore default shader
+            shader.resetDefaultShader(batch);
+        }
+    }
+
+    private boolean canBeDrawn() {
+
+        //Flicker if has MUST_FLICKER param
+        final boolean mustFlickerCheck = params.contains(SimpleActorParametersEnum.MUST_FLICKER);
+
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO) {
+        if (mustFlickerCheck && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
             startToFlickTime = TimeUtils.nanoTime();
         }
 
-        if(params.contains(SimpleActorParametersEnum.IS_SHADED)){
-            //Restore default shader
-            shader.resetDefaultShader(batch);
-        }
+        return !mustFlickerCheck || (mustFlickerCheck && !mustFlicker);
     }
 
     /**

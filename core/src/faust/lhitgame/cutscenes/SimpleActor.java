@@ -3,12 +3,14 @@ package faust.lhitgame.cutscenes;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.GameEntity;
 import faust.lhitgame.game.gameentities.SpriteEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.PlayerEntity;
+import faust.lhitgame.screens.GameScreen;
 import faust.lhitgame.utils.ShaderWrapper;
 
 import java.util.*;
@@ -20,12 +22,13 @@ import java.util.*;
  */
 public class SimpleActor {
 
-    private final boolean isShaded;
     private final GameEntity entity;
     private final Vector2 position;
     private final GameBehavior currentBehavior;
     private final DirectionEnum direction;
-    private final List<SimpleActorParametersEnum> params;
+    private final Set<SimpleActorParametersEnum> params;
+    private long startToFlickTime;
+    private boolean mustFlicker = false;
 
     /**
      * Costructor
@@ -35,16 +38,15 @@ public class SimpleActor {
      * @param direction
      * @param x
      * @param y
-     * @param isShaded
      * @param params
      */
-    public SimpleActor(GameEntity entity, GameBehavior currentBehavior, DirectionEnum direction, float x, float y, boolean isShaded, List<SimpleActorParametersEnum> params) {
+    public SimpleActor(GameEntity entity, GameBehavior currentBehavior, DirectionEnum direction, float x, float y, Set<SimpleActorParametersEnum> params) {
         this.entity = entity;
         this.currentBehavior = currentBehavior;
         this.direction = direction;
         this.position = new Vector2(x, y);
-        this.isShaded = isShaded;
         this.params = params;
+        this.startToFlickTime = TimeUtils.nanoTime();
     }
 
     /**
@@ -58,7 +60,7 @@ public class SimpleActor {
         TextureRegion frame = null;
 
         ShaderWrapper shader = null;
-        if(isShaded){
+        if(params.contains(SimpleActorParametersEnum.IS_SHADED)){
             shader = setShaderOn(batch);
         }
 
@@ -70,11 +72,23 @@ public class SimpleActor {
 
         Objects.requireNonNull(frame);
 
-        batch.begin();
-        batch.draw(frame, position.x - 16, position.y-8);
-        batch.end();
+        //Flicker if has MUST_FLICKER param
+        final boolean mustFlickerCheck = params.contains(SimpleActorParametersEnum.MUST_FLICKER);
+        if( !mustFlickerCheck || (mustFlickerCheck && !mustFlicker)){
+            batch.begin();
+            batch.draw(frame, position.x - 16, position.y-8);
+            batch.end();
+        }
 
-        if(isShaded){
+        // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
+        if (TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO) {
+            mustFlicker = !mustFlicker;
+
+            // restart flickering timer
+            startToFlickTime = TimeUtils.nanoTime();
+        }
+
+        if(params.contains(SimpleActorParametersEnum.IS_SHADED)){
             //Restore default shader
             shader.resetDefaultShader(batch);
         }
@@ -89,8 +103,8 @@ public class SimpleActor {
         ShaderWrapper shader = null;
 
         if(entity instanceof PlayerEntity) {
-            boolean hasArmor = params.stream().anyMatch(SimpleActorParametersEnum.PLAYER_HAS_ARMOR::equals);
-            boolean hasLance = params.stream().anyMatch(SimpleActorParametersEnum.PLAYER_HAS_LANCE::equals);
+            boolean hasArmor = params.contains(SimpleActorParametersEnum.PLAYER_HAS_ARMOR);
+            boolean hasLance = params.contains(SimpleActorParametersEnum.PLAYER_HAS_LANCE);
             shader = ((PlayerEntity) entity).getPlayerShader();
             shader.addFlag("hasArmor", hasArmor);
             shader.addFlag("hasHolyLance", hasLance);

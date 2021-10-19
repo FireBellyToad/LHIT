@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="98">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="147">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -18,12 +18,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="43" name="DECO" type="BOAT" x="76" y="71.6364">
+  <object id="43" name="DECO" type="BOAT" x="76" y="71.6364" visible="0">
    <point/>
   </object>
-  <object id="44" name="WALL" x="0" y="0" width="160" height="16"/>
-  <object id="45" name="WALL" x="144" y="16" width="16" height="128"/>
-  <object id="46" name="POI" type="SOIL" x="121.75" y="52">
+  <object id="44" name="WALL" x="0" y="0" width="160" height="16" visible="0"/>
+  <object id="45" name="WALL" x="144" y="16" width="16" height="128" visible="0"/>
+  <object id="46" name="POI" type="SOIL" x="121.75" y="52" visible="0">
    <properties>
     <property name="isEchoTrigger" type="bool" value="false"/>
    </properties>
@@ -35,148 +35,292 @@
   <object id="48" name="ECHO_ACTOR" type="HORROR_BODY" x="126.182" y="48.8864">
    <point/>
   </object>
-  <object id="49" name="ECHO_ACTOR" type="HORROR" x="6.95455" y="22.4091">
+  <object id="49" name="ECHO_ACTOR" type="HORROR" x="4.95455" y="22.4091">
    <point/>
   </object>
-  <object id="51" name="ECHO_ACTOR" type="HORROR" x="7.75" y="25.5">
+  <object id="51" name="ECHO_ACTOR" type="HORROR" x="5.75" y="25.5">
    <point/>
   </object>
-  <object id="52" name="ECHO_ACTOR" type="HORROR" x="7.75" y="34.5">
+  <object id="52" name="ECHO_ACTOR" type="HORROR" x="5.75" y="34.5">
    <point/>
   </object>
-  <object id="53" name="ECHO_ACTOR" type="HORROR" x="6" y="41.75">
+  <object id="53" name="ECHO_ACTOR" type="HORROR" x="4" y="41.75">
    <point/>
   </object>
-  <object id="54" name="ECHO_ACTOR" type="HORROR" x="6" y="43.5">
+  <object id="54" name="ECHO_ACTOR" type="HORROR" x="4" y="43.5">
    <point/>
   </object>
-  <object id="55" name="ECHO_ACTOR" type="HORROR" x="5.75" y="52.75">
+  <object id="55" name="ECHO_ACTOR" type="HORROR" x="3.75" y="52.75">
    <point/>
   </object>
-  <object id="56" name="ECHO_ACTOR" type="HORROR" x="5.75" y="58.5">
+  <object id="56" name="ECHO_ACTOR" type="HORROR" x="3.75" y="58.5">
    <point/>
   </object>
-  <object id="57" name="ECHO_ACTOR" type="HORROR" x="5.75" y="68.25">
+  <object id="57" name="ECHO_ACTOR" type="HORROR" x="3.75" y="68.25">
    <point/>
   </object>
-  <object id="58" name="ECHO_ACTOR" type="HORROR" x="5.75" y="76.5">
+  <object id="58" name="ECHO_ACTOR" type="HORROR" x="3.75" y="76.5">
    <point/>
   </object>
-  <object id="59" name="ECHO_ACTOR" type="HORROR" x="5.5" y="79.25">
+  <object id="59" name="ECHO_ACTOR" type="HORROR" x="3.5" y="79.25">
    <point/>
   </object>
-  <object id="60" name="ECHO_ACTOR" type="HORROR" x="5.75" y="87">
+  <object id="60" name="ECHO_ACTOR" type="HORROR" x="3.75" y="87">
    <point/>
   </object>
-  <object id="61" name="ECHO_ACTOR" type="HORROR" x="5.75" y="92.25">
+  <object id="61" name="ECHO_ACTOR" type="HORROR" x="3.75" y="92.25">
    <point/>
   </object>
-  <object id="62" name="ECHO_ACTOR" type="HORROR" x="5.75" y="100.5">
+  <object id="62" name="ECHO_ACTOR" type="HORROR" x="3.75" y="100.5">
    <point/>
   </object>
-  <object id="63" name="ECHO_ACTOR" type="HORROR" x="6" y="108.25">
+  <object id="63" name="ECHO_ACTOR" type="HORROR" x="4" y="108.25">
    <point/>
   </object>
-  <object id="64" name="ECHO_ACTOR" type="HORROR" x="6" y="115.25">
+  <object id="64" name="ECHO_ACTOR" type="HORROR" x="4" y="115.25">
    <point/>
   </object>
-  <object id="65" name="ECHO_ACTOR" type="HORROR" x="6" y="122.25">
+  <object id="65" name="ECHO_ACTOR" type="HORROR" x="4" y="122.25">
    <point/>
   </object>
-  <object id="66" name="ECHO_ACTOR" type="HORROR" x="7" y="131.75">
+  <object id="66" name="ECHO_ACTOR" type="HORROR" x="5" y="131.75">
    <point/>
   </object>
-  <object id="67" name="ECHO_ACTOR" type="HORROR" x="7" y="138.25">
+  <object id="67" name="ECHO_ACTOR" type="HORROR" x="7" y="143.25">
    <point/>
   </object>
-  <object id="68" name="ECHO_ACTOR" type="HORROR" x="7" y="140.75">
+  <object id="68" name="ECHO_ACTOR" type="HORROR" x="7" y="145.75">
    <point/>
   </object>
-  <object id="69" name="ECHO_ACTOR" type="HORROR" x="7" y="140.75">
+  <object id="69" name="ECHO_ACTOR" type="HORROR" x="7" y="145.75">
    <point/>
   </object>
-  <object id="70" name="ECHO_ACTOR" type="HORROR" x="17.75" y="141">
+  <object id="70" name="ECHO_ACTOR" type="HORROR" x="17.75" y="146">
    <point/>
   </object>
-  <object id="71" name="ECHO_ACTOR" type="HORROR" x="18.25" y="141">
+  <object id="71" name="ECHO_ACTOR" type="HORROR" x="18.25" y="146">
    <point/>
   </object>
-  <object id="72" name="ECHO_ACTOR" type="HORROR" x="22" y="141">
+  <object id="72" name="ECHO_ACTOR" type="HORROR" x="22" y="146">
    <point/>
   </object>
-  <object id="73" name="ECHO_ACTOR" type="HORROR" x="29.75" y="141.5">
+  <object id="73" name="ECHO_ACTOR" type="HORROR" x="29.75" y="146.5">
    <point/>
   </object>
-  <object id="74" name="ECHO_ACTOR" type="HORROR" x="35.25" y="141.5">
+  <object id="74" name="ECHO_ACTOR" type="HORROR" x="35.25" y="146.5">
    <point/>
   </object>
-  <object id="75" name="ECHO_ACTOR" type="HORROR" x="45.75" y="141.5">
+  <object id="75" name="ECHO_ACTOR" type="HORROR" x="45.75" y="146.5">
    <point/>
   </object>
-  <object id="76" name="ECHO_ACTOR" type="HORROR" x="59.25" y="141.5">
+  <object id="76" name="ECHO_ACTOR" type="HORROR" x="59.25" y="146.5">
    <point/>
   </object>
-  <object id="77" name="ECHO_ACTOR" type="HORROR" x="62.5" y="141.5">
+  <object id="77" name="ECHO_ACTOR" type="HORROR" x="62.5" y="146.5">
    <point/>
   </object>
-  <object id="78" name="ECHO_ACTOR" type="HORROR" x="72" y="140.5">
+  <object id="78" name="ECHO_ACTOR" type="HORROR" x="72" y="145.5">
    <point/>
   </object>
-  <object id="79" name="ECHO_ACTOR" type="HORROR" x="82.5" y="140.5">
+  <object id="79" name="ECHO_ACTOR" type="HORROR" x="82.5" y="145.5">
    <point/>
   </object>
-  <object id="80" name="ECHO_ACTOR" type="HORROR" x="98.25" y="140.5">
+  <object id="80" name="ECHO_ACTOR" type="HORROR" x="98.25" y="145.5">
    <point/>
   </object>
-  <object id="81" name="ECHO_ACTOR" type="HORROR" x="112.75" y="140.75">
+  <object id="81" name="ECHO_ACTOR" type="HORROR" x="112.75" y="145.75">
    <point/>
   </object>
-  <object id="82" name="ECHO_ACTOR" type="HORROR" x="126.5" y="141">
+  <object id="82" name="ECHO_ACTOR" type="HORROR" x="126.5" y="146">
    <point/>
   </object>
-  <object id="83" name="ECHO_ACTOR" type="HORROR" x="142" y="142">
+  <object id="83" name="ECHO_ACTOR" type="HORROR" x="142" y="147">
    <point/>
   </object>
-  <object id="84" name="ECHO_ACTOR" type="HORROR" x="149" y="142.25">
+  <object id="84" name="ECHO_ACTOR" type="HORROR" x="149" y="147.25">
    <point/>
   </object>
-  <object id="85" name="ECHO_ACTOR" type="HORROR" x="154.5" y="142.25">
+  <object id="85" name="ECHO_ACTOR" type="HORROR" x="154.5" y="147.25">
    <point/>
   </object>
-  <object id="86" name="ECHO_ACTOR" type="HORROR" x="142.25" y="143.75">
+  <object id="86" name="ECHO_ACTOR" type="HORROR" x="142.25" y="148.75">
    <point/>
   </object>
-  <object id="87" name="ECHO_ACTOR" type="HORROR" x="136.75" y="142.5">
+  <object id="87" name="ECHO_ACTOR" type="HORROR" x="136.75" y="147.5">
    <point/>
   </object>
-  <object id="88" name="ECHO_ACTOR" type="HORROR" x="126.25" y="142.5">
+  <object id="88" name="ECHO_ACTOR" type="HORROR" x="126.25" y="147.5">
    <point/>
   </object>
-  <object id="89" name="ECHO_ACTOR" type="HORROR" x="116" y="142.5">
+  <object id="89" name="ECHO_ACTOR" type="HORROR" x="116" y="147.5">
    <point/>
   </object>
-  <object id="90" name="ECHO_ACTOR" type="HORROR" x="105.75" y="143">
+  <object id="90" name="ECHO_ACTOR" type="HORROR" x="105.75" y="148">
    <point/>
   </object>
-  <object id="91" name="ECHO_ACTOR" type="HORROR" x="94" y="143.5">
+  <object id="91" name="ECHO_ACTOR" type="HORROR" x="94" y="148.5">
    <point/>
   </object>
-  <object id="92" name="ECHO_ACTOR" type="HORROR" x="81.25" y="144.25">
+  <object id="92" name="ECHO_ACTOR" type="HORROR" x="81.25" y="149.25">
    <point/>
   </object>
-  <object id="93" name="ECHO_ACTOR" type="HORROR" x="58.5" y="144.25">
+  <object id="93" name="ECHO_ACTOR" type="HORROR" x="58.5" y="149.25">
    <point/>
   </object>
-  <object id="94" name="ECHO_ACTOR" type="HORROR" x="41.25" y="144.25">
+  <object id="94" name="ECHO_ACTOR" type="HORROR" x="41.25" y="149.25">
    <point/>
   </object>
-  <object id="95" name="ECHO_ACTOR" type="HORROR" x="27" y="143">
+  <object id="95" name="ECHO_ACTOR" type="HORROR" x="27" y="148">
    <point/>
   </object>
-  <object id="96" name="ECHO_ACTOR" type="HORROR" x="10.5" y="142.5">
+  <object id="96" name="ECHO_ACTOR" type="HORROR" x="10.5" y="147.5">
    <point/>
   </object>
-  <object id="97" name="ECHO_ACTOR" type="HORROR" x="-2.75" y="141.75">
+  <object id="98" name="ECHO_ACTOR" type="HORROR" x="11.3864" y="128.545">
+   <point/>
+  </object>
+  <object id="99" name="ECHO_ACTOR" type="HORROR" x="13.3864" y="140.045">
+   <point/>
+  </object>
+  <object id="100" name="ECHO_ACTOR" type="HORROR" x="13.3864" y="142.545">
+   <point/>
+  </object>
+  <object id="101" name="ECHO_ACTOR" type="HORROR" x="13.3864" y="142.545">
+   <point/>
+  </object>
+  <object id="102" name="ECHO_ACTOR" type="HORROR" x="24.1364" y="142.795">
+   <point/>
+  </object>
+  <object id="103" name="ECHO_ACTOR" type="HORROR" x="24.6364" y="142.795">
+   <point/>
+  </object>
+  <object id="104" name="ECHO_ACTOR" type="HORROR" x="28.3864" y="142.795">
+   <point/>
+  </object>
+  <object id="105" name="ECHO_ACTOR" type="HORROR" x="36.1364" y="143.295">
+   <point/>
+  </object>
+  <object id="106" name="ECHO_ACTOR" type="HORROR" x="41.6364" y="143.295">
+   <point/>
+  </object>
+  <object id="107" name="ECHO_ACTOR" type="HORROR" x="52.1364" y="143.295">
+   <point/>
+  </object>
+  <object id="108" name="ECHO_ACTOR" type="HORROR" x="65.6364" y="143.295">
+   <point/>
+  </object>
+  <object id="109" name="ECHO_ACTOR" type="HORROR" x="68.8864" y="143.295">
+   <point/>
+  </object>
+  <object id="110" name="ECHO_ACTOR" type="HORROR" x="78.3864" y="142.295">
+   <point/>
+  </object>
+  <object id="111" name="ECHO_ACTOR" type="HORROR" x="88.8864" y="142.295">
+   <point/>
+  </object>
+  <object id="112" name="ECHO_ACTOR" type="HORROR" x="104.636" y="142.295">
+   <point/>
+  </object>
+  <object id="113" name="ECHO_ACTOR" type="HORROR" x="119.136" y="142.545">
+   <point/>
+  </object>
+  <object id="114" name="ECHO_ACTOR" type="HORROR" x="132.886" y="142.795">
+   <point/>
+  </object>
+  <object id="115" name="ECHO_ACTOR" type="HORROR" x="148.386" y="143.795">
+   <point/>
+  </object>
+  <object id="116" name="ECHO_ACTOR" type="HORROR" x="155.386" y="144.045">
+   <point/>
+  </object>
+  <object id="117" name="ECHO_ACTOR" type="HORROR" x="160.886" y="144.045">
+   <point/>
+  </object>
+  <object id="118" name="ECHO_ACTOR" type="HORROR" x="148.636" y="145.545">
+   <point/>
+  </object>
+  <object id="119" name="ECHO_ACTOR" type="HORROR" x="143.136" y="144.295">
+   <point/>
+  </object>
+  <object id="120" name="ECHO_ACTOR" type="HORROR" x="132.636" y="144.295">
+   <point/>
+  </object>
+  <object id="121" name="ECHO_ACTOR" type="HORROR" x="122.386" y="144.295">
+   <point/>
+  </object>
+  <object id="122" name="ECHO_ACTOR" type="HORROR" x="112.136" y="144.795">
+   <point/>
+  </object>
+  <object id="123" name="ECHO_ACTOR" type="HORROR" x="100.386" y="145.295">
+   <point/>
+  </object>
+  <object id="124" name="ECHO_ACTOR" type="HORROR" x="87.6364" y="146.045">
+   <point/>
+  </object>
+  <object id="125" name="ECHO_ACTOR" type="HORROR" x="64.8864" y="146.045">
+   <point/>
+  </object>
+  <object id="126" name="ECHO_ACTOR" type="HORROR" x="47.6364" y="146.045">
+   <point/>
+  </object>
+  <object id="127" name="ECHO_ACTOR" type="HORROR" x="33.3864" y="144.795">
+   <point/>
+  </object>
+  <object id="128" name="ECHO_ACTOR" type="HORROR" x="16.8864" y="144.295">
+   <point/>
+  </object>
+  <object id="129" name="ECHO_ACTOR" type="HORROR" x="3.63636" y="143.545">
+   <point/>
+  </object>
+  <object id="130" name="ECHO_ACTOR" type="HORROR" x="13.5681" y="18.2277">
+   <point/>
+  </object>
+  <object id="131" name="ECHO_ACTOR" type="HORROR" x="14.3636" y="21.3186">
+   <point/>
+  </object>
+  <object id="132" name="ECHO_ACTOR" type="HORROR" x="14.3636" y="30.3186">
+   <point/>
+  </object>
+  <object id="133" name="ECHO_ACTOR" type="HORROR" x="12.6136" y="37.5686">
+   <point/>
+  </object>
+  <object id="134" name="ECHO_ACTOR" type="HORROR" x="12.6136" y="39.3186">
+   <point/>
+  </object>
+  <object id="135" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="48.5686">
+   <point/>
+  </object>
+  <object id="136" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="54.3186">
+   <point/>
+  </object>
+  <object id="137" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="64.0686">
+   <point/>
+  </object>
+  <object id="138" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="72.3186">
+   <point/>
+  </object>
+  <object id="139" name="ECHO_ACTOR" type="HORROR" x="12.1136" y="75.0686">
+   <point/>
+  </object>
+  <object id="140" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="82.8186">
+   <point/>
+  </object>
+  <object id="141" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="88.0686">
+   <point/>
+  </object>
+  <object id="142" name="ECHO_ACTOR" type="HORROR" x="12.3636" y="96.3186">
+   <point/>
+  </object>
+  <object id="143" name="ECHO_ACTOR" type="HORROR" x="12.6136" y="104.069">
+   <point/>
+  </object>
+  <object id="144" name="ECHO_ACTOR" type="HORROR" x="12.6136" y="111.069">
+   <point/>
+  </object>
+  <object id="145" name="ECHO_ACTOR" type="HORROR" x="12.6136" y="118.069">
+   <point/>
+  </object>
+  <object id="146" name="ECHO_ACTOR" type="HORROR" x="20" y="124.364">
    <point/>
   </object>
  </objectgroup>

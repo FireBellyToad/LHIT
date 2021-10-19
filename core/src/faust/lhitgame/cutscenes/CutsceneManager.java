@@ -128,6 +128,7 @@ public class CutsceneManager implements InputProcessor {
             actors.clear();
         }
 
+        //Player special params
         Map<String, Object> mapFromSaveFile = saveFileManager.loadRawValues();
         boolean playerHasArmor = Objects.nonNull(mapFromSaveFile) && (boolean) mapFromSaveFile.get("armor");
         boolean playerHasLance = Objects.nonNull(mapFromSaveFile) && (int) mapFromSaveFile.get("lance") > 1;
@@ -137,11 +138,14 @@ public class CutsceneManager implements InputProcessor {
             GameEntity entity = null;
             GameBehavior behavior = null;
             DirectionEnum direction = null;
-            boolean isShaded = false;
-            List<SimpleActorParametersEnum> params = new ArrayList<>();
+            Set<SimpleActorParametersEnum> params = new HashSet<>();
+
+            if(obj.getProperties().containsKey("mustFlicker") && (boolean) obj.getProperties().get("mustFlicker")){
+                params.add(SimpleActorParametersEnum.MUST_FLICKER);
+            }
 
             if (obj.getName().equals(PlayerEntity.class.getSimpleName())) {
-                isShaded = true;
+                params.add(SimpleActorParametersEnum.IS_SHADED);
                 if(playerHasArmor){
                     params.add(SimpleActorParametersEnum.PLAYER_HAS_ARMOR);
                 }
@@ -180,13 +184,11 @@ public class CutsceneManager implements InputProcessor {
                 }
             }
 
-
             Objects.requireNonNull(entity);
 
             actors.add(new SimpleActor(entity, behavior, direction,
                     (float) obj.getProperties().get("x"),
-                    (float) obj.getProperties().get("y"),
-                    isShaded, params));
+                    (float) obj.getProperties().get("y"), params));
         });
     }
 

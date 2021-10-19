@@ -168,7 +168,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define shape
         PolygonShape rightClawShape = new PolygonShape();
-        rightClawShape.setAsBox(3, 6);
+        rightClawShape.setAsBox(4, 6);
 
         // Define Fixtures
         FixtureDef rightClawFixtureDef = new FixtureDef();
@@ -193,7 +193,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define shape
         PolygonShape upClawShape = new PolygonShape();
-        upClawShape.setAsBox(6, 3);
+        upClawShape.setAsBox(6, 4);
 
         // Define Fixtures
         FixtureDef upClawFixtureDef = new FixtureDef();
@@ -218,7 +218,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define shape
         PolygonShape leftClawShape = new PolygonShape();
-        leftClawShape.setAsBox(3, 6);
+        leftClawShape.setAsBox(4, 6);
 
         // Define Fixtures
         FixtureDef leftClawFixtureDef = new FixtureDef();
@@ -243,7 +243,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
 
         // Define shape
         PolygonShape downClawShape = new PolygonShape();
-        downClawShape.setAsBox(6, 3);
+        downClawShape.setAsBox(6, 4);
 
         // Define Fixtures
         FixtureDef downClawFixtureDef = new FixtureDef();

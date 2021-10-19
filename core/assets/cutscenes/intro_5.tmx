@@ -67,6 +67,9 @@
    <point/>
   </object>
   <object id="82" name="POIEntity" type="BUSH" x="64.5" y="126">
+   <properties>
+    <property name="mustFlicker" type="bool" value="true"/>
+   </properties>
    <point/>
   </object>
   <object id="83" name="TutorialEntity" x="25.6667" y="123.666">

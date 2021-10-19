@@ -166,7 +166,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
 
         // Define shape
         PolygonShape rightClawShape = new PolygonShape();
-        rightClawShape.setAsBox(3, 6);
+        rightClawShape.setAsBox(4, 6);
 
         // Define Fixtures
         FixtureDef rightClawFixtureDef = new FixtureDef();
@@ -191,7 +191,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
 
         // Define shape
         PolygonShape upClawShape = new PolygonShape();
-        upClawShape.setAsBox(6, 3);
+        upClawShape.setAsBox(6, 4);
 
         // Define Fixtures
         FixtureDef upClawFixtureDef = new FixtureDef();
@@ -216,7 +216,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
 
         // Define shape
         PolygonShape leftClawShape = new PolygonShape();
-        leftClawShape.setAsBox(3, 6);
+        leftClawShape.setAsBox(4, 6);
 
         // Define Fixtures
         FixtureDef leftClawFixtureDef = new FixtureDef();
@@ -241,7 +241,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
 
         // Define shape
         PolygonShape downClawShape = new PolygonShape();
-        downClawShape.setAsBox(6, 3);
+        downClawShape.setAsBox(6, 4);
 
         // Define Fixtures
         FixtureDef downClawFixtureDef = new FixtureDef();
@@ -295,13 +295,12 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
-        //Draw shadow
-        batch.draw(((WillowispEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
-
         //Draw Will o wisp
         // While it WALKs, do not show. Is invisible! FIXME use spell
         // If not hurt or the flickering POI must be shown, draw the texture.
         if (!GameBehavior.WALK.equals(currentBehavior) && (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior))) {
+            //Draw shadow
+            batch.draw(((WillowispEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
         }
 

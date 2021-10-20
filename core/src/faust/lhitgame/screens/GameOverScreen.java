@@ -34,6 +34,9 @@ public class GameOverScreen implements Screen {
         textLocalizer = game.getTextLocalizer();
         gameOverScreen = assetManager.get("splash/gameover_splash.png");
 
+        //Permadeath!
+        game.getSaveFileManager().cleanSaveFile();
+
         menu = new Menu(game.getSaveFileManager(), MenuItem.GAME_OVER, assetManager);
     }
 

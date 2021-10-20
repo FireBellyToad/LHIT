@@ -167,7 +167,7 @@ public class EchoActorEntity extends AnimatedEntity {
      */
     public void playStartingSound() {
         if (Objects.nonNull(startingSound)) {
-            startingSound.play(0.65f);
+            startingSound.play(0.75f);
         }
     }
 

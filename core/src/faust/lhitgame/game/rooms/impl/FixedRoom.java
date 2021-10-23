@@ -61,7 +61,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    protected void initRoom(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS if not disabled
@@ -195,11 +195,6 @@ public class FixedRoom extends AbstractRoom {
     public void doRoomContentsLogic(float stateTime) {
         super.doRoomContentsLogic(stateTime);
 
-        //Disable all echoes if there are no echoactor
-        if(!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && echoActors.size() == 0){
-            roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
-        }
-
         // Manage echo actors
         if (echoIsActivated) {
             echoActors.forEach(actor -> {
@@ -233,6 +228,14 @@ public class FixedRoom extends AbstractRoom {
                     }
                 });
             }
+        }
+    }
+
+    @Override
+    public void onRoomLeave() {
+        //Disable Echo on room leave if trigger is already examined
+        if(!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) && ((POIInstance)echoTrigger).isAlreadyExamined()){
+            roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
         }
     }
 

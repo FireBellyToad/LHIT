@@ -107,6 +107,11 @@ public class RoomsManager {
         //stop logic and sounds
         player.setChangingRoom(true);
 
+        //Do stuff while leaving room
+        if(Objects.nonNull(currentRoom)){
+            currentRoom.onRoomLeave();
+        }
+
         float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
@@ -118,7 +123,7 @@ public class RoomsManager {
         currentRoomPosInWorld.set(finalX, finalY);
 
         //Init room flags
-        Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags();
+        Map<RoomFlagEnum, Boolean> roomFlags = saveMap.containsKey(currentRoomPosInWorld) ? saveMap.get(currentRoomPosInWorld).savedFlags : populateRoomFlags();
 
         int roomCasualNumber = 0;
         switch (mainWorld.get(currentRoomPosInWorld)) {

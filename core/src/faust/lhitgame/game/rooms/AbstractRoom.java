@@ -82,7 +82,7 @@ public abstract class AbstractRoom implements Spawner {
 
     protected boolean mustClearPOI = false;
 
-    protected final Map<RoomFlagEnum, Boolean> roomFlags;
+    protected Map<RoomFlagEnum, Boolean> roomFlags;
     private GameInstance addedInstance; //Buffer for new enemies spawned during gameplay
 
     /**
@@ -175,7 +175,7 @@ public abstract class AbstractRoom implements Spawner {
         player.changePOIList(poiList);
 
         // Do other stuff
-        this.initRoom(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
+        this.onRoomEnter(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
     }
 
     /**
@@ -352,7 +352,7 @@ public abstract class AbstractRoom implements Spawner {
      * @param splashManager
      * @param camera
      */
-    protected abstract void initRoom(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
+    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
 
     /**
      * Draws room background terrain
@@ -515,5 +515,15 @@ public abstract class AbstractRoom implements Spawner {
      */
     public MusicManager getMusicManager() {
         return musicManager;
+    }
+
+    public abstract void onRoomLeave();
+
+    /**
+     *
+     * @return room flags
+     */
+    public Map<RoomFlagEnum, Boolean> getRoomFlags() {
+        return roomFlags;
     }
 }

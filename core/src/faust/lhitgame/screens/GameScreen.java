@@ -87,6 +87,11 @@ public class GameScreen implements Screen {
         game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
         if (!splashManager.isDrawingSplash()) {
+
+            // If player is not input processor, reset it
+            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
+                player.setAsInputProcessor();
+
             //Draw gray background
             drawBackground();
 
@@ -107,7 +112,7 @@ public class GameScreen implements Screen {
 
         // Draw splash XOR hud
         if (splashManager.isDrawingSplash()) {
-            splashManager.drawSplash(game.getBatch());
+            splashManager.drawSplash(game.getBatch(),stateTime);
         } else {
             darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
             hud.drawHud(game.getBatch(), player, cameraManager.getCamera());

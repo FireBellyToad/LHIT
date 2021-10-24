@@ -30,8 +30,8 @@ public class TutorialEntity extends AnimatedEntity {
         TextureRegion[] zFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 2, getTextureColumns() * 3);
         TextureRegion[] xFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 3, getTextureColumns() * 4);
         TextureRegion[] cFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 4, getTextureColumns() * 5);
-        TextureRegion[] jFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 5, getTextureColumns() * 6);
-        TextureRegion[] kFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 6, getTextureColumns() * 7);
+        TextureRegion[] kFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 5, getTextureColumns() * 6);
+        TextureRegion[] jFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 6, getTextureColumns() * 7);
         TextureRegion[] lFrames = Arrays.copyOfRange(allFrames, getTextureColumns() * 7, getTextureColumns() * 8);
 
         // Initialize the Dead frame

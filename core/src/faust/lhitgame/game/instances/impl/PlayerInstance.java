@@ -855,6 +855,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         downSpearBody.setActive(false);
     }
 
+    /**
+     *
+     * @return true if must go to gameover
+     */
     public boolean goToGameOver(){
         return goToGameOver;
     }
@@ -873,6 +877,15 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setChangingRoom(boolean changingRoom) {
         isChangingRoom = changingRoom;
+    }
+
+    /**
+     * Reset this PlayerInstance as inputprocessor
+     */
+    public void setAsInputProcessor() {
+        currentBehavior = GameBehavior.IDLE;
+        setPlayerLinearVelocity(0,0);
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override

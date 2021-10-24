@@ -12,10 +12,6 @@ Missing:
 
 2e8u - 8-bit: Chopin, Funeral March ( https://www.youtube.com/watch?v=CODmvzK25dI )
 
-Darkness Speaks by Kevin MacLeod
-Link: https://incompetech.filmmusic.io/song/3617-darkness-speaks
-License: https://filmmusic.io/standard-license
-
 Rolemusic - Shipwreck In The Pacific Ocean - The Pirate And The Dancer
 
 Music & Sounds Effect Library - 8 bit sound effect pack

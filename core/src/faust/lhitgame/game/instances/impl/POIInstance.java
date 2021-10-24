@@ -1,5 +1,6 @@
 package faust.lhitgame.game.instances.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -76,6 +77,7 @@ public class POIInstance extends GameInstance {
 
                 // Show splash screen
                 splashManager.setSplashToShow(splashKey);
+                Gdx.input.setInputProcessor(splashManager);
             } else {
                 // Just show message
                 textManager.addNewTextBox(messageKey + POIEntity.FOUND_ITEM_MESSAGE_KEY_SUFFIX);

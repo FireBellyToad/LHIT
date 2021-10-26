@@ -122,7 +122,7 @@ public class Hud {
                 holyLancePiecesPosition.y);
 
         //Healthkits found count
-        batch.draw(hudTexture.getFrame(HudIconsEnum.HEALTH_KIT.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(hudTexture.getFrame(HudIconsEnum.HERBS.ordinal() * GameEntity.FRAME_DURATION),
                 healthKitCountPosition.x - 10,
                 healthKitCountPosition.y - 6);
 

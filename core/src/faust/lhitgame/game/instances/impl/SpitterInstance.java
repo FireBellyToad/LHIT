@@ -69,10 +69,14 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
         long hiveCount = currentRoom.getEnemyList().stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
         canBeDamaged = hiveCount == 0;
-        isAggressive = hiveCount < 4;
+
+        //If one of the HiveInstances are hurted, start aggression
+        if (!isAggressive) {
+            isAggressive = currentRoom.getEnemyList().stream().filter(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior())).findAny().isPresent();
+        }
 
         //Change Music
-        if(isAggressive && currentRoom.getMusicManager().isPlaying(TuneEnum.CHURCH)){
+        if (isAggressive && currentRoom.getMusicManager().isPlaying(TuneEnum.CHURCH)) {
             currentRoom.getMusicManager().stopMusic();
             currentRoom.getMusicManager().playMusic(TuneEnum.FINAL);
         }

@@ -30,6 +30,7 @@ public class SaveFileManager {
         entries.add(getField("morgengabes", player.getFoundMorgengabes()));
         entries.add(getField("armor", player.hasArmor()));
         entries.add(getField("damage", player.getDamage()));
+        entries.add(getField("herbsFound", player.getHerbsFound()));
 
         String playerInfo = getField("playerInfo", String.join(",", entries), true);
 
@@ -151,6 +152,7 @@ public class SaveFileManager {
         player.setFoundMorgengabes(playerInfo.getInt("morgengabes"));
         player.setHasArmor(playerInfo.getBoolean("armor"));
         player.setDamage(playerInfo.getInt("damage"));
+        player.setHerbsFound(playerInfo.getInt("herbsFound"));
 
     }
 
@@ -200,6 +202,8 @@ public class SaveFileManager {
         rawValuesMap.put("lance", playerInfo.getInt("lance"));
         rawValuesMap.put("morgengabes",playerInfo.getInt("morgengabes"));
         rawValuesMap.put("armor", playerInfo.getBoolean("armor"));
+        rawValuesMap.put("herbsFound", playerInfo.getInt("herbsFound"));
+
 
         return rawValuesMap;
     }

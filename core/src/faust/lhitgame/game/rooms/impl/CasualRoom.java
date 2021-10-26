@@ -28,12 +28,12 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
-    private static final List<Integer> MORGENGABIUM_MAPS = new ArrayList<Integer>() {{
+    public static final List<Integer> MORGENGABIUM_MAPS = new ArrayList<Integer>() {{
         this.add(1);
         this.add(5);
         this.add(6);
     }};
-    private static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
+    public static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
         this.add(3);
         this.add(9);
     }};
@@ -60,6 +60,12 @@ public class CasualRoom extends AbstractRoom {
             if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
                 //pick only ones with skeleton poi
                 casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0, 2));
+            } else if (roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {
+                //pick only ones without herbs in
+                casualNumber =  MathUtils.randomBoolean() ? MathUtils.random(1,2) : MathUtils.random(4,8);
+            } else if (roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS)) {
+                //pick only ones with herbs in
+                casualNumber = BUSH_MAPS.get(MathUtils.random(0, 1));
             } else {
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             }

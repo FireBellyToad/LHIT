@@ -12,8 +12,7 @@ Missing:
 
 2e8u - 8-bit: Chopin, Funeral March ( https://www.youtube.com/watch?v=CODmvzK25dI )
 
-Luis E. Juan -
-Verklärte Nacht, for string orchestra (arr. from String Sextet, Op.4)
+Luis E. Juan -Verklärte Nacht, for string orchestra (arr. from String Sextet, Op.4)
 
 Rolemusic - Shipwreck In The Pacific Ocean - The Pirate And The Dancer
 

@@ -43,7 +43,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
-    private static final int MAX_AVAILABLE_HEALTH_KIT = 9;
+    private static final int MAX_AVAILABLE_HEALTH_KIT = 3;
+    private static final float WATER_FRICTION = 0.75f;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -61,6 +62,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private long startHealingTime;
     private int foundMorgengabes = 0;
     private int holyLancePieces = 0;
+    private int herbsFound = 0;
 
     private boolean hasArmor = false;
     private boolean isSubmerged = false;
@@ -115,6 +117,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         //In endgame or roomchange, idling and do nothing
         if (isChangingRoom || isPrepareEndgame()) {
             currentBehavior = GameBehavior.IDLE;
+            if( isPrepareEndgame()){
+                setPlayerLinearVelocity(0,0);
+            }
             return;
         }
 
@@ -160,16 +165,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 }
 
                 // Set horizontal direction if horizontal velocity is not zero
-                if (this.body.getLinearVelocity().x == PLAYER_SPEED) {
+                if (this.body.getLinearVelocity().x == PLAYER_SPEED || this.body.getLinearVelocity().x == PLAYER_SPEED* WATER_FRICTION) {
                     this.currentDirectionEnum = DirectionEnum.RIGHT;
-                } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED) {
+                } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED || this.body.getLinearVelocity().x == -PLAYER_SPEED* WATER_FRICTION) {
                     this.currentDirectionEnum = DirectionEnum.LEFT;
                 }
 
                 // Set vertical direction if vertical velocity is not zero
-                if (this.body.getLinearVelocity().y == PLAYER_SPEED) {
+                if (this.body.getLinearVelocity().y == PLAYER_SPEED|| this.body.getLinearVelocity().y == PLAYER_SPEED* WATER_FRICTION) {
                     this.currentDirectionEnum = DirectionEnum.UP;
-                } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED) {
+                } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED|| this.body.getLinearVelocity().y == -PLAYER_SPEED* WATER_FRICTION) {
                     this.currentDirectionEnum = DirectionEnum.DOWN;
                 }
 
@@ -605,28 +610,28 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.W:
             case Input.Keys.UP: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != -PLAYER_SPEED) {
-                    verticalVelocity = PLAYER_SPEED;
+                    verticalVelocity = isSubmerged ? PLAYER_SPEED * WATER_FRICTION : PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != PLAYER_SPEED) {
-                    verticalVelocity = -PLAYER_SPEED;
+                    verticalVelocity = isSubmerged ? -PLAYER_SPEED * WATER_FRICTION : -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.A:
             case Input.Keys.LEFT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != PLAYER_SPEED) {
-                    horizontalVelocity = -PLAYER_SPEED;
+                    horizontalVelocity = isSubmerged ? -PLAYER_SPEED * WATER_FRICTION : -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.D:
             case Input.Keys.RIGHT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != -PLAYER_SPEED) {
-                    horizontalVelocity = PLAYER_SPEED;
+                    horizontalVelocity = isSubmerged ? PLAYER_SPEED * WATER_FRICTION : PLAYER_SPEED;
                 }
                 break;
             }
@@ -663,6 +668,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public boolean keyUp(int keycode) {
+
+        // Do not handle anything if is in endgame
+        if(isPrepareEndgame()){
+            return false;
+        }
 
         // If hurt, can't do anything
         if (GameBehavior.HURT.equals(currentBehavior)) {
@@ -716,8 +726,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         switch (itemFound) {
             case HEALTH_KIT: {
-                //Increase available Kits, max 9
+                //Increase available Kits, max 3
                 availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
+                herbsFound ++;
                 break;
             }
             case MORGENGABE: {
@@ -813,9 +824,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     public void setSubmerged(boolean submerged) {
+        Vector2 velocity = this.body.getLinearVelocity();
         if (!isChangingRoom && submerged && !isSubmerged) {
             //Play sound when Walfrit gets in water
             ((PlayerEntity) entity).playWaterSplash();
+
+            setPlayerLinearVelocity(velocity.x * WATER_FRICTION,velocity.y * WATER_FRICTION);
+        } else if (!submerged){
+
+            setPlayerLinearVelocity(MathUtils.clamp(velocity.x / WATER_FRICTION,-PLAYER_SPEED,PLAYER_SPEED),
+                    MathUtils.clamp(velocity.y / WATER_FRICTION,-PLAYER_SPEED,PLAYER_SPEED));
         }
 
         isSubmerged = submerged;
@@ -886,6 +904,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         currentBehavior = GameBehavior.IDLE;
         setPlayerLinearVelocity(0,0);
         Gdx.input.setInputProcessor(this);
+    }
+
+    public void setHerbsFound(int herbsFound) {
+        this.herbsFound = herbsFound;
+    }
+
+    public int getHerbsFound() {
+        return herbsFound;
     }
 
     @Override

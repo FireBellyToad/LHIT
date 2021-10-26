@@ -12,6 +12,8 @@ import java.util.Objects;
 public enum RoomFlagEnum {
     GUARANTEED_MORGENGABE, //There must be a retrievable morgengabe
     GUARDANTEED_BOUNDED, //There must be a Bounded enemy
+    WITHOUT_HERBS, //Cannot have Herb POI inside
+    GUARANTEED_HERBS, //There must be a Herb POI
     DISABLED_ENEMIES, //There must be no enemy in this room
     DISABLED_ECHO, //Echoes are disabled
     ALREADY_EXAMINED_POIS, //POIs are disabled

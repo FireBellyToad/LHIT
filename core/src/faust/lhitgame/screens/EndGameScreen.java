@@ -104,10 +104,20 @@ public class EndGameScreen implements Screen {
         //Morgengabes found count. Set in red if all has been found
         batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET,
-                Y_OFFSET);
+                Y_OFFSET+12);
 
         menu.getMainFont().draw(batch,
                 " : " + valuesMap.get("morgengabes") + " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 9",
+                X_OFFSET + 10,
+                Y_OFFSET + 18);
+
+        //Herb found count. Set in red if all has been found
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.HERBS.ordinal() * GameEntity.FRAME_DURATION),
+                X_OFFSET,
+                Y_OFFSET);
+
+        menu.getMainFont().draw(batch,
+                " : " + valuesMap.get("herbsFound") + " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 3",
                 X_OFFSET + 10,
                 Y_OFFSET + 6);
         batch.end();

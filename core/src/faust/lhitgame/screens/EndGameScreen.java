@@ -121,6 +121,16 @@ public class EndGameScreen implements Screen {
                 " : " + valuesMap.get("herbsFound") + " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 3",
                 X_OFFSET + 10,
                 Y_OFFSET + 6);
+
+        //Herb found count. Set in red if all has been found
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * GameEntity.FRAME_DURATION),
+                X_OFFSET,
+                Y_OFFSET-12);
+
+        menu.getMainFont().draw(batch,
+                " : " + ((boolean) valuesMap.get("armor") ? 1 : 0 )+ " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 1",
+                X_OFFSET + 10,
+                Y_OFFSET -8);
         batch.end();
 
     }

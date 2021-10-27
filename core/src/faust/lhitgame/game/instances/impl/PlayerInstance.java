@@ -44,7 +44,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 3;
-    private static final float WATER_FRICTION = 0.75f;
+    private static final float WATER_FRICTION = 0.8f; // Must always give an integer speed when multiplied!!
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -114,12 +114,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             return;
         }
 
-        //In endgame or roomchange, idling and do nothing
-        if (isChangingRoom || isPrepareEndgame()) {
+        //In endgame do nothing
+        if(isPrepareEndgame()){
             currentBehavior = GameBehavior.IDLE;
-            if( isPrepareEndgame()){
-                setPlayerLinearVelocity(0,0);
-            }
+            setPlayerLinearVelocity(0, 0);
+            return;
+        }
+
+        //In roomchange, idling and do nothing
+        if (isChangingRoom) {
+            currentBehavior = GameBehavior.IDLE;
             return;
         }
 
@@ -595,8 +599,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public boolean keyDown(int keycode) {
 
-        // If hurt, can't do anything
-        if (GameBehavior.HURT.equals(currentBehavior)) {
+        if(isPrepareEndgame()){
+            setPlayerLinearVelocity(0,0);
+            return false;
+        }
+
+        // If hurt o dying, can't do anything
+        if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior)) {
             return false;
         }
 

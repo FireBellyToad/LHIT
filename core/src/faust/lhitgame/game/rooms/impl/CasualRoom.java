@@ -93,7 +93,7 @@ public class CasualRoom extends AbstractRoom {
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);
         } else {
             //Loop title music
-            musicManager.playMusic(TuneEnum.AMBIENCE, 0.75f);
+            musicManager.playMusic(TuneEnum.AMBIENCE, 0.85f);
         }
     }
 

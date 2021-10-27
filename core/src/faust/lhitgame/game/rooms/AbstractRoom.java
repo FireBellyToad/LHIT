@@ -430,6 +430,10 @@ public abstract class AbstractRoom implements Spawner {
         // Do Player logic
         player.doLogic(stateTime, this);
 
+        //Stop music
+        if(player.isDead() && musicManager.isPlaying()){
+            musicManager.stopMusic();
+        }
 
         // Do enemy logic
         enemyList.forEach((ene) -> {
@@ -442,9 +446,9 @@ public abstract class AbstractRoom implements Spawner {
             } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if ((!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)) &&
+            } else if (!player.isDead() && (!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)) &&
                     !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
-                musicManager.playMusic(TuneEnum.ATTACK, 0.75f, true);
+                musicManager.playMusic(TuneEnum.ATTACK, 0.70f, true);
             }
         });
 

@@ -5,5 +5,6 @@ public enum HudIconsEnum {
     LIFE_METER_EMPTY,
     HERBS,
     MORGENGABE,
-    LANCE
+    LANCE,
+    ARMOR
 }

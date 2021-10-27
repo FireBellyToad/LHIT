@@ -3,7 +3,6 @@ package faust.lhitgame.camera.viewport;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import faust.lhitgame.LHITGame;
 
@@ -13,7 +12,7 @@ import faust.lhitgame.LHITGame;
 public class LHITViewport extends ScalingViewport {
 
     public LHITViewport(Camera camera) {
-        super(Scaling.fillY, LHITGame.GAME_WIDTH, LHITGame.GAME_HEIGHT, camera);
+        super(null, LHITGame.GAME_WIDTH, LHITGame.GAME_HEIGHT, camera);
     }
 
     /**

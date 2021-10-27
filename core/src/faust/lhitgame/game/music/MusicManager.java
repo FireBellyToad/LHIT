@@ -143,4 +143,18 @@ public class MusicManager {
         Objects.requireNonNull(tuneToCheck);
         return tuneToCheck.isPlaying();
     }
+
+    /**
+     *
+     * @return true if any music is playing
+     */
+    public boolean isPlaying() {
+        for(TuneEnum tune : musicMap.keySet()){
+            final Music tuneToCheck = musicMap.get(tune);
+            if(tuneToCheck.isPlaying()){
+                return  true;
+            }
+        }
+        return  false;
+    }
 }

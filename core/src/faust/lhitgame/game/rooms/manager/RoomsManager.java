@@ -196,9 +196,6 @@ public class RoomsManager {
             if (entry.savedFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED)) {
                 newRoomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);
             }
-            if (entry.savedFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED)) {
-                newRoomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);
-            }
         });
 
 

@@ -72,7 +72,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
         //If one of the HiveInstances are hurted, start aggression
         if (!isAggressive) {
-            isAggressive = currentRoom.getEnemyList().stream().filter(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior())).findAny().isPresent();
+            isAggressive = currentRoom.getEnemyList().stream().anyMatch(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
         }
 
         //Change Music

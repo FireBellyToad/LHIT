@@ -55,6 +55,7 @@ public class SimpleActor {
      * @param batch
      * @param stateTime
      */
+    @SuppressWarnings("ConstantConditions")
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         TextureRegion frame = null;

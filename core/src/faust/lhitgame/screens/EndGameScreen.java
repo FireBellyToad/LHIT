@@ -102,7 +102,7 @@ public class EndGameScreen implements Screen {
 
         batch.begin();
 
-        //Morgengabes found count. Set in red if all has been found
+        //Morgengabes found count.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET,
                 Y_OFFSET+12);
@@ -112,7 +112,7 @@ public class EndGameScreen implements Screen {
                 X_OFFSET + 10,
                 Y_OFFSET + 18);
 
-        //Herb found count. Set in red if all has been found
+        //Herb found count.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.HERBS.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET,
                 Y_OFFSET);
@@ -122,10 +122,10 @@ public class EndGameScreen implements Screen {
                 X_OFFSET + 10,
                 Y_OFFSET + 6);
 
-        //Herb found count. Set in red if all has been found
+        //Armor found.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET,
-                Y_OFFSET-12);
+                Y_OFFSET-14);
 
         menu.getMainFont().draw(batch,
                 " : " + ((boolean) valuesMap.get("armor") ? 1 : 0 )+ " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 1",

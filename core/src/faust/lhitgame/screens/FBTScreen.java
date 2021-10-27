@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.camera.CameraManager;
 
 public class FBTScreen implements Screen {
 

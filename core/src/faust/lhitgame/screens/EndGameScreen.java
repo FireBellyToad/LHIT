@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.game.gameentities.GameEntity;
 import faust.lhitgame.game.gameentities.SpriteEntity;
 import faust.lhitgame.game.hud.enums.HudIconsEnum;

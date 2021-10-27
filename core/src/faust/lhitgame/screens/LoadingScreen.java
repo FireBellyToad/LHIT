@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.music.MusicManager;
 

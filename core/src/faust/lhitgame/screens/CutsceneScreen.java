@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.cutscenes.CutsceneManager;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.music.enums.TuneEnum;

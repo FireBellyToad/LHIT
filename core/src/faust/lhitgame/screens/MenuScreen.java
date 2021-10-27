@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.music.enums.TuneEnum;
 import faust.lhitgame.enums.cutscenes.CutsceneEnum;

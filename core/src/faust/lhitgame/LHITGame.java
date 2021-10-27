@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.utils.TextLocalizer;
 import faust.lhitgame.saves.SaveFileManager;
-import faust.lhitgame.screens.CameraManager;
+import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.screens.LanguageScreen;
 
 public class LHITGame extends Game {

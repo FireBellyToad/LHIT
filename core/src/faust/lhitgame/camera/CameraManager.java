@@ -1,13 +1,14 @@
-package faust.lhitgame.screens;
+package faust.lhitgame.camera;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.*;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.camera.viewport.LHITViewport;
 
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public class CameraManager {
     public CameraManager() {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, LHITGame.GAME_WIDTH, LHITGame.GAME_HEIGHT);
-        viewport = new FillViewport(LHITGame.GAME_WIDTH, LHITGame.GAME_HEIGHT, camera);
+        viewport = new LHITViewport(camera);
         box2DDebugRenderer = new Box2DDebugRenderer();
         background = new ShapeRenderer();
     }

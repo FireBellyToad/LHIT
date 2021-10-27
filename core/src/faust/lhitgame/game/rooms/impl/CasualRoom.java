@@ -35,10 +35,10 @@ public class CasualRoom extends AbstractRoom {
     }};
     public static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
         this.add(3);
-        this.add(9);
+        this.add(8);
     }};
 
-    public static final int CASUAL_TOTAL = 9;
+    public static final int CASUAL_TOTAL = 8;
     private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum,Boolean> roomFlags, MusicManager musicManager) {
@@ -57,12 +57,12 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
 
         } else {
-            if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
+            if (roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)) {
                 //pick only ones with skeleton poi
                 casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0, 2));
             } else if (roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {
                 //pick only ones without herbs in
-                casualNumber =  MathUtils.randomBoolean() ? MathUtils.random(1,2) : MathUtils.random(4,8);
+                casualNumber =  MathUtils.randomBoolean() ? MathUtils.random(1,2) : MathUtils.random(4,7);
             } else if (roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS)) {
                 //pick only ones with herbs in
                 casualNumber = BUSH_MAPS.get(MathUtils.random(0, 1));

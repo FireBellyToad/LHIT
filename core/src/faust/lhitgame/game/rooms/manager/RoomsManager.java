@@ -123,7 +123,7 @@ public class RoomsManager {
         currentRoomPosInWorld.set(finalX, finalY);
 
         //Init room flags
-        Map<RoomFlagEnum, Boolean> roomFlags = saveMap.containsKey(currentRoomPosInWorld) ? saveMap.get(currentRoomPosInWorld).savedFlags : populateRoomFlags();
+        Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags();
 
         int roomCasualNumber = 0;
         switch (mainWorld.get(currentRoomPosInWorld)) {
@@ -192,6 +192,9 @@ public class RoomsManager {
             }
             if (entry.savedFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED)) {
                 newRoomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED, true);
+            }
+            if (entry.savedFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED)) {
+                newRoomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);
             }
             if (entry.savedFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED)) {
                 newRoomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);

@@ -29,13 +29,14 @@ public enum RoomTypeEnum {
     }
 
     /**
-     *
      * @param roomTypeEnum
      * @return true if roomType has echo
      */
     public static boolean hasEchoes(RoomTypeEnum roomTypeEnum) {
         return CRUCIFIED.equals(roomTypeEnum) ||
-                TREE_STUMP.equals(roomTypeEnum);
+                TREE_STUMP.equals(roomTypeEnum) ||
+                CEMETERY_CENTER.equals(roomTypeEnum) ||
+                BOAT.equals(roomTypeEnum);
     }
 
     public String getMapFileName() {

@@ -221,6 +221,7 @@ public abstract class AbstractRoom implements Spawner {
         Objects.requireNonNull(poiType);
 
         Gdx.app.log("DEBUG", "guaranteedMorgengabe: " + roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
+        Gdx.app.log("DEBUG", "guaranteedHerbs: " + roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
 
         poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
@@ -522,12 +523,4 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     public abstract void onRoomLeave();
-
-    /**
-     *
-     * @return room flags
-     */
-    public Map<RoomFlagEnum, Boolean> getRoomFlags() {
-        return roomFlags;
-    }
 }

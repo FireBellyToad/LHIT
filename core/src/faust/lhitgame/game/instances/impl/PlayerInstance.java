@@ -768,6 +768,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         return availableHealthKits;
     }
 
+    public void setAvailableHealthKits(int availableHealthKits) {
+        this.availableHealthKits = availableHealthKits;
+    }
+
     /**
      * @return the current number of found morgengabes
      */

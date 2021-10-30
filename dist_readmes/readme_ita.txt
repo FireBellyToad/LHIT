@@ -20,6 +20,7 @@ I comandi per controllare Walfrit sono i seguenti:
     Z o J: Attaccare con la lancia.
     X o K: Esaminare un oggetto.
     C o L: Curarsi con un Kit da Guaritore.
+    P o Esc: Mettere in pausa il gioco.
 
 Walfrit ha con sé una lancia comune, che può usare per combattere, ma non riuscirà sempre a ferire tutti i nemici che incontrerà.
 

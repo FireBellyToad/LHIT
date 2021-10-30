@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhitgame.LHITGame;
 import faust.lhitgame.camera.CameraManager;
+import faust.lhitgame.game.PauseManager;
 import faust.lhitgame.game.hud.DarknessRenderer;
 import faust.lhitgame.game.hud.Hud;
 import faust.lhitgame.game.instances.impl.PlayerInstance;
@@ -33,10 +34,11 @@ public class GameScreen implements Screen {
     private final PlayerInstance player;
     private final TextBoxManager textManager;
     private RoomsManager roomsManager;
+    private final SplashManager splashManager;
+    private final PauseManager pauseManager;
 
     private final Hud hud;
     private final DarknessRenderer darknessRenderer;
-    private final SplashManager splashManager;
 
     private float stateTime = 0f;
 
@@ -52,6 +54,7 @@ public class GameScreen implements Screen {
         textManager = new TextBoxManager(assetManager, textLocalizer);
         hud = new Hud(textManager, assetManager);
         splashManager = new SplashManager(textManager, assetManager);
+        pauseManager = new PauseManager(game.getSaveFileManager(), game.getMusicManager(), assetManager);
         darknessRenderer = new DarknessRenderer(assetManager);
         worldManager = new WorldManager();
         player = new PlayerInstance(assetManager);
@@ -75,9 +78,19 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
         // Stops game logic if splash screen is shown
-        if (!splashManager.isDrawingSplash()) {
+        if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
+
+            // If player is not input processor, reset it
+            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
+                player.setAsInputProcessor();
+
             worldManager.doStep();
             doLogic();
+        } else if (pauseManager.isGamePaused()) {
+            pauseManager.doLogic();
+            if(pauseManager.isMustExitGame()){
+                game.setScreen(new MenuScreen(game));
+            }
         }
 
         stateTime += Gdx.graphics.getRawDeltaTime();
@@ -88,10 +101,6 @@ public class GameScreen implements Screen {
         game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);
 
         if (!splashManager.isDrawingSplash()) {
-
-            // If player is not input processor, reset it
-            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
-                player.setAsInputProcessor();
 
             //Draw gray background
             drawBackground();
@@ -117,6 +126,9 @@ public class GameScreen implements Screen {
         } else {
             darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
             hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
+            if (pauseManager.isGamePaused()) {
+                pauseManager.draw(game.getBatch(),cameraManager.getCamera());
+            }
         }
         // draw text
         textManager.renderTextBoxes(game.getBatch(), cameraManager.getCamera());
@@ -143,8 +155,13 @@ public class GameScreen implements Screen {
 
         roomsManager.doRoomContentsLogic(stateTime);
 
-        if (Objects.isNull(endGameTimer)) {
+        //Pause
+        if (player.isPauseGame()) {
+            pauseManager.pauseGame();
+            player.setPauseGame(false);
+        }
 
+        if (Objects.isNull(endGameTimer)) {
             if (player.goToGameOver()) {
                 //Save game and go to game over
                 endGameTimer =Timer.schedule(new Timer.Task() {

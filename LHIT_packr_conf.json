@@ -8,5 +8,8 @@
     "mainclass": "faust.lhitgame.desktop.DesktopLauncher",
     "minimizejre": "soft",
     "output": "LHIT_win",
-	"":
+	"resources ": [
+        "E:\\Repositories\\LHIP\\dist_readmes\\readme_eng.txt",
+        "E:\\Repositories\\LHIP\\dist_readmes\\readme_ita.txt"
+    ]
 }

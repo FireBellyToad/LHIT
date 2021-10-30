@@ -39,12 +39,12 @@ import java.util.Objects;
 public class PlayerInstance extends AnimatedInstance implements InputProcessor, Hurtable, Damager {
 
     private static final float PLAYER_SPEED = 50;
+    private static final float PLAYER_SPEED_SUBMERGED = 40;
     private static final int EXAMINATION_DISTANCE = 40;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 3;
-    private static final float WATER_FRICTION = 0.8f; // Must always give an integer speed when multiplied!!
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -99,15 +99,15 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
         //if is Dead, play death animation and then game over
-        if(isDead()){
+        if (isDead()) {
             isChangingRoom = true;
             setPlayerLinearVelocity(0, 0);
             //Init delta time
-            if(!GameBehavior.DEAD.equals(currentBehavior)){
+            if (!GameBehavior.DEAD.equals(currentBehavior)) {
                 currentBehavior = GameBehavior.DEAD;
                 attackDeltaTime = stateTime;
                 ((PlayerEntity) entity).playDeathCry();
-            } else if(((PlayerEntity) entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
+            } else if (((PlayerEntity) entity).isAnimationFinished(currentBehavior, mapStateTimeFromBehaviour(stateTime))) {
                 goToGameOver = true;
             }
             //Do not do anything else
@@ -115,7 +115,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         //In endgame do nothing
-        if(isPrepareEndgame()){
+        if (isPrepareEndgame()) {
             currentBehavior = GameBehavior.IDLE;
             setPlayerLinearVelocity(0, 0);
             return;
@@ -169,16 +169,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 }
 
                 // Set horizontal direction if horizontal velocity is not zero
-                if (this.body.getLinearVelocity().x == PLAYER_SPEED || this.body.getLinearVelocity().x == PLAYER_SPEED* WATER_FRICTION) {
+                if (this.body.getLinearVelocity().x == PLAYER_SPEED || this.body.getLinearVelocity().x == PLAYER_SPEED_SUBMERGED) {
                     this.currentDirectionEnum = DirectionEnum.RIGHT;
-                } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED || this.body.getLinearVelocity().x == -PLAYER_SPEED* WATER_FRICTION) {
+                } else if (this.body.getLinearVelocity().x == -PLAYER_SPEED || this.body.getLinearVelocity().x == -PLAYER_SPEED_SUBMERGED) {
                     this.currentDirectionEnum = DirectionEnum.LEFT;
                 }
 
                 // Set vertical direction if vertical velocity is not zero
-                if (this.body.getLinearVelocity().y == PLAYER_SPEED|| this.body.getLinearVelocity().y == PLAYER_SPEED* WATER_FRICTION) {
+                if (this.body.getLinearVelocity().y == PLAYER_SPEED || this.body.getLinearVelocity().y == PLAYER_SPEED_SUBMERGED) {
                     this.currentDirectionEnum = DirectionEnum.UP;
-                } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED|| this.body.getLinearVelocity().y == -PLAYER_SPEED* WATER_FRICTION) {
+                } else if (this.body.getLinearVelocity().y == -PLAYER_SPEED || this.body.getLinearVelocity().y == -PLAYER_SPEED_SUBMERGED) {
                     this.currentDirectionEnum = DirectionEnum.DOWN;
                 }
 
@@ -385,7 +385,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     protected float mapStateTimeFromBehaviour(float stateTime) {
         switch (currentBehavior) {
-            case DEAD:{
+            case DEAD: {
                 return stateTime - attackDeltaTime;
             }
             case ATTACK: {
@@ -599,8 +599,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public boolean keyDown(int keycode) {
 
-        if(isPrepareEndgame()){
-            setPlayerLinearVelocity(0,0);
+        if (isPrepareEndgame()) {
+            setPlayerLinearVelocity(0, 0);
             return false;
         }
 
@@ -619,28 +619,28 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.W:
             case Input.Keys.UP: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != -PLAYER_SPEED) {
-                    verticalVelocity = isSubmerged ? PLAYER_SPEED * WATER_FRICTION : PLAYER_SPEED;
+                    verticalVelocity = isSubmerged ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != PLAYER_SPEED) {
-                    verticalVelocity = isSubmerged ? -PLAYER_SPEED * WATER_FRICTION : -PLAYER_SPEED;
+                    verticalVelocity = isSubmerged ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.A:
             case Input.Keys.LEFT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != PLAYER_SPEED) {
-                    horizontalVelocity = isSubmerged ? -PLAYER_SPEED * WATER_FRICTION : -PLAYER_SPEED;
+                    horizontalVelocity = isSubmerged ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.D:
             case Input.Keys.RIGHT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != -PLAYER_SPEED) {
-                    horizontalVelocity = isSubmerged ? PLAYER_SPEED * WATER_FRICTION : PLAYER_SPEED;
+                    horizontalVelocity = isSubmerged ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
                 }
                 break;
             }
@@ -679,7 +679,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public boolean keyUp(int keycode) {
 
         // Do not handle anything if is in endgame
-        if(isPrepareEndgame()){
+        if (isPrepareEndgame()) {
             return false;
         }
 
@@ -737,7 +737,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case HEALTH_KIT: {
                 //Increase available Kits, max 3
                 availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
-                herbsFound ++;
+                herbsFound++;
                 break;
             }
             case MORGENGABE: {
@@ -842,12 +842,17 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             //Play sound when Walfrit gets in water
             ((PlayerEntity) entity).playWaterSplash();
 
-            setPlayerLinearVelocity(velocity.x * WATER_FRICTION,velocity.y * WATER_FRICTION);
-        } else if (!submerged){
+            //Restore water speed
+            setPlayerLinearVelocity((velocity.x / PLAYER_SPEED) * PLAYER_SPEED_SUBMERGED, (velocity.y / PLAYER_SPEED) * PLAYER_SPEED_SUBMERGED);
+        } else if (!submerged) {
 
-            setPlayerLinearVelocity(MathUtils.clamp(velocity.x / WATER_FRICTION,-PLAYER_SPEED,PLAYER_SPEED),
-                    MathUtils.clamp(velocity.y / WATER_FRICTION,-PLAYER_SPEED,PLAYER_SPEED));
+            //Restore terrain speed
+            setPlayerLinearVelocity((velocity.x / PLAYER_SPEED_SUBMERGED) * PLAYER_SPEED, (velocity.y / PLAYER_SPEED_SUBMERGED) * PLAYER_SPEED);
         }
+
+        //Clamp speed if over the maximum one
+        setPlayerLinearVelocity(MathUtils.clamp(velocity.x ,-PLAYER_SPEED,PLAYER_SPEED),
+                MathUtils.clamp(velocity.y,-PLAYER_SPEED,PLAYER_SPEED));
 
         isSubmerged = submerged;
     }
@@ -887,15 +892,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     *
      * @return true if must go to gameover
      */
-    public boolean goToGameOver(){
+    public boolean goToGameOver() {
         return goToGameOver;
     }
 
     /**
-     *
      * @return true if game is ending
      */
     public boolean isPrepareEndgame() {
@@ -915,7 +918,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     public void setAsInputProcessor() {
         currentBehavior = GameBehavior.IDLE;
-        setPlayerLinearVelocity(0,0);
+        setPlayerLinearVelocity(0, 0);
         Gdx.input.setInputProcessor(this);
     }
 

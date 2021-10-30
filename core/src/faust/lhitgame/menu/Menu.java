@@ -151,8 +151,9 @@ public class Menu implements InputProcessor {
             case MAIN:
                 handleMain();
                 break;
+            case PAUSE_GAME:
             case GAME_OVER:
-                handleGameOver();
+                handleResumeGameOrStop();
                 break;
             case PLAY_GAME:
                 handlePlayGame();
@@ -230,19 +231,29 @@ public class Menu implements InputProcessor {
         }
     }
 
-    private void handleGameOver() {
+    private void handleResumeGameOrStop() {
         switch (selectedMenuVoice) {
             case 0: {
-                //Yes, continue last save
+                //Yes, continue game
                 changeToGameScreen = true;
+                selectedMenuVoice = 0;
                 break;
             }
             case 1: {
                 //No, back to main
                 changeToNextScreen = true;
+                selectedMenuVoice = 0;
                 break;
             }
         }
+    }
+
+    public void reset() {
+        selectedMenuVoice = 0;
+        changeToCreditScreen = false;
+        changeToGameScreen = false;
+        changeToIntroScreen = false;
+        changeToNextScreen = false;
     }
 
     /**
@@ -268,10 +279,8 @@ public class Menu implements InputProcessor {
         return changeToNextScreen;
     }
 
-    public boolean isChangeToCreditScreen() { return changeToCreditScreen; }
-
-    public void setChangeToCreditScreen(boolean changeToCreditScreen) {
-        this.changeToCreditScreen = changeToCreditScreen;
+    public boolean isChangeToCreditScreen() {
+        return changeToCreditScreen;
     }
 
     public BitmapFont getMainFont() {
@@ -312,4 +321,5 @@ public class Menu implements InputProcessor {
     public boolean scrolled(int i) {
         return false;
     }
+
 }

@@ -4,9 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import faust.lhitgame.game.music.enums.TuneEnum;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Music manager class
@@ -17,6 +15,7 @@ public class MusicManager {
 
     private final Map<TuneEnum, Music> musicMap = new HashMap<>();
     private boolean disableMusic = false;
+    private List<TuneEnum> pausedTunes = new ArrayList<>();
 
     /**
      * Load and put in map a single tune
@@ -127,6 +126,29 @@ public class MusicManager {
     }
 
     /**
+     * Pause all music
+     */
+    public void pauseMusic() {
+        musicMap.forEach((tune, music) -> {
+            if (music.isPlaying()) {
+                music.pause();
+                pausedTunes.add(tune);
+            }
+        });
+    }
+
+    /**
+     * Pause all music
+     */
+    public void resumeMusic() {
+        pausedTunes.forEach((tune) -> {
+            musicMap.get(tune).play();
+        });
+
+        pausedTunes.removeIf((tune) -> musicMap.get(tune).isPlaying());
+    }
+
+    /**
      * Stop all music
      */
     public void stopMusic() {
@@ -134,7 +156,6 @@ public class MusicManager {
     }
 
     /**
-     *
      * @param tune
      * @return true if is playing
      */
@@ -145,16 +166,15 @@ public class MusicManager {
     }
 
     /**
-     *
      * @return true if any music is playing
      */
     public boolean isPlaying() {
-        for(TuneEnum tune : musicMap.keySet()){
+        for (TuneEnum tune : musicMap.keySet()) {
             final Music tuneToCheck = musicMap.get(tune);
-            if(tuneToCheck.isPlaying()){
-                return  true;
+            if (tuneToCheck.isPlaying()) {
+                return true;
             }
         }
-        return  false;
+        return false;
     }
 }

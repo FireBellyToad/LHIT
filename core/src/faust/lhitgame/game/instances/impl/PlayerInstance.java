@@ -70,6 +70,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean prepareEndgame = false;
     private boolean isChangingRoom = false;
     private boolean goToGameOver = false;
+    private boolean pauseGame = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -669,6 +670,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 this.useHealthKit();
                 break;
             }
+            case Input.Keys.ESCAPE:
+            case Input.Keys.P: {
+                //Pause game
+                pauseGame = true;
+                break;
+            }
         }
 
         setPlayerLinearVelocity(horizontalVelocity, verticalVelocity);
@@ -917,6 +924,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * Reset this PlayerInstance as inputprocessor
      */
     public void setAsInputProcessor() {
+        pauseGame = false;
         currentBehavior = GameBehavior.IDLE;
         setPlayerLinearVelocity(0, 0);
         Gdx.input.setInputProcessor(this);
@@ -928,6 +936,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public int getHerbsFound() {
         return herbsFound;
+    }
+
+    public boolean isPauseGame() {
+        return pauseGame;
+    }
+    public void setPauseGame(boolean pauseGame) {
+        this.pauseGame = pauseGame;
     }
 
     @Override

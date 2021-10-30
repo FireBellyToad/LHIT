@@ -7,5 +7,6 @@
     ],
     "mainclass": "faust.lhitgame.desktop.DesktopLauncher",
     "minimizejre": "soft",
-    "output": "LHIT_win"
+    "output": "LHIT_win",
+	"":
 }

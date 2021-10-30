@@ -15,6 +15,7 @@ import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.music.enums.TuneEnum;
 import faust.lhitgame.menu.Menu;
 import faust.lhitgame.menu.enums.MenuItem;
+import faust.lhitgame.saves.enums.SaveFieldsEnum;
 import faust.lhitgame.utils.TextLocalizer;
 
 import java.util.Map;
@@ -101,42 +102,47 @@ public class EndGameScreen implements Screen {
         Objects.requireNonNull(valuesMap);
 
         batch.begin();
+        //The end
+        menu.getMainFont().draw(batch,
+                textLocalizer.localizeFromKey("boxes", "endgame.end"),
+                X_OFFSET,
+                Y_OFFSET + 30);
 
         //Morgengabes found count.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
-                X_OFFSET,
-                Y_OFFSET+12);
+                X_OFFSET - 10,
+                Y_OFFSET + 6);
 
         menu.getMainFont().draw(batch,
-                " : " + valuesMap.get("morgengabes") + " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 9",
-                X_OFFSET + 10,
-                Y_OFFSET + 18);
+                " : " + valuesMap.get(SaveFieldsEnum.MORGENGABES.getFieldName()) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 9",
+                X_OFFSET,
+                Y_OFFSET + 12);
 
         //Herb found count.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.HERBS.ordinal() * GameEntity.FRAME_DURATION),
+                X_OFFSET - 10,
+                Y_OFFSET - 6);
+
+        menu.getMainFont().draw(batch,
+                " : " + valuesMap.get(SaveFieldsEnum.HERBS_FOUND.getFieldName()) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 3",
                 X_OFFSET,
                 Y_OFFSET);
 
-        menu.getMainFont().draw(batch,
-                " : " + valuesMap.get("herbsFound") + " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 3",
-                X_OFFSET + 10,
-                Y_OFFSET + 6);
-
         //Armor found.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * GameEntity.FRAME_DURATION),
-                X_OFFSET,
-                Y_OFFSET-14);
+                X_OFFSET - 10,
+                Y_OFFSET - 18);
 
         menu.getMainFont().draw(batch,
-                " : " + ((boolean) valuesMap.get("armor") ? 1 : 0 )+ " " + textLocalizer.localizeFromKey("boxes","endgame.of") + " 1",
-                X_OFFSET + 10,
-                Y_OFFSET -8);
+                " : " + ((boolean) valuesMap.get(SaveFieldsEnum.ARMOR.getFieldName()) ? 1 : 0) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 1",
+                X_OFFSET,
+                Y_OFFSET - 12);
         batch.end();
 
     }
 
+
     /**
-     *
      * @param batch
      */
     private void drawBlackBackground(SpriteBatch batch) {
@@ -144,7 +150,7 @@ public class EndGameScreen implements Screen {
         backgroundBox.setColor(darkness);
         backgroundBox.setProjectionMatrix(cameraManager.getCamera().combined);
         backgroundBox.begin(ShapeRenderer.ShapeType.Filled);
-        backgroundBox.rect(0, 0, LHITGame.GAME_WIDTH,  LHITGame.GAME_HEIGHT);
+        backgroundBox.rect(0, 0, LHITGame.GAME_WIDTH, LHITGame.GAME_HEIGHT);
         backgroundBox.end();
         batch.end();
     }

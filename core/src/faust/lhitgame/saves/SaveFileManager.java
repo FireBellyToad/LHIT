@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import faust.lhitgame.game.instances.impl.PlayerInstance;
 import faust.lhitgame.game.rooms.enums.RoomFlagEnum;
+import faust.lhitgame.saves.enums.SaveFieldsEnum;
 
 import java.util.*;
 
@@ -26,17 +27,17 @@ public class SaveFileManager {
 
         //Player info
         List<String> entries = new ArrayList<>();
-        entries.add(getField("lance", player.getHolyLancePieces()));
-        entries.add(getField("morgengabes", player.getFoundMorgengabes()));
-        entries.add(getField("armor", player.hasArmor()));
-        entries.add(getField("damage", player.getDamage()));
-        entries.add(getField("herbsFound", player.getHerbsFound()));
-        entries.add(getField("herbsAvailable", player.getAvailableHealthKits()));
+        entries.add(getField(SaveFieldsEnum.LANCE.getFieldName(), player.getHolyLancePieces()));
+        entries.add(getField(SaveFieldsEnum.MORGENGABES.getFieldName(), player.getFoundMorgengabes()));
+        entries.add(getField(SaveFieldsEnum.ARMOR.getFieldName(), player.hasArmor()));
+        entries.add(getField(SaveFieldsEnum.DAMAGE.getFieldName(), player.getDamage()));
+        entries.add(getField(SaveFieldsEnum.HERBS_FOUND.getFieldName(), player.getHerbsFound()));
+        entries.add(getField(SaveFieldsEnum.HERBS_AVAILABLE.getFieldName(), player.getAvailableHealthKits()));
 
-        String playerInfo = getField("playerInfo", String.join(",", entries), true);
+        String playerInfo = getField(SaveFieldsEnum.PLAYER_INFO.getFieldName(), String.join(",", entries), true);
 
         //Append rooms
-        return "{" + playerInfo + "," + getField("rooms", jsonParser.toJson(saveMap.values())) + "}";
+        return "{" + playerInfo + "," + getField(SaveFieldsEnum.ROOMS.getFieldName(), jsonParser.toJson(saveMap.values())) + "}";
     }
 
     /**
@@ -96,7 +97,7 @@ public class SaveFileManager {
     private void setRoomInfo(Map<Vector2, RoomSaveEntry> saveMap, JsonValue file) {
 
         //Already visited room Info
-        JsonValue rooms = file.get("rooms");
+        JsonValue rooms = file.get(SaveFieldsEnum.ROOMS.getFieldName());
         if (Objects.isNull(rooms)) {
             return;
         }
@@ -107,11 +108,12 @@ public class SaveFileManager {
         JsonValue flagsJson;
 
         for (JsonValue roomSaveEntry : rooms) {
-            roomPositionInCurrentSave = new Vector2(roomSaveEntry.getFloat("x"), roomSaveEntry.getFloat("y"));
+            roomPositionInCurrentSave = new Vector2(roomSaveEntry.getFloat(SaveFieldsEnum.X.getFieldName()),
+                    roomSaveEntry.getFloat(SaveFieldsEnum.Y.getFieldName()));
 
-            casualNumberPredefined = roomSaveEntry.getInt("casualNumber");
+            casualNumberPredefined = roomSaveEntry.getInt(SaveFieldsEnum.CASUAL_NUMBER.getFieldName());
 
-            flagsJson = roomSaveEntry.get("savedFlags");
+            flagsJson = roomSaveEntry.get(SaveFieldsEnum.SAVED_FLAGS.getFieldName());
 
             saveMap.put(roomPositionInCurrentSave, new RoomSaveEntry(
                     (int) roomPositionInCurrentSave.x, (int) roomPositionInCurrentSave.y, casualNumberPredefined,
@@ -145,16 +147,16 @@ public class SaveFileManager {
      */
     private void setPlayerInfo(PlayerInstance player, JsonValue file) {
 
-        JsonValue playerInfo = file.get("playerInfo");
+        JsonValue playerInfo = file.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
         if (Objects.isNull(playerInfo)) {
             return;
         }
-        player.setHolyLancePieces(playerInfo.getInt("lance"));
-        player.setFoundMorgengabes(playerInfo.getInt("morgengabes"));
-        player.setHasArmor(playerInfo.getBoolean("armor"));
-        player.setDamage(playerInfo.getInt("damage"));
-        player.setHerbsFound(playerInfo.getInt("herbsFound"));
-        player.setAvailableHealthKits(playerInfo.getInt("herbsAvailable"));
+        player.setHolyLancePieces(playerInfo.getInt(SaveFieldsEnum.LANCE.getFieldName()));
+        player.setFoundMorgengabes(playerInfo.getInt(SaveFieldsEnum.MORGENGABES.getFieldName()));
+        player.setHasArmor(playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
+        player.setDamage(playerInfo.getInt(SaveFieldsEnum.DAMAGE.getFieldName()));
+        player.setHerbsFound(playerInfo.getInt(SaveFieldsEnum.HERBS_FOUND.getFieldName()));
+        player.setAvailableHealthKits(playerInfo.getInt(SaveFieldsEnum.HERBS_AVAILABLE.getFieldName()));
 
     }
 
@@ -194,19 +196,21 @@ public class SaveFileManager {
             return null;
         }
 
-        JsonValue playerInfo = fileRead.get("playerInfo");
+        JsonValue playerInfo = fileRead.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
         if (Objects.isNull(playerInfo)) {
             return null;
         }
 
         Map<String,Object> rawValuesMap = new HashMap<>();
 
-        rawValuesMap.put("lance", playerInfo.getInt("lance"));
-        rawValuesMap.put("morgengabes",playerInfo.getInt("morgengabes"));
-        rawValuesMap.put("armor", playerInfo.getBoolean("armor"));
-        rawValuesMap.put("herbsFound", playerInfo.getInt("herbsFound"));
-        rawValuesMap.put("herbsAvailable", playerInfo.getInt("herbsAvailable"));
+        //All subfields excluding Armor (which is not int)
+        for(SaveFieldsEnum subField : SaveFieldsEnum.PLAYER_INFO.getSubFields()){
+            if(!SaveFieldsEnum.ARMOR.equals(subField)){
+                rawValuesMap.put(subField.getFieldName(),playerInfo.getInt(subField.getFieldName()));
+            }
+        }
 
+        rawValuesMap.put(SaveFieldsEnum.ARMOR.getFieldName(),playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
 
         return rawValuesMap;
     }

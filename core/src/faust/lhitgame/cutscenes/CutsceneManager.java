@@ -19,6 +19,7 @@ import faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import faust.lhitgame.menu.LongTextHandler;
 import faust.lhitgame.saves.SaveFileManager;
 import faust.lhitgame.enums.cutscenes.CutsceneEnum;
+import faust.lhitgame.saves.enums.SaveFieldsEnum;
 import faust.lhitgame.utils.TextLocalizer;
 
 import java.util.*;
@@ -130,8 +131,8 @@ public class CutsceneManager implements InputProcessor {
 
         //Player special params
         Map<String, Object> mapFromSaveFile = saveFileManager.loadRawValues();
-        boolean playerHasArmor = Objects.nonNull(mapFromSaveFile) && (boolean) mapFromSaveFile.get("armor");
-        boolean playerHasLance = Objects.nonNull(mapFromSaveFile) && (int) mapFromSaveFile.get("lance") > 1;
+        boolean playerHasArmor = Objects.nonNull(mapFromSaveFile) && (boolean) mapFromSaveFile.get(SaveFieldsEnum.ARMOR.getFieldName());
+        boolean playerHasLance = Objects.nonNull(mapFromSaveFile) && (int) mapFromSaveFile.get(SaveFieldsEnum.LANCE.getFieldName()) > 1;
 
         //extract mapObject properties and create simpleActor
         actorsMapObjects.forEach(obj -> {

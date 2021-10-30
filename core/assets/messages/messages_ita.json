@@ -15,16 +15,15 @@
       "splash.holy.1": "HO TROVATO UN PEZZO\nDI UNA STRANA LANCIA",
       "splash.holy.2": "ORA POSSIEDO LA\nPOTENTE LANCIA SACRA",
       "splash.hive": "UN MURO DI CARNE",
-      "splash.spitter": "UN CREATORE DI MALE",
+      "splash.spitter": "L'ORIGINE DEL MALE",
       "echo.woman.first": "AIUTATEMIII!",
       "echo.woman.second": "ARGH! -GASP-",
       "echo.tree.first": "ORCUS DOMINAT",
       "echo.tree.second": "PERIT UT VIVAT",
-      "echo.horrorbody.first": "UN CORPO ANNEGATO\nSTA TRASUDANDO MELMA",
-      "echo.horrorbody.third": "IL TESCHIO SEMBRA\nSPARIRE NEL NULLA",
       "warn.hive.damage": "LA MIA ARMA\nNON HA EFFETTO",
       "warn.spitter.damage": "E' PROTETTO DAI\nMURI DI CARNE",
-      "endgame.of": "SU"
+      "endgame.of": "SU",
+      "endgame.end": "FINE"
     },
     "cutscenes": {
       "intro.text.1": "ERAVAMO STATI\nMANDATI DAL PAPA\nNELLE TERRE DELLA\nLANGOBARDIA\nHORRIBILIS.\nDOVEVAMO TROVARE\nLA LANCIA SACRA...",

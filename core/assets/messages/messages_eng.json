@@ -15,18 +15,15 @@
       "splash.holy.1": "I FOUND A PIECE OF\nA STRANGE LANCE",
       "splash.holy.2": "I NOW POSSES THE\nMIGHTY HOLY LANCE",
       "splash.hive": "A WALL OF MEAT",
-      "splash.spitter": "A PROCREATOR OF EVIL",
+      "splash.spitter": "THE SOURCE OF EVIL",
       "echo.woman.first": "HEEELP MEEE!",
       "echo.woman.second": "ARGH! -GASP-",
       "echo.tree.first": "ORCUS DOMINAT",
       "echo.tree.second": "PERIT UT VIVAT",
-      "echo.boat.first": "THE DEAD ARE HUNGRY",
-      "echo.boat.second": "PERIT UT VIVAT",
-      "echo.horrorbody.first": "A DROWNED CORPSE\nIS OOZING SLIME",
-      "echo.horrorbody.third": "THE SKULL SEEMS\nTO VANISH AWAY",
       "warn.hive.damage": "MY WEAPON HAS\nNO EFFECT",
       "warn.spitter.damage": "IT'S PROTECTED BY\nTHE WALLS OF MEAT",
-      "endgame.of": "OF"
+      "endgame.of": "OF",
+      "endgame.end": "THE END"
     },
     "cutscenes": {
       "intro.text.1": "WE WERE SENT BY THE\nPOPE INTO THE LANDS\nOF LANGOBARDIA \nHORRIBILIS. OUR\nMISSION WAS TO FIND\nTHE HOLY LANCE...",

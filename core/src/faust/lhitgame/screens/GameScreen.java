@@ -77,7 +77,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Stops game logic if splash screen is shown
+        // Stops game logic if splash screen is shown or game is paused
         if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
 
             // If player is not input processor, reset it
@@ -87,13 +87,15 @@ public class GameScreen implements Screen {
             worldManager.doStep();
             doLogic();
         } else if (pauseManager.isGamePaused()) {
-            pauseManager.doLogic();
-            if(pauseManager.isMustExitGame()){
-                game.setScreen(new MenuScreen(game));
-            }
+            //Handle pause logic
+            pauseManager.doLogic(game);
         }
 
-        stateTime += Gdx.graphics.getRawDeltaTime();
+        //Prevent animations while paused
+        if (!pauseManager.isGamePaused()) {
+            stateTime += Gdx.graphics.getRawDeltaTime();
+        }
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

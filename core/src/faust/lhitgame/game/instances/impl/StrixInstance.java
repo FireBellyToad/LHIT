@@ -34,11 +34,12 @@ import java.util.Objects;
 public class StrixInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private static final float STRIX_SPEED = 35;
+    private static final long LEECHING_FREQUENCY_IN_MILLIS = 1000;
     private boolean attachedToPlayer = false;
     private boolean isAggressive = false;
 
     private final PlayerInstance target;
-    private Timer.Task leechLifeTimer;
+    private long leechStartTimer;
 
     public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
         super(new StrixEntity(assetManager));
@@ -71,9 +72,16 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
             body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
         } else {
 
-            currentBehavior = attachedToPlayer ? GameBehavior.ATTACK : GameBehavior.IDLE;
-
+            currentBehavior = GameBehavior.IDLE;
             body.setLinearVelocity(0, 0);
+
+            //leech if attachedToPlayer
+            if (attachedToPlayer){
+                currentBehavior = GameBehavior.ATTACK;
+                leechLife();
+            } else {
+                leechStartTimer = 0;
+            }
         }
     }
 
@@ -217,29 +225,23 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         return isDead();
     }
 
-    private void leechLife(PlayerInstance playerInstance) {
+    private void leechLife() {
 
         // Force cancel another one must start
-        if (Objects.nonNull(leechLifeTimer)) {
-            leechLifeTimer.cancel();
+        if (leechStartTimer == 0) {
+            leechStartTimer = TimeUtils.nanoTime();
         }
 
         //Keep leeching
-        leechLifeTimer = Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                if (attachedToPlayer) {
-                    playerInstance.hurt(StrixInstance.this);
-                    //Prevents loop on gameover screen
-                    if(playerInstance.isDead()){
-                        ((StrixEntity) entity).stopLeechSound();
-                    }
-                    leechLifeTimer = null;
-                    leechLife(playerInstance);
-                    Gdx.app.log("DEBUG", "END leech timer");
-                }
+        if (attachedToPlayer && TimeUtils.timeSinceNanos(leechStartTimer) > TimeUtils.millisToNanos(LEECHING_FREQUENCY_IN_MILLIS)) {
+            target.hurt(StrixInstance.this);
+            //Prevents loop on gameover screen
+            if(target.isDead()){
+                ((StrixEntity) entity).stopLeechSound();
             }
-        }, 1);
+            leechStartTimer = TimeUtils.nanoTime();
+            Gdx.app.log("DEBUG", "END leech timer");
+        }
         Gdx.app.log("DEBUG", "START leech timer");
 
     }
@@ -253,7 +255,6 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         // Start to leech
         attachedToPlayer = true;
         ((StrixEntity) entity).playLeechSound();
-        leechLife(playerInstance);
 
     }
 
@@ -262,8 +263,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         // End leech and cancel timer if present
         attachedToPlayer = false;
         ((StrixEntity) entity).stopLeechSound();
-        if (Objects.nonNull(leechLifeTimer)) {
-            leechLifeTimer.cancel();
+        if (leechStartTimer > 0) {
+            leechStartTimer = 0;
             Gdx.app.log("DEBUG", "CANCEL leech timer");
         }
     }

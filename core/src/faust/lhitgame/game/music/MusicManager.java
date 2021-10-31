@@ -15,7 +15,7 @@ public class MusicManager {
 
     private final Map<TuneEnum, Music> musicMap = new HashMap<>();
     private boolean disableMusic = false;
-    private List<TuneEnum> pausedTunes = new ArrayList<>();
+    private final List<TuneEnum> pausedTunes = new ArrayList<>();
 
     /**
      * Load and put in map a single tune
@@ -145,7 +145,7 @@ public class MusicManager {
             musicMap.get(tune).play();
         });
 
-        pausedTunes.removeIf((tune) -> musicMap.get(tune).isPlaying());
+        pausedTunes.clear();
     }
 
     /**

@@ -11,6 +11,7 @@ import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.menu.Menu;
 import faust.lhitgame.menu.enums.MenuItem;
 import faust.lhitgame.saves.SaveFileManager;
+import faust.lhitgame.screens.MenuScreen;
 
 /**
  * @author Jacopo "Faust" Buttiglieri
@@ -19,7 +20,6 @@ public class PauseManager {
 
     private Menu menu;
     private boolean gamePaused = false;
-    private boolean mustExitGame = false;
     private MusicManager musicManager;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
@@ -35,13 +35,14 @@ public class PauseManager {
 
     /**
      *
+     * @param game
      */
-    public void doLogic(){
+    public void doLogic(LHITGame game){
         //Exit or resume game game
         if(menu.isChangeToGameScreen()){
             resumeGame();
         } else if (menu.isChangeToNextScreen()){
-            mustExitGame = true;
+            game.setScreen(new MenuScreen(game));
         }
     }
 
@@ -81,9 +82,5 @@ public class PauseManager {
 
     public boolean isGamePaused() {
         return gamePaused;
-    }
-
-    public boolean isMustExitGame() {
-        return mustExitGame;
     }
 }

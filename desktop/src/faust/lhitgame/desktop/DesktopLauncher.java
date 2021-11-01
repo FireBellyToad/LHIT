@@ -7,7 +7,7 @@ import faust.lhitgame.LHITGame;
 import java.util.Arrays;
 
 public class DesktopLauncher {
-	private static final int SCALE_FACTOR = 4;
+	private static final int SCALE_FACTOR = 6;
 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

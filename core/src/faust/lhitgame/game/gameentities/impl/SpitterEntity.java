@@ -24,7 +24,7 @@ public class SpitterEntity extends AnimatedEntity {
     public SpitterEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/spitter_sheet.png"));
         hurtCry = assetManager.get("sounds/SFX_hit&damage2.ogg");
-        deathCry = assetManager.get("sounds/horror_scream.ogg");
+        deathCry = assetManager.get("sounds/death_scream.ogg");
         spitSound = assetManager.get("sounds/spit.ogg");
     }
 

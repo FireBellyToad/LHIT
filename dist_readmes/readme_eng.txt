@@ -20,7 +20,7 @@ The game commands are:
     Z or J: Attack.
     X or K: Examine an object.
     C or L: Heal with a Healer kit
-    P o Esc: Pause the game.
+    P or Esc: Pause the game.
 
 Walfrit has a common lance, that can be used in combat. However, not every enemy will be harmed by this weapon.
 

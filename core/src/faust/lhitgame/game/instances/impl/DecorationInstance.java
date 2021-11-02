@@ -88,7 +88,8 @@ public class DecorationInstance extends GameInstance implements Interactable {
 
         //Adjustements
         switch (((DecorationEntity) entity).getType()) {
-            case CROSS_IRON: {
+            case CROSS_IRON:
+            case IMPALED: {
                 shape.setAsBox(2, 2);
                 bodyDef.position.set(x - 2, y - 16);
                 break;

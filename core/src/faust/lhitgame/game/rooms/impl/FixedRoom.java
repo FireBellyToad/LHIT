@@ -236,7 +236,7 @@ public class FixedRoom extends AbstractRoom {
         //Disable Echo on room leave if trigger is already examined POI
         if(!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
                 (echoTrigger instanceof  DecorationInstance || ((POIInstance)echoTrigger).isAlreadyExamined())){
-            roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
+            roomFlags.put(RoomFlagEnum.DISABLED_ECHO, echoIsActivated);
         }
     }
 

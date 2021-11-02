@@ -850,11 +850,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             ((PlayerEntity) entity).playWaterSplash();
 
             //Restore water speed
-            setPlayerLinearVelocity((velocity.x / PLAYER_SPEED) * PLAYER_SPEED_SUBMERGED, (velocity.y / PLAYER_SPEED) * PLAYER_SPEED_SUBMERGED);
+            velocity.x = (velocity.x / PLAYER_SPEED) * PLAYER_SPEED_SUBMERGED;
+            velocity.y = (velocity.y / PLAYER_SPEED) * PLAYER_SPEED_SUBMERGED;
         } else if (!submerged) {
 
             //Restore terrain speed
-            setPlayerLinearVelocity((velocity.x / PLAYER_SPEED_SUBMERGED) * PLAYER_SPEED, (velocity.y / PLAYER_SPEED_SUBMERGED) * PLAYER_SPEED);
+            velocity.x = (velocity.x / PLAYER_SPEED_SUBMERGED) * PLAYER_SPEED;
+            velocity.y = (velocity.y / PLAYER_SPEED_SUBMERGED) * PLAYER_SPEED;
         }
 
         //Clamp speed if over the maximum one

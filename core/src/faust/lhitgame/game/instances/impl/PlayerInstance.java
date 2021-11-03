@@ -356,8 +356,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         shader.addFlag("hasHolyLance", holyLancePieces == 2);
         shader.setShaderOnBatchWithFlags(batch);
 
+        Vector2 drawPosition = adjustPosition();
         //Draw shadow
-        batch.draw(((PlayerEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(((PlayerEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
 
         //Draw watersteps if submerged
         if (isSubmerged) {
@@ -372,7 +373,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             waterWalkEffect.reset();
         }
 
-        batch.draw(frame, body.getPosition().x - xOffset - POSITION_OFFSET, body.getPosition().y - yOffset - POSITION_Y_OFFSET);
+        batch.draw(frame, drawPosition.x - xOffset - POSITION_OFFSET, drawPosition.y - yOffset - POSITION_Y_OFFSET);
 
         //Restore default shader
         shader.resetDefaultShader(batch);

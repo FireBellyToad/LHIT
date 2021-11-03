@@ -295,13 +295,14 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
+        Vector2 drawPosition = adjustPosition();
         //Draw Will o wisp
         // While it WALKs, do not show. Is invisible! FIXME use spell
         // If not hurt or the flickering POI must be shown, draw the texture.
         if (!GameBehavior.WALK.equals(currentBehavior) && (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior))) {
             //Draw shadow
-            batch.draw(((WillowispEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+            batch.draw(((WillowispEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - 2 - POSITION_Y_OFFSET);
+            batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

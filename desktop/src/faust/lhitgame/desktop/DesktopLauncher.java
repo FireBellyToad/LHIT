@@ -15,8 +15,8 @@ public class DesktopLauncher {
 		config.resizable = false;
 		config.width = LHITGame.GAME_WIDTH * SCALE_FACTOR;
 		config.height = LHITGame.GAME_HEIGHT * SCALE_FACTOR;
-		//if parameter f is set, go fullscreen
-		config.fullscreen = Arrays.stream(arg).anyMatch(stringarg -> "f".equals(stringarg) || "fullscreen".equals(stringarg));
+		//if parameter w is set, go windowed
+		config.fullscreen = !Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
 		new LwjglApplication(new LHITGame(), config);
 	}
 }

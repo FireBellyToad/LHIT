@@ -12,7 +12,7 @@ Lost in the cursed lands of Langobardia Horribilis, Walfrit must find the lance 
 
 * 2  - Play the game -
 
-Launch LHIT.exe for playing in fullscreen or LHIT_windowed.exe otherwise.
+Launch "LHIT" for playing in fullscreen or "LHIT_windowed" otherwise.
 
 The game commands are:
 

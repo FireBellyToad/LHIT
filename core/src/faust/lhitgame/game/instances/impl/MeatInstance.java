@@ -120,8 +120,9 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
+        Vector2 drawPosition = adjustPosition();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
-        batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         batch.end();
     }
 

@@ -76,16 +76,23 @@ public class SaveFileManager {
      * @throws SerializationException
      */
     public void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
-        JsonValue file = new JsonReader().parse(Gdx.files.local(selectedFileName));
 
-        if (Objects.isNull(file)) {
+        FileHandle file = Gdx.files.local(selectedFileName);
+
+        if(!file.exists()){
+            return;
+        }
+
+        JsonValue fileContent = new JsonReader().parse(file);
+
+        if (Objects.isNull(fileContent)) {
             return;
         }
         //Player Info
-        setPlayerInfo(player, file);
+        setPlayerInfo(player, fileContent);
 
         //Room Info
-        setRoomInfo(saveMap, file);
+        setRoomInfo(saveMap, fileContent);
     }
 
     /**
@@ -184,6 +191,10 @@ public class SaveFileManager {
     public Map<String, Object> loadRawValues() {
 
         FileHandle file = Gdx.files.local(selectedFileName);
+
+        if(!file.exists()){
+            return null;
+        }
 
         JsonValue fileRead = null;
         try {

@@ -12,7 +12,7 @@ Perso nelle terre maledette della Langobardia Horribilis, Walfrit deve recuperar
 
 * 2  - Come giocare -
 
-Lancia LHIT.exe per giocare a pieno schermo o LHIT_windowed.exe per giocare in modalità finestra.
+Lancia "LHIT" per giocare a pieno schermo o "LHIT_windowed" per giocare in modalità finestra.
 
 I comandi per controllare Walfrit sono i seguenti:
 

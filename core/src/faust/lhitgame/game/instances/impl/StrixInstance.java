@@ -192,20 +192,21 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
+        Vector2 drawPosition = adjustPosition();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         batch.begin();
         //Draw shadow
-        batch.draw(((StrixEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        batch.draw(((StrixEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
 
         //Draw Strix
         if (GameBehavior.IDLE.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior)) {
             // On Idle, the Strix is landed. While walking it flies
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 8 - POSITION_Y_OFFSET);
+            batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - 8 - POSITION_Y_OFFSET);
         } else {
 
             // If not hurt or the flickering POI must be shown, draw the texture
             if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-                batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+                batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
             }
 
             // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -149,11 +150,12 @@ public class POIInstance extends GameInstance {
     public void draw(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
+        Vector2 drawPosition = adjustPosition();
         // If flickering is not enabled or the flickering POI must be shown, draw the texture
         if (!this.enableFlicker || !mustFlicker) {
             batch.draw(((POIEntity) entity).getFrame(stateTime),
-                    body.getPosition().x - POSITION_OFFSET,
-                    body.getPosition().y - POSITION_OFFSET);
+                    drawPosition.x - POSITION_OFFSET,
+                    drawPosition.y - POSITION_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

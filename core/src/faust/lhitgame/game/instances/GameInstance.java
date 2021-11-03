@@ -2,6 +2,8 @@ package faust.lhitgame.game.instances;
 
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import faust.lhitgame.LHITGame;
@@ -88,6 +90,30 @@ public abstract class GameInstance {
 
     public boolean isDisposable() {
         return false;
+    }
+
+    /**
+     * When is not moving, adjust position if necessary to avoid pixel tearing
+     * @return position with integer x and y
+     */
+    protected Vector2 adjustPosition() {
+
+        //If moving is not noticeable, go ahead with unadjusted position
+        Vector2 velocity = getBody().getLinearVelocity();
+        if (velocity.x != 0 || velocity.y != 0) {
+            return getBody().getPosition();
+        }
+
+        // If stopped, adjust position
+        Vector2 pos = getBody().getPosition();
+
+        if (pos.x != (int) pos.x)
+            pos.x = MathUtils.floor(pos.x);
+
+        if (pos.y != (int) pos.y)
+            pos.y = MathUtils.floor(pos.y);
+
+        return pos;
     }
 
 }

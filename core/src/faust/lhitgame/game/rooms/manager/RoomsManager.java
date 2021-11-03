@@ -166,8 +166,9 @@ public class RoomsManager {
                     (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundMorgengabes()));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
 
-            //Only three herbs can be foung
-            final boolean canPlaceHerbs = player.getHerbsFound() < 3;
+            //Only three herbs can be found
+            final boolean canPlaceHerbs = player.getHerbsFound() < 3 &&
+                    saveMap.values().stream().filter(roomSaveEntry -> CasualRoom.BUSH_MAPS.contains(roomSaveEntry.casualNumber)).count() < 3;
             newRoomFlags.put(RoomFlagEnum.WITHOUT_HERBS, !canPlaceHerbs);
 
             //If unvisited rooms (priority is on morgengabe) are less than the number of found herbs to find, guarantee them

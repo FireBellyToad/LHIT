@@ -2,6 +2,7 @@ package faust.lhitgame.cutscenes;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
@@ -75,7 +76,7 @@ public class SimpleActor {
 
         if(canBeDrawn()){
             batch.begin();
-            batch.draw(frame, position.x - 16, position.y-8);
+            batch.draw(frame, MathUtils.floor(position.x) - 16, MathUtils.floor(position.y)-8);
             batch.end();
         }
 

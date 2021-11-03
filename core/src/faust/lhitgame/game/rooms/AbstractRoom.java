@@ -449,7 +449,7 @@ public abstract class AbstractRoom implements Spawner {
                 musicManager.playMusic(TuneEnum.DANGER, true);
             } else if (!player.isDead() && (!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)) &&
                     !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
-                musicManager.playMusic(TuneEnum.ATTACK, 0.70f, true);
+                musicManager.playMusic(TuneEnum.ATTACK, 0.65f, true);
             }
         });
 

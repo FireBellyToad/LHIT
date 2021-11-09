@@ -20,7 +20,14 @@ public enum RoomTypeEnum {
     BOAT("boat.tmx"),
     START_POINT("start.tmx"),
     CRUCIFIED("crucified.tmx"),
-    FINAL("final.tmx");
+    FINAL("final.tmx"),
+    //FIXME
+    BOAT_LEFT("crucified.tmx"),
+    BOAT_DOWN("crucified.tmx"),
+    MASSACRE("crucified.tmx"),
+    START_LEFT("crucified.tmx"),
+    START_RIGHT("crucified.tmx"),
+    ;
 
     private final String mapFileName;
 

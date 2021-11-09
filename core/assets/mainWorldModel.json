@@ -13,17 +13,47 @@
     {
       "x": 2,
       "y": 0,
-      "roomType": "START_POINT"
+      "roomType": "START_LEFT"
     },
     {
       "x": 3,
       "y": 0,
-      "roomType": "CASUAL"
+      "roomType": "START_POINT"
     },
     {
       "x": 4,
       "y": 0,
-      "roomType": "CASUAL"
+      "roomType": "START_RIGHT"
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "roomType": "CASUAL",
+      "boundaries": [{
+        "side": "DOWN",
+        "target": {
+          "x":0,
+          "y":6
+        }
+      }]
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "roomType": "CASUAL",
+      "boundaries": [{
+        "side": "DOWN",
+        "target": {
+          "x":0,
+          "y":7
+        }
+      },{
+        "side": "RIGHT",
+        "target": {
+          "x":0,
+          "y":7
+        }
+      }]
     },
     {
       "x": 0,
@@ -51,6 +81,23 @@
       "roomType": "CASUAL"
     },
     {
+      "x": 5,
+      "y": 1,
+      "roomType": "MASSACRE"
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "roomType": "CASUAL",
+      "boundaries": [{
+        "side": "RIGHT",
+        "target": {
+          "x":1,
+          "y":7
+        }
+      }]
+    },
+    {
       "x": 0,
       "y": 2,
       "roomType": "CASUAL"
@@ -76,6 +123,16 @@
       "roomType": "CASUAL"
     },
     {
+      "x": 5,
+      "y": 2,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "roomType": "CASUAL"
+    },
+    {
       "x": 0,
       "y": 3,
       "roomType": "CASUAL"
@@ -87,16 +144,26 @@
     },
     {
       "x": 2,
+      "y": 3,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 3,
       "y": 3,
       "roomType": "TREE_STUMP"
     },
     {
-      "x": 3,
+      "x": 4,
       "y": 3,
       "roomType": "CASUAL"
     },
     {
-      "x": 4,
+      "x": 5,
+      "y": 3,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 6,
       "y": 3,
       "roomType": "CASUAL"
     },
@@ -107,21 +174,31 @@
     },
     {
       "x": 1,
+      "y": 4,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 2,
       "y": 4,
       "roomType": "CRUCIFIED"
     },
     {
-      "x": 2,
-      "y": 4,
-      "roomType": "CASUAL"
-    },
-    {
       "x": 3,
       "y": 4,
       "roomType": "CASUAL"
     },
     {
       "x": 4,
+      "y": 4,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 6,
       "y": 4,
       "roomType": "CASUAL"
     },
@@ -151,9 +228,26 @@
       "roomType": "CASUAL"
     },
     {
+      "x": 5,
+      "y": 5,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "roomType": "CASUAL"
+    },
+    {
       "x": 0,
       "y": 6,
-      "roomType": "CASUAL"
+      "roomType": "CASUAL",
+      "boundaries": [{
+        "side": "UP",
+        "target": {
+          "x":5,
+          "y":0
+        }
+      }]
     },
     {
       "x": 1,
@@ -162,46 +256,86 @@
     },
     {
       "x": 2,
+      "y": 6,
+      "roomType": "CASUAL"
+    },
+    {
+      "x": 3,
       "y": 6,
       "roomType": "CHURCH_BOTTOM"
     },
     {
-      "x": 3,
+      "x": 4,
       "y": 6,
       "roomType": "CASUAL"
     },
     {
-      "x": 4,
+      "x": 5,
       "y": 6,
       "roomType": "CASUAL"
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "roomType": "BOAT_DOWN"
     },
     {
       "x": 0,
       "y": 7,
-      "roomType": "CASUAL"
+      "roomType": "CASUAL",
+      "boundaries": [{
+        "side": "UP",
+        "target": {
+          "x":6,
+          "y":0
+        }
+      },{
+        "side": "LEFT",
+        "target": {
+          "x":6,
+          "y":0
+        }
+      }]
     },
     {
       "x": 1,
       "y": 7,
-      "roomType": "CHURCH_LEFT"
+      "roomType": "CASUAL",
+      "boundaries": [{
+        "side": "UP",
+        "target": {
+          "x":6,
+          "y":1
+        }
+      }]
     },
     {
       "x": 2,
       "y": 7,
-      "roomType": "CHURCH_ENTRANCE"
+      "roomType": "CHURCH_LEFT"
     },
     {
       "x": 3,
       "y": 7,
-      "roomType": "CHURCH_RIGHT"
+      "roomType": "CHURCH_ENTRANCE"
     },
     {
       "x": 4,
       "y": 7,
+      "roomType": "CHURCH_RIGHT"
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "roomType": "BOAT_LEFT"
+    },
+    {
+      "x": 6,
+      "y": 7,
       "roomType": "BOAT"
     },
     {
-      "x": 2,
+      "x": 3,
       "y": 8,
       "roomType": "FINAL"
     }

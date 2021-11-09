@@ -9,9 +9,11 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.instances.impl.PlayerInstance;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomModel;
 import faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhitgame.game.rooms.impl.CasualRoom;
@@ -43,7 +45,7 @@ public class RoomsManager {
     /**
      * MainWorld Matrix
      */
-    private final Map<Vector2, RoomTypeEnum> mainWorld = new HashMap<>();
+    private final Map<Vector2, RoomModel> mainWorld = new HashMap<>();
     private final Map<Vector2, RoomSaveEntry> saveMap = new HashMap<>();
     private final Vector2 mainWorldSize = new Vector2(0, 0);
 
@@ -79,7 +81,24 @@ public class RoomsManager {
             Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
             RoomTypeEnum type = RoomTypeEnum.getFromString(t.getString("roomType"));
             Objects.requireNonNull(type);
-            mainWorld.put(v, type);
+
+            //Parsing boundaries
+            JsonValue boundariesJson = t.get("boundaries");
+            Map<DirectionEnum, Vector2> boundaries = new HashMap<>();
+            if(Objects.nonNull(boundariesJson)){
+                boundariesJson.forEach((b) -> {
+                    //Parsing targets
+                    JsonValue targetJson = b.get("target");
+                    Vector2 target = new Vector2();
+                    target.x = targetJson.getInt("x");
+                    target.y = targetJson.getInt("y");
+                    DirectionEnum side = DirectionEnum.getFromString(b.getString("side"));
+                    Objects.requireNonNull(side);
+                    boundaries.put(side,target);
+                });
+            }
+
+            mainWorld.put(v, new RoomModel(boundaries,type));
             mainWorldSize.set(Math.max(mainWorldSize.x, v.x), Math.max(mainWorldSize.y, v.y));
         });
         // Finalize size
@@ -126,7 +145,7 @@ public class RoomsManager {
         Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags();
 
         int roomCasualNumber = 0;
-        switch (mainWorld.get(currentRoomPosInWorld)) {
+        switch (mainWorld.get(currentRoomPosInWorld).type) {
             case CASUAL: {
                 currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
                 // Save casualnumber in memory and prepare save on filesystem
@@ -135,7 +154,7 @@ public class RoomsManager {
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld), worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
                 break;
             }
         }
@@ -176,7 +195,7 @@ public class RoomsManager {
             (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getHerbsFound()));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_HERBS, guaranteedHerb);
 
-        } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld))) {
+        } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld).type)) {
 
             //If echoes were disabled in this room, disable them
             if (saveMap.containsKey(currentRoomPosInWorld)) {

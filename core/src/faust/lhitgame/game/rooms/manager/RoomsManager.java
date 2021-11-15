@@ -253,87 +253,85 @@ public class RoomsManager {
         int newXPosInMatrix = (int) getCurrentRoomPosInWorld().x;
         int newYPosInMatrix = (int) getCurrentRoomPosInWorld().y;
 
-        // Check for left or right passage
-        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
-                !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                !RoomTypeEnum.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
-            newXPosInMatrix--;
-            player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
-        } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
-            newXPosInMatrix++;
-            player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
-        }
 
-        // Check for top or bottom passage
-        if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
-                !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                !RoomTypeEnum.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
-            newYPosInMatrix--;
-            player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
-        } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
-                !RoomTypeEnum.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
-                !RoomTypeEnum.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
-            newYPosInMatrix++;
-            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
-        } else if (playerPosition.y > LHITGame.GAME_HEIGHT * 0.45 &&
-                RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
-            //Final room
-            newXPosInMatrix = 2;
-            newYPosInMatrix = 8;
-            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
-            saveFileManager.saveOnFile(player, saveMap);
-        }
 
-        // Adjustments for world extremes, semi pacman effect 
-        if (((playerPosition.x < AbstractRoom.LEFT_BOUNDARY) || (playerPosition.y > AbstractRoom.TOP_BOUNDARY)) &&
-                getCurrentRoomPosInWorld().x == 0 &&
-                getCurrentRoomPosInWorld().y == mainWorldSize.y - 1) {
+        // Adjustments for world extremes, semi pacman effect
+        if (!mainWorld.get(currentRoomPosInWorld).boundaries.isEmpty()){
+            for( Map.Entry<DirectionEnum,Vector2> boundary : mainWorld.get(currentRoomPosInWorld).boundaries.entrySet()){
 
-            if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
-                player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
-            } else {
-                player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
+                boolean mustSwitch = false;
+                switch (boundary.getKey()){
+                    case UP: {
+                        if (playerPosition.y > AbstractRoom.TOP_BOUNDARY ){
+                            player.setStartX(AbstractRoom.BOTTOM_BOUNDARY + 4);
+                            mustSwitch = true;
+                        }
+                        break;
+                    }
+                    case RIGHT: {
+                        if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY ){
+                            player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
+                            mustSwitch = true;
+                        }
+                        break;
+                    }
+                    case LEFT: {
+                        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY ){
+                            player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
+                            mustSwitch = true;
+                        }
+                        break;
+                    }
+                    case DOWN: {
+                        if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY ){
+                            player.setStartX(AbstractRoom.TOP_BOUNDARY - 4);
+                            mustSwitch = true;
+                        }
+                        break;
+                    }
+                }
+
+                if(mustSwitch){
+
+                    newXPosInMatrix = (int) boundary.getValue().x;
+                    newYPosInMatrix = (int) boundary.getValue().y;
+                }
+
             }
+        } else {
 
-            newXPosInMatrix = (int) mainWorldSize.x - 1;
-            newYPosInMatrix = 0;
-        } else if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
-                getCurrentRoomPosInWorld().x == 0 &&
-                getCurrentRoomPosInWorld().y == mainWorldSize.y - 2) {
-
-            player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
-
-            newXPosInMatrix = (int) mainWorldSize.x - 1;
-            newYPosInMatrix = 1;
-        } else if (((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) || (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY)) &&
-                getCurrentRoomPosInWorld().x == mainWorldSize.x - 1 &&
-                getCurrentRoomPosInWorld().y == 0 &&
-                !RoomTypeEnum.START_POINT.equals(currentRoom.getRoomType())) {
-
-            if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
-                player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
-            } else {
+            // Check for left or right passage
+            if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
+                    !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
+                    !RoomTypeEnum.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
+                newXPosInMatrix--;
+                player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
+            } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
+                newXPosInMatrix++;
                 player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
             }
 
-            newXPosInMatrix = 0;
-            newYPosInMatrix = (int) (mainWorldSize.y - 1);
-        } else if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY &&
-                getCurrentRoomPosInWorld().x == mainWorldSize.x - 1 &&
-                getCurrentRoomPosInWorld().y == 1) {
+            // Check for top or bottom passage
+            if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
+                    !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
+                    !RoomTypeEnum.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
+                newYPosInMatrix--;
+                player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
+            } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
+                    !RoomTypeEnum.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
+                    !RoomTypeEnum.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
+                newYPosInMatrix++;
+                player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
+            } else if (playerPosition.y > LHITGame.GAME_HEIGHT * 0.45 &&
+                    RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
+                //Final room
+                newXPosInMatrix = 2;
+                newYPosInMatrix = 8;
+                player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
+                saveFileManager.saveOnFile(player, saveMap);
+            }
 
-            player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
-
-            newXPosInMatrix = 0;
-            newYPosInMatrix = (int) (mainWorldSize.y - 2);
-        } else if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
-                getCurrentRoomPosInWorld().x == 3 &&
-                getCurrentRoomPosInWorld().y == 0) {
-            newXPosInMatrix = 0;
-            newYPosInMatrix = 7;
-            player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
         }
-
         //Change room and clear nearest poi reference
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
             changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);

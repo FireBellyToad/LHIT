@@ -89,6 +89,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
         //Adjustements
         switch (((DecorationEntity) entity).getType()) {
             case CROSS_IRON:
+            case DEAD_TREE:
             case IMPALED: {
                 shape.setAsBox(2, 2);
                 bodyDef.position.set(x - 2, y - 16);
@@ -145,9 +146,18 @@ public class DecorationInstance extends GameInstance implements Interactable {
 
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
-        if( DecorationsEnum.GRASS.equals(getType()) || DecorationsEnum.PLANT.equals(getType()) ){
-            ((DecorationEntity) entity).playGrassMove();
+
+        switch (((DecorationEntity) entity).getType()) {
+            case PLANT:
+            case DEAD_TREE:
+            case GRASS: {
+                ((DecorationEntity) entity).playGrassMove();
+            }
+            default:{
+                //Do nothing
+            }
         }
+
         this.interacted = true;
     }
 

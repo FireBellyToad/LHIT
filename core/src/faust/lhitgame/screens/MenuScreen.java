@@ -66,6 +66,10 @@ public class MenuScreen implements Screen {
             //Stop music and change screen
             musicManager.stopMusic();
             game.setScreen(new CutsceneScreen(game, CutsceneEnum.CREDITS));
+        }  else if (menu.isChangeToStoryScreen()) {
+            //Stop music and change screen
+            musicManager.stopMusic();
+            game.setScreen(new CutsceneScreen(game, CutsceneEnum.STORY));
         }else {
             cameraManager.applyAndUpdate();
             game.getBatch().setProjectionMatrix(cameraManager.getCamera().combined);

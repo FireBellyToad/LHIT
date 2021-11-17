@@ -10,10 +10,11 @@ public enum MenuItem {
     ENGLISH,
     ITALIANO,
     CONTINUE,
+    STORY,
     NEW_GAME("menu.sure", new MenuItem[]{YES, NO}),
     PLAY_GAME(new MenuItem[]{NEW_GAME, LOAD_GAME, BACK}),
     GAME_OVER("menu.continue", new MenuItem[]{YES, NO}),
-    MAIN(new MenuItem[]{PLAY_GAME, CREDITS, EXIT_GAME}),
+    MAIN(new MenuItem[]{PLAY_GAME, CREDITS, STORY, EXIT_GAME}),
     END_GAME(new MenuItem[]{BACK}),
     LANGUAGE(new MenuItem[]{ENGLISH, ITALIANO}),
     PAUSE_GAME(new MenuItem[]{CONTINUE,EXIT_GAME});

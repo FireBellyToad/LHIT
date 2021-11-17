@@ -36,6 +36,7 @@ public class Menu implements InputProcessor {
     private boolean changeToNextScreen = false;
     private boolean changeToIntroScreen = false;
     private boolean changeToCreditScreen = false;
+    private boolean changeToStoryScreen = false;
 
     private final SaveFileManager saveFileManager;
     private final Sound voiceChange;
@@ -207,6 +208,12 @@ public class Menu implements InputProcessor {
                 break;
             }
             case 2: {
+                //credit
+                selectedMenuVoice = 2;
+                changeToStoryScreen = true;
+                break;
+            }
+            case 3: {
                 //Exit game
                 Gdx.app.exit();
                 break;
@@ -281,6 +288,9 @@ public class Menu implements InputProcessor {
 
     public boolean isChangeToCreditScreen() {
         return changeToCreditScreen;
+    }
+    public boolean isChangeToStoryScreen() {
+        return changeToStoryScreen;
     }
 
     public BitmapFont getMainFont() {

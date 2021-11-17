@@ -48,6 +48,11 @@ public class CutsceneScreen implements Screen {
 
         cutsceneManager = new CutsceneManager(cutsceneEnum, game.getAssetManager(), game.getTextLocalizer(),cameraManager.getCamera(),  game.getSaveFileManager());
 
+        if(!CutsceneEnum.STORY.equals(cutsceneEnum)){
+            //Loop title music
+            musicManager.playMusic(TuneEnum.DANGER);
+        }
+
         try {
             //Instantiate next screen using reflection
             Constructor<?> ctor = cutsceneEnum.getNextScreenClass().getDeclaredConstructor(LHITGame.class);
@@ -61,9 +66,6 @@ public class CutsceneScreen implements Screen {
     @Override
     public void show() {
         cutsceneManager.initCutscene();
-
-        //Loop title music
-        musicManager.playMusic(TuneEnum.DANGER);
 
         Gdx.input.setInputProcessor(cutsceneManager);
     }

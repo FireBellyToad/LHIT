@@ -42,7 +42,8 @@ public class DecorationEntity extends SpriteEntity {
         switch (type){
             case GRASS:
             case TUMOR:
-            case PLANT:{
+            case PLANT:
+            case DEAD_TREE:{
                 return true;
             }
             default:{

@@ -1,5 +1,6 @@
 package faust.lhitgame.cutscenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
@@ -63,12 +64,15 @@ public class CutsceneManager implements InputProcessor {
         longTextHandler.loadFonts(assetManager);
         textLocalizer.loadTextFromLanguage();
 
-        tiledScene = new TmxMapLoader().load("cutscenes/" + cutsceneKey + "_1.tmx");
-        tiledSceneRenderer = new OrthogonalTiledMapRenderer(tiledScene);
-
-        // Set camera for rendering
-        tiledSceneRenderer.setView(camera);
-        populateActors();
+        try {
+            tiledScene = new TmxMapLoader().load("cutscenes/" + cutsceneKey + "_1.tmx");
+            tiledSceneRenderer = new OrthogonalTiledMapRenderer(tiledScene);
+            // Set camera for rendering
+            tiledSceneRenderer.setView(camera);
+            populateActors();
+        } catch (Exception e) {
+            Gdx.app.log("DEBUG", "Problem while loading cutscene, using blank");
+        }
     }
 
     /**
@@ -80,7 +84,8 @@ public class CutsceneManager implements InputProcessor {
         Objects.requireNonNull(camera);
         //Render map and actors
         batch.begin();
-        tiledSceneRenderer.render();
+        if (Objects.nonNull(tiledSceneRenderer))
+            tiledSceneRenderer.render();
         batch.end();
 
         actors.forEach(actor -> actor.draw(batch, stateTime));
@@ -109,13 +114,22 @@ public class CutsceneManager implements InputProcessor {
             return;
         }
 
-        // If not finished, load next scene and actors
-        tiledScene = new TmxMapLoader().load("cutscenes/" + cutsceneKey + "_" + (longTextHandler.getCurrentStep() + 1) + ".tmx");
-        tiledSceneRenderer = new OrthogonalTiledMapRenderer(tiledScene);
+        tiledSceneRenderer = null;
 
-        // Set camera for rendering
-        tiledSceneRenderer.setView(camera);
-        populateActors();
+        // If not finished, load next scene and actors
+        try {
+            tiledScene = new TmxMapLoader().load("cutscenes/" + cutsceneKey + "_" + (longTextHandler.getCurrentStep() + 1) + ".tmx");
+            tiledSceneRenderer = new OrthogonalTiledMapRenderer(tiledScene);
+            // Set camera for rendering
+            tiledSceneRenderer.setView(camera);
+            populateActors();
+
+        } catch (Exception e) {
+            Gdx.app.log("DEBUG", "Problem while loading cutscene, using blank");
+            if (!actors.isEmpty()) {
+                actors.clear();
+            }
+        }
     }
 
     /**
@@ -141,16 +155,16 @@ public class CutsceneManager implements InputProcessor {
             DirectionEnum direction = null;
             Set<SimpleActorParametersEnum> params = new HashSet<>();
 
-            if(obj.getProperties().containsKey("mustFlicker") && (boolean) obj.getProperties().get("mustFlicker")){
+            if (obj.getProperties().containsKey("mustFlicker") && (boolean) obj.getProperties().get("mustFlicker")) {
                 params.add(SimpleActorParametersEnum.MUST_FLICKER);
             }
 
             if (obj.getName().equals(PlayerEntity.class.getSimpleName())) {
                 params.add(SimpleActorParametersEnum.IS_SHADED);
-                if(playerHasArmor){
+                if (playerHasArmor) {
                     params.add(SimpleActorParametersEnum.PLAYER_HAS_ARMOR);
                 }
-                if(playerHasLance){
+                if (playerHasLance) {
                     params.add(SimpleActorParametersEnum.PLAYER_HAS_LANCE);
 
                 }
@@ -171,11 +185,11 @@ public class CutsceneManager implements InputProcessor {
             } else if (obj.getName().equals(DecorationEntity.class.getSimpleName())) {
                 DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(decoType);
-                entity = new DecorationEntity(decoType,assetManager);
+                entity = new DecorationEntity(decoType, assetManager);
             } else if (obj.getName().equals(POIEntity.class.getSimpleName())) {
                 POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(poiType);
-                entity = new POIEntity(poiType,assetManager);
+                entity = new POIEntity(poiType, assetManager);
             } else if (obj.getName().equals(TutorialEntity.class.getSimpleName())) {
                 entity = new TutorialEntity(assetManager);
                 behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));

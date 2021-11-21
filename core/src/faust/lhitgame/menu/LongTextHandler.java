@@ -24,10 +24,6 @@ public class LongTextHandler  {
     private final String longTextKey;
 
     private BitmapFont mainFont;
-
-    private final ShapeRenderer backgroundBox = new ShapeRenderer();
-    private static final Color darkness = new Color(0x000000ff);
-
     private int currentStep = 0;
 
     public LongTextHandler(TextLocalizer textLocalizer, String longTextKey) {

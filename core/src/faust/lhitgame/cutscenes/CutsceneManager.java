@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObjects;
@@ -43,6 +44,7 @@ public class CutsceneManager implements InputProcessor {
     private OrthogonalTiledMapRenderer tiledSceneRenderer;
     private final List<SimpleActor> actors = new ArrayList<>();
     private final OrthographicCamera camera;
+    private final Sound nextSound;
 
     public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera, SaveFileManager saveFileManager) {
         this.textLocalizer = textLocalizer;
@@ -52,6 +54,10 @@ public class CutsceneManager implements InputProcessor {
         this.camera = camera;
 
         lastStep = cutsceneEnum.getStepsNumber();
+
+        assetManager.load("sounds/SFX_UIGeneric13.ogg", Sound.class);
+        assetManager.finishLoading();
+        nextSound = assetManager.get("sounds/SFX_UIGeneric13.ogg");
 
         longTextHandler = new LongTextHandler(textLocalizer, cutsceneEnum.getKey());
 
@@ -107,7 +113,7 @@ public class CutsceneManager implements InputProcessor {
      * Advances the cutscene
      */
     private void advanceCutscene() {
-
+        nextSound.play();
         longTextHandler.goToNextStep();
 
         if (isFinished()) {

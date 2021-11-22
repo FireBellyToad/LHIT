@@ -18,9 +18,9 @@ import faust.lhitgame.screens.MenuScreen;
  */
 public class PauseManager {
 
-    private Menu menu;
+    private final Menu menu;
     private boolean gamePaused = false;
-    private MusicManager musicManager;
+    private final MusicManager musicManager;
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x000000ff);

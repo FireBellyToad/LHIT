@@ -21,8 +21,8 @@ public enum SaveFieldsEnum {
     SAVED_FLAGS("savedFlags"),
     ROOMS("rooms",new SaveFieldsEnum[]{X,Y,CASUAL_NUMBER,SAVED_FLAGS});
 
-    private String fieldName;
-    private SaveFieldsEnum[] subFields;
+    private final String fieldName;
+    private final SaveFieldsEnum[] subFields;
 
     SaveFieldsEnum(String fieldName) {
         this(fieldName, null);

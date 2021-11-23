@@ -85,20 +85,24 @@ public class RoomsManager {
             //Parsing boundaries
             JsonValue boundariesJson = t.get("boundaries");
             Map<DirectionEnum, Vector2> boundaries = new HashMap<>();
-            if(Objects.nonNull(boundariesJson)){
+            if (Objects.nonNull(boundariesJson)) {
                 boundariesJson.forEach((b) -> {
                     //Parsing targets
                     JsonValue targetJson = b.get("target");
-                    Vector2 target = new Vector2();
-                    target.x = targetJson.getInt("x");
-                    target.y = targetJson.getInt("y");
+                    //Null if impassable
+                    Vector2 target = null;
+                    if(Objects.nonNull(targetJson)){
+                        target = new Vector2();
+                        target.x = targetJson.getInt("x");
+                        target.y = targetJson.getInt("y");
+                    }
                     DirectionEnum side = DirectionEnum.getFromString(b.getString("side"));
                     Objects.requireNonNull(side);
-                    boundaries.put(side,target);
+                    boundaries.put(side, target);
                 });
             }
 
-            mainWorld.put(v, new RoomModel(boundaries,type));
+            mainWorld.put(v, new RoomModel(boundaries, type));
             mainWorldSize.set(Math.max(mainWorldSize.x, v.x), Math.max(mainWorldSize.y, v.y));
         });
         // Finalize size
@@ -127,7 +131,7 @@ public class RoomsManager {
         player.setChangingRoom(true);
 
         //Do stuff while leaving room
-        if(Objects.nonNull(currentRoom)){
+        if (Objects.nonNull(currentRoom)) {
             currentRoom.onRoomLeave();
         }
 
@@ -191,8 +195,8 @@ public class RoomsManager {
             newRoomFlags.put(RoomFlagEnum.WITHOUT_HERBS, !canPlaceHerbs);
 
             //If unvisited rooms (priority is on morgengabe) are less than the number of found herbs to find, guarantee them
-            final boolean guaranteedHerb= canPlaceHerbs && !guaranteedMorgengabe &&
-            (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getHerbsFound()));
+            final boolean guaranteedHerb = canPlaceHerbs && !guaranteedMorgengabe &&
+                    (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getHerbsFound()));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_HERBS, guaranteedHerb);
 
         } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld).type)) {
@@ -253,85 +257,75 @@ public class RoomsManager {
         int newXPosInMatrix = (int) getCurrentRoomPosInWorld().x;
         int newYPosInMatrix = (int) getCurrentRoomPosInWorld().y;
 
+        DirectionEnum switchDirection = DirectionEnum.UNUSED;
+        // Check for left or right passage
+        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY ) {
+            switchDirection = DirectionEnum.LEFT;
+        } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
+            switchDirection = DirectionEnum.RIGHT;
+        }
+
+        // Check for top or bottom passage
+        if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
+            switchDirection = DirectionEnum.DOWN;
+        } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
+            switchDirection = DirectionEnum.UP;
+        } else if (playerPosition.y > LHITGame.GAME_HEIGHT * 0.45 &&
+                RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
+            //Final room
+            newXPosInMatrix = 2;
+            newYPosInMatrix = 8;
+            player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
+            saveFileManager.saveOnFile(player, saveMap);
+        }
 
 
         // Adjustments for world extremes, semi pacman effect
-        if (!mainWorld.get(currentRoomPosInWorld).boundaries.isEmpty()){
-            for( Map.Entry<DirectionEnum,Vector2> boundary : mainWorld.get(currentRoomPosInWorld).boundaries.entrySet()){
-
-                boolean mustSwitch = false;
-                switch (boundary.getKey()){
-                    case UP: {
-                        if (playerPosition.y > AbstractRoom.TOP_BOUNDARY ){
-                            player.setStartX(AbstractRoom.BOTTOM_BOUNDARY + 4);
-                            mustSwitch = true;
-                        }
-                        break;
-                    }
-                    case RIGHT: {
-                        if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY ){
-                            player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
-                            mustSwitch = true;
-                        }
-                        break;
-                    }
-                    case LEFT: {
-                        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY ){
-                            player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
-                            mustSwitch = true;
-                        }
-                        break;
-                    }
-                    case DOWN: {
-                        if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY ){
-                            player.setStartX(AbstractRoom.TOP_BOUNDARY - 4);
-                            mustSwitch = true;
-                        }
-                        break;
-                    }
-                }
-
-                if(mustSwitch){
-
-                    newXPosInMatrix = (int) boundary.getValue().x;
-                    newYPosInMatrix = (int) boundary.getValue().y;
-                }
-
+        if (mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)) {
+            if (Objects.nonNull(mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
+                newXPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).x;
+                newYPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).y;
             }
-        } else {
-
-            // Check for left or right passage
-            if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY &&
-                    !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                    !RoomTypeEnum.CEMETERY_TOP.equals(currentRoom.getRoomType())) {
-                newXPosInMatrix--;
-                player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
-            } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
-                newXPosInMatrix++;
-                player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
-            }
-
-            // Check for top or bottom passage
-            if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY &&
-                    !RoomTypeEnum.CEMETERY_CENTER.equals(currentRoom.getRoomType()) &&
-                    !RoomTypeEnum.CEMETERY_RIGHT.equals(currentRoom.getRoomType())) {
-                newYPosInMatrix--;
-                player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
-            } else if (playerPosition.y > AbstractRoom.TOP_BOUNDARY &&
-                    !RoomTypeEnum.CHURCH_LEFT.equals(currentRoom.getRoomType()) &&
-                    !RoomTypeEnum.CHURCH_RIGHT.equals(currentRoom.getRoomType())) {
-                newYPosInMatrix++;
-                player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
-            } else if (playerPosition.y > LHITGame.GAME_HEIGHT * 0.45 &&
-                    RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
-                //Final room
-                newXPosInMatrix = 2;
-                newYPosInMatrix = 8;
-                player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
-                saveFileManager.saveOnFile(player, saveMap);
-            }
-
         }
+        switch (switchDirection) {
+            case UP: {
+                if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
+                    player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
+                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
+                        newYPosInMatrix--;
+                    }
+                }
+                break;
+            }
+            case RIGHT: {
+                if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
+                    player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
+                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
+                        newXPosInMatrix++;
+                    }
+                }
+                break;
+            }
+            case LEFT: {
+                if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
+                    player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
+                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
+                        newXPosInMatrix--;
+                    }
+                }
+                break;
+            }
+            case DOWN: {
+                if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
+                    player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
+                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
+                        newYPosInMatrix++;
+                    }
+                }
+                break;
+            }
+        }
+
         //Change room and clear nearest poi reference
         if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
             changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);

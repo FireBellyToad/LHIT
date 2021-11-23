@@ -91,7 +91,7 @@ public class RoomsManager {
                     JsonValue targetJson = b.get("target");
                     //Null if impassable
                     Vector2 target = null;
-                    if(Objects.nonNull(targetJson)){
+                    if (Objects.nonNull(targetJson)) {
                         target = new Vector2();
                         target.x = targetJson.getInt("x");
                         target.y = targetJson.getInt("y");
@@ -259,7 +259,7 @@ public class RoomsManager {
 
         DirectionEnum switchDirection = DirectionEnum.UNUSED;
         // Check for left or right passage
-        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY ) {
+        if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
             switchDirection = DirectionEnum.LEFT;
         } else if ((playerPosition.x > AbstractRoom.RIGHT_BOUNDARY)) {
             switchDirection = DirectionEnum.RIGHT;
@@ -281,55 +281,58 @@ public class RoomsManager {
 
 
         // Adjustments for world extremes, semi pacman effect
-        if (mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)) {
-            if (Objects.nonNull(mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
-                newXPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).x;
-                newYPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).y;
-            }
-        }
-        switch (switchDirection) {
-            case UP: {
-                if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
-                    player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
-                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
-                        newYPosInMatrix--;
-                    }
+        if (!DirectionEnum.UNUSED.equals(switchDirection)) {
+            boolean hasBoundary = mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection);
+            if (hasBoundary) {
+                if (Objects.nonNull(mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
+                    newXPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).x;
+                    newYPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).y;
                 }
-                break;
             }
-            case RIGHT: {
-                if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
-                    player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
-                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
-                        newXPosInMatrix++;
+            switch (switchDirection) {
+                case UP: {
+                    if (playerPosition.y > AbstractRoom.TOP_BOUNDARY) {
+                        player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 4);
+                        if (!hasBoundary) {
+                            newYPosInMatrix++;
+                        }
                     }
+                    break;
                 }
-                break;
-            }
-            case LEFT: {
-                if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
-                    player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
-                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
-                        newXPosInMatrix--;
+                case RIGHT: {
+                    if (playerPosition.x > AbstractRoom.RIGHT_BOUNDARY) {
+                        player.setStartX(AbstractRoom.LEFT_BOUNDARY + 4);
+                        if (!hasBoundary) {
+                            newXPosInMatrix++;
+                        }
                     }
+                    break;
                 }
-                break;
-            }
-            case DOWN: {
-                if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
-                    player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
-                    if (!mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection)){
-                        newYPosInMatrix++;
+                case LEFT: {
+                    if (playerPosition.x < AbstractRoom.LEFT_BOUNDARY) {
+                        player.setStartX(AbstractRoom.RIGHT_BOUNDARY - 4);
+                        if (!hasBoundary) {
+                            newXPosInMatrix--;
+                        }
                     }
+                    break;
                 }
-                break;
+                case DOWN: {
+                    if (playerPosition.y < AbstractRoom.BOTTOM_BOUNDARY) {
+                        player.setStartY(AbstractRoom.TOP_BOUNDARY - 4);
+                        if (!hasBoundary) {
+                            newYPosInMatrix--;
+                        }
+                    }
+                    break;
+                }
             }
-        }
 
-        //Change room and clear nearest poi reference
-        if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
-            changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
-            player.cleanReferences();
+            //Change room and clear nearest poi reference
+            if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
+                changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
+                player.cleanReferences();
+            }
         }
     }
 

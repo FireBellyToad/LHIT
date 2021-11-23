@@ -25,8 +25,8 @@ public enum RoomTypeEnum {
     BOAT_LEFT("crucified.tmx"),
     BOAT_DOWN("crucified.tmx"),
     MASSACRE("crucified.tmx"),
-    START_LEFT("crucified.tmx"),
-    START_RIGHT("crucified.tmx"),
+    START_LEFT("startLeft.tmx"),
+    START_RIGHT("startRight.tmx"),
     ;
 
     private final String mapFileName;

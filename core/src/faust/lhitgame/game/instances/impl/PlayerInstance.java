@@ -103,6 +103,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if (isDead()) {
             isChangingRoom = true;
             setPlayerLinearVelocity(0, 0);
+            leftSpearBody.setActive(false);
+            upSpearBody.setActive(false);
+            downSpearBody.setActive(false);
+            rightSpearBody.setActive(false);
             //Init delta time
             if (!GameBehavior.DEAD.equals(currentBehavior)) {
                 currentBehavior = GameBehavior.DEAD;

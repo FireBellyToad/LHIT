@@ -28,7 +28,7 @@ public class SaveFileManager {
         //Player info
         List<String> entries = new ArrayList<>();
         entries.add(getField(SaveFieldsEnum.LANCE.getFieldName(), player.getHolyLancePieces()));
-        entries.add(getField(SaveFieldsEnum.MORGENGABES.getFieldName(), player.getFoundMorgengabes()));
+        entries.add(getField(SaveFieldsEnum.CROSSES.getFieldName(), player.getFoundCrosses()));
         entries.add(getField(SaveFieldsEnum.ARMOR.getFieldName(), player.hasArmor()));
         entries.add(getField(SaveFieldsEnum.DAMAGE.getFieldName(), player.getDamage()));
         entries.add(getField(SaveFieldsEnum.HERBS_FOUND.getFieldName(), player.getHerbsFound()));
@@ -159,7 +159,7 @@ public class SaveFileManager {
             return;
         }
         player.setHolyLancePieces(playerInfo.getInt(SaveFieldsEnum.LANCE.getFieldName()));
-        player.setFoundMorgengabes(playerInfo.getInt(SaveFieldsEnum.MORGENGABES.getFieldName()));
+        player.setFoundCrosses(playerInfo.getInt(SaveFieldsEnum.CROSSES.getFieldName()));
         player.setHasArmor(playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
         player.setDamage(playerInfo.getInt(SaveFieldsEnum.DAMAGE.getFieldName()));
         player.setHerbsFound(playerInfo.getInt(SaveFieldsEnum.HERBS_FOUND.getFieldName()));

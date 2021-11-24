@@ -161,9 +161,9 @@ public class RoomsManager {
         Map<RoomFlagEnum, Boolean> newRoomFlags = RoomFlagEnum.generateDefaultRoomFlags();
 
         if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld))) {
-            //If unvisited rooms are less than the number of found morgengabes to find, guarantee them
-            final boolean guaranteedMorgengabe = player.getFoundMorgengabes() < 9 &&
-                    (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundMorgengabes()));
+            //If unvisited rooms are less than the number of found crosses to find, guarantee them
+            final boolean guaranteedMorgengabe = player.getFoundCrosses() < 9 &&
+                    (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundCrosses()));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
 
             //Only three herbs can be found

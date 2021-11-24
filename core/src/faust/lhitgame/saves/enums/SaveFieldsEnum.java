@@ -2,18 +2,18 @@ package faust.lhitgame.saves.enums;
 
 /**
  * Enum for save fields
- *
+ *f
  * @author Jacopo "Faust" Buttiglieri
  */
 public enum SaveFieldsEnum {
 
     LANCE("lance"),
-    MORGENGABES("morgengabes"),
+    CROSSES("crosses"),
     ARMOR("armor"),
     DAMAGE("damage"),
     HERBS_AVAILABLE("herbsAvailable"),
     HERBS_FOUND("herbsFound"),
-    PLAYER_INFO("playerInfo", new SaveFieldsEnum[]{LANCE,MORGENGABES,ARMOR,DAMAGE,HERBS_AVAILABLE,HERBS_FOUND}),
+    PLAYER_INFO("playerInfo", new SaveFieldsEnum[]{LANCE, CROSSES,ARMOR,DAMAGE,HERBS_AVAILABLE,HERBS_FOUND}),
 
     X("x"),
     Y("y"),

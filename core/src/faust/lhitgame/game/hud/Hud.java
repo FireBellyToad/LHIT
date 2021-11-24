@@ -101,13 +101,13 @@ public class Hud {
         }
 
 
-        //Morgengabes found count. Set in red if all has been found
+        //crosses found count. Set in red if all has been found
         batch.draw(hudTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
                 morgengabeCountPosition.x - 10,
                 morgengabeCountPosition.y - 6);
 
         textManager.getMainFont().draw(batch,
-                String.valueOf(player.getFoundMorgengabes()),
+                String.valueOf(player.getFoundCrosses()),
                 morgengabeCountPosition.x,
                 morgengabeCountPosition.y);
 

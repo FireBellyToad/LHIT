@@ -66,7 +66,7 @@ public class RoomsManager {
         this.camera = camera;
 
         initMainWorld();
-        changeCurrentRoom(2, 0);
+        changeCurrentRoom(3, 0);
     }
 
     /**

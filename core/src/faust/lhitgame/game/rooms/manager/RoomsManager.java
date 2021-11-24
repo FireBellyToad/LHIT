@@ -276,7 +276,6 @@ public class RoomsManager {
             newXPosInMatrix = 2;
             newYPosInMatrix = 8;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
-            saveFileManager.saveOnFile(player, saveMap);
         }
 
 
@@ -373,5 +372,9 @@ public class RoomsManager {
      */
     public void drawCurrentRoomOverlays() {
         currentRoom.drawRoomOverlay();
+    }
+
+    public Map<Vector2, RoomSaveEntry> getSaveMap() {
+        return saveMap;
     }
 }

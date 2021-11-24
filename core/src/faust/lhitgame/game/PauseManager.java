@@ -6,12 +6,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.game.instances.impl.PlayerInstance;
 import faust.lhitgame.game.music.MusicManager;
+import faust.lhitgame.game.rooms.manager.RoomsManager;
 import faust.lhitgame.menu.Menu;
 import faust.lhitgame.menu.enums.MenuItem;
+import faust.lhitgame.saves.RoomSaveEntry;
 import faust.lhitgame.saves.SaveFileManager;
 import faust.lhitgame.screens.MenuScreen;
+
+import java.util.Map;
 
 /**
  * @author Jacopo "Faust" Buttiglieri
@@ -19,6 +25,7 @@ import faust.lhitgame.screens.MenuScreen;
 public class PauseManager {
 
     private final Menu menu;
+    private final SaveFileManager saveFileManager;
     private boolean gamePaused = false;
     private final MusicManager musicManager;
 
@@ -29,6 +36,7 @@ public class PauseManager {
     public PauseManager(SaveFileManager saveFileManager, MusicManager musicManager, AssetManager assetManager) {
 
         this.musicManager = musicManager;
+        this.saveFileManager = saveFileManager;
         menu = new Menu(saveFileManager, MenuItem.PAUSE_GAME, assetManager);
         menu.loadFonts(assetManager);
     }
@@ -36,12 +44,14 @@ public class PauseManager {
     /**
      *
      * @param game
+     * @param roomFlags
      */
-    public void doLogic(LHITGame game){
+    public void doLogic(LHITGame game, PlayerInstance playerInstance, RoomsManager roomsManager){
         //Exit or resume game game
         if(menu.isChangeToGameScreen()){
             resumeGame();
         } else if (menu.isChangeToNextScreen()){
+            saveFileManager.saveOnFile(playerInstance,roomsManager.getSaveMap());
             game.setScreen(new MenuScreen(game));
         }
     }

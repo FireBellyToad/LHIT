@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
             doLogic();
         } else if (pauseManager.isGamePaused()) {
             //Handle pause logic
-            pauseManager.doLogic(game);
+            pauseManager.doLogic(game,player, roomsManager);
         }
 
         //Prevent animations while paused

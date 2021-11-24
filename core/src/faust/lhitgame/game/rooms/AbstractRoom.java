@@ -83,6 +83,7 @@ public abstract class AbstractRoom implements Spawner {
     protected boolean mustClearPOI = false;
 
     protected Map<RoomFlagEnum, Boolean> roomFlags;
+
     private GameInstance addedInstance; //Buffer for new enemies spawned during gameplay
 
     /**
@@ -523,4 +524,8 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     public abstract void onRoomLeave();
+
+    public Map<RoomFlagEnum, Boolean> getRoomFlags() {
+        return roomFlags;
+    }
 }

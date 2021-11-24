@@ -97,7 +97,7 @@ public class POIInstance extends GameInstance {
 
         switch (((POIEntity) entity).getType()){
             case SKELETON:
-                return player.getFoundMorgengabes() < 9;
+                return player.getFoundCrosses() < 9;
             case SOIL:
                 return player.getHolyLancePieces() < 2; //Should be random only if not guaranteed!
             default:

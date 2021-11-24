@@ -108,13 +108,13 @@ public class EndGameScreen implements Screen {
                 X_OFFSET,
                 Y_OFFSET + 30);
 
-        //Morgengabes found count.
+        //crosses found count.
         batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET + 6);
 
         menu.getMainFont().draw(batch,
-                " : " + valuesMap.get(SaveFieldsEnum.MORGENGABES.getFieldName()) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 9",
+                " : " + valuesMap.get(SaveFieldsEnum.CROSSES.getFieldName()) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 9",
                 X_OFFSET,
                 Y_OFFSET + 12);
 

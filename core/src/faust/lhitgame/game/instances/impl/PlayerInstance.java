@@ -60,7 +60,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private int availableHealthKits = 0; // available Health Kits
     private long startHealingTime;
-    private int foundMorgengabes = 0;
+    private int foundCrosses = 0;
     private int holyLancePieces = 0;
     private int herbsFound = 0;
 
@@ -754,7 +754,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
             case MORGENGABE: {
                 //Increase found Morgangabes
-                foundMorgengabes++;
+                foundCrosses++;
                 break;
             }
             case HOLY_LANCE: {
@@ -785,10 +785,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     * @return the current number of found morgengabes
+     * @return the current number of found crosses
      */
-    public int getFoundMorgengabes() {
-        return foundMorgengabes;
+    public int getFoundCrosses() {
+        return foundCrosses;
     }
 
     /**
@@ -798,8 +798,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         return hasArmor;
     }
 
-    public void setFoundMorgengabes(int foundMorgengabes) {
-        this.foundMorgengabes = foundMorgengabes;
+    public void setFoundCrosses(int foundCrosses) {
+        this.foundCrosses = foundCrosses;
     }
 
     /**

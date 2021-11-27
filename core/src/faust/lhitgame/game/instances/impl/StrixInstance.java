@@ -20,7 +20,7 @@ import faust.lhitgame.game.gameentities.impl.StrixEntity;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
-import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
 
@@ -50,7 +50,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
     }
 
     @Override
-    public void doLogic(float stateTime, AbstractRoom currentRoom) {
+    public void doLogic(float stateTime, RoomContent roomContent) {
 
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 

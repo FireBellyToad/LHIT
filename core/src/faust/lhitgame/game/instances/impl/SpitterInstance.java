@@ -23,8 +23,9 @@ import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
 import faust.lhitgame.game.instances.Spawner;
 import faust.lhitgame.game.instances.interfaces.Interactable;
+import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.music.enums.TuneEnum;
-import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.game.textbox.manager.TextBoxManager;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
@@ -42,6 +43,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     private static final long SPITTING_FREQUENCY_IN_MILLIS = 2000;
 
     private final TextBoxManager textBoxManager;
+    private final MusicManager musicManager;
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
 
@@ -54,7 +56,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     private boolean canBeDamaged = false;
     private boolean isAggressive = false;
 
-    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner) {
+    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner, MusicManager musicManager) {
         super(new SpitterEntity(assetManager));
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
@@ -62,24 +64,25 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         this.textBoxManager = textBoxManager;
         this.spawner = spawner;
         this.startAttackCooldown = TimeUtils.nanoTime();
+        this.musicManager = musicManager;
     }
 
     @Override
-    public void doLogic(float stateTime, AbstractRoom currentRoom) {
+    public void doLogic(float stateTime, RoomContent roomContent) {
 
         //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
-        long hiveCount = currentRoom.getEnemyList().stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
+        long hiveCount = roomContent.enemyList.stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
         canBeDamaged = hiveCount == 0;
 
         //If one of the HiveInstances are hurted, start aggression
         if (!isAggressive) {
-            isAggressive = currentRoom.getEnemyList().stream().anyMatch(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
+            isAggressive = roomContent.enemyList.stream().anyMatch(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
         }
 
         //Change Music
-        if (isAggressive && currentRoom.getMusicManager().isPlaying(TuneEnum.CHURCH)) {
-            currentRoom.getMusicManager().stopMusic();
-            currentRoom.getMusicManager().playMusic(TuneEnum.FINAL);
+        if (isAggressive && musicManager.isPlaying(TuneEnum.CHURCH)) {
+            musicManager.stopMusic();
+            musicManager.playMusic(TuneEnum.FINAL);
         }
 
         switch (currentBehavior) {

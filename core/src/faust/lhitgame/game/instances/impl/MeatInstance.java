@@ -18,7 +18,7 @@ import faust.lhitgame.game.gameentities.interfaces.Damager;
 import faust.lhitgame.game.gameentities.interfaces.Killable;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
-import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.game.world.manager.CollisionManager;
 
 import java.util.Objects;
@@ -46,7 +46,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
     }
 
     @Override
-    public void doLogic(float stateTime, AbstractRoom currentRoom) {
+    public void doLogic(float stateTime, RoomContent roomContent) {
 
         switch (currentBehavior) {
             case ATTACK: {

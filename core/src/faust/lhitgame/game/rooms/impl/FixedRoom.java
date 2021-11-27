@@ -51,7 +51,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     protected void loadTiledMap(RoomSaveEntry roomSaveEntry) {
         // Load Tiled map
-        tiledMap = new TmxMapLoader().load(roomFileName);
+        tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
         // FIXME handle multiple POI
@@ -65,7 +65,7 @@ public class FixedRoom extends AbstractRoom {
         this.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS if not disabled
-            if (!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
+            if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
                 addObjAsEchoActor(obj, assetManager);
             }
         });
@@ -74,13 +74,13 @@ public class FixedRoom extends AbstractRoom {
 
         // FIXME handle multiple POI
         if (mustClearPOI) {
-            this.poiList.forEach(poi -> poi.setAlreadyExamined(true));
+            this.roomContent.poiList.forEach(poi -> poi.setAlreadyExamined(true));
         }
 
         if (RoomTypeEnum.FINAL.equals(roomType)) {
             //Loop title music
             musicManager.playMusic(TuneEnum.CHURCH, 0.75f);
-        } else if (enemyList.size() > 0 || echoActors.size() > 0) {
+        } else if (roomContent.enemyList.size() > 0 || echoActors.size() > 0) {
             //Loop title music
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);
         } else {
@@ -105,9 +105,9 @@ public class FixedRoom extends AbstractRoom {
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 poiType, splashManager, assetManager,
-                roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
+                roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
 
-        poiList.add(instance);
+        roomContent.poiList.add(instance);
 
         //Check if is Echo trigger
         if (Objects.nonNull(obj.getProperties().get("isEchoTrigger"))) {
@@ -136,7 +136,7 @@ public class FixedRoom extends AbstractRoom {
                 (float) obj.getProperties().get("y"),
                 decoType, assetManager);
 
-        decorationList.add(instance);
+        roomContent.decorationList.add(instance);
 
         //Check if is Echo trigger
         if (Objects.nonNull(obj.getProperties().get("isEchoTrigger"))) {
@@ -170,10 +170,10 @@ public class FixedRoom extends AbstractRoom {
     public void drawRoomContents(SpriteBatch batch, float stateTime) {
         List<GameInstance> allInstance = new ArrayList<>();
 
-        allInstance.addAll(poiList);
-        allInstance.addAll(decorationList);
-        allInstance.add(player);
-        allInstance.addAll(enemyList);
+        allInstance.addAll(roomContent.poiList);
+        allInstance.addAll(roomContent.decorationList);
+        allInstance.add(roomContent.player);
+        allInstance.addAll(roomContent.enemyList);
 
         if (echoIsActivated && Objects.nonNull(echoActors)) {
             allInstance.addAll(echoActors);
@@ -198,7 +198,7 @@ public class FixedRoom extends AbstractRoom {
         // Manage echo actors
         if (echoIsActivated) {
             echoActors.forEach(actor -> {
-                actor.doLogic(stateTime, this );
+                actor.doLogic(stateTime, roomContent );
 
                 if (actor.hasCurrentTextBoxToShow()) {
                     this.textManager.addNewTextBox(actor.getCurrentTextBoxToShow());
@@ -214,7 +214,7 @@ public class FixedRoom extends AbstractRoom {
 
             //activate room echo if needed
             if (Objects.nonNull(echoTrigger)) {
-                echoIsActivated = player.getBody().getPosition().dst(echoTrigger.getBody().getPosition()) <= ECHO_ACTIVATION_DISTANCE;
+                echoIsActivated = roomContent.player.getBody().getPosition().dst(echoTrigger.getBody().getPosition()) <= ECHO_ACTIVATION_DISTANCE;
             }
 
             //Show echo text if NOW is active
@@ -234,9 +234,9 @@ public class FixedRoom extends AbstractRoom {
     @Override
     public void onRoomLeave() {
         //Disable Echo on room leave if trigger is already examined POI
-        if(!roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
+        if(!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
                 (echoTrigger instanceof  DecorationInstance || ((POIInstance)echoTrigger).isAlreadyExamined())){
-            roomFlags.put(RoomFlagEnum.DISABLED_ECHO, echoIsActivated);
+            roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, echoIsActivated);
         }
     }
 

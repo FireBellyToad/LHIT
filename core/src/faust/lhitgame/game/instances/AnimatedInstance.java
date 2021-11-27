@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import faust.lhitgame.game.gameentities.GameEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
-import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomContent;
 
 import java.util.Objects;
 
@@ -26,9 +26,9 @@ public abstract class AnimatedInstance extends GameInstance {
     /**
      * Handles the LivingEntity game logic
      * @param stateTime
-     * @param currentRoom
+     * @param roomContent
      */
-    public abstract void doLogic(float stateTime, AbstractRoom currentRoom);
+    public abstract void doLogic(float stateTime, RoomContent roomContent);
 
     /**
      * Utility for extracting Direction from a directionNormal normal

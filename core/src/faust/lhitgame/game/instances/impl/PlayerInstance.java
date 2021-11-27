@@ -22,7 +22,7 @@ import faust.lhitgame.game.gameentities.interfaces.Damager;
 import faust.lhitgame.game.gameentities.interfaces.Hurtable;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
-import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.utils.ShaderWrapper;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
@@ -94,7 +94,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     @Override
-    public void doLogic(float stateTime, AbstractRoom currentRoom) {
+    public void doLogic(float stateTime, RoomContent roomContent) {
 
         translateAccessoryBodies();
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);

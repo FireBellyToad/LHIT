@@ -57,13 +57,13 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
 
         } else {
-            if (roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)) {
+            if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)) {
                 //pick only ones with skeleton poi
                 casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0, 2));
-            } else if (roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {
+            } else if (roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {
                 //pick only ones without herbs in
                 casualNumber =  MathUtils.randomBoolean() ? MathUtils.random(1,2) : MathUtils.random(4,7);
-            } else if (roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS)) {
+            } else if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS)) {
                 //pick only ones with herbs in
                 casualNumber = BUSH_MAPS.get(MathUtils.random(0, 1));
             } else {
@@ -74,10 +74,10 @@ public class CasualRoom extends AbstractRoom {
         casualNumber = MathUtils.clamp(casualNumber, 1, CasualRoom.CASUAL_TOTAL);
 
         // Casual maps range from casual1.tmx to casual7.tmx, with a %d to be mapped
-        roomFileName = roomFileName.replace("%d", Integer.toString(casualNumber));
+        roomContent.roomFileName = roomContent.roomFileName.replace("%d", Integer.toString(casualNumber));
 
         // Load Tiled map
-        tiledMap = new TmxMapLoader().load(roomFileName);
+        tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
@@ -85,10 +85,10 @@ public class CasualRoom extends AbstractRoom {
     protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
         // FIXME handle multiple POI
         if (mustClearPOI) {
-            this.poiList.forEach(poi -> poi.setAlreadyExamined(true));
+            this.roomContent.poiList.forEach(poi -> poi.setAlreadyExamined(true));
         }
 
-        if (enemyList.size() > 0) {
+        if (roomContent.enemyList.size() > 0) {
             //Loop title music
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);
         } else {

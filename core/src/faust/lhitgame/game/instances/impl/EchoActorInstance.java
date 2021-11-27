@@ -21,6 +21,7 @@ import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.Spawner;
 import faust.lhitgame.game.instances.interfaces.Interactable;
 import faust.lhitgame.game.rooms.AbstractRoom;
+import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.game.world.manager.CollisionManager;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     @Override
-    public void doLogic(float stateTime, AbstractRoom currentRoom) {
+    public void doLogic(float stateTime, RoomContent roomContent) {
 
         // If must be removed, avoid logic
         if(removeFromRoom){
@@ -81,7 +82,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         //If animation is finished pass to the next step
        if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
-           int index = getNewIndex(stepOrder, currentRoom);
+           int index = getNewIndex(stepOrder, roomContent);
 
            Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " end step "+ currentBehavior);
 
@@ -104,7 +105,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
      * @param currentRoom
      * @return
      */
-    private int getNewIndex(List<GameBehavior> stepOrder, AbstractRoom currentRoom) {
+    private int getNewIndex(List<GameBehavior> stepOrder, RoomContent roomContent) {
 
         //If has "go to step", handle it correctly
         if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
@@ -113,7 +114,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             if(Objects.nonNull(((EchoActorEntity) entity).getUntilAtLeastOneFromStep(currentBehavior))) {
                 //Extract instance class from enum and do check
                 Class<? extends AnimatedInstance> enemyClass = ((EchoActorEntity) entity).getUntilAtLeastOneFromStep(currentBehavior).getInstanceClass();
-                if(currentRoom.getEnemyList().stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable)e).isDead())){
+                if(roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable)e).isDead())){
                     //if true, go to step
                     return stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
                 }

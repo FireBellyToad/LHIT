@@ -32,9 +32,9 @@ import faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import faust.lhitgame.game.splash.SplashManager;
 import faust.lhitgame.game.textbox.manager.TextBoxManager;
-import faust.lhitgame.utils.DepthComparatorUtils;
 import faust.lhitgame.game.world.manager.WorldManager;
 import faust.lhitgame.saves.RoomSaveEntry;
+import faust.lhitgame.utils.DepthComparatorUtils;
 
 import java.util.*;
 
@@ -66,23 +66,14 @@ public abstract class AbstractRoom implements Spawner {
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
     protected final MapObjects mapObjects;
 
-    protected final List<POIInstance> poiList;
-    protected final List<DecorationInstance> decorationList;
-    protected final List<AnimatedInstance> enemyList;
-    protected final List<WallArea> wallList;
-    protected final List<EmergedArea> emergedAreaList;
-    protected final PlayerInstance player;
-    protected final RoomTypeEnum roomType;
+    protected final RoomContent roomContent = new RoomContent();
     protected final SplashManager splashManager;
     protected final TextBoxManager textManager;
     protected final MusicManager musicManager;
     protected final AssetManager assetManager;
     protected final WorldManager worldManager;
-    protected String roomFileName;
 
     protected boolean mustClearPOI = false;
-
-    protected Map<RoomFlagEnum, Boolean> roomFlags;
 
     private GameInstance addedInstance; //Buffer for new enemies spawned during gameplay
 
@@ -113,11 +104,11 @@ public abstract class AbstractRoom implements Spawner {
         this.assetManager = assetManager;
         this.worldManager = worldManager;
 
-        this.roomFlags = roomFlags;
+        this.roomContent.roomFlags = roomFlags;
 
         // Load tiled map by name
-        this.roomType = roomType;
-        this.roomFileName = "terrains/" + roomType.getMapFileName();
+        this.roomContent.roomType = roomType;
+        this.roomContent.roomFileName = "terrains/" + roomType.getMapFileName();
         loadTiledMap(roomSaveEntry);
 
         // Extract mapObjects
@@ -127,16 +118,16 @@ public abstract class AbstractRoom implements Spawner {
         tiledMapRenderer.setView(camera);
 
         // Add content to room
-        this.player = player;
+        this.roomContent.player = player;
         this.splashManager = splashManager;
         this.textManager = textManager;
         this.musicManager = musicManager;
 
-        this.poiList = new ArrayList<>();
-        this.decorationList = new ArrayList<>();
-        this.enemyList = new ArrayList<>();
-        this.wallList = new ArrayList<>();
-        this.emergedAreaList = new ArrayList<>();
+        this.roomContent.poiList = new ArrayList<>();
+        this.roomContent.decorationList = new ArrayList<>();
+        this.roomContent.enemyList = new ArrayList<>();
+        this.roomContent.wallList = new ArrayList<>();
+        this.roomContent.emergedAreaList = new ArrayList<>();
 
         // Place objects in room
         this.mapObjects.forEach(obj -> {
@@ -168,12 +159,12 @@ public abstract class AbstractRoom implements Spawner {
         });
 
         worldManager.insertPlayerIntoWorld(player, player.getStartX(), player.getStartY());
-        worldManager.insertPOIIntoWorld(poiList);
-        worldManager.insertDecorationsIntoWorld(decorationList);
-        worldManager.insertEnemiesIntoWorld(enemyList);
-        worldManager.insertWallsIntoWorld(wallList);
-        worldManager.insertEmergedAreasIntoWorld(emergedAreaList);
-        player.changePOIList(poiList);
+        worldManager.insertPOIIntoWorld(roomContent.poiList);
+        worldManager.insertDecorationsIntoWorld(roomContent.decorationList);
+        worldManager.insertEnemiesIntoWorld(roomContent.enemyList);
+        worldManager.insertWallsIntoWorld(roomContent.wallList);
+        worldManager.insertEmergedAreasIntoWorld(roomContent.emergedAreaList);
+        player.changePOIList(roomContent.poiList);
 
         // Do other stuff
         this.onRoomEnter(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
@@ -188,7 +179,7 @@ public abstract class AbstractRoom implements Spawner {
 
         RectangleMapObject mapObject = (RectangleMapObject) obj;
 
-        wallList.add(new WallArea(mapObject.getRectangle()));
+        roomContent.wallList.add(new WallArea(mapObject.getRectangle()));
     }
 
     /**
@@ -200,7 +191,7 @@ public abstract class AbstractRoom implements Spawner {
 
         PolygonMapObject mapObject = (PolygonMapObject) obj;
 
-        emergedAreaList.add(new EmergedArea(mapObject.getPolygon()));
+        roomContent.emergedAreaList.add(new EmergedArea(mapObject.getPolygon()));
     }
 
     /**
@@ -221,14 +212,14 @@ public abstract class AbstractRoom implements Spawner {
         POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
 
-        Gdx.app.log("DEBUG", "guaranteedMorgengabe: " + roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
-        Gdx.app.log("DEBUG", "guaranteedHerbs: " + roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
+        Gdx.app.log("DEBUG", "guaranteedMorgengabe: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
+        Gdx.app.log("DEBUG", "guaranteedHerbs: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
 
-        poiList.add(new POIInstance(textManager,
+        roomContent.poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 poiType, splashManager, assetManager,
-                roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)));
+                roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)));
     }
 
     /**
@@ -241,7 +232,7 @@ public abstract class AbstractRoom implements Spawner {
         DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(decoType);
 
-        decorationList.add(new DecorationInstance(
+        roomContent.decorationList.add(new DecorationInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 decoType, assetManager));
@@ -272,7 +263,7 @@ public abstract class AbstractRoom implements Spawner {
                 addedInstance = new WillowispInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
-                        player,
+                        roomContent.player,
                         assetManager);
                 break;
             }
@@ -284,17 +275,17 @@ public abstract class AbstractRoom implements Spawner {
                         textManager);
 
                 //Show splash only the first time
-                if (!roomFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED))
+                if (!roomContent.roomFlags.get(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED))
                     splashManager.setSplashToShow("splash.hive");
 
-                roomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);
+                roomContent.roomFlags.put(RoomFlagEnum.FIRST_HIVE_ENCOUNTERED, true);
                 break;
             }
             case MEAT: {
                 addedInstance = new MeatInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
-                        player, assetManager);
+                        roomContent.player, assetManager);
 
                 break;
             }
@@ -302,37 +293,38 @@ public abstract class AbstractRoom implements Spawner {
                 addedInstance = new SpitterInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
-                        assetManager, textManager, this);
+                        assetManager, textManager, this,
+                        musicManager);
 
                 splashManager.setSplashToShow("splash.spitter");
                 break;
             }
             default: {
 
-                if (roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
+                if (roomContent.roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
                     addedInstance = new BoundedInstance(
                             (float) obj.getProperties().get("x"),
                             (float) obj.getProperties().get("y"),
-                            player,
+                            roomContent.player,
                             assetManager);
 
                     //Show splash only the first time
-                    if (!roomFlags.get(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED))
+                    if (!roomContent.roomFlags.get(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED))
                         splashManager.setSplashToShow("splash.bounded");
 
-                    roomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED, true);
+                    roomContent.roomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED, true);
                 } else {
                     addedInstance = new StrixInstance(
                             (float) obj.getProperties().get("x"),
                             (float) obj.getProperties().get("y"),
-                            player,
+                            roomContent.player,
                             assetManager);
 
                     //Show splash only the first time
-                    if (!roomFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED))
+                    if (!roomContent.roomFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED))
                         splashManager.setSplashToShow("splash.strix");
 
-                    roomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED, true);
+                    roomContent.roomFlags.put(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED, true);
                 }
 
             }
@@ -340,7 +332,7 @@ public abstract class AbstractRoom implements Spawner {
 
         // If is not a spawned instance (usually MeatInstance), add it right now
         if (!addNewInstance) {
-            enemyList.add((AnimatedInstance) addedInstance);
+            roomContent.enemyList.add((AnimatedInstance) addedInstance);
             addedInstance = null;
         }
     }
@@ -398,10 +390,10 @@ public abstract class AbstractRoom implements Spawner {
 
         List<GameInstance> allInstance = new ArrayList<>();
 
-        allInstance.addAll(poiList);
-        allInstance.addAll(decorationList);
-        allInstance.add(player);
-        allInstance.addAll(enemyList);
+        allInstance.addAll(roomContent.poiList);
+        allInstance.addAll(roomContent.decorationList);
+        allInstance.add(roomContent.player);
+        allInstance.addAll(roomContent.enemyList);
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
         allInstance.sort(DepthComparatorUtils::compareEntities);
@@ -416,39 +408,39 @@ public abstract class AbstractRoom implements Spawner {
     public void dispose() {
         textManager.removeAllBoxes();
         tiledMap.dispose();
-        enemyList.forEach(AnimatedInstance::dispose);
-        decorationList.forEach(DecorationInstance::dispose);
-        poiList.forEach(POIInstance::dispose);
-        wallList.forEach(WallArea::dispose);
-        emergedAreaList.forEach(EmergedArea::dispose);
+        roomContent.enemyList.forEach(AnimatedInstance::dispose);
+        roomContent.decorationList.forEach(DecorationInstance::dispose);
+        roomContent.poiList.forEach(POIInstance::dispose);
+        roomContent.wallList.forEach(WallArea::dispose);
+        roomContent.emergedAreaList.forEach(EmergedArea::dispose);
     }
 
     public RoomTypeEnum getRoomType() {
-        return roomType;
+        return roomContent.roomType;
     }
 
     public synchronized void doRoomContentsLogic(float stateTime) {
 
         // Do Player logic
-        player.doLogic(stateTime, this);
+        roomContent.player.doLogic(stateTime, roomContent);
 
         //Stop music
-        if(player.isDead() && musicManager.isPlaying()){
+        if(roomContent.player.isDead() && musicManager.isPlaying()){
             musicManager.stopMusic();
         }
 
         // Do enemy logic
-        enemyList.forEach((ene) -> {
+        roomContent.enemyList.forEach((ene) -> {
 
-            ene.doLogic(stateTime, this);
+            ene.doLogic(stateTime, roomContent);
 
             if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
-                player.setPrepareEndgame(true);
-            } else if (enemyList.size() == 1 && ((Killable) ene).isDead()) {
+                roomContent.player.setPrepareEndgame(true);
+            } else if (roomContent.enemyList.size() == 1 && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if (!player.isDead() && (!RoomTypeEnum.FINAL.equals(roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomType)) &&
+            } else if (!roomContent.player.isDead() && (!RoomTypeEnum.FINAL.equals(roomContent.roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomContent.roomType)) &&
                     !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
                 musicManager.playMusic(TuneEnum.ATTACK, 0.65f, true);
             }
@@ -456,19 +448,19 @@ public abstract class AbstractRoom implements Spawner {
 
         // If there is an instance to add, do it and clean reference
         if (!Objects.isNull(addedInstance)) {
-            enemyList.add((AnimatedInstance) addedInstance);
+            roomContent.enemyList.add((AnimatedInstance) addedInstance);
             addedInstance = null;
         }
 
         // Dispose enemies
-        enemyList.forEach(ene -> {
+        roomContent.enemyList.forEach(ene -> {
             if (ene.isDisposable()) {
                 ene.dispose();
             }
         });
 
         // Remove some dead enemies
-        enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
+        roomContent.enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
     }
 
     /**
@@ -476,7 +468,7 @@ public abstract class AbstractRoom implements Spawner {
      */
     public boolean arePoiCleared() {
         //FIXME handle multiple POI
-        return this.poiList.stream().allMatch(POIInstance::isAlreadyExamined);
+        return this.roomContent.poiList.stream().allMatch(POIInstance::isAlreadyExamined);
     }
 
     /**
@@ -484,7 +476,7 @@ public abstract class AbstractRoom implements Spawner {
      * @return
      */
     public List <AnimatedInstance> getEnemyList(){
-        return enemyList;
+        return roomContent.enemyList;
     }
 
     @Override
@@ -506,10 +498,10 @@ public abstract class AbstractRoom implements Spawner {
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {
             addObjAsPOI(mapObjectStub, textManager, assetManager);
-            POIInstance lastPOIInstance = poiList.get(poiList.size() - 1);
+            POIInstance lastPOIInstance = roomContent.poiList.get(roomContent.poiList.size() - 1);
             worldManager.insertPOIIntoWorld(Collections.singletonList(lastPOIInstance));
-            roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, false);
-            player.changePOIList(poiList);
+            roomContent.roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, false);
+            roomContent.player.changePOIList(roomContent.poiList);
         } else if (instanceClass.equals(PortalInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
         }
@@ -524,8 +516,4 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     public abstract void onRoomLeave();
-
-    public Map<RoomFlagEnum, Boolean> getRoomFlags() {
-        return roomFlags;
-    }
 }

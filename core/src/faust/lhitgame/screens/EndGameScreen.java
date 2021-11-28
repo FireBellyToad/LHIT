@@ -109,7 +109,7 @@ public class EndGameScreen implements Screen {
                 Y_OFFSET + 30);
 
         //crosses found count.
-        batch.draw(itemsTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.GOLDCROSS.ordinal() * GameEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET + 6);
 

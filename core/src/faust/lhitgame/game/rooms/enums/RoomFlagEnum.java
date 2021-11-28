@@ -10,7 +10,7 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public enum RoomFlagEnum {
-    GUARANTEED_MORGENGABE, //There must be a retrievable morgengabe
+    GUARANTEED_GOLDCROSS, //There must be a retrievable goldcross
     GUARDANTEED_BOUNDED, //There must be a Bounded enemy
     WITHOUT_HERBS, //Cannot have Herb POI inside
     GUARANTEED_HERBS, //There must be a Herb POI

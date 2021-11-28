@@ -105,7 +105,7 @@ public class FixedRoom extends AbstractRoom {
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
                 poiType, splashManager, assetManager,
-                roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE));
+                roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
 
         roomContent.poiList.add(instance);
 

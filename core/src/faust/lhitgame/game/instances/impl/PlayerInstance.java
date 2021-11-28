@@ -752,7 +752,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 herbsFound++;
                 break;
             }
-            case MORGENGABE: {
+            case GOLDCROSS: {
                 //Increase found Morgangabes
                 foundCrosses++;
                 break;

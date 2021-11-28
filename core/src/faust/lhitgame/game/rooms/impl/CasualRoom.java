@@ -57,7 +57,7 @@ public class CasualRoom extends AbstractRoom {
             mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
 
         } else {
-            if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_MORGENGABE)) {
+            if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS)) {
                 //pick only ones with skeleton poi
                 casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0, 2));
             } else if (roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {

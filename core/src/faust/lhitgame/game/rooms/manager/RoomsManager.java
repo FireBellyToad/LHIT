@@ -185,17 +185,17 @@ public class RoomsManager {
 
         if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld))) {
             //If unvisited rooms are less than the number of found crosses to find, guarantee them
-            final boolean guaranteedMorgengabe = player.getFoundCrosses() < 9 &&
+            final boolean guaranteedGoldcross = player.getFoundCrosses() < 9 &&
                     (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundCrosses()));
-            newRoomFlags.put(RoomFlagEnum.GUARANTEED_MORGENGABE, guaranteedMorgengabe);
+            newRoomFlags.put(RoomFlagEnum.GUARANTEED_GOLDCROSS, guaranteedGoldcross);
 
             //Only three herbs can be found
             final boolean canPlaceHerbs = player.getHerbsFound() < 3 &&
                     saveMap.values().stream().filter(roomSaveEntry -> CasualRoom.BUSH_MAPS.contains(roomSaveEntry.casualNumber)).count() < 3;
             newRoomFlags.put(RoomFlagEnum.WITHOUT_HERBS, !canPlaceHerbs);
 
-            //If unvisited rooms (priority is on morgengabe) are less than the number of found herbs to find, guarantee them
-            final boolean guaranteedHerb = canPlaceHerbs && !guaranteedMorgengabe &&
+            //If unvisited rooms (priority is on goldcross) are less than the number of found herbs to find, guarantee them
+            final boolean guaranteedHerb = canPlaceHerbs && !guaranteedGoldcross &&
                     (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getHerbsFound()));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_HERBS, guaranteedHerb);
 

@@ -33,7 +33,7 @@ public class Hud {
     private final Vector2 meterPosition = new Vector2(2.5f, LHITGame.GAME_HEIGHT - 10);
     private final Vector2 healthKitCountPosition = new Vector2(LHITGame.GAME_WIDTH - 10, LHITGame.GAME_HEIGHT - 4);
     private final Vector2 holyLancePiecesPosition = new Vector2(LHITGame.GAME_WIDTH - 30, LHITGame.GAME_HEIGHT - 4);
-    private final Vector2 morgengabeCountPosition = new Vector2(LHITGame.GAME_WIDTH - 50, LHITGame.GAME_HEIGHT - 4);
+    private final Vector2 goldcrossCountPosition = new Vector2(LHITGame.GAME_WIDTH - 50, LHITGame.GAME_HEIGHT - 4);
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color back = new Color(0x222222ff);
@@ -102,14 +102,14 @@ public class Hud {
 
 
         //crosses found count. Set in red if all has been found
-        batch.draw(hudTexture.getFrame(HudIconsEnum.MORGENGABE.ordinal() * GameEntity.FRAME_DURATION),
-                morgengabeCountPosition.x - 10,
-                morgengabeCountPosition.y - 6);
+        batch.draw(hudTexture.getFrame(HudIconsEnum.GOLDCROSS.ordinal() * GameEntity.FRAME_DURATION),
+                goldcrossCountPosition.x - 10,
+                goldcrossCountPosition.y - 6);
 
         textManager.getMainFont().draw(batch,
                 String.valueOf(player.getFoundCrosses()),
-                morgengabeCountPosition.x,
-                morgengabeCountPosition.y);
+                goldcrossCountPosition.x,
+                goldcrossCountPosition.y);
 
         //Holy lance pieces found count. Set in red if all has been found
         batch.draw(hudTexture.getFrame(HudIconsEnum.LANCE.ordinal() * GameEntity.FRAME_DURATION),

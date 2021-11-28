@@ -28,7 +28,7 @@ import java.util.Objects;
 public class POIInstance extends GameInstance {
 
 
-    private final boolean guaranteedMorgengabe; //flag gor guaranteed morgengabe
+    private final boolean guaranteedGoldcross; //flag gor guaranteed goldcross
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0; // flickering timer
@@ -38,14 +38,14 @@ public class POIInstance extends GameInstance {
     private final SplashManager splashManager;
 
 
-    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedMorgengabe) {
+    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedGoldcross) {
         super(new POIEntity(poiType, assetManager));
         this.textManager = textManager;
         this.startX = x;
         this.startY = y;
         this.isAlreadyExamined = false;
         this.splashManager = splashManager;
-        this.guaranteedMorgengabe = guaranteedMorgengabe;
+        this.guaranteedGoldcross = guaranteedGoldcross;
     }
 
     /**
@@ -112,7 +112,7 @@ public class POIInstance extends GameInstance {
     private boolean isRandomizedPOI() {
         switch (((POIEntity) entity).getType()){
             case SKELETON:
-                return !guaranteedMorgengabe; //Should be random only if not guaranteed!
+                return !guaranteedGoldcross; //Should be random only if not guaranteed!
             default:
                 return false;
         }

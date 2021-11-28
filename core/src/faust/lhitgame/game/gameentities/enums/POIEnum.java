@@ -1,7 +1,7 @@
 package faust.lhitgame.game.gameentities.enums;
 
 public enum POIEnum {
-    SKELETON("poi.skull",ItemEnum.MORGENGABE,"splash.morgengabe"),
+    SKELETON("poi.skull",ItemEnum.GOLDCROSS,"splash.goldcross"),
     BUSH("poi.bush",ItemEnum.HEALTH_KIT),
     SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy"),
     CADAVER("poi.cadaver",ItemEnum.ARMOR),

@@ -31,6 +31,10 @@
     {
       "splashKey": "splash.gameover",
       "splashPath": "splash/gameover_splash.png"
+    },
+    {
+      "splashKey": "splash.michael",
+      "splashPath": "splash/michael_splash.png"
     }
   ]
 }

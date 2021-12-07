@@ -277,7 +277,11 @@
     {
       "x": 6,
       "y": 6,
-      "roomType": "BOAT_DOWN"
+      "roomType": "BOAT_DOWN",
+      "boundaries": [{
+        "side": "LEFT",
+        "target": null
+      }]
     },
     {
       "x": 0,
@@ -327,12 +331,23 @@
     {
       "x": 5,
       "y": 7,
-      "roomType": "BOAT_LEFT"
+      "roomType": "BOAT_LEFT",
+      "boundaries": [{
+        "side": "UP",
+        "target": null
+      }]
     },
     {
       "x": 6,
       "y": 7,
-      "roomType": "BOAT"
+      "roomType": "BOAT",
+      "boundaries": [{
+        "side": "UP",
+        "target": null
+      },{
+        "side": "RIGHT",
+        "target": null
+      }]
     },
     {
       "x": 3,

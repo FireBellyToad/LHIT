@@ -8,7 +8,8 @@ package faust.lhitgame.game.rooms.enums;
 public enum MapLayersEnum {
     TERRAIN_LAYER("terrain"),
     OVERLAY_LAYER("overlay"),
-    OBJECT_LAYER("objects");
+    OBJECT_LAYER("objects"),
+    ECHO_LAYER("echo");
 
     private final String layerName;
 

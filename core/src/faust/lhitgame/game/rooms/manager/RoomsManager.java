@@ -91,7 +91,7 @@ public class RoomsManager {
                     JsonValue targetJson = b.get("target");
                     //Null if impassable
                     Vector2 target = null;
-                    if (Objects.nonNull(targetJson)) {
+                    if (Objects.nonNull(targetJson.child)) {
                         target = new Vector2();
                         target.x = targetJson.getInt("x");
                         target.y = targetJson.getInt("y");

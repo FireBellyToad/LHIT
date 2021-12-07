@@ -8,6 +8,10 @@ Missing:
 * Improve sound & music
 * Improve Animations
 
+# Download and play
+
+<a href="https://faust90.itch.io/lhit">Langobardia Horribilis: in Trebia by Faust</a>
+
 # Trailer
 
 [![LHIT Trailer](https://img.youtube.com/vi/tg6emgPyu2A/0.jpg)](https://www.youtube.com/watch?v=tg6emgPyu2A)

@@ -6,7 +6,8 @@ public enum POIEnum {
     SOIL("poi.soil",ItemEnum.HOLY_LANCE,"splash.holy"),
     CADAVER("poi.cadaver",ItemEnum.ARMOR),
     BROTHER("poi.brother"),
-    ECHO_CORPSE("poi.echocorpse");
+    ECHO_CORPSE("poi.echocorpse"),
+    MICHAEL("poi.michael", null,"splash.michael");
 
     private final String textKey;
     private final ItemEnum itemGiven;
@@ -35,14 +36,5 @@ public enum POIEnum {
 
     public String getSplashKey() {
         return splashKey;
-    }
-
-    public static POIEnum getFromString(String name) {
-        for (POIEnum e : POIEnum.values()) {
-            if (e.name().equals(name)) {
-                return e;
-            }
-        }
-        return null;
     }
 }

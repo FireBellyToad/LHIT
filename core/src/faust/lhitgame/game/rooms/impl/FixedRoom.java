@@ -98,7 +98,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     protected void addObjAsPOI(MapObject obj, TextBoxManager textManager, AssetManager assetManager) {
 
-        POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
+        POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
 
         POIInstance instance = new POIInstance(textManager,

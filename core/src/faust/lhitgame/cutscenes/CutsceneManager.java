@@ -193,7 +193,7 @@ public class CutsceneManager implements InputProcessor {
                 Objects.requireNonNull(decoType);
                 entity = new DecorationEntity(decoType, assetManager);
             } else if (obj.getName().equals(POIEntity.class.getSimpleName())) {
-                POIEnum poiType = POIEnum.getFromString((String) obj.getProperties().get("type"));
+                POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(poiType);
                 entity = new POIEntity(poiType, assetManager);
             } else if (obj.getName().equals(TutorialEntity.class.getSimpleName())) {

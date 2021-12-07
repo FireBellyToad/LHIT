@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="55">
  <editorsettings>
-  <export format="json"/>
+  <export target="." format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="1" name="terrain" width="10" height="9">
@@ -52,7 +52,7 @@
   <object id="53" name="DECO" type="IMPALED" x="121.273" y="78.1818">
    <point/>
   </object>
-  <object id="54" name="ECHO_ACTOR" type="WOMAN" x="80.1818" y="56">
+  <object id="54" name="POI" type="MICHAEL" x="77.1818" y="78">
    <point/>
   </object>
  </objectgroup>

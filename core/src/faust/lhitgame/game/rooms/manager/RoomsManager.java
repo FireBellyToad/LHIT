@@ -139,7 +139,7 @@ public class RoomsManager {
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
         // Safety check on y
-        if (finalY == 8 && finalX != 2) {
+        if (finalY == 8 && finalX != 3) {
             finalY--;
         }
 
@@ -272,9 +272,9 @@ public class RoomsManager {
             switchDirection = DirectionEnum.UP;
         } else if (playerPosition.y > LHITGame.GAME_HEIGHT * 0.45 &&
                 RoomTypeEnum.CHURCH_ENTRANCE.equals(currentRoom.getRoomType())) {
+            //FIXME should add door object?
             //Final room
-            newXPosInMatrix = 2;
-            newYPosInMatrix = 8;
+            switchDirection = DirectionEnum.UP;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
         }
 

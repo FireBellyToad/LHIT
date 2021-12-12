@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="151">
+ <editorsettings>
+  <export target="." format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="terrain.tsx"/>
+ <layer id="1" name="terrain" width="10" height="9">
+  <data encoding="csv">
+0,0,0,0,0,14,2,2,12,59,
+0,0,0,0,0,18,29,30,30,59,
+0,28,0,21,0,18,33,34,60,58,
+0,21,28,0,0,5,33,34,59,58,
+0,26,17,0,0,5,33,34,59,60,
+0,0,0,0,0,5,37,42,57,60,
+0,0,0,0,0,18,19,37,42,58,
+0,21,0,0,21,22,23,13,33,60,
+0,0,0,17,0,0,26,18,33,57
+</data>
+ </layer>
+ <objectgroup id="2" name="objects">
+  <object id="43" name="DECO" type="STONE_2" x="124.364" y="55.4546">
+   <point/>
+  </object>
+  <object id="44" name="WALL" x="0" y="0" width="160" height="16" visible="0"/>
+  <object id="45" name="WALL" x="144" y="0" width="16" height="144"/>
+  <object id="46" name="ENEMY" x="78.2955" y="81.4545">
+   <properties>
+    <property name="isEchoTrigger" type="bool" value="false"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="47" name="EMERGED" x="29.5" y="29.75">
+   <polygon points="102.25,-22 60.2614,-18.6477 60.5341,89.6704 118.773,88.182 116.682,-32.9091"/>
+  </object>
+  <object id="147" name="WALL" x="128.727" y="31.1818" width="16" height="56"/>
+  <object id="148" name="DECO" type="STONE_1" x="140.909" y="48.3636">
+   <point/>
+  </object>
+  <object id="149" name="DECO" type="STONE_1" x="126.727" y="76.7273">
+   <point/>
+  </object>
+  <object id="150" name="DECO" type="STONE_2" x="144.364" y="84.7273">
+   <point/>
+  </object>
+ </objectgroup>
+</map>

@@ -1,5 +1,6 @@
 package faust.lhitgame.game.rooms.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -32,13 +33,14 @@ public class CasualRoom extends AbstractRoom {
         this.add(1);
         this.add(5);
         this.add(6);
+        this.add(10);
     }};
     public static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
         this.add(3);
         this.add(8);
     }};
 
-    public static final int CASUAL_TOTAL = 9;
+    public static final int CASUAL_TOTAL = 11;
     private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum,Boolean> roomFlags, MusicManager musicManager) {
@@ -59,19 +61,21 @@ public class CasualRoom extends AbstractRoom {
         } else {
             if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS)) {
                 //pick only ones with skeleton poi
-                casualNumber = GOLDCROSS_MAPS.get(MathUtils.random(0, 2));
+                casualNumber = GOLDCROSS_MAPS.get(MathUtils.random(0, GOLDCROSS_MAPS.size()-1));
             } else if (roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {
                 //pick only ones without herbs in
-                while(BUSH_MAPS.contains(casualNumber)){
+                do {
                     casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
-                }
+                }while(BUSH_MAPS.contains(casualNumber));
             } else if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS)) {
                 //pick only ones with herbs in
-                casualNumber = BUSH_MAPS.get(MathUtils.random(0, 1));
+                casualNumber = BUSH_MAPS.get(MathUtils.random(0, BUSH_MAPS.size()-1));
             } else {
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             }
         }
+        Gdx.app.log("DEBUG", "casualNumber: " + casualNumber);
+
         //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
         casualNumber = MathUtils.clamp(casualNumber, 1, CasualRoom.CASUAL_TOTAL);
 

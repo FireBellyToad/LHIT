@@ -40,7 +40,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private static final float PLAYER_SPEED = 50;
     private static final float PLAYER_SPEED_SUBMERGED = 40;
-    private static final int EXAMINATION_DISTANCE = 40;
+    private static final int EXAMINATION_DISTANCE = 35;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;

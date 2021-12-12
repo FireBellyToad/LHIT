@@ -21,9 +21,9 @@ public enum RoomTypeEnum {
     START_POINT("start.tmx"),
     CRUCIFIED("crucified.tmx"),
     FINAL("final.tmx"),
+    BOAT_LEFT("boatLeft.tmx"),
+    BOAT_DOWN("boatDown.tmx"),
     //FIXME
-    BOAT_LEFT("crucified.tmx"),
-    BOAT_DOWN("crucified.tmx"),
     MASSACRE("crucified.tmx"),
     START_LEFT("startLeft.tmx"),
     START_RIGHT("startRight.tmx"),

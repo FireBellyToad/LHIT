@@ -7,7 +7,7 @@ public enum POIEnum {
     CADAVER("poi.cadaver",ItemEnum.ARMOR),
     BROTHER("poi.brother"),
     ECHO_CORPSE("poi.echocorpse"),
-    MICHAEL("poi.michael", null,"splash.michael");
+    MICHAEL("poi.michael", "splash.michael");
 
     private final String textKey;
     private final ItemEnum itemGiven;
@@ -24,6 +24,10 @@ public enum POIEnum {
 
     POIEnum(String textKey, ItemEnum itemGiven) {
         this(textKey, itemGiven, "");
+    }
+
+    POIEnum(String textKey, String splashKey) {
+        this(textKey, null, splashKey);
     }
 
     public String getTextKey() {

@@ -212,8 +212,9 @@ public abstract class AbstractRoom implements Spawner {
         POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("type"));
         Objects.requireNonNull(poiType);
 
-        Gdx.app.log("DEBUG", "guaranteedGoldcross: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
-        Gdx.app.log("DEBUG", "guaranteedHerbs: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
+        Gdx.app.log("DEBUG", "GUARANTEED_GOLDCROSS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
+        Gdx.app.log("DEBUG", "GUARANTEED_HERBS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
+        Gdx.app.log("DEBUG", "WITHOUT_HERBS: " + roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS));
 
         roomContent.poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),

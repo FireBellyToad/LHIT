@@ -279,7 +279,7 @@
       "y": 6,
       "roomType": "BOAT_DOWN",
       "boundaries": [{
-        "side": "LEFT",
+        "side": "RIGHT",
         "target": null
       }]
     },

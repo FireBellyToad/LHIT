@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
-    public static final List<Integer> MORGENGABIUM_MAPS = new ArrayList<Integer>() {{
+    public static final List<Integer> GOLDCROSS_MAPS = new ArrayList<Integer>() {{
         this.add(1);
         this.add(5);
         this.add(6);
@@ -59,10 +59,12 @@ public class CasualRoom extends AbstractRoom {
         } else {
             if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS)) {
                 //pick only ones with skeleton poi
-                casualNumber = MORGENGABIUM_MAPS.get(MathUtils.random(0, 2));
+                casualNumber = GOLDCROSS_MAPS.get(MathUtils.random(0, 2));
             } else if (roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS)) {
                 //pick only ones without herbs in
-                casualNumber =  MathUtils.randomBoolean() ? MathUtils.random(1,2) : MathUtils.random(4,7);
+                while(BUSH_MAPS.contains(casualNumber)){
+                    casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
+                }
             } else if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS)) {
                 //pick only ones with herbs in
                 casualNumber = BUSH_MAPS.get(MathUtils.random(0, 1));

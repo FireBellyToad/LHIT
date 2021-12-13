@@ -18,7 +18,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="43" name="DECO" type="STONE_2" x="117.273" y="65.091">
+  <object id="43" name="DECO" type="STONE_2" x="65.273" y="121.818">
    <point/>
   </object>
   <object id="45" name="WALL" x="0" y="0" width="160" height="16"/>

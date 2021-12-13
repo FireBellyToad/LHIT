@@ -63,7 +63,7 @@
   <object id="71" name="DECO" type="DEAD_TREE" x="53.8182" y="50">
    <point/>
   </object>
-  <object id="73" name="DECO" type="ALLY_CORPSE_2" x="79.6364" y="65.0909">
+  <object id="73" name="DECO" type="ALLY_CORPSE_1" x="79.6364" y="65.0909">
    <point/>
   </object>
  </objectgroup>

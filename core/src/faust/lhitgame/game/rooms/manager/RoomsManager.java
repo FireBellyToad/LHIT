@@ -276,6 +276,7 @@ public class RoomsManager {
             //Final room
             switchDirection = DirectionEnum.UP;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
+            saveFileManager.saveOnFile(player,saveMap);
         }
 
 

@@ -23,8 +23,7 @@ public enum RoomTypeEnum {
     FINAL("final.tmx"),
     BOAT_LEFT("boatLeft.tmx"),
     BOAT_DOWN("boatDown.tmx"),
-    //FIXME
-    MASSACRE("crucified.tmx"),
+    MASSACRE("massacre.tmx"),
     START_LEFT("startLeft.tmx"),
     START_RIGHT("startRight.tmx"),
     ;

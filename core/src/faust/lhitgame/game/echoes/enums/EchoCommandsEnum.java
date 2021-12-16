@@ -28,10 +28,10 @@ public enum EchoCommandsEnum {
     GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_AT_LEAST_ONE_PLAYER_DAMAGE_IS_LESS_THAN}),
     SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
 
-    private String commandString;
-    private Class<?> valueClass;
-    private EchoCommandsEnum[] subCommands;
-    private boolean isRequired;
+    private final String commandString;
+    private final Class<?> valueClass;
+    private final EchoCommandsEnum[] subCommands;
+    private final boolean isRequired;
 
 
     EchoCommandsEnum(String commandString, Class<?> valueClass) {

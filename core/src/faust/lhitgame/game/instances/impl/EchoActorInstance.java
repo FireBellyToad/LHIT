@@ -38,7 +38,6 @@ import java.util.Objects;
  */
 public class EchoActorInstance extends AnimatedInstance implements Interactable, Damager {
 
-    private final EchoesActorType echoesActorType;
     private boolean removeFromRoom = false;
     private boolean showTextBox = true;
     private float deltaTime = 0; // Time delta between step start and current
@@ -52,7 +51,6 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         this.startY = y;
         this.echoIsActive = false;
         this.spawner = spawner;
-        this.echoesActorType = echoesActorType;
 
         //get first step
         this.currentBehavior = ((EchoActorEntity) this.entity).getStepOrder().get(0);
@@ -217,8 +215,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         return null;
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
         switch (((EchoActorEntity) entity).getEchoesActorType()) {
             case DEAD_HAND:
             case DEAD_DOUBLE_HAND:

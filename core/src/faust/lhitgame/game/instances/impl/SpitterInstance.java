@@ -306,8 +306,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         }
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
 
         switch (currentBehavior) {
             case ATTACK: {

@@ -85,8 +85,7 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         }
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
         return stateTime;
     }
 

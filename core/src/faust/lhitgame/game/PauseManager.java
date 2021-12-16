@@ -6,18 +6,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import faust.lhitgame.LHITGame;
 import faust.lhitgame.game.instances.impl.PlayerInstance;
 import faust.lhitgame.game.music.MusicManager;
 import faust.lhitgame.game.rooms.manager.RoomsManager;
 import faust.lhitgame.menu.Menu;
 import faust.lhitgame.menu.enums.MenuItem;
-import faust.lhitgame.saves.RoomSaveEntry;
 import faust.lhitgame.saves.SaveFileManager;
 import faust.lhitgame.screens.MenuScreen;
-
-import java.util.Map;
 
 /**
  * @author Jacopo "Faust" Buttiglieri

@@ -61,14 +61,6 @@ public abstract class AnimatedInstance extends GameInstance {
         return currentBehavior;
     }
 
-    /**
-     * Alter state time for different animation speed based on current behaviour
-     *
-     * @param stateTime
-     * @return
-     */
-    protected abstract float mapStateTimeFromBehaviour(float stateTime);
-
     public int getDamage() {
         return damage;
     }

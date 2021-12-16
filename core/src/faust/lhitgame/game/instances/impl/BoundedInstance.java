@@ -453,8 +453,7 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         return isDead();
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
 
         switch (currentBehavior) {
             case ATTACK: {

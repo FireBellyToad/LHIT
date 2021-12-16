@@ -8,7 +8,6 @@ import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
@@ -29,13 +28,11 @@ public class ValidEcho {
      * @throws EchoScriptValidationException
      */
     public static void validate(JsonValue parsedSteps, String filename) throws EchoScriptValidationException {
-        String childName = null;
         int parsedStepNumber = 1;
         try {
             Objects.requireNonNull(parsedSteps);
 
             for (JsonValue s : parsedSteps) {
-                childName = Objects.nonNull(s.child) ? s.child.name : "";
                 inspect(s.child, filename, parsedStepNumber);
                 parsedStepNumber++;
             }

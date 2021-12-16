@@ -11,8 +11,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
-import faust.lhitgame.game.gameentities.enums.DirectionEnum;
-import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.utils.EchoScriptValidationException;
 import faust.lhitgame.utils.ValidEcho;
@@ -146,7 +144,7 @@ public class EchoActorEntity extends AnimatedEntity {
      * @return
      */
     public  Map<EchoCommandsEnum, Object> getCommandsForStep(GameBehavior step){
-        return commands.containsKey(step) ? commands.get(step) : null;
+        return commands.getOrDefault(step, null);
     }
 
     /**

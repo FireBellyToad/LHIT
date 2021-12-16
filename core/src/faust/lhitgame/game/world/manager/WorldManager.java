@@ -42,10 +42,6 @@ public class WorldManager {
         world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
     }
 
-    public World getWorld() {
-        return world;
-    }
-
     public void dispose() {
         world.dispose();
     }

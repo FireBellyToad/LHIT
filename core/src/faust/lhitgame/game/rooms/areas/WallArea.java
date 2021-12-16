@@ -18,10 +18,6 @@ public class WallArea {
         this.wallRect = wallRect;
     }
 
-    public Body getBody() {
-        return body;
-    }
-
     public void dispose() {
         this.body.getFixtureList().forEach(f ->
                 this.body.destroyFixture(f));

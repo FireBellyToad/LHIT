@@ -110,22 +110,6 @@ public class MusicManager {
     }
 
     /**
-     * Toggle music
-     *
-     * @return the current status of the music
-     */
-    public boolean toggleMusic() {
-        if (disableMusic) {
-            disableMusic = false;
-        } else {
-            disableMusic = true;
-            stopMusic();
-        }
-
-        return disableMusic;
-    }
-
-    /**
      * Pause all music
      */
     public void pauseMusic() {
@@ -141,9 +125,7 @@ public class MusicManager {
      * Pause all music
      */
     public void resumeMusic() {
-        pausedTunes.forEach((tune) -> {
-            musicMap.get(tune).play();
-        });
+        pausedTunes.forEach((tune) -> musicMap.get(tune).play());
 
         pausedTunes.clear();
     }

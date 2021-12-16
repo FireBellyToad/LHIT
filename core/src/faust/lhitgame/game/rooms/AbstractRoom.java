@@ -464,14 +464,6 @@ public abstract class AbstractRoom implements Spawner {
         return this.roomContent.poiList.stream().allMatch(POIInstance::isAlreadyExamined);
     }
 
-    /**
-     *
-     * @return
-     */
-    public List <AnimatedInstance> getEnemyList(){
-        return roomContent.enemyList;
-    }
-
     @Override
     public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY, String instanceIdentifierEnum) {
 
@@ -498,14 +490,6 @@ public abstract class AbstractRoom implements Spawner {
         } else if (instanceClass.equals(PortalInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
         }
-    }
-
-    /**
-     *
-     * @return musicManager
-     */
-    public MusicManager getMusicManager() {
-        return musicManager;
     }
 
     public abstract void onRoomLeave();

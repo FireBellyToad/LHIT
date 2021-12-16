@@ -33,7 +33,6 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
 
     private static final float WILLOWISP_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;
-    private static final int LINE_OF_SIGHT = 70;
     private static final float TENTALCE_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 2; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 850; // in millis
@@ -453,8 +452,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
         return isDead();
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
 
         switch (currentBehavior) {
             case IDLE:

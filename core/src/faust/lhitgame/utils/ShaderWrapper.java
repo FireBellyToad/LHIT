@@ -69,10 +69,6 @@ public class ShaderWrapper {
         batch.setShader(shaderProgram);
     }
 
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
-    }
-
     /**
      * resets default shader on batch
      *
@@ -85,11 +81,4 @@ public class ShaderWrapper {
         shaderProgram.end();
     }
 
-    /**
-     * Dispose
-     */
-    public void dispose(){
-        flags.clear();
-        shaderProgram.dispose();
-    }
 }

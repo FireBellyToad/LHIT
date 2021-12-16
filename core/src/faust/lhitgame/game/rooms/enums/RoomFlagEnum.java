@@ -35,27 +35,4 @@ public enum RoomFlagEnum {
             return roomFlags;
 
     }
-
-    /**
-     *
-     * @param name
-     * @return true if value string is valdi enum
-     */
-    public static boolean isValidFlag(String name){
-        return !Objects.isNull(getFromString(name));
-    }
-
-    /**
-     * Extract enum from string
-     * @param name
-     * @return
-     */
-    public static RoomFlagEnum getFromString(String name) {
-        for (RoomFlagEnum e : values()) {
-            if (e.name().equals(name)) {
-                return e;
-            }
-        }
-        return null;
-    }
 }

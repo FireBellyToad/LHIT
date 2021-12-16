@@ -26,8 +26,7 @@ public class PortalInstance extends AnimatedInstance {
         //Nothing to do here...
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
         return stateTime;
     }
 

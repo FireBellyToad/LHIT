@@ -1,8 +1,5 @@
 package faust.lhitgame.game.rooms;
 
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.impl.DecorationInstance;
 import faust.lhitgame.game.instances.impl.POIInstance;

@@ -389,7 +389,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @param stateTime
      * @return
      */
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
         switch (currentBehavior) {
             case DEAD: {
                 return stateTime - attackDeltaTime;
@@ -887,6 +887,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         downSpearBody.getFixtureList().forEach(f ->
                 downSpearBody.destroyFixture(f));
         waterWalkEffect.dispose();
+
     }
 
     @Override

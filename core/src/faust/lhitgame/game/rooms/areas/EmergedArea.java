@@ -24,10 +24,6 @@ public class EmergedArea {
         this.polygonShape.set(polygon.getVertices());
     }
 
-    public Body getBody() {
-        return body;
-    }
-
     public void dispose() {
         this.body.getFixtureList().forEach(f ->
                 this.body.destroyFixture(f));

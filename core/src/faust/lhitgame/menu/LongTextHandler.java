@@ -1,11 +1,8 @@
 package faust.lhitgame.menu;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import faust.lhitgame.LHITGame;
 import faust.lhitgame.utils.TextLocalizer;
 
@@ -37,7 +34,7 @@ public class LongTextHandler  {
         mainFont.getData().setScale(FONT_SIZE);
     }
 
-    public void drawCurrentintro(SpriteBatch batch, OrthographicCamera camera) {
+    public void drawCurrentintro(SpriteBatch batch) {
         //TODO maybe should be nice to have fading text?
         mainFont.draw(batch, textLocalizer.localizeFromKey("cutscenes", longTextKey + ".text." + (currentStep + 1)),
                 X_OFFSET, LHITGame.GAME_HEIGHT - Y_OFFSET);

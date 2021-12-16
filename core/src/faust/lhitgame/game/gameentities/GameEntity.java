@@ -21,10 +21,6 @@ public abstract class GameEntity {
         this.texture = texture;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
-
     protected TextureRegion[] getFramesFromTexture() {
         // Use the split utility method to create a 2D array of TextureRegions.
         // The sprite sheet MUST contain frames of equal size and they MUST be

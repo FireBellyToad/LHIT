@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +21,4 @@ public class RoomModel {
         this.type = type;
     }
 
-    public RoomModel(RoomTypeEnum type){
-        this(new HashMap<>(),type);
-    }
 }

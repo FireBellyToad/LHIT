@@ -146,8 +146,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
         return 2; // harmless! just bounce player
     }
 
-    @Override
-    protected float mapStateTimeFromBehaviour(float stateTime) {
+    private float mapStateTimeFromBehaviour(float stateTime) {
         return stateTime * 0.75f;
     }
 

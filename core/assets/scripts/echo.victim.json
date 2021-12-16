@@ -9,6 +9,9 @@
     {
     },
     {
+      "spawn": {
+        "identifier": "ECHO_CORPSE"
+      }
     }
   ]
 }

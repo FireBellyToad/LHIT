@@ -16,6 +16,7 @@ import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
+import faust.lhitgame.game.gameentities.enums.POIEnum;
 import faust.lhitgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;
 import faust.lhitgame.game.gameentities.interfaces.Killable;
@@ -110,7 +111,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                 showTextBox = true;
             } else {
                 removeFromRoom = true;
-                spawnInstancesOnEnd();
+                spawnInstancesOnEnd(commands);
                 Gdx.app.log("DEBUG", "Echo Actor " + ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
             }
         }
@@ -151,18 +152,36 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
     /**
      * Spawn instance if doable
+     * @param commands
      */
-    private void spawnInstancesOnEnd() {
-        //FIXME do by script not echotype
-        switch (echoesActorType) {
-            case VICTIM: {
-                spawner.spawnInstance(POIInstance.class, startX, startY + 8);
-                break;
-            }
-            case HORROR_BODY: {
-                spawner.spawnInstance(WillowispInstance.class, startX, startY + 8);
-                break;
-            }
+    private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
+
+        if(!commands.containsKey(EchoCommandsEnum.IDENTIFIER))
+            return;
+
+        //FIXME use class name
+        String thingName = (String) commands.get(EchoCommandsEnum.IDENTIFIER);
+        EnemyEnum enemyEnum = null;
+        POIEnum poiEnum = null;
+
+        try{
+            enemyEnum = EnemyEnum.valueOf(thingName);
+        }catch (Exception e){
+            //Nothing to do here...
+        }
+        try{
+            poiEnum = POIEnum.valueOf(thingName);
+        }catch (Exception e){
+            //Nothing to do here...
+        }
+
+        //FIXME use position from script
+        if(Objects.isNull(enemyEnum) && Objects.isNull(poiEnum)){
+            throw new IllegalArgumentException("EchoActorInstance::spawnInstancesOnEnd thingName " + thingName +" is not valid POI or Enemy!");
+        } else if(Objects.nonNull(enemyEnum)) {
+            spawner.spawnInstance(enemyEnum.getInstanceClass(), startX, startY + 8,enemyEnum.name());
+        } else if(Objects.nonNull(poiEnum)) {
+            spawner.spawnInstance(POIInstance.class, startX, startY + 8, poiEnum.name());
         }
     }
 

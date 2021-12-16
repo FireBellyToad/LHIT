@@ -1,7 +1,5 @@
 package faust.lhitgame.game.echoes.enums;
 
-import com.badlogic.gdx.utils.JsonValue;
-
 /**
  * Valid Echo commands enum
  *
@@ -19,14 +17,15 @@ public enum EchoCommandsEnum {
     UNTIL_AT_LEAST_ONE_POI_EXAMINABLE("untilAtLeastOnePOIExaminable", Integer.class),
     UNTIL_AT_LEAST_ONE_PLAYER_DAMAGE_IS_LESS_THAN("untilAtLeastPlayerDamageIsLessThan", Integer.class),
     SPLASH_TO_SHOW("splashToShow", String.class),
-    INSTANCE("instance", String.class, true),
-    X("instance", Integer.class),
-    Y("instance", Integer.class),
+    INSTANCE_CLASS("instanceClass", String.class, true),
+    IDENTIFIER("identifier", String.class, true),
+    X("x", Integer.class),
+    Y("y", Integer.class),
 
     //Composite
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),
     GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_AT_LEAST_ONE_PLAYER_DAMAGE_IS_LESS_THAN}),
-    SPAWN("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{INSTANCE, X, Y});
+    SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y});
 
     private String commandString;
     private Class<?> valueClass;

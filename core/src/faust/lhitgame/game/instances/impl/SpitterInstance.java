@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.SpitterEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;
@@ -256,7 +257,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void hurt(GameInstance attacker) {
         if (isDying()) {
             ((SpitterEntity) entity).playDeathCry();
-            spawner.spawnInstance(PortalInstance.class, this.startX, this.startY);
+            spawner.spawnInstance(PortalInstance.class, this.startX, this.startY, EnemyEnum.PORTAL.name());
             isDead = true;
             currentBehavior = GameBehavior.DEAD;
         } else if (!GameBehavior.HURT.equals(currentBehavior)) {
@@ -296,7 +297,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
             ((SpitterEntity) entity).playSpitSound();
-            spawner.spawnInstance(MeatInstance.class, this.startX, this.startY);
+            spawner.spawnInstance(MeatInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
             canAttack = false;
         }
         // Resetting Behaviour on animation end

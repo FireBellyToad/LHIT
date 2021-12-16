@@ -7,5 +7,5 @@ package faust.lhitgame.game.instances;
  */
 public interface Spawner {
 
-    <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY);
+    <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY, String instanceIdentifierEnum);
 }

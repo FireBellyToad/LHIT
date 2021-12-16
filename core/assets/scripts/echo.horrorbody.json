@@ -5,6 +5,9 @@
     {
     },
     {
+      "spawn": {
+        "identifier": "WILLOWISP"
+      }
     }
   ]
 }

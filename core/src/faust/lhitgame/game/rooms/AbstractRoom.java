@@ -54,14 +54,6 @@ public abstract class AbstractRoom implements Spawner {
     public static final float RIGHT_BOUNDARY = LHITGame.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHITGame.GAME_HEIGHT - 24;
 
-    // Permitted spawnable instances
-    protected static final Map<String, String> permittedSpawnableInstance = new HashMap<String, String>() {{
-        this.put(MeatInstance.class.getSimpleName(), EnemyEnum.MEAT.name());
-        this.put(PortalInstance.class.getSimpleName(), EnemyEnum.PORTAL.name());
-        this.put(POIInstance.class.getSimpleName(), POIEnum.ECHO_CORPSE.name());
-        this.put(WillowispInstance.class.getSimpleName(), EnemyEnum.WILLOWISP.name());
-    }};
-
     protected TiledMap tiledMap;
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
     protected final MapObjects mapObjects;
@@ -481,7 +473,7 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     @Override
-    public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY) {
+    public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY, String instanceIdentifierEnum) {
 
         if (!Objects.isNull(addedInstance)) {
             return;
@@ -491,7 +483,7 @@ public abstract class AbstractRoom implements Spawner {
         final MapObject mapObjectStub = new MapObject();
         mapObjectStub.getProperties().put("x", startX);
         mapObjectStub.getProperties().put("y", startY);
-        mapObjectStub.getProperties().put("type", permittedSpawnableInstance.get(instanceClass.getSimpleName()));
+        mapObjectStub.getProperties().put("type", instanceIdentifierEnum);
 
         //Insert last enemy into world
         if (instanceClass.equals(MeatInstance.class) || instanceClass.equals(WillowispInstance.class)) {

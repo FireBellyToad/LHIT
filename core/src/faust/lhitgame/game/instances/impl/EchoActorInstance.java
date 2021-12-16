@@ -20,7 +20,6 @@ import faust.lhitgame.game.gameentities.interfaces.Killable;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.Spawner;
 import faust.lhitgame.game.instances.interfaces.Interactable;
-import faust.lhitgame.game.rooms.AbstractRoom;
 import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.game.world.manager.CollisionManager;
 
@@ -102,7 +101,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     /**
      * New step from logics
      * @param stepOrder
-     * @param currentRoom
+     * @param roomContent
      * @return
      */
     private int getNewIndex(List<GameBehavior> stepOrder, RoomContent roomContent) {
@@ -111,9 +110,9 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
 
             //Check condition on until there is at least one enemy of type is alive in room
-            if(Objects.nonNull(((EchoActorEntity) entity).getUntilAtLeastOneFromStep(currentBehavior))) {
+            if(Objects.nonNull(((EchoActorEntity) entity).getUntilAtLeastOneKillableFromStep(currentBehavior))) {
                 //Extract instance class from enum and do check
-                Class<? extends AnimatedInstance> enemyClass = ((EchoActorEntity) entity).getUntilAtLeastOneFromStep(currentBehavior).getInstanceClass();
+                Class<? extends AnimatedInstance> enemyClass = ((EchoActorEntity) entity).getUntilAtLeastOneKillableFromStep(currentBehavior).getInstanceClass();
                 if(roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable)e).isDead())){
                     //if true, go to step
                     return stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));

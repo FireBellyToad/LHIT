@@ -9,7 +9,9 @@
     {
     },
     {
-      "goToStep" : 0
+      "goTo" :{
+        "step": 0
+      }
     }
   ]
 }

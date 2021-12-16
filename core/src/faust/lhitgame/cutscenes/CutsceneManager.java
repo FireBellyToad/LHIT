@@ -175,21 +175,21 @@ public class CutsceneManager implements InputProcessor {
 
                 }
                 entity = new PlayerEntity(assetManager);
-                behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
-                direction = DirectionEnum.getFromString((String) obj.getProperties().get("direction"));
+                behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
+                direction = DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
                 if (Objects.isNull(direction)) {
                     direction = DirectionEnum.UNUSED;
                 }
             } else if (obj.getName().equals(HiveEntity.class.getSimpleName())) {
                 entity = new HiveEntity(assetManager);
-                behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
+                behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
                 direction = DirectionEnum.UNUSED;
             } else if (obj.getName().equals(PortalEntity.class.getSimpleName())) {
                 entity = new PortalEntity(assetManager);
                 behavior = GameBehavior.IDLE;
                 direction = DirectionEnum.UNUSED;
             } else if (obj.getName().equals(DecorationEntity.class.getSimpleName())) {
-                DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+                DecorationsEnum decoType = DecorationsEnum.valueOf((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(decoType);
                 entity = new DecorationEntity(decoType, assetManager);
             } else if (obj.getName().equals(POIEntity.class.getSimpleName())) {
@@ -198,8 +198,8 @@ public class CutsceneManager implements InputProcessor {
                 entity = new POIEntity(poiType, assetManager);
             } else if (obj.getName().equals(TutorialEntity.class.getSimpleName())) {
                 entity = new TutorialEntity(assetManager);
-                behavior = GameBehavior.getFromString((String) obj.getProperties().get("behavior"));
-                direction = DirectionEnum.getFromString((String) obj.getProperties().get("direction"));
+                behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
+                direction = DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
                 if (Objects.isNull(direction)) {
                     direction = DirectionEnum.UNUSED;
                 }

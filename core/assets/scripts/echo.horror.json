@@ -7,8 +7,10 @@
     {
     },
     {
-      "goToStep" : 1,
-      "untilAtLeastOne": "WILLOWISP"
+      "goTo" :{
+        "step": 1,
+        "untilAtLeastOneKillableAlive": "WILLOWISP"
+      }
     }
   ]
 }

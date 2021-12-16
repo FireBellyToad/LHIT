@@ -79,7 +79,7 @@ public class RoomsManager {
 
         terrains.forEach((t) -> {
             Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
-            RoomTypeEnum type = RoomTypeEnum.getFromString(t.getString("roomType"));
+            RoomTypeEnum type = RoomTypeEnum.valueOf(t.getString("roomType"));
             Objects.requireNonNull(type);
 
             //Parsing boundaries
@@ -96,7 +96,7 @@ public class RoomsManager {
                         target.x = targetJson.getInt("x");
                         target.y = targetJson.getInt("y");
                     }
-                    DirectionEnum side = DirectionEnum.getFromString(b.getString("side"));
+                    DirectionEnum side = DirectionEnum.valueOf(b.getString("side"));
                     Objects.requireNonNull(side);
                     boundaries.put(side, target);
                 });

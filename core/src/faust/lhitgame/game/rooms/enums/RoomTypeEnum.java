@@ -48,13 +48,4 @@ public enum RoomTypeEnum {
     public String getMapFileName() {
         return mapFileName;
     }
-
-    public static RoomTypeEnum getFromString(String name) {
-        for (RoomTypeEnum e : RoomTypeEnum.values()) {
-            if (e.name().equals(name)) {
-                return e;
-            }
-        }
-        return null;
-    }
 }

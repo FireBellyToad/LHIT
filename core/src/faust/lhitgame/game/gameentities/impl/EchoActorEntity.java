@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
@@ -13,6 +14,7 @@ import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
+import faust.lhitgame.utils.EchoScriptValidationException;
 import faust.lhitgame.utils.ValidEcho;
 
 import java.util.*;
@@ -50,7 +52,13 @@ public class EchoActorEntity extends AnimatedEntity {
 
         JsonValue parsedSteps = new JsonReader().parse(Gdx.files.internal("scripts/" + echoesActorType.getFilename())).get("steps");
 
-        ValidEcho.validate(parsedSteps, echoesActorType.getFilename());
+        //Validate on the run
+        try {
+            ValidEcho.validate(parsedSteps, echoesActorType.getFilename());
+        } catch (EchoScriptValidationException e) {
+            //If validation fails, stop game
+            throw new GdxRuntimeException(e);
+        }
 
         //Precalculate rows from steps
         precalculatedRows = parsedSteps.size;

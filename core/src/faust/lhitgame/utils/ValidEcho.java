@@ -4,11 +4,16 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
+import faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import faust.lhitgame.game.gameentities.enums.EnemyEnum;
+import faust.lhitgame.game.gameentities.enums.POIEnum;
+import faust.lhitgame.game.rooms.enums.MapLayersEnum;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -59,10 +64,19 @@ public class ValidEcho {
 
                 EchoCommandsEnum extractedCommand = EchoCommandsEnum.getFromCommandString(child.name());
 
-                if (Objects.nonNull(extractedCommand)) {
+                //parent structure validation
+                if (Objects.nonNull(child.parent)) {
+                    EchoCommandsEnum extractedParent = EchoCommandsEnum.getFromCommandString(child.parent.name());
+                    if (Objects.nonNull(extractedParent)) {
+                        if (Objects.nonNull(extractedParent.getSubCommands()) && Arrays.stream(extractedParent.getSubCommands()).noneMatch(c -> extractedCommand.equals(c))) {
+                            throw new IllegalArgumentException(extractedCommand.getCommandString() + " is not a child of " + extractedParent.getCommandString());
+                        }
+                    }
+                }
 
-                    //get value
-                    Object extractedValue = null;
+                //get value
+                Object extractedValue = null;
+                if (Objects.nonNull(extractedCommand)) {
 
                     //Valid extractedValue check
                     if (extractedCommand.getValueClass().equals(String.class)) {
@@ -72,22 +86,52 @@ public class ValidEcho {
                     } else if (extractedCommand.getValueClass().equals(Boolean.class)) {
                         extractedValue = child.asBoolean();
                     } else if (extractedCommand.getValueClass().equals(EchoCommandsEnum.class)) {
-                        //Recursion for children extractedCommands
-                        inspect(child.child, filename, parsedStepNumber);
-                    }
 
-                    //is required check
-                    if (extractedCommand.isRequired() && Objects.isNull(extractedValue)) {
-                        throw new NullPointerException(extractedCommand.getCommandString() + " is required!");
-                    }
-
-                    //is required check on suncommands
-                    if (Objects.nonNull(extractedCommand.getSubCommands())) {
+                        //is required check on suncommands
                         for (EchoCommandsEnum subCommand : extractedCommand.getSubCommands()) {
                             if (subCommand.isRequired() && !child.has(subCommand.getCommandString())) {
                                 throw new NullPointerException(subCommand.getCommandString() + " is required!");
                             }
                         }
+
+                        //Recursion for children extractedCommands
+                        inspect(child.child, filename, parsedStepNumber);
+                    }
+                }
+
+                //String values validation
+                switch (extractedCommand) {
+                    case DIRECTION: {
+                        DirectionEnum.valueOf((String) extractedValue);
+                        break;
+                    }
+                    case RENDER_ONLY_MAP_LAYER: {
+                        MapLayersEnum.valueOf((String) extractedValue);
+                        break;
+                    }
+                    case UNTIL_AT_LEAST_ONE_POI_EXAMINABLE: {
+                        POIEnum.valueOf((String) extractedValue);
+                        break;
+                    }
+                    case IDENTIFIER: {
+
+                        EnemyEnum enemyEnum = null;
+                        POIEnum poiEnum = null;
+
+                        try {
+                            enemyEnum = EnemyEnum.valueOf((String) extractedValue);
+                        } catch (Exception e) {
+                            //Nothing to do here...
+                        }
+                        try {
+                            poiEnum = POIEnum.valueOf((String) extractedValue);
+                        } catch (Exception e) {
+                            //Nothing to do here...
+                        }
+                        if (Objects.isNull(enemyEnum) && Objects.isNull(poiEnum)) {
+                            throw new IllegalArgumentException(extractedValue + " is not valid POI or Enemy!");
+                        }
+                        break;
                     }
                 }
 
@@ -119,20 +163,20 @@ public class ValidEcho {
         JsonReader reader = new JsonReader();
         try {
 
-        for (EchoesActorType echoesActorType : EchoesActorType.values()) {
-            //Read file
-            List<String> lines = Files.readAllLines(Paths.get("E:/Repositories/LHIP/core/assets/scripts/" + echoesActorType.getFilename()), Charset.defaultCharset());
-            String content = lines.stream().collect(Collectors.joining("\n"));
-            // start validate
-            JsonValue parsedSteps = reader.parse(content).get("steps");
-            validate(parsedSteps, echoesActorType.getFilename());
-        }
+            for (EchoesActorType echoesActorType : EchoesActorType.values()) {
+                //Read file
+                List<String> lines = Files.readAllLines(Paths.get("E:/Repositories/LHIP/core/assets/scripts/" + echoesActorType.getFilename()), Charset.defaultCharset());
+                String content = lines.stream().collect(Collectors.joining("\n"));
+                // start validate
+                JsonValue parsedSteps = reader.parse(content).get("steps");
+                validate(parsedSteps, echoesActorType.getFilename());
+            }
 
-        System.out.println("------------------------------------------------------");
-        System.out.println("All Echoes scripts are valid!");
-        System.out.println("------------------------------------------------------");
+            System.out.println("------------------------------------------------------");
+            System.out.println("All Echoes scripts are valid!");
+            System.out.println("------------------------------------------------------");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("------------------------------------------------------");
             System.out.println(e.getMessage());
             System.out.println("------------------------------------------------------");

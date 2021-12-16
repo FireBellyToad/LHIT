@@ -14,7 +14,7 @@ public enum EchoCommandsEnum {
     STEP("step", Integer.class, true),
     TIMES("times", Integer.class),
     UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE("untilAtLeastOneKillableAlive", String.class),
-    UNTIL_AT_LEAST_ONE_POI_EXAMINABLE("untilAtLeastOnePOIExaminable", Integer.class),
+    UNTIL_AT_LEAST_ONE_POI_EXAMINABLE("untilAtLeastOnePOIExaminable", String.class),
     UNTIL_AT_LEAST_ONE_PLAYER_DAMAGE_IS_LESS_THAN("untilAtLeastPlayerDamageIsLessThan", Integer.class),
     SPLASH_TO_SHOW("splashToShow", String.class),
     INSTANCE_CLASS("instanceClass", String.class, true),

@@ -97,7 +97,7 @@ public class CutsceneManager implements InputProcessor {
         actors.forEach(actor -> actor.draw(batch, stateTime));
 
         batch.begin();
-        longTextHandler.drawCurrentintro(batch);
+        longTextHandler.drawCurrentText(batch);
         batch.end();
 
     }

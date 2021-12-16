@@ -187,9 +187,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             spawnY = useRelative ? spawnY + value : value;
         }
 
-        if(Objects.isNull(enemyEnum) && Objects.isNull(poiEnum)){
-            throw new IllegalArgumentException("EchoActorInstance::spawnInstancesOnEnd thingName " + thingName +" is not valid POI or Enemy!");
-        } else if(Objects.nonNull(enemyEnum)) {
+         if(Objects.nonNull(enemyEnum)) {
             spawner.spawnInstance(enemyEnum.getInstanceClass(), spawnX, spawnY,enemyEnum.name());
         } else if(Objects.nonNull(poiEnum)) {
             spawner.spawnInstance(POIInstance.class, spawnX, spawnY, poiEnum.name());

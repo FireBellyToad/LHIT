@@ -355,6 +355,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirectionEnum,
                 mapStateTimeFromBehaviour(stateTime), !GameBehavior.DEAD.equals(currentBehavior));
 
+        //Get shader and set parameters
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
         shader.addFlag("hasArmor", hasArmor);
         shader.addFlag("hasHolyLance", holyLancePieces == 2);

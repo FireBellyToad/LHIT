@@ -28,13 +28,22 @@ public class LongTextHandler  {
         this.longTextKey = longTextKey;
     }
 
+    /**
+     * Load fonts from asset manager
+     *
+     * @param assetManager
+     */
     public void loadFonts(AssetManager assetManager) {
         // Prepare font
         mainFont = assetManager.get("fonts/main_font.fnt");
         mainFont.getData().setScale(FONT_SIZE);
     }
 
-    public void drawCurrentintro(SpriteBatch batch) {
+    /**
+     * Draws current text. Batch should begin before and end after this method call.
+     * @param batch
+     */
+    public void drawCurrentText(SpriteBatch batch) {
         //TODO maybe should be nice to have fading text?
         mainFont.draw(batch, textLocalizer.localizeFromKey("cutscenes", longTextKey + ".text." + (currentStep + 1)),
                 X_OFFSET, LHITGame.GAME_HEIGHT - Y_OFFSET);

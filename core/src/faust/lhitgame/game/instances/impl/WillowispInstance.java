@@ -68,7 +68,7 @@ public class WillowispInstance extends AnimatedInstance implements Interactable,
         if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
 
-            //Wait in visible idle before attacking
+            //Wait in visible IDLE before attacking
             if (!GameBehavior.IDLE.equals(currentBehavior) && !GameBehavior.ATTACK.equals(currentBehavior)) {
                 currentBehavior = GameBehavior.IDLE;
                 attackDeltaTime = stateTime;

@@ -175,13 +175,26 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             //Nothing to do here...
         }
 
-        //FIXME use position from script
+        //Set spawn coordinates
+        float spawnX = startX;
+        float spawnY = startY;
+        boolean useRelative = commands.containsKey(EchoCommandsEnum.RELATIVE) && (boolean) commands.get(EchoCommandsEnum.RELATIVE) ;
+
+        if(commands.containsKey(EchoCommandsEnum.X)){
+            final int value = (int) commands.get(EchoCommandsEnum.X);
+            spawnX = useRelative ? spawnX + value : value;
+        }
+        if(commands.containsKey(EchoCommandsEnum.Y)){
+            final int value = (int) commands.get(EchoCommandsEnum.Y);
+            spawnY = useRelative ? spawnY + value : value;
+        }
+
         if(Objects.isNull(enemyEnum) && Objects.isNull(poiEnum)){
             throw new IllegalArgumentException("EchoActorInstance::spawnInstancesOnEnd thingName " + thingName +" is not valid POI or Enemy!");
         } else if(Objects.nonNull(enemyEnum)) {
-            spawner.spawnInstance(enemyEnum.getInstanceClass(), startX, startY + 8,enemyEnum.name());
+            spawner.spawnInstance(enemyEnum.getInstanceClass(), spawnX, spawnY,enemyEnum.name());
         } else if(Objects.nonNull(poiEnum)) {
-            spawner.spawnInstance(POIInstance.class, startX, startY + 8, poiEnum.name());
+            spawner.spawnInstance(POIInstance.class, spawnX, spawnY, poiEnum.name());
         }
     }
 

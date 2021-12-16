@@ -6,7 +6,9 @@
     },
     {
       "spawn": {
-        "identifier": "WILLOWISP"
+        "identifier": "WILLOWISP",
+        "y" : 8,
+        "relative": true
       }
     }
   ]

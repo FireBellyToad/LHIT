@@ -10,7 +10,9 @@
     },
     {
       "spawn": {
-        "identifier": "ECHO_CORPSE"
+        "identifier": "ECHO_CORPSE",
+        "y" : 8,
+        "relative": true
       }
     }
   ]

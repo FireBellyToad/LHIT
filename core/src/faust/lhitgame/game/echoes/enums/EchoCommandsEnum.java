@@ -21,11 +21,12 @@ public enum EchoCommandsEnum {
     IDENTIFIER("identifier", String.class, true),
     X("x", Integer.class),
     Y("y", Integer.class),
+    RELATIVE("relative", Boolean.class),
 
     //Composite
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),
     GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_AT_LEAST_ONE_PLAYER_DAMAGE_IS_LESS_THAN}),
-    SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y});
+    SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
 
     private String commandString;
     private Class<?> valueClass;

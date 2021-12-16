@@ -91,7 +91,9 @@ public class EchoActorEntity extends AnimatedEntity {
                     values.put(extractedCommand, jsonValue.asString());
                 } else if (extractedCommand.getValueClass().equals(Integer.class)) {
                     values.put(extractedCommand, jsonValue.asInt());
-                } else if (extractedCommand.getValueClass().equals(EchoCommandsEnum.class)) {
+                } else if (extractedCommand.getValueClass().equals(Boolean.class)) {
+                    values.put(extractedCommand, jsonValue.asBoolean());
+                }  else if (extractedCommand.getValueClass().equals(EchoCommandsEnum.class)) {
                     extractValue(values, jsonValue.child);
                 }
 

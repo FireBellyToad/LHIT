@@ -10,9 +10,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.AnimatedEntity;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.EchoActorEntity;
 import faust.lhitgame.game.gameentities.interfaces.Damager;
@@ -24,6 +26,7 @@ import faust.lhitgame.game.rooms.RoomContent;
 import faust.lhitgame.game.world.manager.CollisionManager;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -51,19 +54,19 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         this.echoesActorType = echoesActorType;
 
         //get first step
-        this.currentBehavior = ((EchoActorEntity)this.entity).getStepOrder().get(0);
+        this.currentBehavior = ((EchoActorEntity) this.entity).getStepOrder().get(0);
     }
 
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
         // If must be removed, avoid logic
-        if(removeFromRoom){
+        if (removeFromRoom) {
             return;
         }
 
         //Check if echo is active. On first iteration set to true
-        if(!echoIsActive){
+        if (!echoIsActive) {
             echoIsActive = true;
         }
 
@@ -71,55 +74,73 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         if (deltaTime == 0)
             deltaTime = stateTime;
 
+        //All commands to do in this step
+        executeCommands(((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior), roomContent, stateTime);
+
+    }
+
+    /**
+     * Executes all the commands in one step
+     *
+     * @param commands    the commands - values Map
+     * @param roomContent the room contents
+     * @param stateTime stateTime of the main loop
+     */
+    private void executeCommands(final Map<EchoCommandsEnum, Object> commands, RoomContent roomContent, float stateTime) {
         //Move if should
-        if(((EchoActorEntity)this.entity).mustMoveInStep(currentBehavior)){
-            body.setLinearVelocity(getVelocityOfStep(((EchoActorEntity)this.entity).getDirection(currentBehavior)));
+        if (commands.containsKey(EchoCommandsEnum.DIRECTION) && commands.containsKey(EchoCommandsEnum.SPEED)) {
+            DirectionEnum directionEnum = DirectionEnum.valueOf((String) commands.get(EchoCommandsEnum.DIRECTION));
+            float speed = (Integer) commands.get(EchoCommandsEnum.SPEED);
+            body.setLinearVelocity(getVelocityOfStep(directionEnum, speed));
         } else {
-            body.setLinearVelocity(0,0);
+            body.setLinearVelocity(0, 0);
         }
 
         //If animation is finished pass to the next step
-       if (((EchoActorEntity)this.entity).isAnimationFinished(currentBehavior,mapStateTimeFromBehaviour(stateTime))){
-           final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
-           int index = getNewIndex(stepOrder, roomContent);
+        if (((EchoActorEntity) this.entity).isAnimationFinished(currentBehavior, mapStateTimeFromBehaviour(stateTime))) {
+            final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
+            int index = getNewIndex(stepOrder, commands, roomContent);
 
-           Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " end step "+ currentBehavior);
+            Gdx.app.log("DEBUG", "Echo Actor " + ((EchoActorEntity) entity).getEchoesActorType() + " end step " + currentBehavior);
 
-           deltaTime = stateTime;
-           //If is not last step
-           if(index+1 < stepOrder.size()){
-               currentBehavior = ((EchoActorEntity) entity).getStepOrder().get(index+1);
-               showTextBox = true;
-           } else {
-               removeFromRoom = true;
-               spawnInstancesOnEnd();
-               Gdx.app.log("DEBUG","Echo Actor "+ ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
-           }
-       }
+            deltaTime = stateTime;
+            //If is not last step
+            if (index + 1 < stepOrder.size()) {
+                currentBehavior = ((EchoActorEntity) entity).getStepOrder().get(index + 1);
+                showTextBox = true;
+            } else {
+                removeFromRoom = true;
+                spawnInstancesOnEnd();
+                Gdx.app.log("DEBUG", "Echo Actor " + ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
+            }
+        }
     }
 
     /**
      * New step from logics
+     *
      * @param stepOrder
+     * @param commands
      * @param roomContent
      * @return
      */
-    private int getNewIndex(List<GameBehavior> stepOrder, RoomContent roomContent) {
+    private int getNewIndex(List<GameBehavior> stepOrder, Map<EchoCommandsEnum, Object> commands, RoomContent roomContent) {
 
         //If has "go to step", handle it correctly
-        if(Objects.nonNull(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior))){
+        if (commands.containsKey(EchoCommandsEnum.STEP)) {
 
             //Check condition on until there is at least one enemy of type is alive in room
-            if(Objects.nonNull(((EchoActorEntity) entity).getUntilAtLeastOneKillableFromStep(currentBehavior))) {
+            if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE)) {
                 //Extract instance class from enum and do check
-                Class<? extends AnimatedInstance> enemyClass = ((EchoActorEntity) entity).getUntilAtLeastOneKillableFromStep(currentBehavior).getInstanceClass();
-                if(roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable)e).isDead())){
+                EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE));
+                Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
+                if (roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead())) {
                     //if true, go to step
-                    return stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
+                    return stepOrder.indexOf(commands.get(EchoCommandsEnum.STEP));
                 }
             } else {
                 //If no "until" condition, just jump to "go to step" value
-                return stepOrder.indexOf(((EchoActorEntity) entity).getGotoToStepFromStep(currentBehavior));
+                return stepOrder.indexOf(commands.get(EchoCommandsEnum.STEP));
             }
 
         }
@@ -133,41 +154,40 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
      */
     private void spawnInstancesOnEnd() {
         //FIXME do by script not echotype
-        switch (echoesActorType){
+        switch (echoesActorType) {
             case VICTIM: {
-                spawner.spawnInstance(POIInstance.class,startX,startY+8);
+                spawner.spawnInstance(POIInstance.class, startX, startY + 8);
                 break;
             }
-            case HORROR_BODY:{
-                spawner.spawnInstance(WillowispInstance.class,startX,startY+8);
+            case HORROR_BODY: {
+                spawner.spawnInstance(WillowispInstance.class, startX, startY + 8);
                 break;
             }
         }
     }
 
     /**
-     *
      * @param direction
+     * @param speedInCurrentStep
      * @return velocity of movement to do in Vector2 format
      */
-    private Vector2 getVelocityOfStep(DirectionEnum direction) {
-        final Integer speedInCurrentStep = ((EchoActorEntity) this.entity).getSpeedInStep(currentBehavior);
-        switch (direction){
+    private Vector2 getVelocityOfStep(DirectionEnum direction, float speedInCurrentStep) {
+        switch (direction) {
             case UP:
                 return new Vector2(0, speedInCurrentStep);
             case DOWN:
-                return new Vector2(0,-speedInCurrentStep);
+                return new Vector2(0, -speedInCurrentStep);
             case RIGHT:
-                return new Vector2(speedInCurrentStep,0);
+                return new Vector2(speedInCurrentStep, 0);
             case LEFT:
-                return new Vector2(-speedInCurrentStep,0);
+                return new Vector2(-speedInCurrentStep, 0);
         }
         return null;
     }
 
     @Override
     protected float mapStateTimeFromBehaviour(float stateTime) {
-        switch (((EchoActorEntity) entity).getEchoesActorType()){
+        switch (((EchoActorEntity) entity).getEchoesActorType()) {
             case DEAD_HAND:
             case DEAD_DOUBLE_HAND:
                 //Glitchy movement for skeletons
@@ -212,7 +232,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         Objects.requireNonNull(batch);
 
         //Do not draw if must be removed
-        if(removeFromRoom){
+        if (removeFromRoom) {
             ((EchoActorEntity) entity).stopStartingSound();
             return;
         }
@@ -230,20 +250,20 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     /**
-     *
      * @return TextBox key to show based on current actor step
      */
-    public String getCurrentTextBoxToShow(){
-        if(showTextBox){
+    public String getCurrentTextBoxToShow() {
+        if (showTextBox) {
             showTextBox = false;
-            return ((EchoActorEntity) entity).getTextBoxPerStep(currentBehavior);
+            Map<EchoCommandsEnum, Object> commandOnCurrentStep = ((EchoActorEntity) entity).getCommandsForStep(currentBehavior);
+            return (String) commandOnCurrentStep.get(EchoCommandsEnum.TEXTBOX_KEY);
         }
 
         return null;
     }
 
     public boolean hasCurrentTextBoxToShow() {
-        return Objects.nonNull(((EchoActorEntity) entity).getTextBoxPerStep(currentBehavior)) && showTextBox;
+        return ((EchoActorEntity) entity).getCommandsForStep(currentBehavior).containsKey(EchoCommandsEnum.TEXTBOX_KEY) && showTextBox;
     }
 
     public void playStartingSound() {
@@ -253,11 +273,11 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     @Override
     public double damageRoll() {
         //Only certain echoes should harm the player
-        switch (((EchoActorEntity) entity).getEchoesActorType()){
+        switch (((EchoActorEntity) entity).getEchoesActorType()) {
             case DEAD_HAND:
             case DEAD_DOUBLE_HAND:
                 //Ld6
-                return Math.min(MathUtils.random(1,6),MathUtils.random(1,6));
+                return Math.min(MathUtils.random(1, 6), MathUtils.random(1, 6));
             case HORROR:
                 return 1;
             default:
@@ -268,7 +288,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         //If active, hurt player
-        if(echoIsActive){
+        if (echoIsActive) {
             playerInstance.hurt(this);
         }
     }

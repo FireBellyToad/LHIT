@@ -23,12 +23,4 @@ public enum EnemyEnum {
         return instanceClass;
     }
 
-    public static EnemyEnum getFromString(String name) {
-        for (EnemyEnum e : EnemyEnum.values()) {
-            if (e.name().equals(name)) {
-                return e;
-            }
-        }
-        return null;
-    }
 }

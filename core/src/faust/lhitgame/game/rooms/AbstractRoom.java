@@ -251,7 +251,7 @@ public abstract class AbstractRoom implements Spawner {
         // which should be set as "type" property on MapObject
         EnemyEnum enemyEnum = EnemyEnum.UNDEFINED;
         if (obj.getProperties().containsKey("type")) {
-            enemyEnum = EnemyEnum.getFromString((String) obj.getProperties().get("type"));
+            enemyEnum = EnemyEnum.valueOf((String) obj.getProperties().get("type"));
             Objects.requireNonNull(enemyEnum);
         }
 

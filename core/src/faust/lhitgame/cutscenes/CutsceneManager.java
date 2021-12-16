@@ -131,7 +131,7 @@ public class CutsceneManager implements InputProcessor {
             populateActors();
 
         } catch (Exception e) {
-            Gdx.app.log("DEBUG", "Problem while loading cutscene, using blank");
+            Gdx.app.log("DEBUG", "Problem while loading cutscene" +"cutscenes/" + cutsceneKey + "_" + (longTextHandler.getCurrentStep() + 1) + ".tmx, using blank");
             if (!actors.isEmpty()) {
                 actors.clear();
             }
@@ -176,8 +176,9 @@ public class CutsceneManager implements InputProcessor {
                 }
                 entity = new PlayerEntity(assetManager);
                 behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
-                direction = DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
-                if (Objects.isNull(direction)) {
+                if (obj.getProperties().containsKey("direction")) {
+                    direction =  DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
+                }else{
                     direction = DirectionEnum.UNUSED;
                 }
             } else if (obj.getName().equals(HiveEntity.class.getSimpleName())) {

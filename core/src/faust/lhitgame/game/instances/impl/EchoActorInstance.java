@@ -132,14 +132,29 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             //Check condition on until there is at least one enemy of type is alive in room
             if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE)) {
                 //Extract instance class from enum and do check
-                EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE));
-                Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
+                final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE));
+                final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
                 if (roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead())) {
                     //if true, go to step
                     return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
                 }
-            } else {
-                //If no "until" condition, just jump to "go to step" value
+            } else if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_PLAYER_DAMAGE_IS_LESS_THAN)) {
+                //Extract value of damage
+                final int value = (int) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_PLAYER_DAMAGE_IS_LESS_THAN);
+                if (roomContent.player.getDamage() < value) {
+                    //if true, go to step
+                    return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
+                }
+            } else if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE)) {
+                //Extract Poi type and do check
+                final POIEnum poiEnum = POIEnum.valueOf ((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE));
+                final boolean atLeastOneExaminable = roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+                if (atLeastOneExaminable) {
+                    //if true, go to step
+                    return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
+                }
+            }else {
+            //If no "until" condition, just jump to "go to step" value
                 return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
             }
 

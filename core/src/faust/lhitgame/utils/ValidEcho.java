@@ -7,6 +7,7 @@ import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.POIEnum;
+import faust.lhitgame.game.gameentities.interfaces.Killable;
 import faust.lhitgame.game.rooms.enums.MapLayersEnum;
 
 import java.io.IOException;
@@ -98,9 +99,23 @@ public class ValidEcho {
                         inspect(child.child, filename, parsedStepNumber);
                     }
                 }
+                EnemyEnum enemyEnum = null;
 
                 //String values validation
                 switch (extractedCommand) {
+                    case UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE:{
+
+                        try {
+                            enemyEnum = EnemyEnum.valueOf((String) extractedValue);
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
+                        }
+
+                        if(!Killable.class.isAssignableFrom(enemyEnum.getInstanceClass())){
+                            throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
+                        }
+                        break;
+                    }
                     case DIRECTION: {
                         DirectionEnum.valueOf((String) extractedValue);
                         break;
@@ -115,7 +130,6 @@ public class ValidEcho {
                     }
                     case IDENTIFIER: {
 
-                        EnemyEnum enemyEnum = null;
                         POIEnum poiEnum = null;
 
                         try {

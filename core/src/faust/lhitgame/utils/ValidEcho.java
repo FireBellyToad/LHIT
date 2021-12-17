@@ -152,6 +152,24 @@ public class ValidEcho {
     }
 
     /**
+     * Validate all game scripts
+     * @throws IOException
+     * @throws EchoScriptValidationException
+     */
+    public static void validateAllScripts() throws IOException, EchoScriptValidationException {
+
+        JsonReader reader = new JsonReader();
+        for (EchoesActorType echoesActorType : EchoesActorType.values()) {
+            //Read file
+            List<String> lines = Files.readAllLines(Paths.get("E:/Repositories/LHIP/core/assets/scripts/" + echoesActorType.getFilename()), Charset.defaultCharset());
+            String content = lines.stream().collect(Collectors.joining("\n"));
+            // start validate
+            JsonValue parsedSteps = reader.parse(content).get("steps");
+            validate(parsedSteps, echoesActorType.getFilename());
+        }
+    }
+
+    /**
      * Main usable for validation outside of game logic, just using this class as Java application
      *
      * @param args
@@ -160,17 +178,9 @@ public class ValidEcho {
      */
     public static void main(String[] args) {
 
-        JsonReader reader = new JsonReader();
         try {
 
-            for (EchoesActorType echoesActorType : EchoesActorType.values()) {
-                //Read file
-                List<String> lines = Files.readAllLines(Paths.get("E:/Repositories/LHIP/core/assets/scripts/" + echoesActorType.getFilename()), Charset.defaultCharset());
-                String content = lines.stream().collect(Collectors.joining("\n"));
-                // start validate
-                JsonValue parsedSteps = reader.parse(content).get("steps");
-                validate(parsedSteps, echoesActorType.getFilename());
-            }
+            validateAllScripts();
 
             System.out.println("------------------------------------------------------");
             System.out.println("All Echoes scripts are valid!");

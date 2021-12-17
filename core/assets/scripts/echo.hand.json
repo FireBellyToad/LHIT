@@ -3,10 +3,22 @@
     {
     },
     {
+      "move" : {
+        "direction": "UP",
+        "speed": 2
+      }
     },
     {
+      "move" : {
+        "direction": "DOWN",
+        "speed": 4
+      }
     },
     {
+      "move" : {
+        "direction": "UP",
+        "speed": 2
+      }
     },
     {
       "goTo" :{

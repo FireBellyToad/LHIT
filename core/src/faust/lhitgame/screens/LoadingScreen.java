@@ -7,10 +7,13 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import faust.lhitgame.LHITGame;
 import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.music.MusicManager;
+import faust.lhitgame.utils.EchoScriptValidationException;
+import faust.lhitgame.utils.ValidEcho;
 
 public class LoadingScreen implements Screen {
 
@@ -36,6 +39,14 @@ public class LoadingScreen implements Screen {
 
     @Override
     public void show() {
+
+        //Validate on the run
+        try {
+            ValidEcho.validateAllScripts();
+        } catch (Exception e) {
+            //If validation fails, stop game
+            throw new GdxRuntimeException(e);
+        }
 
         assetManager.load("sprites/walfrit_sheet.png", Texture.class);
         assetManager.load("sprites/decorations_sheet.png", Texture.class);

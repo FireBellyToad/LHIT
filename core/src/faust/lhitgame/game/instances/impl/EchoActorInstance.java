@@ -128,6 +128,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         //If has "go to step", handle it correctly
         if (commands.containsKey(EchoCommandsEnum.STEP)) {
 
+            final Integer index = (Integer) commands.get(EchoCommandsEnum.STEP);
             //Check condition on until there is at least one enemy of type is alive in room
             if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE)) {
                 //Extract instance class from enum and do check
@@ -135,11 +136,11 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                 Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
                 if (roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead())) {
                     //if true, go to step
-                    return stepOrder.indexOf(commands.get(EchoCommandsEnum.STEP));
+                    return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
                 }
             } else {
                 //If no "until" condition, just jump to "go to step" value
-                return stepOrder.indexOf(commands.get(EchoCommandsEnum.STEP));
+                return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
             }
 
         }
@@ -154,10 +155,11 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
      */
     private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
 
+        //Should not spawn anything if has no identifier
         if(!commands.containsKey(EchoCommandsEnum.IDENTIFIER))
             return;
 
-        //FIXME use class name
+        //FIXME use class name?
         String thingName = (String) commands.get(EchoCommandsEnum.IDENTIFIER);
         EnemyEnum enemyEnum = null;
         POIEnum poiEnum = null;
@@ -167,6 +169,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         }catch (Exception e){
             //Nothing to do here...
         }
+
         try{
             poiEnum = POIEnum.valueOf(thingName);
         }catch (Exception e){
@@ -176,7 +179,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         //Set spawn coordinates
         float spawnX = startX;
         float spawnY = startY;
-        boolean useRelative = commands.containsKey(EchoCommandsEnum.RELATIVE) && (boolean) commands.get(EchoCommandsEnum.RELATIVE) ;
+        boolean useRelative = (boolean) commands.getOrDefault(EchoCommandsEnum.RELATIVE, false);
 
         if(commands.containsKey(EchoCommandsEnum.X)){
             final int value = (int) commands.get(EchoCommandsEnum.X);
@@ -263,6 +266,13 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             ((EchoActorEntity) entity).stopStartingSound();
             return;
         }
+
+        final Map<EchoCommandsEnum, Object> commands = ((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior);
+        if((Boolean) commands.getOrDefault(EchoCommandsEnum.INVISIBLE, false)) {
+            //Don't draw anything
+            return;
+        }
+
         batch.begin();
 
         // Should not loop!

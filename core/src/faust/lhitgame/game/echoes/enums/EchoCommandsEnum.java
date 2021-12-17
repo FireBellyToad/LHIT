@@ -22,6 +22,7 @@ public enum EchoCommandsEnum {
     X("x", Integer.class),
     Y("y", Integer.class),
     RELATIVE("relative", Boolean.class),
+    INVISIBLE("invisible", Boolean.class),
 
     //Composite
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),

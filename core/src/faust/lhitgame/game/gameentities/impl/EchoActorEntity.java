@@ -50,14 +50,6 @@ public class EchoActorEntity extends AnimatedEntity {
 
         JsonValue parsedSteps = new JsonReader().parse(Gdx.files.internal("scripts/" + echoesActorType.getFilename())).get("steps");
 
-        //Validate on the run
-        try {
-            ValidEcho.validate(parsedSteps, echoesActorType.getFilename());
-        } catch (EchoScriptValidationException e) {
-            //If validation fails, stop game
-            throw new GdxRuntimeException(e);
-        }
-
         //Precalculate rows from steps
         precalculatedRows = parsedSteps.size;
 
@@ -134,8 +126,6 @@ public class EchoActorEntity extends AnimatedEntity {
     public EchoesActorType getEchoesActorType() {
         return echoesActorType;
     }
-
-    //FIXME all getters
 
     /**
      * Get commands to do in given "step"

@@ -4,6 +4,7 @@ In fase di startup dell'engine e come parte di un tool separato (ValidEcho.java)
 
 ## Documentazione comandi
 
+* invisible: In questo step non renderizzerà l'attore.
 * textBoxKey: Chiave di una textbox per questo step
 * renderOnlyMapLayer: In questo step renderizzerà solo i tile del map_layer indicato
 * move: oggetto composto da due campi

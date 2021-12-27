@@ -114,7 +114,7 @@ public class GameScreen implements Screen {
         //Draw all overlays
         drawOverlays();
 
-//       cameraManager.box2DDebugRenderer(worldManager.getWorld());
+       cameraManager.box2DDebugRenderer(worldManager.getWorld());
 
     }
 

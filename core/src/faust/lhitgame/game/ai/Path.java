@@ -37,4 +37,12 @@ public class Path implements Connection<PathNode> {
     public PathNode getToNode() {
         return toPathNode;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Path otherPath = ((Path) o);
+        return super.equals(o) && ((otherPath.fromPathNode.equals(fromPathNode) &&
+                otherPath.toPathNode.equals(toPathNode)) || (otherPath.toPathNode.equals(fromPathNode) &&
+                otherPath.toPathNode.equals(fromPathNode)));
+    }
 }

@@ -10,6 +10,7 @@ import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhitgame.game.gameentities.enums.POIEnum;
 import faust.lhitgame.game.instances.GameInstance;
+import faust.lhitgame.game.instances.PathfinderInstance;
 import faust.lhitgame.game.instances.impl.DecorationInstance;
 import faust.lhitgame.game.instances.impl.EchoActorInstance;
 import faust.lhitgame.game.instances.impl.POIInstance;
@@ -183,9 +184,9 @@ public class FixedRoom extends AbstractRoom {
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
-        //FIXME remove
+//        //FIXME remove
 //        if (Objects.nonNull(roomContent.roomGraph)) {
-//            roomContent.roomGraph.debugDraw(cameraTemp,roomContent);
+//            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
 //            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
 //        }
 

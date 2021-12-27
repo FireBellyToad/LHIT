@@ -18,4 +18,9 @@ public class PathNode extends Vector2 {
     public PathNode(float x, float y) {
         super(x,y);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return  super.equals(obj) && ((PathNode) obj).index == this.index;
+    }
 }

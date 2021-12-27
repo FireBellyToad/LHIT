@@ -170,7 +170,7 @@ public abstract class AbstractRoom implements Spawner {
         worldManager.insertEmergedAreasIntoWorld(roomContent.emergedAreaList);
         player.changePOIList(roomContent.poiList);
         if(Objects.nonNull(roomContent.roomGraph)){
-            roomContent.roomGraph.calculateAll(worldManager);
+            roomContent.roomGraph.initGraph(worldManager);
         }
 
         // Do other stuff

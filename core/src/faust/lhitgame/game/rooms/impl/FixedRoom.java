@@ -162,7 +162,7 @@ public class FixedRoom extends AbstractRoom {
 
         echoActors.add(new EchoActorInstance(echoesActorType,
                 (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"), assetManager,this));
+                (float) obj.getProperties().get("y"), assetManager, this));
 
     }
 
@@ -183,6 +183,11 @@ public class FixedRoom extends AbstractRoom {
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
+        //FIXME remove
+//        if (Objects.nonNull(roomContent.roomGraph)) {
+//            roomContent.roomGraph.debugDraw(cameraTemp,roomContent);
+//            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
+//        }
 
     }
 
@@ -198,7 +203,7 @@ public class FixedRoom extends AbstractRoom {
         // Manage echo actors
         if (echoIsActivated) {
             echoActors.forEach(actor -> {
-                actor.doLogic(stateTime, roomContent );
+                actor.doLogic(stateTime, roomContent);
 
                 if (actor.hasCurrentTextBoxToShow()) {
                     this.textManager.addNewTextBox(actor.getCurrentTextBoxToShow());
@@ -234,8 +239,8 @@ public class FixedRoom extends AbstractRoom {
     @Override
     public void onRoomLeave() {
         //Disable Echo on room leave if trigger is already examined POI
-        if(!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
-                (echoTrigger instanceof  DecorationInstance || ((POIInstance)echoTrigger).isAlreadyExamined())){
+        if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
+                (echoTrigger instanceof DecorationInstance || ((POIInstance) echoTrigger).isAlreadyExamined())) {
             roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, echoIsActivated);
         }
     }

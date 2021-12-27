@@ -1,5 +1,6 @@
 package faust.lhitgame.game.rooms;
 
+import faust.lhitgame.game.ai.RoomNodesGraph;
 import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.impl.DecorationInstance;
 import faust.lhitgame.game.instances.impl.POIInstance;
@@ -28,4 +29,5 @@ public class RoomContent {
     public String roomFileName;
 
     public Map<RoomFlagEnum, Boolean> roomFlags;
+    public RoomNodesGraph roomGraph;
 }

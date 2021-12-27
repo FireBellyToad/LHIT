@@ -2,6 +2,7 @@ package faust.lhitgame.game.world.manager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import faust.lhitgame.game.instances.AnimatedInstance;
@@ -12,6 +13,7 @@ import faust.lhitgame.game.instances.impl.POIInstance;
 import faust.lhitgame.game.instances.impl.PlayerInstance;
 import faust.lhitgame.game.rooms.areas.EmergedArea;
 import faust.lhitgame.game.rooms.areas.WallArea;
+import faust.lhitgame.game.world.interfaces.RayCaster;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +24,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class WorldManager {
+public class WorldManager implements RayCaster {
     private static final float TIME_STEP = 1 / 60f;
     private static final int VELOCITY_ITERATIONS = 8;
     private static final int POSITION_ITERATIONS = 3;
@@ -159,5 +161,14 @@ public class WorldManager {
         Objects.requireNonNull(echoActors);
 
         echoActors.forEach((a) -> a.createBody(this.world, a.getStartX(), a.getStartY()));
+    }
+
+    @Override
+    public void rayCast(RayCastCallback callback, Vector2 from, Vector2 to) {
+        world.rayCast(callback,from,to);
+    }
+
+    public World getWorld() {
+        return world;
     }
 }

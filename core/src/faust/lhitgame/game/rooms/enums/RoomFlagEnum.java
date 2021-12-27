@@ -2,7 +2,6 @@ package faust.lhitgame.game.rooms.enums;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Room flags enum

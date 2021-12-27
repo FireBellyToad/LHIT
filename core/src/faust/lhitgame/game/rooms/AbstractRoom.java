@@ -12,7 +12,10 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import faust.lhitgame.LHITGame;
+import faust.lhitgame.game.ai.PathNode;
+import faust.lhitgame.game.ai.RoomNodesGraph;
 import faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
@@ -53,6 +56,9 @@ public abstract class AbstractRoom implements Spawner {
     public static final float BOTTOM_BOUNDARY = 4;
     public static final float RIGHT_BOUNDARY = LHITGame.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHITGame.GAME_HEIGHT - 24;
+
+    //FIXME remove
+    protected final OrthographicCamera cameraTemp;
 
     protected TiledMap tiledMap;
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
@@ -97,6 +103,7 @@ public abstract class AbstractRoom implements Spawner {
         this.worldManager = worldManager;
 
         this.roomContent.roomFlags = roomFlags;
+        this.cameraTemp = camera;
 
         // Load tiled map by name
         this.roomContent.roomType = roomType;
@@ -148,6 +155,11 @@ public abstract class AbstractRoom implements Spawner {
             if (MapObjNameEnum.EMERGED.name().equals(obj.getName())) {
                 addObjAsEmerged(obj);
             }
+
+            // Prepare PathNodes
+            if (PathNode.class.getSimpleName().equals(obj.getName())) {
+                addObjAsPathNode(obj);
+            }
         });
 
         worldManager.insertPlayerIntoWorld(player, player.getStartX(), player.getStartY());
@@ -157,6 +169,9 @@ public abstract class AbstractRoom implements Spawner {
         worldManager.insertWallsIntoWorld(roomContent.wallList);
         worldManager.insertEmergedAreasIntoWorld(roomContent.emergedAreaList);
         player.changePOIList(roomContent.poiList);
+        if(Objects.nonNull(roomContent.roomGraph)){
+            roomContent.roomGraph.calculateAll(worldManager);
+        }
 
         // Do other stuff
         this.onRoomEnter(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
@@ -172,6 +187,17 @@ public abstract class AbstractRoom implements Spawner {
         RectangleMapObject mapObject = (RectangleMapObject) obj;
 
         roomContent.wallList.add(new WallArea(mapObject.getRectangle()));
+    }
+
+    protected void addObjAsPathNode(MapObject obj) {
+
+        if (Objects.isNull(roomContent.roomGraph)) {
+            roomContent.roomGraph = new RoomNodesGraph();
+        }
+        roomContent.roomGraph.addPathNode(new PathNode(
+                MathUtils.floor((float) obj.getProperties().get("x")),
+                MathUtils.floor((float) obj.getProperties().get("y"))));
+
     }
 
     /**
@@ -299,7 +325,8 @@ public abstract class AbstractRoom implements Spawner {
                             (float) obj.getProperties().get("x"),
                             (float) obj.getProperties().get("y"),
                             roomContent.player,
-                            assetManager);
+                            assetManager,
+                            worldManager);
 
                     //Show splash only the first time
                     if (!roomContent.roomFlags.get(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED))
@@ -311,7 +338,8 @@ public abstract class AbstractRoom implements Spawner {
                             (float) obj.getProperties().get("x"),
                             (float) obj.getProperties().get("y"),
                             roomContent.player,
-                            assetManager);
+                            assetManager,
+                            worldManager);
 
                     //Show splash only the first time
                     if (!roomContent.roomFlags.get(RoomFlagEnum.FIRST_STRIX_ENCOUNTERED))
@@ -418,7 +446,7 @@ public abstract class AbstractRoom implements Spawner {
         roomContent.player.doLogic(stateTime, roomContent);
 
         //Stop music
-        if(roomContent.player.isDead() && musicManager.isPlaying()){
+        if (roomContent.player.isDead() && musicManager.isPlaying()) {
             musicManager.stopMusic();
         }
 

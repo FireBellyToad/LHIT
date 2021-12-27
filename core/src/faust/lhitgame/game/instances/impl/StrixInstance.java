@@ -17,10 +17,11 @@ import faust.lhitgame.game.gameentities.interfaces.Hurtable;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.StrixEntity;
-import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
+import faust.lhitgame.game.instances.PathfinderInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
 import faust.lhitgame.game.rooms.RoomContent;
+import faust.lhitgame.game.world.interfaces.RayCaster;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
 
@@ -31,22 +32,19 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class StrixInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
+public class StrixInstance extends PathfinderInstance implements Interactable, Hurtable, Damager {
 
     private static final float STRIX_SPEED = 35;
     private static final long LEECHING_FREQUENCY_IN_MILLIS = 1000;
     private boolean attachedToPlayer = false;
-    private boolean isAggressive = false;
 
-    private final PlayerInstance target;
     private long leechStartTimer;
 
-    public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
-        super(new StrixEntity(assetManager));
+    public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
+        super(new StrixEntity(assetManager),target, rayCaster);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
-        this.target = target;
     }
 
     @Override
@@ -57,13 +55,14 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (!attachedToPlayer && ((target.getBody().getPosition().dst(getBody().getPosition()) <= (LINE_OF_SIGHT * 0.75) && !isAggressive) ||
-                (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT && isAggressive))) {
+        if (!attachedToPlayer && (canSeePlayer() || isAggressive)) {
             currentBehavior = GameBehavior.WALK;
             isAggressive = true;
+            calculateNewGoal(roomContent.roomGraph);
+
             // Normal from strix position to target
-            Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
-                    target.getBody().getPosition().y - body.getPosition().y).nor();
+            Vector2 direction = new Vector2(getMovementDestination().x - body.getPosition().x,
+                    getMovementDestination().y - body.getPosition().y).nor();
 
             // If not already attached su player
             currentDirectionEnum = extractDirectionFromNormal(direction);
@@ -148,6 +147,8 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
         fixtureDef.density = 0;
         fixtureDef.friction = 0;
         fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
+        fixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -299,5 +300,4 @@ public class StrixInstance extends AnimatedInstance implements Interactable, Hur
     public int getResistance() {
         return 9;
     }
-
 }

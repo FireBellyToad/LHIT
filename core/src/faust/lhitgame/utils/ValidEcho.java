@@ -69,7 +69,7 @@ public class ValidEcho {
                 if (Objects.nonNull(child.parent)) {
                     EchoCommandsEnum extractedParent = EchoCommandsEnum.getFromCommandString(child.parent.name());
                     if (Objects.nonNull(extractedParent)) {
-                        if (Objects.nonNull(extractedParent.getSubCommands()) && Arrays.stream(extractedParent.getSubCommands()).noneMatch(c -> extractedCommand.equals(c))) {
+                        if (Objects.nonNull(extractedParent.getSubCommands()) && Arrays.stream(extractedParent.getSubCommands()).noneMatch(extractedCommand::equals)) {
                             throw new IllegalArgumentException(extractedCommand.getCommandString() + " is not a child of " + extractedParent.getCommandString());
                         }
                     }
@@ -176,7 +176,7 @@ public class ValidEcho {
         for (EchoesActorType echoesActorType : EchoesActorType.values()) {
             //Read file
             List<String> lines = Files.readAllLines(Paths.get("E:/Repositories/LHIP/core/assets/scripts/" + echoesActorType.getFilename()), Charset.defaultCharset());
-            String content = lines.stream().collect(Collectors.joining("\n"));
+            String content = String.join("\n", lines);
             // start validate
             JsonValue parsedSteps = reader.parse(content).get("steps");
             validate(parsedSteps, echoesActorType.getFilename());

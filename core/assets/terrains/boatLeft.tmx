@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="153">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="160">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -33,5 +33,26 @@
   </object>
   <object id="151" name="WALL" x="32" y="16" width="96" height="16"/>
   <object id="152" name="WALL" x="64" y="80" width="48" height="6"/>
+  <object id="153" name="PathNode" x="128" y="64">
+   <point/>
+  </object>
+  <object id="154" name="PathNode" x="128" y="96">
+   <point/>
+  </object>
+  <object id="155" name="PathNode" x="32" y="96">
+   <point/>
+  </object>
+  <object id="156" name="PathNode" x="32" y="64">
+   <point/>
+  </object>
+  <object id="157" name="PathNode" x="80" y="96">
+   <point/>
+  </object>
+  <object id="158" name="PathNode" x="96" y="64">
+   <point/>
+  </object>
+  <object id="159" name="PathNode" x="64" y="64">
+   <point/>
+  </object>
  </objectgroup>
 </map>

@@ -12,7 +12,6 @@ import faust.lhitgame.LHITGame;
 import faust.lhitgame.camera.CameraManager;
 import faust.lhitgame.game.echoes.enums.EchoesActorType;
 import faust.lhitgame.game.music.MusicManager;
-import faust.lhitgame.utils.EchoScriptValidationException;
 import faust.lhitgame.utils.ValidEcho;
 
 public class LoadingScreen implements Screen {

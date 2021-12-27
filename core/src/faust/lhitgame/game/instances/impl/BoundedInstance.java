@@ -15,10 +15,11 @@ import faust.lhitgame.game.gameentities.interfaces.Hurtable;
 import faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import faust.lhitgame.game.gameentities.enums.GameBehavior;
 import faust.lhitgame.game.gameentities.impl.BoundedEntity;
-import faust.lhitgame.game.instances.AnimatedInstance;
 import faust.lhitgame.game.instances.GameInstance;
+import faust.lhitgame.game.instances.PathfinderInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
 import faust.lhitgame.game.rooms.RoomContent;
+import faust.lhitgame.game.world.interfaces.RayCaster;
 import faust.lhitgame.game.world.manager.CollisionManager;
 import faust.lhitgame.screens.GameScreen;
 
@@ -29,11 +30,10 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class BoundedInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
+public class BoundedInstance extends PathfinderInstance implements Interactable, Hurtable, Damager {
 
     private static final float BOUNDED_SPEED = 40;
     private static final int LINE_OF_ATTACK = 15;
-    private static final int LINE_OF_SIGHT = 70;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
@@ -50,14 +50,11 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
     private Body rightClawBody;
     private Body upClawBody;
 
-    private final PlayerInstance target;
-
-    public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager) {
-        super(new BoundedEntity(assetManager));
+    public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
+        super(new BoundedEntity(assetManager),target,rayCaster);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
-        this.target = target;
     }
 
     @Override
@@ -85,16 +82,16 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK &&
-                ((target.getBody().getPosition().dst(getBody().getPosition()) <= (LINE_OF_SIGHT * 0.75) && !isAggressive) ||
-                (target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_SIGHT && isAggressive))) {
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeePlayer() ||isAggressive )) {
 
             deactivateAttackBodies();
             isAggressive = true;
             currentBehavior = GameBehavior.WALK;
+            calculateNewGoal(roomContent.roomGraph);
+
             // Normal from Bounded position to target
-            Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
-                    target.getBody().getPosition().y - body.getPosition().y).nor();
+            Vector2 direction = new Vector2(getMovementDestination().x - body.getPosition().x,
+                    getMovementDestination().y - body.getPosition().y).nor();
 
             currentDirectionEnum = extractDirectionFromNormal(direction);
 
@@ -475,5 +472,8 @@ public class BoundedInstance extends AnimatedInstance implements Interactable, H
         downClawBody.setActive(false);
     }
 
-
+    @Override
+    protected float getLineOfSight() {
+        return 70f;
+    }
 }

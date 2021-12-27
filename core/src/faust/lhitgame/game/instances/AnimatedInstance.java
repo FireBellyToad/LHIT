@@ -9,9 +9,13 @@ import faust.lhitgame.game.rooms.RoomContent;
 
 import java.util.Objects;
 
+/**
+ * Animated entity instanced in game world class
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public abstract class AnimatedInstance extends GameInstance {
 
-    protected static final int LINE_OF_SIGHT = 60;
     protected int damage = 0;
 
     protected GameBehavior currentBehavior = GameBehavior.IDLE;

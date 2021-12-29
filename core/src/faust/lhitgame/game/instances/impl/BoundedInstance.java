@@ -90,8 +90,9 @@ public class BoundedInstance extends PathfinderInstance implements Interactable,
             calculateNewGoal(roomContent.roomGraph);
 
             // Normal from Bounded position to target
-            Vector2 direction = new Vector2(getMovementDestination().x - body.getPosition().x,
-                    getMovementDestination().y - body.getPosition().y).nor();
+            final Vector2 destination = getMovementDestination();
+            Vector2 direction = new Vector2(destination.x - body.getPosition().x,
+                    destination.y - body.getPosition().y).nor();
 
             currentDirectionEnum = extractDirectionFromNormal(direction);
 

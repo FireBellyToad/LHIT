@@ -6,6 +6,7 @@ import faust.lhitgame.game.instances.GameInstance;
 import faust.lhitgame.game.instances.interfaces.Interactable;
 import faust.lhitgame.game.instances.impl.*;
 import faust.lhitgame.game.rooms.areas.EmergedArea;
+import faust.lhitgame.game.rooms.areas.WallArea;
 
 import java.util.Objects;
 
@@ -25,6 +26,22 @@ public class CollisionManager implements ContactListener {
         if (isContactOfClass(contact, PlayerInstance.class)) {
             handlePlayerBeginContact(contact);
         }
+
+        //FIXME
+        if (isContactOfClass(contact, BoundedInstance.class)) {
+            if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact,DecorationInstance.class)) {
+                BoundedInstance bInst = ((BoundedInstance) getCorrectFixture(contact, BoundedInstance.class).getBody().getUserData());
+                bInst.forceRecalculation();
+            }
+        }
+        //FIXME
+        if (isContactOfClass(contact, WillowispInstance.class)) {
+            if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact,DecorationInstance.class)) {
+                WillowispInstance wInst = ((WillowispInstance) getCorrectFixture(contact, WillowispInstance.class).getBody().getUserData());
+                wInst.forceRecalculation();
+            }
+        }
+
 
     }
 

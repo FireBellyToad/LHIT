@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
+import com.badlogic.gdx.utils.TimeUtils;
 import faust.lhitgame.game.ai.PathNode;
 import faust.lhitgame.game.ai.RoomNodesGraph;
 import faust.lhitgame.game.gameentities.GameEntity;
@@ -24,7 +25,7 @@ import java.util.Objects;
 /**
  * Smart chaser instance class, used on things that should follow the player smartly:
  * - if can see him, just follow him
- * - if cannot see him go to were it last saw him, then do A* in nodegraph
+ * - if cannot see him, then do A* in nodegraph
  *
  * @author Jacopo "Faust" Buttiglieri
  */
@@ -34,7 +35,6 @@ public abstract class PathfinderInstance extends AnimatedInstance {
 
     //Current path node to follow
     protected PathNode targetPathNode;
-    protected Vector2 lastSawTargetPos;
     //Target player instance
     protected final PlayerInstance target;
 
@@ -58,7 +58,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
      */
     public void calculateNewGoal(RoomNodesGraph roomNodesGraph) {
 
-        if (!recalculatePath || Objects.isNull(roomNodesGraph) || Objects.nonNull(lastSawTargetPos) || canSeePlayer())
+        if (!recalculatePath || Objects.isNull(roomNodesGraph)|| canSeePlayer())
             return;
 
         Array<PathNode> nodeArray = roomNodesGraph.getNodeArray();
@@ -106,13 +106,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
         //Order by distance from this, using fraction
         tempInstancesList.sort((p1, p2) -> Float.compare(p1.getKey(), p2.getKey()));
         //Check if first one is player
-        final boolean playerSawn = !tempInstancesList.isEmpty() && tempInstancesList.get(0).getValue() instanceof PlayerInstance;
-
-        //Save position
-        if (playerSawn)
-            lastSawTargetPos = target.getBody().getPosition().cpy();
-
-        return playerSawn;
+        return !tempInstancesList.isEmpty() && tempInstancesList.get(0).getValue() instanceof PlayerInstance;
     }
 
     /**
@@ -139,22 +133,13 @@ public abstract class PathfinderInstance extends AnimatedInstance {
      * @return
      */
     protected Vector2 getMovementDestination() {
+
         if (canSeePlayer()) {
             //If can see player, just follow
             recalculatePath = true;
             pathQueue.clear();
             return target.getBody().getPosition();
         } else {
-
-            //Go to last sawn position before doing recalculation
-            if (Objects.nonNull(lastSawTargetPos)) {
-                if (body.getPosition().dst(lastSawTargetPos) <= 5) {
-                    targetPathNode = new PathNode(lastSawTargetPos.cpy());
-                    lastSawTargetPos = null;
-                } else {
-                    return lastSawTargetPos;
-                }
-            }
 
             //If node is reached
             if (body.getPosition().dst(targetPathNode) <= 5) {
@@ -208,5 +193,12 @@ public abstract class PathfinderInstance extends AnimatedInstance {
             shapeRenderer.circle(newGoal.x, newGoal.y, 5);
             shapeRenderer.end();
         }
+    }
+
+    /**
+     * Force this instance to use graph
+     */
+    public void forceRecalculation(){
+        recalculatePath = true;
     }
 }

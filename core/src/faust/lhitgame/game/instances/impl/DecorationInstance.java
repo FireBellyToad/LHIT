@@ -100,10 +100,14 @@ public class DecorationInstance extends GameInstance implements Interactable {
                 bodyDef.position.set(x, y - 16);
                 break;
             }
+            case BOAT:{
+                shape.setAsBox(12, 6);
+                bodyDef.position.set(x, y - 12);
+                break;
+            }
             case STONE_1:
             case STONE_2:
-            case TREE_STUMP:
-            case BOAT:{
+            case TREE_STUMP:{
                 shape.setAsBox(16, 8);
                 bodyDef.position.set(x, y - 16);
                 break;

@@ -66,6 +66,7 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
                 if (fromNode.equals(toNode)) {
                     continue;
                 }
+
                 //init check flag
                 isConnected.set(true);
 
@@ -118,7 +119,7 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
     }
 
     //FIXME remove
-    public void debugDraw(OrthographicCamera cameraTemp, RoomContent roomContent, SpriteBatch batch, AssetManager assetManager){
+    public void debugDraw(OrthographicCamera cameraTemp, RoomContent roomContent, SpriteBatch batch, AssetManager assetManager) {
 
 
         ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -136,17 +137,17 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
             //Text
             batch.begin();
             BitmapFont mainFont = assetManager.get("fonts/main_font.fnt");
-            mainFont.draw(batch, String.valueOf(node.index),  node.x-2,  node.y-2);
+            mainFont.draw(batch, String.valueOf(node.index), node.x - 2, node.y - 2);
             batch.end();
         }
 
         batch.begin();
-        graphMap.forEach((k,v) ->{
+        graphMap.forEach((k, v) -> {
             for (Path p : v) {
                 shapeRenderer.setColor(back);
                 shapeRenderer.setProjectionMatrix(cameraTemp.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.line(p.fromPathNode,p.toPathNode);
+                shapeRenderer.line(p.fromPathNode, p.toPathNode);
                 shapeRenderer.end();
             }
         });

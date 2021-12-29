@@ -61,8 +61,9 @@ public class StrixInstance extends PathfinderInstance implements Interactable, H
             calculateNewGoal(roomContent.roomGraph);
 
             // Normal from strix position to target
-            Vector2 direction = new Vector2(getMovementDestination().x - body.getPosition().x,
-                    getMovementDestination().y - body.getPosition().y).nor();
+            final Vector2 destination = getMovementDestination();
+            Vector2 direction = new Vector2(destination.x - body.getPosition().x,
+                    destination.y - body.getPosition().y).nor();
 
             // If not already attached su player
             currentDirectionEnum = extractDirectionFromNormal(direction);

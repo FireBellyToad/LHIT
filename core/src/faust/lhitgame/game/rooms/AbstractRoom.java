@@ -283,7 +283,8 @@ public abstract class AbstractRoom implements Spawner {
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
                         roomContent.player,
-                        assetManager);
+                        assetManager,
+                        worldManager);
                 break;
             }
             case HIVE: {

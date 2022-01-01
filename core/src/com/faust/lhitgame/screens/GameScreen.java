@@ -93,7 +93,7 @@ public class GameScreen implements Screen {
 
         //Prevent animations while paused
         if (!pauseManager.isGamePaused()) {
-            stateTime += Gdx.graphics.getRawDeltaTime();
+            stateTime += Gdx.graphics.getDeltaTime();
         }
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);

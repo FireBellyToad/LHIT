@@ -33,7 +33,7 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
     private final Array<Path> pathArray = new Array<>();
 
     // Mapping all Paths starting from a PathNode
-    Map<PathNode, Array<Path>> graphMap = new HashMap<>();
+    final Map<PathNode, Array<Path>> graphMap = new HashMap<>();
 
     public void addPathNode(PathNode pathNode) {
         pathNode.index = nodeArray.size;

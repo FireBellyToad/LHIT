@@ -158,9 +158,9 @@ public class ValidEcho {
             throw e;
         } catch (Exception e) {
             //Prepare nice output!
-            String stepname = (Objects.isNull(child.parent) || Objects.isNull(child.parent.name)) ? child.name : child.parent.name + " -> " + child.name;
+            String stepName = (Objects.isNull(child.parent) || Objects.isNull(child.parent.name)) ? child.name : child.parent.name + " -> " + child.name;
             String exceptionClassName = e.getClass().getSimpleName();
-            throw new EchoScriptValidationException(filename + " step " + parsedStepNumber + " -> extractedCommand " + stepname + " : " + exceptionClassName + " " + e.getMessage());
+            throw new EchoScriptValidationException(filename + " step " + parsedStepNumber + " -> extractedCommand " + stepName + " : " + exceptionClassName + " " + e.getMessage());
         }
     }
 

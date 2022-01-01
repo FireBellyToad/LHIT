@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public abstract class PathfinderInstance extends AnimatedInstance {
 
-    protected RayCaster rayCaster;
+    protected final RayCaster rayCaster;
 
     //Current path node to follow
     protected PathNode targetPathNode;
@@ -40,7 +40,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
     protected boolean recalculatePath = true;
 
     //Queue of nodes to follow
-    protected Queue<PathNode> pathQueue = new Queue<>();
+    protected final Queue<PathNode> pathQueue = new Queue<>();
     private PathNode currentPos;
     private PathNode newGoal;
 

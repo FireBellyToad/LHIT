@@ -3,20 +3,15 @@ package com.faust.lhitgame.game.ai;
 import com.badlogic.gdx.ai.pfa.Connection;
 
 /**
- **
  * Path model that connects two Path Nodes and precalculates its cost
- */
-
-/**
- * Entity instanced in game world class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class Path implements Connection<PathNode> {
 
-    PathNode fromPathNode;
-    PathNode toPathNode;
-    float cost;
+    final PathNode fromPathNode;
+    final PathNode toPathNode;
+    final float cost;
 
     public Path(PathNode fromPathNode, PathNode toPathNode){
         this.fromPathNode = fromPathNode;

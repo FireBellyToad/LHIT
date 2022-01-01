@@ -14,7 +14,7 @@ import java.util.*;
 public class MusicManager {
 
     private final Map<TuneEnum, Music> musicMap = new HashMap<>();
-    private boolean disableMusic = false;
+    private final boolean disableMusic = false;
     private final List<TuneEnum> pausedTunes = new ArrayList<>();
 
     /**

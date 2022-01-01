@@ -2,8 +2,8 @@ package com.faust.lhitgame.utils;
 
 public class Pair<T, K> {
 
-    private T first;
-    private K second;
+    private final T first;
+    private final K second;
 
     public Pair(T first, K second) {
         this.first = first;

@@ -52,7 +52,7 @@ public class ShaderWrapper {
      */
     public void setShaderOnBatchWithFlags(SpriteBatch batch) {
 
-        shaderProgram.begin();
+        shaderProgram.bind();
 
         flags.forEach((name, value) -> {
             if (value instanceof Boolean) {
@@ -63,8 +63,6 @@ public class ShaderWrapper {
                 throw new GdxRuntimeException("Invalid flag value for shader " + shaderProgram.getLog());
             }
         });
-
-        shaderProgram.end();
 
         batch.setShader(shaderProgram);
     }
@@ -77,8 +75,7 @@ public class ShaderWrapper {
     public void resetDefaultShader(Batch batch) {
 
         batch.setShader(null);
-        shaderProgram.begin();
-        shaderProgram.end();
+        shaderProgram.bind();
     }
 
 }

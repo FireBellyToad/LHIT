@@ -11,5 +11,7 @@
 	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
 	<set-property name="user.agent" value="gecko1_8, safari"/>
 	<collapse-property name="user.agent" values="*" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.cutscenes" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.utils" />
 </module>

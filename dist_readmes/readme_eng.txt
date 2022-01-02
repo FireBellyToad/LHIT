@@ -45,3 +45,7 @@ Other creatures populate the cursed lands of Langobardia Horribilis. Surely ther
 * 5 - Echoes
 
 Specters from the past infest some places of river Trebia. Whatever happened in that place will be brought back to life upon Walfrit's eyes, and won't always be harmless images...
+
+* 6 - Common Problems
+
+On Windows 10, the game graphics can be shown cropped to the borders. To fix this, right click on "LHIT", click on "Change high DPI settings", check the "Override high DPI scaling behavior" box and select "Application" on the select box below.

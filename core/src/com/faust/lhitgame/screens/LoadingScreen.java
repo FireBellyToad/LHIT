@@ -41,7 +41,7 @@ public class LoadingScreen implements Screen {
 
         //Validate on the run
         try {
-            ValidEcho.validateAllScripts();
+            ValidEcho.validateAllScriptsGdx();
         } catch (Exception e) {
             //If validation fails, stop game
             throw new GdxRuntimeException(e);

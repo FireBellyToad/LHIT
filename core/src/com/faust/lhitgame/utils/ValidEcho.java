@@ -1,5 +1,6 @@
 package com.faust.lhitgame.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -170,40 +171,13 @@ public class ValidEcho {
      * @throws IOException
      * @throws EchoScriptValidationException
      */
-    public static void validateAllScripts() throws IOException, EchoScriptValidationException {
+    public static void validateAllScriptsGdx() throws IOException, EchoScriptValidationException {
 
         JsonReader reader = new JsonReader();
         for (EchoesActorType echoesActorType : EchoesActorType.values()) {
-            //Read file
-            List<String> lines = Files.readAllLines(Paths.get("E:/Repositories/LHIT/core/assets/scripts/" + echoesActorType.getFilename()), Charset.defaultCharset());
-            String content = String.join("\n", lines);
             // start validate
-            JsonValue parsedSteps = reader.parse(content).get("steps");
+            JsonValue parsedSteps = new JsonReader().parse(Gdx.files.internal("scripts/" + echoesActorType.getFilename())).get("steps");
             validate(parsedSteps, echoesActorType.getFilename());
-        }
-    }
-
-    /**
-     * Main usable for validation outside of game logic, just using this class as Java application
-     *
-     * @param args
-     * @throws IOException
-     * @throws EchoScriptValidationException
-     */
-    public static void main(String[] args) {
-
-        try {
-
-            validateAllScripts();
-
-            System.out.println("------------------------------------------------------");
-            System.out.println("All Echoes scripts are valid!");
-            System.out.println("------------------------------------------------------");
-
-        } catch (Exception e) {
-            System.out.println("------------------------------------------------------");
-            System.out.println(e.getMessage());
-            System.out.println("------------------------------------------------------");
         }
     }
 }

@@ -45,3 +45,8 @@ Altre creature popolano le terre maledette della Langobardia Horribilis. Sicuram
 * 5 - Echi
 
 Spettri del passato infestano alcune zone del fiume Trebia. Ciò che è accaduto in quella zona riprenderà vita sotto gli occhi di Walfrit, e in alcuni casi non saranno solo immagini innocue...
+
+
+* 6 - Problemi noti
+
+In Windows 10, la grafica potrebbe essere tagliata ai lati dello schermo. Per sistemarlo, cliccare con il testo destro su "LHIT", clic su "Modifica impostazioni DPI elevati" e spunta la checkbox "Esegui l'override del comportamento del ridimensionamento DPI elevati".

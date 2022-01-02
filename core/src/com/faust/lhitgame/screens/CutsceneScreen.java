@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Constructor;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.camera.CameraManager;
 import com.faust.lhitgame.cutscenes.CutsceneManager;
@@ -13,7 +15,6 @@ import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.enums.cutscenes.CutsceneEnum;
 
-import java.lang.reflect.Constructor;
 import java.util.Objects;
 
 /**
@@ -55,8 +56,9 @@ public class CutsceneScreen implements Screen {
 
         try {
             //Instantiate next screen using reflection
-            Constructor<?> ctor = cutsceneEnum.getNextScreenClass().getDeclaredConstructor(LHITGame.class);
-            this.nextScreen = (Screen) ctor.newInstance(game);
+            //Using ClassReflection wrapper for html support
+            Constructor screenConstructor =  ClassReflection.getConstructor(cutsceneEnum.getNextScreenClass(),LHITGame.class);;
+            this.nextScreen = (Screen) screenConstructor.newInstance(game);
         } catch (Exception e) {
             throw new GdxRuntimeException(e);
         }

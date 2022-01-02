@@ -1,20 +1,25 @@
 package com.faust.lhitgame.utils;
 
-public class Pair<T, K> {
+/**
+ * Class for a Pair of values
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
+public class Pair<F, S> {
 
-    private final T first;
-    private final K second;
+    private final F first;
+    private final S second;
 
-    public Pair(T first, K second) {
+    public Pair(F first, S second) {
         this.first = first;
         this.second = second;
     }
 
-    public T getFirst() {
+    public F getFirst() {
         return first;
     }
 
-    public K getSecond() {
+    public S getSecond() {
         return second;
     }
 }

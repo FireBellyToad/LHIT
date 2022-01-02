@@ -2,6 +2,7 @@ package com.faust.lhitgame.utils;
 
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
@@ -110,7 +111,7 @@ public class ValidEcho {
                             throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
                         }
 
-                        if(!Killable.class.isAssignableFrom(enemyEnum.getInstanceClass())){
+                        if(!ClassReflection.isAssignableFrom(Killable.class,enemyEnum.getInstanceClass())){
                             throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
                         }
                         break;

@@ -43,6 +43,7 @@ public class DecorationEntity extends SpriteEntity {
             case GRASS:
             case TUMOR:
             case PLANT:
+            case PAPER:
             case DEAD_TREE:{
                 return true;
             }

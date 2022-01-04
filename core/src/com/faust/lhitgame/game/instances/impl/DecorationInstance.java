@@ -95,7 +95,8 @@ public class DecorationInstance extends GameInstance implements Interactable {
                 bodyDef.position.set(x - 2, y - 16);
                 break;
             }
-            case PLANT: {
+            case PLANT:
+            case PAPER: {
                 shape.setAsBox(5, 3);
                 bodyDef.position.set(x, y - 16);
                 break;
@@ -153,6 +154,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
 
         switch (((DecorationEntity) entity).getType()) {
             case PLANT:
+            case PAPER:
             case DEAD_TREE:
             case GRASS: {
                 ((DecorationEntity) entity).playGrassMove();

@@ -7,7 +7,8 @@ public enum POIEnum {
     CADAVER("poi.cadaver",ItemEnum.ARMOR),
     BROTHER("poi.brother"),
     ECHO_CORPSE("poi.echocorpse"),
-    MICHAEL("poi.michael", "splash.michael");
+    MICHAEL("poi.michael", "splash.michael"),
+    BURNT_PAPER("poi.burnt");
 
     private final String textKey;
     private final ItemEnum itemGiven;

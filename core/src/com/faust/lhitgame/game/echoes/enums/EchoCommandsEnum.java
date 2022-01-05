@@ -15,7 +15,7 @@ public enum EchoCommandsEnum {
     TIMES("times", Integer.class),
     UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE("untilAtLeastOneKillableAlive", String.class),
     UNTIL_AT_LEAST_ONE_POI_EXAMINABLE("untilAtLeastOnePOIExaminable", String.class),
-    UNTIL_AT_LEAST_PLAYER_DAMAGE_IS_LESS_THAN("untilAtLeastPlayerDamageIsLessThan", Integer.class),
+    UNTIL_PLAYER_DAMAGE_IS_MORE_THAN("untilPlayerDamageIsMoreThan", Integer.class),
     SPLASH_TO_SHOW("splashToShow", String.class),
     INSTANCE_CLASS("instanceClass", String.class, true),
     IDENTIFIER("identifier", String.class, true),
@@ -23,10 +23,12 @@ public enum EchoCommandsEnum {
     Y("y", Integer.class),
     RELATIVE("relative", Boolean.class),
     INVISIBLE("invisible", Boolean.class),
+    HURT_PLAYER("hurtPlayer", Integer.class),
+
 
     //Composite
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),
-    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_AT_LEAST_PLAYER_DAMAGE_IS_LESS_THAN}),
+    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_PLAYER_DAMAGE_IS_MORE_THAN}),
     SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
 
     private final String commandString;

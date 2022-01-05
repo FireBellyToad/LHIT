@@ -13,19 +13,18 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
-import com.faust.lhitgame.game.instances.AnimatedInstance;
-import com.faust.lhitgame.game.instances.impl.*;
-import com.faust.lhitgame.game.world.manager.WorldManager;
-import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.gameentities.interfaces.Killable;
+import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.Spawner;
+import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
@@ -36,6 +35,7 @@ import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
+import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.saves.RoomSaveEntry;
 import com.faust.lhitgame.utils.DepthComparatorUtils;
 
@@ -169,7 +169,7 @@ public abstract class AbstractRoom implements Spawner {
         worldManager.insertWallsIntoWorld(roomContent.wallList);
         worldManager.insertEmergedAreasIntoWorld(roomContent.emergedAreaList);
         player.changePOIList(roomContent.poiList);
-        if(Objects.nonNull(roomContent.roomGraph)){
+        if (Objects.nonNull(roomContent.roomGraph)) {
             roomContent.roomGraph.initGraph(worldManager);
         }
 
@@ -276,6 +276,10 @@ public abstract class AbstractRoom implements Spawner {
         switch (enemyEnum) {
             case PORTAL: {
                 addedInstance = new PortalInstance(assetManager);
+                break;
+            }
+            case ESCAPE_PORTAL: {
+                addedInstance = new EscapePortalInstance(assetManager);
                 break;
             }
             case WILLOWISP: {
@@ -507,7 +511,7 @@ public abstract class AbstractRoom implements Spawner {
         mapObjectStub.getProperties().put("type", instanceIdentifierEnum);
 
         //Insert last enemy into world
-        if (instanceClass.equals(MeatInstance.class) || instanceClass.equals(WillowispInstance.class)) {
+        if (instanceClass.equals(MeatInstance.class) || instanceClass.equals(WillowispInstance.class) || instanceClass.equals(EscapePortalInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {
@@ -516,7 +520,7 @@ public abstract class AbstractRoom implements Spawner {
             worldManager.insertPOIIntoWorld(Collections.singletonList(lastPOIInstance));
             roomContent.roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, false);
             roomContent.player.changePOIList(roomContent.poiList);
-        } else if (instanceClass.equals(PortalInstance.class)) {
+        } else  if (instanceClass.equals(PortalInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
         }
     }

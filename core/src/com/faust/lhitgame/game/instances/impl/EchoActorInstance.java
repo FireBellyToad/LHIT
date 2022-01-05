@@ -14,6 +14,7 @@ import com.faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import com.faust.lhitgame.game.gameentities.impl.EchoActorEntity;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
+import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
@@ -60,22 +61,20 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     public void doLogic(float stateTime, RoomContent roomContent) {
 
         // If must be removed, avoid logic
-        if (removeFromRoom) {
-            return;
+        if (!removeFromRoom) {
+
+            //Check if echo is active. On first iteration set to true
+            if (!echoIsActive) {
+                echoIsActive = true;
+            }
+
+            //initialize deltatime
+            if (deltaTime == 0)
+                deltaTime = stateTime;
+
+            //All commands to do in this step
+            executeCommands(((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior), roomContent, stateTime);
         }
-
-        //Check if echo is active. On first iteration set to true
-        if (!echoIsActive) {
-            echoIsActive = true;
-        }
-
-        //initialize deltatime
-        if (deltaTime == 0)
-            deltaTime = stateTime;
-
-        //All commands to do in this step
-        executeCommands(((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior), roomContent, stateTime);
-
     }
 
     /**
@@ -105,6 +104,11 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             deltaTime = stateTime;
             //If is not last step
             if (index + 1 < stepOrder.size()) {
+                //Before stepping out, hurt player
+                if (commands.containsKey(EchoCommandsEnum.HURT_PLAYER)) {
+                    roomContent.player.hurt(this);
+                }
+
                 currentBehavior = ((EchoActorEntity) entity).getStepOrder().get(index + 1);
                 showTextBox = true;
             } else {
@@ -129,31 +133,29 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         if (commands.containsKey(EchoCommandsEnum.STEP)) {
 
             final Integer index = (Integer) commands.get(EchoCommandsEnum.STEP);
+            boolean mustGoToStep = true;
+            //Check condition on until Player has at least less then N damage (priority on other checks)
+            if (commands.containsKey(EchoCommandsEnum.UNTIL_PLAYER_DAMAGE_IS_MORE_THAN)) {
+                //Extract value of damage
+                final int value = (int) commands.get(EchoCommandsEnum.UNTIL_PLAYER_DAMAGE_IS_MORE_THAN);
+                mustGoToStep = roomContent.player.getDamage() <= value;
+            }
+
             //Check condition on until there is at least one enemy of type is alive in room
             if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE)) {
                 //Extract instance class from enum and do check
                 final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE));
                 final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-                if (roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead())) {
-                    //if true, go to step
-                    return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
-                }
-            } else if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_PLAYER_DAMAGE_IS_LESS_THAN)) {
-                //Extract value of damage
-                final int value = (int) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_PLAYER_DAMAGE_IS_LESS_THAN);
-                if (roomContent.player.getDamage() < value) {
-                    //if true, go to step
-                    return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
-                }
-            } else if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE)) {
+                mustGoToStep = mustGoToStep && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            }
+
+            if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE)) {
                 //Extract Poi type and do check
                 final POIEnum poiEnum = POIEnum.valueOf ((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE));
-                final boolean atLeastOneExaminable = roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
-                if (atLeastOneExaminable) {
-                    //if true, go to step
-                    return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
-                }
-            }else {
+                mustGoToStep = mustGoToStep && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+            }
+
+            if(mustGoToStep) {
             //If no "until" condition, just jump to "go to step" value
                 return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
             }
@@ -261,7 +263,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         fixtureDef.density = 1;
         fixtureDef.friction = 1;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = CollisionManager.ENEMY_GROUP;
+        fixtureDef.filter.categoryBits = CollisionManager.SOLID_GROUP;
         fixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
@@ -331,6 +333,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                 //Ld6
                 return Math.min(MathUtils.random(1, 6), MathUtils.random(1, 6));
             case HORROR:
+            case INFERNUM:
                 return 1;
             default:
                 return 0;
@@ -348,5 +351,19 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     @Override
     public void endPlayerInteraction(PlayerInstance playerInstance) {
         //Nothing to do here... yet
+    }
+
+    /**
+     *
+      * @return the Map layer to draw
+     */
+    public String overrideMapLayerDrawn() {
+        final Map<EchoCommandsEnum, Object> extractedCommand = ((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior);
+        final String layerString = (String) extractedCommand.get(EchoCommandsEnum.RENDER_ONLY_MAP_LAYER);
+        return Objects.isNull(layerString) ? MapLayersEnum.TERRAIN_LAYER.getLayerName() : MapLayersEnum.valueOf(layerString).getLayerName();
+    }
+
+    public EchoesActorType getType(){
+        return ((EchoActorEntity) entity).getEchoesActorType();
     }
 }

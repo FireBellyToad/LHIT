@@ -1,0 +1,12 @@
+{
+  "name": "Portal spawner",
+  "description": "Act as an exit to echo.infernum.json",
+  "steps": [
+    {
+      "spawn": {
+        "identifier": "ESCAPE_PORTAL",
+        "relative": true
+      }
+    }
+  ]
+}

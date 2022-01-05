@@ -11,6 +11,7 @@ public enum EnemyEnum {
     MEAT(MeatInstance.class),
     PORTAL(PortalInstance.class),
     WILLOWISP(WillowispInstance.class),
+    ESCAPE_PORTAL(EscapePortalInstance.class),
     UNDEFINED(null);
 
     private final Class<? extends AnimatedInstance> instanceClass;

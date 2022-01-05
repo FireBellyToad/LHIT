@@ -65,7 +65,6 @@ public class EchoActorEntity extends AnimatedEntity {
             stepCounter++;
         }
 
-        Gdx.app.log("DEBUG", "Stuff");
     }
 
     /**

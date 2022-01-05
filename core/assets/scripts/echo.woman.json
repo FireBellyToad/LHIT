@@ -1,4 +1,6 @@
 {
+  "name": "Screaming woman",
+  "description": "A woman screams and gets teared apart by unseen forces",
   "steps": [
     {
       "textBoxKey": "echo.woman.first",

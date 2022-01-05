@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
+import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
@@ -40,7 +41,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private static final float PLAYER_SPEED = 50;
     private static final float PLAYER_SPEED_SUBMERGED = 40;
-    private static final int EXAMINATION_DISTANCE = 35;
+    private static final int EXAMINATION_DISTANCE = 30;
     private static final int ATTACK_VALID_FRAME = 6; // Frame to activate attack sensor
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
@@ -235,7 +236,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        if (!(attacker instanceof StrixInstance)) {
+        //Strix and Infernum must not send player back on hurt
+        if (!(attacker instanceof StrixInstance) &&
+                !(attacker instanceof EchoActorInstance && (EchoesActorType.INFERNUM.equals(((EchoActorInstance) attacker).getType())))){
             body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
         currentBehavior = GameBehavior.HURT;

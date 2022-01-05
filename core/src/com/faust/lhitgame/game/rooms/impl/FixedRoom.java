@@ -3,19 +3,20 @@ package com.faust.lhitgame.game.rooms.impl;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.faust.lhitgame.game.instances.impl.EchoActorInstance;
-import com.faust.lhitgame.game.instances.impl.PlayerInstance;
+import com.faust.lhitgame.game.gameentities.interfaces.Killable;
+import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
+import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.GameInstance;
-import com.faust.lhitgame.game.instances.impl.DecorationInstance;
-import com.faust.lhitgame.game.instances.impl.POIInstance;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.enums.MapObjNameEnum;
@@ -39,9 +40,9 @@ import java.util.Objects;
 public class FixedRoom extends AbstractRoom {
 
     private static final float ECHO_ACTIVATION_DISTANCE = 40;
-    private List<EchoActorInstance> echoActors; //Can have Echo actors
     private boolean echoIsActivated = false;
     private GameInstance echoTrigger;
+    private String layerToDraw = MapLayersEnum.TERRAIN_LAYER.getLayerName();
 
 
     public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags, MusicManager musicManager) {
@@ -62,7 +63,7 @@ public class FixedRoom extends AbstractRoom {
 
     @Override
     protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
-        this.echoActors = new ArrayList<>();
+        this.roomContent.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS if not disabled
             if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
@@ -70,7 +71,7 @@ public class FixedRoom extends AbstractRoom {
             }
         });
 
-        worldManager.insertEchoActorsIntoWorld(echoActors);
+        worldManager.insertEchoActorsIntoWorld(roomContent.echoActors);
 
         // FIXME handle multiple POI
         if (mustClearPOI) {
@@ -80,7 +81,7 @@ public class FixedRoom extends AbstractRoom {
         if (RoomTypeEnum.FINAL.equals(roomType)) {
             //Loop title music
             musicManager.playMusic(TuneEnum.CHURCH, 0.75f);
-        } else if (roomContent.enemyList.size() > 0 || echoActors.size() > 0) {
+        } else if (roomContent.enemyList.size() > 0 || roomContent.echoActors.size() > 0) {
             //Loop title music
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);
         } else {
@@ -160,7 +161,7 @@ public class FixedRoom extends AbstractRoom {
         EchoesActorType echoesActorType = EchoesActorType.getFromString((String) obj.getProperties().get("type"));
         Objects.requireNonNull(echoesActorType);
 
-        echoActors.add(new EchoActorInstance(echoesActorType,
+        roomContent.echoActors.add(new EchoActorInstance(echoesActorType,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"), assetManager, this));
 
@@ -175,8 +176,8 @@ public class FixedRoom extends AbstractRoom {
         allInstance.add(roomContent.player);
         allInstance.addAll(roomContent.enemyList);
 
-        if (echoIsActivated && Objects.nonNull(echoActors)) {
-            allInstance.addAll(echoActors);
+        if (echoIsActivated && Objects.nonNull(roomContent.echoActors)) {
+            allInstance.addAll(roomContent.echoActors);
         }
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
@@ -192,17 +193,33 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
+    public void drawRoomTerrain() {
+        MapLayers mapLayers = tiledMap.getLayers();
+
+        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) mapLayers.get(layerToDraw);
+
+        //Overlay layer should is required
+        Objects.requireNonNull(terrainLayer);
+
+        tiledMapRenderer.getBatch().begin();
+        tiledMapRenderer.renderTileLayer(terrainLayer);
+        tiledMapRenderer.getBatch().end();
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
-        echoActors.forEach(EchoActorInstance::dispose);
+        roomContent.echoActors.forEach(EchoActorInstance::dispose);
     }
 
     public void doRoomContentsLogic(float stateTime) {
         super.doRoomContentsLogic(stateTime);
+        layerToDraw = MapLayersEnum.TERRAIN_LAYER.getLayerName();
+        roomContent.enemyList.removeIf(ene -> ene instanceof EscapePortalInstance && ((Killable) ene).isDead());
 
         // Manage echo actors
         if (echoIsActivated) {
-            echoActors.forEach(actor -> {
+            roomContent.echoActors.forEach(actor -> {
                 actor.doLogic(stateTime, roomContent);
 
                 if (actor.hasCurrentTextBoxToShow()) {
@@ -212,9 +229,14 @@ public class FixedRoom extends AbstractRoom {
                 if (actor.mustRemoveFromRoom()) {
                     actor.dispose();
                 }
+
+                //change only if is default
+                if(MapLayersEnum.TERRAIN_LAYER.getLayerName().equals(layerToDraw)){
+                    layerToDraw = actor.overrideMapLayerDrawn();
+                }
             });
 
-            echoActors.removeIf(EchoActorInstance::mustRemoveFromRoom);
+            roomContent.echoActors.removeIf(EchoActorInstance::mustRemoveFromRoom);
         } else {
 
             //activate room echo if needed
@@ -224,7 +246,7 @@ public class FixedRoom extends AbstractRoom {
 
             //Show echo text if NOW is active
             if (echoIsActivated) {
-                echoActors.forEach(echoActorInstance -> {
+                roomContent.echoActors.forEach(echoActorInstance -> {
                     echoActorInstance.playStartingSound();
                     musicManager.stopMusic();
 

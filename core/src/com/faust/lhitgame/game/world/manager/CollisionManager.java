@@ -116,6 +116,11 @@ public class CollisionManager implements ContactListener {
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
             meatInstance.doPlayerInteraction(playerInstance);
         }
+
+        // Handle Portal Collision
+        if (isContactOfClass(contact, EscapePortalInstance.class)) {
+            handleEnemyCollisionEvent(contact, EscapePortalInstance.class);
+        }
     }
 
     /**

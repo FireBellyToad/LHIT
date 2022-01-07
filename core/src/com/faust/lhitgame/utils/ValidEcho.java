@@ -9,15 +9,11 @@ import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
-import com.faust.lhitgame.game.gameentities.interfaces.Killable;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**

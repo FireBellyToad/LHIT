@@ -47,14 +47,16 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
         //Raycast search callback. If at least one StaticBody is in the line of the ray,
         //the path should not be saved for pathfinding. This excludes EmergedArea bodies
         //Why AtomicBoolean? So that it can be changed on callback thread
-        AtomicBoolean isConnected = new AtomicBoolean(true);
+        AtomicBoolean areNodesConnected = new AtomicBoolean(true);
         RayCastCallback checkIfPathIsFree = (fixture, point, normal, fraction) -> {
             if (Objects.nonNull(fixture.getBody()) &&
                     !(fixture.getBody().getUserData() instanceof EmergedArea) &&
                     BodyDef.BodyType.StaticBody.equals(fixture.getBody().getType())) {
-                isConnected.set(false);
+                areNodesConnected.set(false);
             }
-            return isConnected.get() ? 1 : 0;
+
+            //Stop if obstacle is found
+            return areNodesConnected.get() ? 1 : 0;
         };
 
         //For each node, check if thers is a connection with another one
@@ -68,11 +70,11 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
                 }
 
                 //init check flag
-                isConnected.set(true);
+                areNodesConnected.set(true);
 
                 //If connection is free, connect two nodes
                 rayCaster.rayCast(checkIfPathIsFree, fromNode, toNode);
-                if (isConnected.get()) {
+                if (areNodesConnected.get()) {
                     connectNodes(fromNode, toNode);
                 }
             }
@@ -112,10 +114,6 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
         final Array value = graphMap.getOrDefault(fromNode, null);
         //remember that Path implements Connection<PathNode>
         return Objects.isNull(value) ? new Array<>() : value;
-    }
-
-    public Array<PathNode> getNodeArray() {
-        return nodeArray;
     }
 
     //FIXME remove

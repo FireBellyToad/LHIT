@@ -7,15 +7,14 @@ import com.faust.lhitgame.LHITGame;
 
 public class HtmlLauncher extends GwtApplication {
 
+        final static int SCALE_FACTOR = 4;
+
         @Override
         public GwtApplicationConfiguration getConfig () {
                 // Resizable application, uses available space in browser
-                GwtApplicationConfiguration configuration;
-                configuration = new GwtApplicationConfiguration(true);
-                configuration.disableAudio = true;
-                return configuration;
+//                return new GwtApplicationConfiguration(true);
                 // Fixed size application:
-                //return new GwtApplicationConfiguration(480, 320);
+                return new GwtApplicationConfiguration(LHITGame.GAME_WIDTH * SCALE_FACTOR, LHITGame.GAME_HEIGHT * SCALE_FACTOR);
         }
 
         @Override

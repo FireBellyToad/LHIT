@@ -5,7 +5,7 @@
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 	<inherits name='com.badlogic.gdx.ai' />
 
-	<inherits name='LHITHGame' />
+	<inherits name='LHITGame' />
 	<entry-point class='com.faust.lhitgame.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
@@ -14,4 +14,7 @@
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.cutscenes" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.utils" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.game.instances.interfaces" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.game.instances.impl.WillowispInstance" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.game.instances.impl.EscapePortalInstance" />
 </module>

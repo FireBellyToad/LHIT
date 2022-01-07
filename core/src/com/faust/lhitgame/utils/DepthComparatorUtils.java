@@ -2,7 +2,7 @@ package com.faust.lhitgame.utils;
 
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
-import com.faust.lhitgame.game.gameentities.interfaces.Hurtable;
+import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.*;
 

@@ -2,7 +2,7 @@ package com.faust.lhitgame.game.world.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
 import com.faust.lhitgame.game.instances.impl.*;
-import com.faust.lhitgame.game.gameentities.interfaces.Hurtable;
+import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;

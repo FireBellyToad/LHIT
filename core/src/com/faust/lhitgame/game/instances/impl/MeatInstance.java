@@ -17,8 +17,8 @@ import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.impl.MeatEntity;
-import com.faust.lhitgame.game.gameentities.interfaces.Damager;
-import com.faust.lhitgame.game.gameentities.interfaces.Killable;
+import com.faust.lhitgame.game.instances.interfaces.Damager;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
 
 import java.util.Objects;

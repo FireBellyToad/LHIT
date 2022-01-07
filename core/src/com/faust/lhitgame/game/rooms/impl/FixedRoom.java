@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.faust.lhitgame.game.gameentities.interfaces.Killable;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;

@@ -51,7 +51,6 @@ public class Menu implements InputProcessor {
         this.currentMenu = currentMenu;
 
         assetManager.load("sounds/SFX_UIGeneric13.ogg", Sound.class);
-        assetManager.finishLoading();
         assetManager.load("sounds/SFX_UIGeneric15.ogg", Sound.class);
         assetManager.finishLoading();
 

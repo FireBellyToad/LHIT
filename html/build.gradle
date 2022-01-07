@@ -10,6 +10,7 @@ gwt {
 
     compiler {
         strict = true
+        style = org.wisepersist.gradle.plugins.gwt.Style.DETAILED
         disableCastChecking = true
     }
 }

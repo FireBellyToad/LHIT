@@ -9,6 +9,8 @@
     {
     },
     {
+    },
+    {
       "goTo" :{
         "step": 0,
         "untilAtLeastOneKillableAlive": "WILLOWISP"

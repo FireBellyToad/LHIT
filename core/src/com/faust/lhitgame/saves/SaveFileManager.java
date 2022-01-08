@@ -1,6 +1,7 @@
 package com.faust.lhitgame.saves;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 public class SaveFileManager {
 
+    private static final String ROOT_KEY = "save";
     private final Json jsonParser = new Json();
     private final String selectedFileName = "saves/mainWorldSave.json";
 
@@ -77,13 +79,15 @@ public class SaveFileManager {
      */
     public void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
 
-        FileHandle file = Gdx.files.local(selectedFileName);
+        Preferences file =Gdx.app.getPreferences(selectedFileName);
 
-        if(!file.exists()){
+        String content = (String) file.get().get(ROOT_KEY);
+
+        if (Objects.isNull(content)) {
             return;
         }
 
-        JsonValue fileContent = new JsonReader().parse(file);
+        JsonValue fileContent = new JsonReader().parse(content);
 
         if (Objects.isNull(fileContent)) {
             return;
@@ -173,7 +177,7 @@ public class SaveFileManager {
     public void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
 
         String stringSave = getStringSaveFile(player, saveMap);
-        Gdx.files.local(getFileName()).writeString(stringSave, false);
+       Gdx.app.getPreferences(getFileName()).putString(ROOT_KEY, stringSave);
     }
 
     /**
@@ -181,7 +185,7 @@ public class SaveFileManager {
      */
     public void cleanSaveFile() {
 
-        Gdx.files.local(getFileName()).writeString("", false);
+       Gdx.app.getPreferences(getFileName()).clear();
     }
 
     /**
@@ -190,24 +194,24 @@ public class SaveFileManager {
      */
     public Map<String, Object> loadRawValues() {
 
-        FileHandle file = Gdx.files.local(selectedFileName);
-
-        if(!file.exists()){
-            return null;
-        }
-
-        JsonValue fileRead = null;
-        try {
-            fileRead= new JsonReader().parse(file);
-        } catch (Exception e){
-            Gdx.app.log("DEBUG", e.getMessage());
-        }
+        Preferences fileRead = Gdx.app.getPreferences(selectedFileName);
 
         if (Objects.isNull(fileRead)) {
             return null;
         }
 
-        JsonValue playerInfo = fileRead.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
+        String content = (String) fileRead.get().get(ROOT_KEY);
+
+        if (Objects.isNull(content)) {
+            return null;
+        }
+
+        JsonValue root = new JsonReader().parse(content);
+
+        if (Objects.isNull(root)) {
+            return null;
+        }
+        JsonValue playerInfo = root.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
         if (Objects.isNull(playerInfo)) {
             return null;
         }

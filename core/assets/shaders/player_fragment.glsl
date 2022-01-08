@@ -1,3 +1,6 @@
+// Need to specify float precision for HTML module
+precision highp float;
+
 varying vec4 v_color;
 varying vec2 v_texCoords;
 uniform sampler2D u_texture;

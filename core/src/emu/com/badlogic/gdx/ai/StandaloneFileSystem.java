@@ -28,6 +28,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.LocalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 
+//USED AS A WORKAROUND FOR HTML BUILD
 /** @author davebaol */
 public class StandaloneFileSystem implements FileSystem {
 

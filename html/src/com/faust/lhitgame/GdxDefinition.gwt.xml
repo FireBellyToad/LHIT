@@ -12,9 +12,13 @@
 	<set-property name="user.agent" value="gecko1_8, safari"/>
 	<collapse-property name="user.agent" values="*" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.cutscenes" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.utils" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.game.instances.interfaces" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.game.instances.impl.WillowispInstance" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.game.instances.impl.EscapePortalInstance" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens.GameScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens.CutsceneScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens.EndGameScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhitgame.screens.MenuScreen" />
 </module>

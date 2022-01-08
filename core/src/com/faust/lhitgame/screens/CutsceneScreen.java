@@ -57,7 +57,7 @@ public class CutsceneScreen implements Screen {
         try {
             //Instantiate next screen using reflection
             //Using ClassReflection wrapper for html support
-            Constructor screenConstructor =  ClassReflection.getConstructor(cutsceneEnum.getNextScreenClass(),LHITGame.class);;
+            Constructor screenConstructor =  ClassReflection.getDeclaredConstructor(cutsceneEnum.getNextScreenClass(),LHITGame.class);
             this.nextScreen = (Screen) screenConstructor.newInstance(game);
         } catch (Exception e) {
             throw new GdxRuntimeException(e);

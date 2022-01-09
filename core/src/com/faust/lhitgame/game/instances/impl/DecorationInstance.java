@@ -72,6 +72,9 @@ public class DecorationInstance extends GameInstance implements Interactable {
         if (DecorationsEnum.BOAT.equals(((DecorationEntity) entity).getType())) {
             return -4;
         }
+        if (DecorationsEnum.PAPER.equals(((DecorationEntity) entity).getType())) {
+            return -8;
+        }
         return 0;
     }
 

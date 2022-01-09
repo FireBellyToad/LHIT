@@ -21,6 +21,7 @@ public class DepthComparatorUtils {
                 (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
                 (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_1.equals(((DecorationInstance) o2).getType())) ||
                 (o2 instanceof DecorationInstance && DecorationsEnum.ALLY_CORPSE_2.equals(((DecorationInstance) o2).getType())) ||
+                (o2 instanceof DecorationInstance && DecorationsEnum.PAPER.equals(((DecorationInstance) o2).getType())) ||
                 (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted()) ||
                 (o1 instanceof POIInstance && POIEnum.ECHO_CORPSE.equals(((POIInstance) o1).getType()) && o2 instanceof DecorationInstance) ||
                 (o2 instanceof POIInstance && POIEnum.SKELETON.equals(((POIInstance) o2).getType())) ||

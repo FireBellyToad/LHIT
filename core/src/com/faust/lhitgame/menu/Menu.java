@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.utils.TextLocalizer;
 import com.faust.lhitgame.menu.enums.MenuItem;
-import com.faust.lhitgame.saves.SaveFileManager;
+import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 
 import java.util.Map;
 import java.util.Objects;

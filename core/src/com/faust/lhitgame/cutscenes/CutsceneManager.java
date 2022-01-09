@@ -19,7 +19,7 @@ import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.gameentities.impl.*;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import com.faust.lhitgame.menu.LongTextHandler;
-import com.faust.lhitgame.saves.SaveFileManager;
+import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 import com.faust.lhitgame.enums.cutscenes.CutsceneEnum;
 import com.faust.lhitgame.saves.enums.SaveFieldsEnum;
 import com.faust.lhitgame.utils.TextLocalizer;

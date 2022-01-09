@@ -12,7 +12,7 @@ import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.menu.Menu;
 import com.faust.lhitgame.menu.enums.MenuItem;
-import com.faust.lhitgame.saves.SaveFileManager;
+import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 import com.faust.lhitgame.screens.MenuScreen;
 
 /**

@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.faust.lhitgame.LHITGame;
+import com.faust.lhitgame.saves.HtmlSaveFileManager;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -19,6 +20,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new LHITGame();
+                return new LHITGame(new HtmlSaveFileManager());
         }
 }

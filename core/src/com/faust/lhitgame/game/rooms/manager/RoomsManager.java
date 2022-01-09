@@ -22,7 +22,7 @@ import com.faust.lhitgame.game.rooms.impl.CasualRoom;
 import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
 import com.faust.lhitgame.saves.RoomSaveEntry;
-import com.faust.lhitgame.saves.SaveFileManager;
+import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 
 import java.util.HashMap;
 import java.util.Map;

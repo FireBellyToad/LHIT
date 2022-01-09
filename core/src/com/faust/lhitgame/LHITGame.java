@@ -4,11 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.faust.lhitgame.game.music.MusicManager;
-import com.faust.lhitgame.utils.TextLocalizer;
-import com.faust.lhitgame.saves.SaveFileManager;
 import com.faust.lhitgame.camera.CameraManager;
+import com.faust.lhitgame.game.music.MusicManager;
+import com.faust.lhitgame.saves.DesktopSaveFileManager;
+import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 import com.faust.lhitgame.screens.LanguageScreen;
+import com.faust.lhitgame.utils.TextLocalizer;
 
 public class LHITGame extends Game {
 
@@ -22,12 +23,16 @@ public class LHITGame extends Game {
     private MusicManager musicManager;
     private TextLocalizer textLocalizer;
 
+    public LHITGame(SaveFileManager saveFileManager) {
+        super();
+        this.saveFileManager = saveFileManager;
+    }
+
     @Override
     public void create() {
         batch = new SpriteBatch();
         assetManager = new AssetManager();
         cameraManager = new CameraManager();
-        saveFileManager = new SaveFileManager();
         musicManager = new MusicManager();
 
         assetManager.load("fonts/main_font.fnt", BitmapFont.class);

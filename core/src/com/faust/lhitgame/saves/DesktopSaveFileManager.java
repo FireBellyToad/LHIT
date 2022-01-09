@@ -1,7 +1,6 @@
 package com.faust.lhitgame.saves;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
@@ -11,17 +10,17 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.saves.enums.SaveFieldsEnum;
+import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 
 import java.util.*;
 
 /**
- * Save File Manager class
+ * Desktop save File Manager class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class SaveFileManager {
+public class DesktopSaveFileManager implements SaveFileManager {
 
-    private static final String ROOT_KEY = "save";
     private final Json jsonParser = new Json();
     private final String selectedFileName = "saves/mainWorldSave.json";
 
@@ -79,15 +78,13 @@ public class SaveFileManager {
      */
     public void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
 
-        Preferences file =Gdx.app.getPreferences(selectedFileName);
+        FileHandle file = Gdx.files.local(selectedFileName);
 
-        String content = (String) file.get().get(ROOT_KEY);
-
-        if (Objects.isNull(content)) {
+        if(!file.exists()){
             return;
         }
 
-        JsonValue fileContent = new JsonReader().parse(content);
+        JsonValue fileContent = new JsonReader().parse(file);
 
         if (Objects.isNull(fileContent)) {
             return;
@@ -177,7 +174,7 @@ public class SaveFileManager {
     public void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
 
         String stringSave = getStringSaveFile(player, saveMap);
-       Gdx.app.getPreferences(getFileName()).putString(ROOT_KEY, stringSave);
+        Gdx.files.local(getFileName()).writeString(stringSave, false);
     }
 
     /**
@@ -185,7 +182,7 @@ public class SaveFileManager {
      */
     public void cleanSaveFile() {
 
-       Gdx.app.getPreferences(getFileName()).clear();
+        Gdx.files.local(getFileName()).writeString("", false);
     }
 
     /**
@@ -194,24 +191,24 @@ public class SaveFileManager {
      */
     public Map<String, Object> loadRawValues() {
 
-        Preferences fileRead = Gdx.app.getPreferences(selectedFileName);
+        FileHandle file = Gdx.files.local(selectedFileName);
+
+        if(!file.exists()){
+            return null;
+        }
+
+        JsonValue fileRead = null;
+        try {
+            fileRead= new JsonReader().parse(file);
+        } catch (Exception e){
+            Gdx.app.log("DEBUG", e.getMessage());
+        }
 
         if (Objects.isNull(fileRead)) {
             return null;
         }
 
-        String content = (String) fileRead.get().get(ROOT_KEY);
-
-        if (Objects.isNull(content)) {
-            return null;
-        }
-
-        JsonValue root = new JsonReader().parse(content);
-
-        if (Objects.isNull(root)) {
-            return null;
-        }
-        JsonValue playerInfo = root.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
+        JsonValue playerInfo = fileRead.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
         if (Objects.isNull(playerInfo)) {
             return null;
         }

@@ -3,6 +3,7 @@ package com.faust.lhitgame.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhitgame.LHITGame;
+import com.faust.lhitgame.saves.DesktopSaveFileManager;
 
 public class DesktopLauncher {
 	private static final int SCALE_FACTOR = 6;
@@ -15,6 +16,6 @@ public class DesktopLauncher {
 		config.height = LHITGame.GAME_HEIGHT * SCALE_FACTOR;
 		//if parameter w is set, go windowed
 		config.fullscreen = false;//!Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
-		new LwjglApplication(new LHITGame(), config);
+		new LwjglApplication(new LHITGame(new DesktopSaveFileManager()), config);
 	}
 }

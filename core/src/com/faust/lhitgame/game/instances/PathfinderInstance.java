@@ -10,13 +10,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
-import com.faust.lhitgame.game.instances.impl.PlayerInstance;
-import com.faust.lhitgame.game.world.interfaces.RayCaster;
-import com.faust.lhitgame.utils.PathfinderUtils;
 import com.faust.lhitgame.game.gameentities.GameEntity;
 import com.faust.lhitgame.game.instances.impl.DecorationInstance;
+import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.areas.WallArea;
+import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.utils.Pair;
+import com.faust.lhitgame.utils.PathfinderUtils;
 
 import java.util.Objects;
 
@@ -56,7 +56,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
      */
     public void calculateNewGoal(RoomNodesGraph roomNodesGraph) {
 
-        if (!recalculatePath || Objects.isNull(roomNodesGraph)|| canSeePlayer())
+        if (!recalculatePath || Objects.isNull(roomNodesGraph) || canSeePlayer())
             return;
 
         Array<PathNode> nodeArray = roomNodesGraph.getNodeArray();
@@ -77,7 +77,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
             if (pathQueue.size > 2)
                 return;
         });
-        recalculatePath = pathQueue.isEmpty() ;
+        recalculatePath = pathQueue.isEmpty();
         targetPathNode = pathQueue.isEmpty() ? currentPos : pathQueue.removeFirst();
     }
 
@@ -91,9 +91,10 @@ public abstract class PathfinderInstance extends AnimatedInstance {
         //Do a raycast, save all instances that are caught by the ray
         Array<Pair<Float, Object>> tempInstancesList = new Array<>();
         RayCastCallback getPlayerAndWallsInRay = (fixture, point, normal, fraction) -> {
-            //Select only walls, decorations and player (excluding hitboxes)
+            //Select only walls, non passable decorations and player (excluding hitboxes)
             if (fixture.getBody().getUserData() instanceof WallArea ||
-                    fixture.getBody().getUserData() instanceof DecorationInstance ||
+                    (fixture.getBody().getUserData() instanceof DecorationInstance &&
+                            !((DecorationInstance) fixture.getBody().getUserData()).isPassable()) ||
                     fixture.getBody().equals(target.getBody())) {
                 tempInstancesList.add(new Pair<>(fraction, fixture.getBody().getUserData()));
             }
@@ -152,6 +153,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
         }
         return targetPathNode;
     }
+
     /**
      * FIXME REMOVE
      */
@@ -196,7 +198,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
     /**
      * Force this instance to use graph
      */
-    public void forceRecalculation(){
+    public void forceRecalculation() {
         recalculatePath = true;
     }
 }

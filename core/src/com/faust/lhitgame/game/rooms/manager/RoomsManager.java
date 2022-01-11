@@ -8,19 +8,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
-import com.faust.lhitgame.game.instances.impl.PlayerInstance;
-import com.faust.lhitgame.game.rooms.AbstractRoom;
-import com.faust.lhitgame.game.rooms.RoomModel;
-import com.faust.lhitgame.game.rooms.impl.FixedRoom;
-import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.music.MusicManager;
+import com.faust.lhitgame.game.rooms.AbstractRoom;
+import com.faust.lhitgame.game.rooms.RoomModel;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhitgame.game.rooms.impl.CasualRoom;
+import com.faust.lhitgame.game.rooms.impl.FixedRoom;
 import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
+import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.saves.RoomSaveEntry;
 import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 
@@ -131,10 +131,13 @@ public class RoomsManager {
         player.setChangingRoom(true);
 
         //Do stuff while leaving room
+        RoomSaveEntry currentRoomSaveEntry = saveMap.get(currentRoomPosInWorld);
+
         if (Objects.nonNull(currentRoom)) {
-            currentRoom.onRoomLeave();
+            currentRoom.onRoomLeave(currentRoomSaveEntry);
         }
 
+        //Change room position
         float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
         float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
 
@@ -145,31 +148,31 @@ public class RoomsManager {
 
         currentRoomPosInWorld.set(finalX, finalY);
 
-        //Init room flags
-        Map<RoomFlagEnum, Boolean> roomFlags = populateRoomFlags();
+        //get entry from save or create new
+        currentRoomSaveEntry = saveMap.get(currentRoomPosInWorld);
+        if (Objects.isNull(currentRoomSaveEntry)) {
+            currentRoomSaveEntry = new RoomSaveEntry(
+                    (int) finalX,
+                    (int) finalY,
+                    0, populateRoomFlags(), new HashMap<>());
+        } else {
+            currentRoomSaveEntry.savedFlags.putAll(populateRoomFlags());
+        }
 
-        int roomCasualNumber = 0;
+
         switch (mainWorld.get(currentRoomPosInWorld).type) {
             case CASUAL: {
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
-                // Save casualnumber in memory and prepare save on filesystem
-                roomCasualNumber = ((CasualRoom) currentRoom).getCasualNumber();
-
+                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
                 break;
             }
             default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, saveMap.get(currentRoomPosInWorld), roomFlags, musicManager);
+                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
                 break;
             }
         }
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
-        saveMap.put(currentRoomPosInWorld.cpy(),
-                new RoomSaveEntry(
-                        (int) finalX,
-                        (int) finalY,
-                        roomCasualNumber,
-                        roomFlags));
+        saveMap.put(currentRoomPosInWorld.cpy(), currentRoomSaveEntry);
 
 
         player.setChangingRoom(false);
@@ -241,9 +244,6 @@ public class RoomsManager {
     public void doRoomContentsLogic(float stateTime) {
         currentRoom.doRoomContentsLogic(stateTime);
 
-        //Check if all poi have been examined
-        saveMap.get(currentRoomPosInWorld).savedFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, currentRoom.arePoiCleared());
-
         // In final room should never change
         if (RoomTypeEnum.FINAL.equals(currentRoom.getRoomType())) {
             return;
@@ -276,7 +276,7 @@ public class RoomsManager {
             //Final room
             switchDirection = DirectionEnum.UP;
             player.setStartY(AbstractRoom.BOTTOM_BOUNDARY + 8);
-            saveFileManager.saveOnFile(player,saveMap);
+            saveFileManager.saveOnFile(player, saveMap);
         }
 
 

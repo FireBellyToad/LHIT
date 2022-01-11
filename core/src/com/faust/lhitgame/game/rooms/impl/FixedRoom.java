@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.faust.lhitgame.game.instances.PathfinderInstance;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
@@ -29,7 +30,6 @@ import com.faust.lhitgame.utils.DepthComparatorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,8 +45,8 @@ public class FixedRoom extends AbstractRoom {
     private String layerToDraw = MapLayersEnum.TERRAIN_LAYER.getLayerName();
 
 
-    public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags, MusicManager musicManager) {
-        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags, musicManager);
+    public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
+        super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, musicManager);
     }
 
     @Override
@@ -55,14 +55,10 @@ public class FixedRoom extends AbstractRoom {
         tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
-        // FIXME handle multiple POI
-        if (Objects.nonNull(roomSaveEntry)) {
-            mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
-        }
     }
 
     @Override
-    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
+    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
         this.roomContent.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS if not disabled
@@ -73,9 +69,15 @@ public class FixedRoom extends AbstractRoom {
 
         worldManager.insertEchoActorsIntoWorld(roomContent.echoActors);
 
-        // FIXME handle multiple POI
-        if (mustClearPOI) {
-            this.roomContent.poiList.forEach(poi -> poi.setAlreadyExamined(true));
+        if(Objects.nonNull(roomSaveEntry)){
+            roomSaveEntry.poiStates.forEach((id,isExamined)->{
+                //update POI status
+                POIInstance poi = this.roomContent.poiList.stream().filter(p -> id.equals(p.getPoiIdInMap())).findFirst().orElse(null);
+
+                if(Objects.nonNull(poi)){
+                    poi.setAlreadyExamined(isExamined);
+                }
+            });
         }
 
         if (RoomTypeEnum.FINAL.equals(roomType)) {
@@ -105,7 +107,7 @@ public class FixedRoom extends AbstractRoom {
         POIInstance instance = new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, splashManager, assetManager,
+                poiType, (int) obj.getProperties().get("id"), splashManager, assetManager,
                 roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
 
         roomContent.poiList.add(instance);
@@ -185,10 +187,10 @@ public class FixedRoom extends AbstractRoom {
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
 //        //FIXME remove
-//        if (Objects.nonNull(roomContent.roomGraph)) {
-//            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
-//            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
-//        }
+        if (Objects.nonNull(roomContent.roomGraph)) {
+            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
+            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
+        }
 
     }
 
@@ -259,12 +261,19 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    public void onRoomLeave() {
+    public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
+        roomContent.poiList.forEach(poiInstance -> {
+            roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined());
+        });
+
         //Disable Echo on room leave if trigger is already examined POI
         if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
                 (echoTrigger instanceof DecorationInstance || ((POIInstance) echoTrigger).isAlreadyExamined())) {
             roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, echoIsActivated);
         }
+
+        //always enable enemies
+        roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, false);
     }
 
 }

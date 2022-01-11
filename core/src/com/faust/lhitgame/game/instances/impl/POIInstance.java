@@ -32,13 +32,14 @@ public class POIInstance extends GameInstance {
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0; // flickering timer
+    private int poiIdInMap;
 
     private boolean isAlreadyExamined;
     private final TextBoxManager textManager;
     private final SplashManager splashManager;
 
 
-    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedGoldcross) {
+    public POIInstance(final TextBoxManager textManager, float x, float y, POIEnum poiType, int id, final SplashManager splashManager, final AssetManager assetManager, boolean guaranteedGoldcross) {
         super(new POIEntity(poiType, assetManager));
         this.textManager = textManager;
         this.startX = x;
@@ -46,6 +47,7 @@ public class POIInstance extends GameInstance {
         this.isAlreadyExamined = false;
         this.splashManager = splashManager;
         this.guaranteedGoldcross = guaranteedGoldcross;
+        this.poiIdInMap = id;
     }
 
     /**
@@ -189,5 +191,9 @@ public class POIInstance extends GameInstance {
 
     public POIEnum getType() {
         return ((POIEntity) entity).getType();
+    }
+
+    public int getPoiIdInMap() {
+        return poiIdInMap;
     }
 }

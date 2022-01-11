@@ -19,7 +19,8 @@ public enum SaveFieldsEnum {
     Y("y"),
     CASUAL_NUMBER("casualNumber"),
     SAVED_FLAGS("savedFlags"),
-    ROOMS("rooms",new SaveFieldsEnum[]{X,Y,CASUAL_NUMBER,SAVED_FLAGS});
+    POI_STATES("poiStates"),
+    ROOMS("rooms",new SaveFieldsEnum[]{X,Y,CASUAL_NUMBER,SAVED_FLAGS,POI_STATES});
 
     private final String fieldName;
     private final SaveFieldsEnum[] subFields;

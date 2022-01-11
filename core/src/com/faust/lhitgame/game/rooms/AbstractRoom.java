@@ -20,6 +20,7 @@ import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
+import com.faust.lhitgame.game.instances.PathfinderInstance;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
@@ -71,24 +72,20 @@ public abstract class AbstractRoom implements Spawner {
     protected final AssetManager assetManager;
     protected final WorldManager worldManager;
 
-    protected boolean mustClearPOI = false;
-
     private GameInstance addedInstance; //Buffer for new enemies spawned during gameplay
 
     /**
      * Constructor
-     *
-     * @param roomType
+     *  @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
      * @param player
      * @param camera
      * @param roomSaveEntry
-     * @param roomFlags
      * @param musicManager
      */
-    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum, Boolean> roomFlags, MusicManager musicManager) {
+    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -102,12 +99,13 @@ public abstract class AbstractRoom implements Spawner {
         this.assetManager = assetManager;
         this.worldManager = worldManager;
 
-        this.roomContent.roomFlags = roomFlags;
         this.cameraTemp = camera;
 
         // Load tiled map by name
         this.roomContent.roomType = roomType;
         this.roomContent.roomFileName = "terrains/" + roomType.getMapFileName();
+        this.roomContent.roomFlags = roomSaveEntry.savedFlags;
+
         loadTiledMap(roomSaveEntry);
 
         // Extract mapObjects
@@ -142,7 +140,7 @@ public abstract class AbstractRoom implements Spawner {
             }
 
             // Prepare enemy if they are enabled
-            if (!roomFlags.get(RoomFlagEnum.DISABLED_ENEMIES) && MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
+            if (!roomSaveEntry.savedFlags.get(RoomFlagEnum.DISABLED_ENEMIES) && MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
                 addObjAsEnemy(obj, assetManager, false);
             }
 
@@ -174,7 +172,7 @@ public abstract class AbstractRoom implements Spawner {
         }
 
         // Do other stuff
-        this.onRoomEnter(roomType, worldManager, textManager, splashManager, player, camera, assetManager);
+        this.onRoomEnter(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry);
     }
 
     /**
@@ -237,8 +235,9 @@ public abstract class AbstractRoom implements Spawner {
         roomContent.poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, splashManager, assetManager,
+                poiType, (int)  obj.getProperties().get("id") ,splashManager, assetManager,
                 roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS)));
+
     }
 
     /**
@@ -365,14 +364,14 @@ public abstract class AbstractRoom implements Spawner {
 
     /**
      * Method for additional room initialization
-     *
-     * @param roomType
+     *  @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
      * @param camera
+     * @param roomSaveEntry
      */
-    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager);
+    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry);
 
     /**
      * Draws room background terrain
@@ -425,6 +424,11 @@ public abstract class AbstractRoom implements Spawner {
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
+
+        if (Objects.nonNull(roomContent.roomGraph)) {
+            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
+            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
+        }
 
     }
 
@@ -489,14 +493,6 @@ public abstract class AbstractRoom implements Spawner {
         roomContent.enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
     }
 
-    /**
-     * @return true if all Poi are been examined
-     */
-    public boolean arePoiCleared() {
-        //FIXME handle multiple POI
-        return this.roomContent.poiList.stream().allMatch(POIInstance::isAlreadyExamined);
-    }
-
     @Override
     public synchronized <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY, String instanceIdentifierEnum) {
 
@@ -515,15 +511,15 @@ public abstract class AbstractRoom implements Spawner {
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {
+            mapObjectStub.getProperties().put("id", 0);
             addObjAsPOI(mapObjectStub, textManager, assetManager);
             POIInstance lastPOIInstance = roomContent.poiList.get(roomContent.poiList.size() - 1);
             worldManager.insertPOIIntoWorld(Collections.singletonList(lastPOIInstance));
-            roomContent.roomFlags.put(RoomFlagEnum.ALREADY_EXAMINED_POIS, false);
             roomContent.player.changePOIList(roomContent.poiList);
         } else  if (instanceClass.equals(PortalInstance.class)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
         }
     }
 
-    public abstract void onRoomLeave();
+    public abstract void onRoomLeave(RoomSaveEntry roomSaveEntry);
 }

@@ -80,7 +80,7 @@ public class DesktopSaveFileManager implements SaveFileManager {
 
         FileHandle file = Gdx.files.local(selectedFileName);
 
-        if(!file.exists()){
+        if (!file.exists()) {
             return;
         }
 
@@ -114,6 +114,7 @@ public class DesktopSaveFileManager implements SaveFileManager {
         Vector2 roomPositionInCurrentSave;
         int casualNumberPredefined;
         JsonValue flagsJson;
+        JsonValue poiStateJson;
 
         for (JsonValue roomSaveEntry : rooms) {
             roomPositionInCurrentSave = new Vector2(roomSaveEntry.getFloat(SaveFieldsEnum.X.getFieldName()),
@@ -122,12 +123,36 @@ public class DesktopSaveFileManager implements SaveFileManager {
             casualNumberPredefined = roomSaveEntry.getInt(SaveFieldsEnum.CASUAL_NUMBER.getFieldName());
 
             flagsJson = roomSaveEntry.get(SaveFieldsEnum.SAVED_FLAGS.getFieldName());
+            poiStateJson = roomSaveEntry.get(SaveFieldsEnum.POI_STATES.getFieldName());
 
             saveMap.put(roomPositionInCurrentSave, new RoomSaveEntry(
                     (int) roomPositionInCurrentSave.x, (int) roomPositionInCurrentSave.y, casualNumberPredefined,
-                    parseJsonFlags(flagsJson)));
+                    parseJsonFlags(flagsJson), parseJsonPoiState(poiStateJson)));
         }
     }
+
+    /**
+     *
+     * @param poiStateJson
+     * @return
+     */
+    private Map<Integer, Boolean> parseJsonPoiState(JsonValue poiStateJson) {
+        Map<Integer, Boolean> map = new HashMap<>();
+
+        if (Objects.nonNull(poiStateJson.child()) && Objects.nonNull(poiStateJson.child().next())) {
+
+            //Extract child (skipping class name)
+            JsonValue child = poiStateJson.child().next();
+
+            do {
+                map.put(Integer.valueOf(child.name()), child.asBoolean());
+                child = child.next();
+            } while (Objects.nonNull(child));
+        }
+
+        return map;
+    }
+
 
     /**
      * Parse saved flag
@@ -187,20 +212,21 @@ public class DesktopSaveFileManager implements SaveFileManager {
 
     /**
      * Load game and put raw loaded values in map
+     *
      * @return
      */
     public Map<String, Object> loadRawValues() {
 
         FileHandle file = Gdx.files.local(selectedFileName);
 
-        if(!file.exists()){
+        if (!file.exists()) {
             return null;
         }
 
         JsonValue fileRead = null;
         try {
-            fileRead= new JsonReader().parse(file);
-        } catch (Exception e){
+            fileRead = new JsonReader().parse(file);
+        } catch (Exception e) {
             Gdx.app.log("DEBUG", e.getMessage());
         }
 
@@ -213,16 +239,16 @@ public class DesktopSaveFileManager implements SaveFileManager {
             return null;
         }
 
-        Map<String,Object> rawValuesMap = new HashMap<>();
+        Map<String, Object> rawValuesMap = new HashMap<>();
 
         //All subfields excluding Armor (which is not int)
-        for(SaveFieldsEnum subField : SaveFieldsEnum.PLAYER_INFO.getSubFields()){
-            if(!SaveFieldsEnum.ARMOR.equals(subField)){
-                rawValuesMap.put(subField.getFieldName(),playerInfo.getInt(subField.getFieldName()));
+        for (SaveFieldsEnum subField : SaveFieldsEnum.PLAYER_INFO.getSubFields()) {
+            if (!SaveFieldsEnum.ARMOR.equals(subField)) {
+                rawValuesMap.put(subField.getFieldName(), playerInfo.getInt(subField.getFieldName()));
             }
         }
 
-        rawValuesMap.put(SaveFieldsEnum.ARMOR.getFieldName(),playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
+        rawValuesMap.put(SaveFieldsEnum.ARMOR.getFieldName(), playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
 
         return rawValuesMap;
     }

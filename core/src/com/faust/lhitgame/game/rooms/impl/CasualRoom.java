@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.faust.lhitgame.game.instances.impl.POIInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
@@ -43,8 +44,8 @@ public class CasualRoom extends AbstractRoom {
     public static final int CASUAL_TOTAL = 11;
     private int casualNumber;
 
-    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, Map<RoomFlagEnum,Boolean> roomFlags, MusicManager musicManager) {
-        super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, roomFlags, musicManager);
+    public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
+        super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry,  musicManager);
     }
 
     @Override
@@ -52,11 +53,8 @@ public class CasualRoom extends AbstractRoom {
 
         // If has a predefined casual number (like from a savefile or because it was already visited) use that one
         // Or else generate a new number.
-        if (Objects.nonNull(roomSaveEntry)) {
+        if (roomSaveEntry.casualNumber > 0) {
             casualNumber = roomSaveEntry.casualNumber;
-
-            // FIXME handle multiple POI
-            mustClearPOI = roomSaveEntry.savedFlags.get(RoomFlagEnum.ALREADY_EXAMINED_POIS);
 
         } else {
             if (roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS)) {
@@ -81,6 +79,7 @@ public class CasualRoom extends AbstractRoom {
 
         // Casual maps range from casual1.tmx to casual7.tmx, with a %d to be mapped
         roomContent.roomFileName = roomContent.roomFileName.replace("%d", Integer.toString(casualNumber));
+        roomSaveEntry.casualNumber = casualNumber;
 
         // Load Tiled map
         tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
@@ -88,12 +87,18 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager) {
-        // FIXME handle multiple POI
-        if (mustClearPOI) {
-            this.roomContent.poiList.forEach(poi -> poi.setAlreadyExamined(true));
-        }
+    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
 
+        if(Objects.nonNull(roomSaveEntry)){
+            roomSaveEntry.poiStates.forEach((id,isExamined)->{
+                //update POI status
+                POIInstance poi = this.roomContent.poiList.stream().filter(p -> id.equals(p.getPoiIdInMap())).findFirst().orElse(null);
+
+                if(Objects.nonNull(poi)){
+                    poi.setAlreadyExamined(isExamined);
+                }
+            });
+        }
         if (roomContent.enemyList.size() > 0) {
             //Loop title music
             musicManager.playMusic(TuneEnum.DANGER, 0.75f);
@@ -104,11 +109,12 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    public void onRoomLeave() {
-        // Nothing to do here... yet
-    }
+    public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
+        roomContent.poiList.forEach(poiInstance -> {
+            roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined());
+        });
 
-    public int getCasualNumber() {
-        return casualNumber;
+        //always enable enemies
+        roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, false);
     }
 }

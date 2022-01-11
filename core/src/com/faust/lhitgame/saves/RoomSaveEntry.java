@@ -10,16 +10,18 @@ import java.util.Map;
  */
 public class RoomSaveEntry implements Serializable {
 
-    public final int casualNumber;
+    public int casualNumber;
     public final int x;
     public final int y;
     public final Map<RoomFlagEnum,Boolean> savedFlags;
+    public final Map<Integer,Boolean> poiStates;
 
-    public RoomSaveEntry(int x, int y, int casualNumber, Map<RoomFlagEnum,Boolean> savedFlags) {
+    public RoomSaveEntry(int x, int y, int casualNumber, Map<RoomFlagEnum,Boolean> savedFlags, Map<Integer,Boolean> examinedPois) {
         this.casualNumber = casualNumber;
         this.x = x;
         this.y = y;
         this.savedFlags = savedFlags;
+        this.poiStates = examinedPois;
     }
 
 }

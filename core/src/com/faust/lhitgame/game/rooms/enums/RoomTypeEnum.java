@@ -42,7 +42,8 @@ public enum RoomTypeEnum {
         return CRUCIFIED.equals(roomTypeEnum) ||
                 TREE_STUMP.equals(roomTypeEnum) ||
                 CEMETERY_CENTER.equals(roomTypeEnum) ||
-                BOAT.equals(roomTypeEnum);
+                BOAT.equals(roomTypeEnum) ||
+                INFERNUM.equals(roomTypeEnum);
     }
 
     public String getMapFileName() {

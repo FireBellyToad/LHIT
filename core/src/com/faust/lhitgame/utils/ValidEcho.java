@@ -169,7 +169,6 @@ public class ValidEcho {
      */
     public static void validateAllScriptsGdx() throws IOException, EchoScriptValidationException {
 
-        JsonReader reader = new JsonReader();
         for (EchoesActorType echoesActorType : EchoesActorType.values()) {
             // start validate
             JsonValue parsedSteps = new JsonReader().parse(Gdx.files.internal("scripts/" + echoesActorType.getFilename())).get("steps");

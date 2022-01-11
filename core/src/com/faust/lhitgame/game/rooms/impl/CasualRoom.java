@@ -20,7 +20,6 @@ import com.faust.lhitgame.saves.RoomSaveEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -87,7 +86,7 @@ public class CasualRoom extends AbstractRoom {
     }
 
     @Override
-    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
+    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
 
         if(Objects.nonNull(roomSaveEntry)){
             roomSaveEntry.poiStates.forEach((id,isExamined)->{

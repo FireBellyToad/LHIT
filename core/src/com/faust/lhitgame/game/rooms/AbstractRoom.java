@@ -172,7 +172,7 @@ public abstract class AbstractRoom implements Spawner {
         }
 
         // Do other stuff
-        this.onRoomEnter(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry);
+        this.onRoomEnter(roomType, worldManager, assetManager, roomSaveEntry);
     }
 
     /**
@@ -364,14 +364,11 @@ public abstract class AbstractRoom implements Spawner {
 
     /**
      * Method for additional room initialization
-     *  @param roomType
+     * @param roomType
      * @param worldManager
-     * @param textManager
-     * @param splashManager
-     * @param camera
      * @param roomSaveEntry
      */
-    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry);
+    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry);
 
     /**
      * Draws room background terrain

@@ -168,7 +168,4 @@ public class WorldManager implements RayCaster {
         world.rayCast(callback,from,to);
     }
 
-    public World getWorld() {
-        return world;
-    }
 }

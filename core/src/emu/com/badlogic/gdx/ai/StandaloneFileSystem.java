@@ -30,6 +30,7 @@ import com.badlogic.gdx.files.FileHandle;
 
 //USED AS A WORKAROUND FOR HTML BUILD
 /** @author davebaol */
+@SuppressWarnings("unused")
 public class StandaloneFileSystem implements FileSystem {
 
     public StandaloneFileSystem () {

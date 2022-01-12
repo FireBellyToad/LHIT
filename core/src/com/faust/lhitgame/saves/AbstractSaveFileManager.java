@@ -1,31 +1,26 @@
 package com.faust.lhitgame.saves;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
+import com.faust.lhitgame.saves.RoomSaveEntry;
 import com.faust.lhitgame.saves.enums.SaveFieldsEnum;
-import com.faust.lhitgame.saves.interfaces.SaveFileManager;
 
 import java.util.*;
 
 /**
- * HTML Save File Manager class
- *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class HtmlSaveFileManager implements SaveFileManager {
+public abstract class AbstractSaveFileManager {
 
-    private static final String ROOT_KEY = "save";
-    private final Json jsonParser = new Json();
-    private final String selectedFileName = "saves/mainWorldSave";
+    protected static final String ROOT_KEY = "save";
+    protected final Json jsonParser = new Json();
+    protected final String selectedFileName = "saves/mainWorldSave";
 
-    public String getStringSaveFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
+    protected String getStringSaveFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
 
         //Player info
         List<String> entries = new ArrayList<>();
@@ -50,7 +45,7 @@ public class HtmlSaveFileManager implements SaveFileManager {
      * @param hasBrackets
      * @return
      */
-    private String getField(String fieldName, Object fieldValue, boolean hasBrackets) {
+    protected String getField(String fieldName, Object fieldValue, boolean hasBrackets) {
         return "\"" + fieldName + "\": " + (hasBrackets ? "{" + fieldValue + "}" : fieldValue);
     }
 
@@ -59,44 +54,8 @@ public class HtmlSaveFileManager implements SaveFileManager {
      * @param fieldValue
      * @return
      */
-    private String getField(String fieldName, Object fieldValue) {
+    protected String getField(String fieldName, Object fieldValue) {
         return getField(fieldName, fieldValue, false);
-    }
-
-    /**
-     * @return filename
-     */
-    public String getFileName() {
-        return selectedFileName;
-    }
-
-    /**
-     * Load game and populate game instances with the loaded values
-     *
-     * @param player
-     * @param saveMap
-     * @throws SerializationException
-     */
-    public void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
-
-        Preferences file = Gdx.app.getPreferences(selectedFileName);
-
-        String content = (String) file.get().get(ROOT_KEY);
-
-        if (Objects.isNull(content)) {
-            return;
-        }
-
-        JsonValue fileContent = new JsonReader().parse(content);
-
-        if (Objects.isNull(fileContent)) {
-            return;
-        }
-        //Player Info
-        setPlayerInfo(player, fileContent);
-
-        //Room Info
-        setRoomInfo(saveMap, fileContent);
     }
 
     /**
@@ -105,7 +64,7 @@ public class HtmlSaveFileManager implements SaveFileManager {
      * @param saveMap
      * @param file
      */
-    private void setRoomInfo(Map<Vector2, RoomSaveEntry> saveMap, JsonValue file) {
+    protected void setRoomInfo(Map<Vector2, RoomSaveEntry> saveMap, JsonValue file) {
 
         //Already visited room Info
         JsonValue rooms = file.get(SaveFieldsEnum.ROOMS.getFieldName());
@@ -135,11 +94,10 @@ public class HtmlSaveFileManager implements SaveFileManager {
     }
 
     /**
-     *
      * @param poiStateJson
      * @return
      */
-    private Map<Integer, Boolean> parseJsonPoiState(JsonValue poiStateJson) {
+    protected Map<Integer, Boolean> parseJsonPoiState(JsonValue poiStateJson) {
         Map<Integer, Boolean> map = new HashMap<>();
 
         if (Objects.nonNull(poiStateJson.child()) && Objects.nonNull(poiStateJson.child().next())) {
@@ -163,7 +121,7 @@ public class HtmlSaveFileManager implements SaveFileManager {
      * @param flagsJson to parse
      * @return parsed flags
      */
-    private Map<RoomFlagEnum, Boolean> parseJsonFlags(JsonValue flagsJson) {
+    protected Map<RoomFlagEnum, Boolean> parseJsonFlags(JsonValue flagsJson) {
         Map<RoomFlagEnum, Boolean> map = RoomFlagEnum.generateDefaultRoomFlags();
         boolean extractedValue;
 
@@ -181,7 +139,7 @@ public class HtmlSaveFileManager implements SaveFileManager {
      * @param player
      * @param file
      */
-    private void setPlayerInfo(PlayerInstance player, JsonValue file) {
+    protected void setPlayerInfo(PlayerInstance player, JsonValue file) {
 
         JsonValue playerInfo = file.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
         if (Objects.isNull(playerInfo)) {
@@ -197,62 +155,28 @@ public class HtmlSaveFileManager implements SaveFileManager {
     }
 
     /**
+     * Load game and populate game instances with the loaded values
+     *
+     * @param player
+     * @param saveMap
+     * @throws SerializationException
+     */
+    public abstract void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException;
+
+    /**
      * Save on filesystem the predefined numbers of the casual rooms
      */
-    public void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
-
-        String stringSave = getStringSaveFile(player, saveMap);
-        Gdx.app.getPreferences(getFileName()).putString(ROOT_KEY, stringSave);
-    }
+    public abstract void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap);
 
     /**
      * Clean saveFile for new game
      */
-    public void cleanSaveFile() {
-
-        Gdx.app.getPreferences(getFileName()).clear();
-    }
+    public abstract void cleanSaveFile();
 
     /**
      * Load game and put raw loaded values in map
      *
      * @return
      */
-    public Map<String, Object> loadRawValues() {
-
-        Preferences fileRead = Gdx.app.getPreferences(selectedFileName);
-
-        if (Objects.isNull(fileRead)) {
-            return null;
-        }
-
-        String content = (String) fileRead.get().get(ROOT_KEY);
-
-        if (Objects.isNull(content)) {
-            return null;
-        }
-
-        JsonValue root = new JsonReader().parse(content);
-
-        if (Objects.isNull(root)) {
-            return null;
-        }
-        JsonValue playerInfo = root.get(SaveFieldsEnum.PLAYER_INFO.getFieldName());
-        if (Objects.isNull(playerInfo)) {
-            return null;
-        }
-
-        Map<String, Object> rawValuesMap = new HashMap<>();
-
-        //All subfields excluding Armor (which is not int)
-        for (SaveFieldsEnum subField : SaveFieldsEnum.PLAYER_INFO.getSubFields()) {
-            if (!SaveFieldsEnum.ARMOR.equals(subField)) {
-                rawValuesMap.put(subField.getFieldName(), playerInfo.getInt(subField.getFieldName()));
-            }
-        }
-
-        rawValuesMap.put(SaveFieldsEnum.ARMOR.getFieldName(), playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
-
-        return rawValuesMap;
-    }
+    public abstract Map<String, Object> loadRawValues();
 }

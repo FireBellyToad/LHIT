@@ -3,7 +3,7 @@ package com.faust.lhitgame.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhitgame.LHITGame;
-import com.faust.lhitgame.saves.DesktopSaveFileManager;
+import com.faust.lhitgame.saves.impl.DesktopSaveFileManager;
 
 public class DesktopLauncher {
 	private static final int SCALE_FACTOR = 6;

@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.faust.lhitgame.camera.CameraManager;
 import com.faust.lhitgame.game.music.MusicManager;
-import com.faust.lhitgame.saves.DesktopSaveFileManager;
-import com.faust.lhitgame.saves.interfaces.SaveFileManager;
+import com.faust.lhitgame.saves.AbstractSaveFileManager;
 import com.faust.lhitgame.screens.LanguageScreen;
 import com.faust.lhitgame.utils.TextLocalizer;
 
@@ -19,11 +18,11 @@ public class LHITGame extends Game {
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;
-    private SaveFileManager saveFileManager;
+    private AbstractSaveFileManager saveFileManager;
     private MusicManager musicManager;
     private TextLocalizer textLocalizer;
 
-    public LHITGame(SaveFileManager saveFileManager) {
+    public LHITGame(AbstractSaveFileManager saveFileManager) {
         super();
         this.saveFileManager = saveFileManager;
     }
@@ -68,7 +67,7 @@ public class LHITGame extends Game {
         return cameraManager;
     }
 
-    public SaveFileManager getSaveFileManager() {
+    public AbstractSaveFileManager getSaveFileManager() {
         return saveFileManager;
     }
 

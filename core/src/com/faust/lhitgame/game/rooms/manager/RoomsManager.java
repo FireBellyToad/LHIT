@@ -22,7 +22,7 @@ import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
 import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.saves.RoomSaveEntry;
-import com.faust.lhitgame.saves.interfaces.SaveFileManager;
+import com.faust.lhitgame.saves.AbstractSaveFileManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class RoomsManager {
 
     private final SplashManager splashManager;
     private final AssetManager assetManager;
-    private final SaveFileManager saveFileManager;
+    private final AbstractSaveFileManager saveFileManager;
 
     private AbstractRoom currentRoom;
     private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
@@ -55,7 +55,7 @@ public class RoomsManager {
     private final OrthographicCamera camera;
     private final MusicManager musicManager;
 
-    public RoomsManager(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, SaveFileManager saveFileManager, MusicManager musicManager) {
+    public RoomsManager(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, AbstractSaveFileManager saveFileManager, MusicManager musicManager) {
         this.worldManager = worldManager;
         this.textManager = textManager;
         this.splashManager = splashManager;

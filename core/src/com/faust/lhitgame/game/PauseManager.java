@@ -12,7 +12,7 @@ import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.menu.Menu;
 import com.faust.lhitgame.menu.enums.MenuItem;
-import com.faust.lhitgame.saves.interfaces.SaveFileManager;
+import com.faust.lhitgame.saves.AbstractSaveFileManager;
 import com.faust.lhitgame.screens.MenuScreen;
 
 /**
@@ -21,7 +21,7 @@ import com.faust.lhitgame.screens.MenuScreen;
 public class PauseManager {
 
     private final Menu menu;
-    private final SaveFileManager saveFileManager;
+    private final AbstractSaveFileManager saveFileManager;
     private boolean gamePaused = false;
     private final MusicManager musicManager;
 
@@ -29,7 +29,7 @@ public class PauseManager {
     private static final Color back = new Color(0x000000ff);
 
 
-    public PauseManager(SaveFileManager saveFileManager, MusicManager musicManager, AssetManager assetManager) {
+    public PauseManager(AbstractSaveFileManager saveFileManager, MusicManager musicManager, AssetManager assetManager) {
 
         this.musicManager = musicManager;
         this.saveFileManager = saveFileManager;

@@ -8,9 +8,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.faust.lhitgame.LHITGame;
-import com.faust.lhitgame.utils.TextLocalizer;
 import com.faust.lhitgame.menu.enums.MenuItem;
-import com.faust.lhitgame.saves.interfaces.SaveFileManager;
+import com.faust.lhitgame.saves.AbstractSaveFileManager;
+import com.faust.lhitgame.utils.TextLocalizer;
 
 import java.util.Map;
 import java.util.Objects;
@@ -38,15 +38,15 @@ public class Menu implements InputProcessor {
     private boolean changeToCreditScreen = false;
     private boolean changeToStoryScreen = false;
 
-    private final SaveFileManager saveFileManager;
+    private final AbstractSaveFileManager saveFileManager;
     private final Sound voiceChange;
     private final Sound wrongVoice;
 
-    public Menu(SaveFileManager saveFileManager, AssetManager assetManager) {
+    public Menu(AbstractSaveFileManager saveFileManager, AssetManager assetManager) {
         this(saveFileManager, MenuItem.MAIN, assetManager);
     }
 
-    public Menu(SaveFileManager saveFileManager, MenuItem currentMenu, AssetManager assetManager) {
+    public Menu(AbstractSaveFileManager saveFileManager, MenuItem currentMenu, AssetManager assetManager) {
         this.saveFileManager = saveFileManager;
         this.currentMenu = currentMenu;
 

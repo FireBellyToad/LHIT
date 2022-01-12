@@ -19,7 +19,7 @@ import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.gameentities.impl.*;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import com.faust.lhitgame.menu.LongTextHandler;
-import com.faust.lhitgame.saves.interfaces.SaveFileManager;
+import com.faust.lhitgame.saves.AbstractSaveFileManager;
 import com.faust.lhitgame.enums.cutscenes.CutsceneEnum;
 import com.faust.lhitgame.saves.enums.SaveFieldsEnum;
 import com.faust.lhitgame.utils.TextLocalizer;
@@ -38,7 +38,7 @@ public class CutsceneManager implements InputProcessor {
     private final int lastStep;
     private final String cutsceneKey;
     private final AssetManager assetManager;
-    private final SaveFileManager saveFileManager;
+    private final AbstractSaveFileManager saveFileManager;
 
     private TiledMap tiledScene;
     private OrthogonalTiledMapRenderer tiledSceneRenderer;
@@ -46,7 +46,7 @@ public class CutsceneManager implements InputProcessor {
     private final OrthographicCamera camera;
     private final Sound nextSound;
 
-    public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera, SaveFileManager saveFileManager) {
+    public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera, AbstractSaveFileManager saveFileManager) {
         this.textLocalizer = textLocalizer;
         this.cutsceneKey = cutsceneEnum.getKey();
         this.assetManager = assetManager;

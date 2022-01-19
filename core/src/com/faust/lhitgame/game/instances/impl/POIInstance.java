@@ -32,7 +32,7 @@ public class POIInstance extends GameInstance {
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0; // flickering timer
-    private int poiIdInMap;
+    private final int poiIdInMap;
 
     private boolean isAlreadyExamined;
     private final TextBoxManager textManager;

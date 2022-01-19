@@ -18,7 +18,7 @@ public class LHITGame extends Game {
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;
-    private final AbstractSaveFileManager saveFileManager;
+    private AbstractSaveFileManager saveFileManager;
     private MusicManager musicManager;
     private TextLocalizer textLocalizer;
 

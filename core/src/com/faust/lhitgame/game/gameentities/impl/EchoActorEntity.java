@@ -11,10 +11,6 @@ import com.faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
 
 import java.util.*;
 
@@ -32,6 +28,7 @@ public class EchoActorEntity extends AnimatedEntity {
 
     //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();
+    protected final Map<GameBehavior, Map<EchoCommandsEnum, Object>> commands = new HashMap<>();
 
     public EchoActorEntity(EchoesActorType echoesActorType, AssetManager assetManager) {
         super(assetManager.get(echoesActorType.getSpriteFilename()));
@@ -47,24 +44,60 @@ public class EchoActorEntity extends AnimatedEntity {
      * Initialize steps and seconds per step
      */
     private void loadEchoActorSteps() {
-        final String fileAsString = Gdx.files.internal("scripts/" + echoesActorType.getFilename()).readString();
 
-        precalculatedRows = fileAsString.split("function doStep\\d").length -1;
+        JsonValue parsedSteps = new JsonReader().parse(Gdx.files.internal("scripts/" + echoesActorType.getFilename())).get("steps");
+
+        //Precalculate rows from steps
+        precalculatedRows = parsedSteps.size;
 
         TextureRegion[] allFrames = getFramesFromTexture();
 
         int stepCounter = 0;
-        while (stepCounter < precalculatedRows) {
+        for (JsonValue s : parsedSteps) {
 
             GameBehavior behaviour = GameBehavior.getFromOrdinal(stepCounter);
             Objects.requireNonNull(behaviour);
             stepOrder.add(behaviour);
 
+            commands.put(behaviour, extractValue(new HashMap<>(), s.child));
             addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * stepCounter, getTextureColumns() * (stepCounter + 1))), behaviour);
 
             stepCounter++;
         }
 
+    }
+
+    /**
+     * Extracts all values and put them in map
+     *
+     * @param values
+     * @param jsonValue
+     */
+    private Map<EchoCommandsEnum, Object> extractValue(final Map<EchoCommandsEnum, Object> values, final JsonValue jsonValue) {
+
+        if (Objects.nonNull(jsonValue)) {
+
+            EchoCommandsEnum extractedCommand = EchoCommandsEnum.getFromCommandString(jsonValue.name());
+
+            if (Objects.nonNull(extractedCommand)) {
+
+                if (extractedCommand.getValueClass().equals(String.class)) {
+                    values.put(extractedCommand, jsonValue.asString());
+                } else if (extractedCommand.getValueClass().equals(Integer.class)) {
+                    values.put(extractedCommand, jsonValue.asInt());
+                } else if (extractedCommand.getValueClass().equals(Boolean.class)) {
+                    values.put(extractedCommand, jsonValue.asBoolean());
+                }  else if (extractedCommand.getValueClass().equals(EchoCommandsEnum.class)) {
+                    extractValue(values, jsonValue.child);
+                }
+
+                // Go to next
+                if (Objects.nonNull(jsonValue.next)) {
+                    extractValue(values, jsonValue.next);
+                }
+            }
+        }
+        return values;
     }
 
     @Override
@@ -88,6 +121,16 @@ public class EchoActorEntity extends AnimatedEntity {
 
     public EchoesActorType getEchoesActorType() {
         return echoesActorType;
+    }
+
+    /**
+     * Get commands to do in given "step"
+     *
+     * @param step
+     * @return
+     */
+    public  Map<EchoCommandsEnum, Object> getCommandsForStep(GameBehavior step){
+        return commands.getOrDefault(step, null);
     }
 
     /**

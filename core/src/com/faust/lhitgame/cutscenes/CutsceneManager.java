@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.GameEntity;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
@@ -194,10 +193,6 @@ public class CutsceneManager implements InputProcessor {
                 DecorationsEnum decoType = DecorationsEnum.valueOf((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(decoType);
                 entity = new DecorationEntity(decoType, assetManager);
-            } else if (obj.getName().equals(EchoActorEntity.class.getSimpleName())) {
-                EchoesActorType echoType = EchoesActorType.valueOf((String) obj.getProperties().get("type"));
-                Objects.requireNonNull(echoType);
-                entity = new EchoActorEntity(echoType,assetManager);
             } else if (obj.getName().equals(POIEntity.class.getSimpleName())) {
                 POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("type"));
                 Objects.requireNonNull(poiType);
@@ -206,6 +201,9 @@ public class CutsceneManager implements InputProcessor {
                 entity = new TutorialEntity(assetManager);
                 behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
                 direction = DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
+                if (Objects.isNull(direction)) {
+                    direction = DirectionEnum.UNUSED;
+                }
             }
 
             Objects.requireNonNull(entity);

@@ -309,6 +309,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             switch (currentDirectionEnum) {
                 case LEFT: {
                     xOffset = 1;
+                    yOffset = 0;
                     break;
                 }
                 case RIGHT: {
@@ -317,6 +318,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                     break;
                 }
                 case UP: {
+                    xOffset = 0;
                     yOffset = -3;
                     break;
                 }
@@ -392,7 +394,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @return
      */
     private float mapStateTimeFromBehaviour(float stateTime) {
-
         switch (currentBehavior) {
             case DEAD: {
                 return stateTime - attackDeltaTime;

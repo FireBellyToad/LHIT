@@ -40,6 +40,7 @@ public class PauseManager {
     /**
      *
      * @param game
+     * @param roomFlags
      */
     public void doLogic(LHITGame game, PlayerInstance playerInstance, RoomsManager roomsManager){
         //Exit or resume game game

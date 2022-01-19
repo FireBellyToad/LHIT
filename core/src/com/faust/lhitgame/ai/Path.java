@@ -38,7 +38,7 @@ public class Path implements Connection<PathNode> {
     public boolean equals(Object o) {
         Path otherPath = ((Path) o);
         return super.equals(o) && ((otherPath.fromPathNode.equals(fromPathNode) &&
-                otherPath.toPathNode.equals(toPathNode)) || (otherPath.fromPathNode.equals(toPathNode) &&
+                otherPath.toPathNode.equals(toPathNode)) || (otherPath.toPathNode.equals(fromPathNode) &&
                 otherPath.toPathNode.equals(fromPathNode)));
     }
 }

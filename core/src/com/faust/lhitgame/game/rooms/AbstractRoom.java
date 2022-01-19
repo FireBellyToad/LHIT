@@ -421,11 +421,11 @@ public abstract class AbstractRoom implements Spawner {
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
-/*
+
         if (Objects.nonNull(roomContent.roomGraph)) {
             roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
             roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
-        }*/
+        }
 
     }
 

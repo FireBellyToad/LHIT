@@ -187,10 +187,10 @@ public class FixedRoom extends AbstractRoom {
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
 //        //FIXME remove
-       /* if (Objects.nonNull(roomContent.roomGraph)) {
+        if (Objects.nonNull(roomContent.roomGraph)) {
             roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
             roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
-        }*/
+        }
 
     }
 
@@ -262,7 +262,9 @@ public class FixedRoom extends AbstractRoom {
 
     @Override
     public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
-        roomContent.poiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined()));
+        roomContent.poiList.forEach(poiInstance -> {
+            roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined());
+        });
 
         //Disable Echo on room leave if trigger is already examined POI
         if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&

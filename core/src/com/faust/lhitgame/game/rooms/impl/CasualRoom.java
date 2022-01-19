@@ -41,6 +41,7 @@ public class CasualRoom extends AbstractRoom {
     }};
 
     public static final int CASUAL_TOTAL = 11;
+    private int casualNumber;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
         super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry,  musicManager);
@@ -48,8 +49,6 @@ public class CasualRoom extends AbstractRoom {
 
     @Override
     protected void loadTiledMap(RoomSaveEntry roomSaveEntry) {
-
-        int casualNumber;
 
         // If has a predefined casual number (like from a savefile or because it was already visited) use that one
         // Or else generate a new number.
@@ -110,7 +109,9 @@ public class CasualRoom extends AbstractRoom {
 
     @Override
     public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
-        roomContent.poiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined()));
+        roomContent.poiList.forEach(poiInstance -> {
+            roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined());
+        });
 
         //always enable enemies
         roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, false);

@@ -40,12 +40,12 @@ public class LoadingScreen implements Screen {
     public void show() {
 
         //Validate on the run
-//        try {
-//            ValidEcho.validateAllScriptsGdx();
-//        } catch (Exception e) {
-//            //If validation fails, stop game
-//            throw new GdxRuntimeException(e);
-//        }
+        try {
+            ValidEcho.validateAllScriptsGdx();
+        } catch (Exception e) {
+            //If validation fails, stop game
+            throw new GdxRuntimeException(e);
+        }
 
         assetManager.load("sprites/walfrit_sheet.png", Texture.class);
         assetManager.load("sprites/decorations_sheet.png", Texture.class);
@@ -93,11 +93,6 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/darkness_overlay.png", Texture.class);
 
         for(EchoesActorType echoActor : EchoesActorType.values()){
-
-            //Security check
-            if (!Gdx.files.internal("scripts/" + echoActor.getFilename()).exists()) {
-                throw new GdxRuntimeException(echoActor.getFilename() + " does not exists in \"scripts/\" + !");
-            }
             assetManager.load(echoActor.getSpriteFilename(), Texture.class);
         }
     }

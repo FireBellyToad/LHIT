@@ -12,6 +12,7 @@ import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -20,7 +21,6 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-@Deprecated
 public class ValidEcho {
 
     /**
@@ -103,7 +103,6 @@ public class ValidEcho {
                     case UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE:{
 
                         try {
-                            assert extractedValue instanceof String;
                             enemyEnum = EnemyEnum.valueOf((String) extractedValue);
                         } catch (Exception e) {
                             throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
@@ -115,17 +114,14 @@ public class ValidEcho {
                         break;
                     }
                     case DIRECTION: {
-                        assert extractedValue instanceof String;
                         DirectionEnum.valueOf((String) extractedValue);
                         break;
                     }
                     case RENDER_ONLY_MAP_LAYER: {
-                        assert extractedValue instanceof String;
                         MapLayersEnum.valueOf((String) extractedValue);
                         break;
                     }
                     case UNTIL_AT_LEAST_ONE_POI_EXAMINABLE: {
-                        assert extractedValue instanceof String;
                         POIEnum.valueOf((String) extractedValue);
                         break;
                     }
@@ -134,7 +130,6 @@ public class ValidEcho {
                         POIEnum poiEnum = null;
 
                         try {
-                            assert extractedValue instanceof String;
                             enemyEnum = EnemyEnum.valueOf((String) extractedValue);
                         } catch (Exception e) {
                             //Nothing to do here...
@@ -169,9 +164,10 @@ public class ValidEcho {
 
     /**
      * Validate all game scripts
+     * @throws IOException
      * @throws EchoScriptValidationException
      */
-    public static void validateAllScriptsGdx() throws EchoScriptValidationException {
+    public static void validateAllScriptsGdx() throws IOException, EchoScriptValidationException {
 
         for (EchoesActorType echoesActorType : EchoesActorType.values()) {
             // start validate

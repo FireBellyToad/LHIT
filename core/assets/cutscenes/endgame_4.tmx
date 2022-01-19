@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="61">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="58">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -37,12 +37,6 @@
    <point/>
   </object>
   <object id="57" name="DecorationEntity" type="TUMOR" x="154.909" y="119.091">
-   <point/>
-  </object>
-  <object id="58" name="EchoActorEntity" type="FLESH_PILLAR" x="51.2848" y="97.3186">
-   <point/>
-  </object>
-  <object id="60" name="EchoActorEntity" type="FLESH_PILLAR" x="99.419" y="132.325">
    <point/>
   </object>
  </objectgroup>

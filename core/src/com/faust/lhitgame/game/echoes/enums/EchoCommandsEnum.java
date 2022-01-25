@@ -24,11 +24,13 @@ public enum EchoCommandsEnum {
     RELATIVE("relative", Boolean.class),
     INVISIBLE("invisible", Boolean.class),
     HURT_PLAYER("hurtPlayer", Integer.class),
+    IF_NO_KILLABLE_ALIVE("ifNoKillableAlive", String.class),
+    IF_PLAYER_DAMAGE_IS_MORE_THAN("ifPlayerDamageIsMoreThan", Integer.class),
 
 
     //Composite
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),
-    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_PLAYER_DAMAGE_IS_MORE_THAN}),
+    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, IF_NO_KILLABLE_ALIVE, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_PLAYER_DAMAGE_IS_MORE_THAN}),
     SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
 
     private final String commandString;

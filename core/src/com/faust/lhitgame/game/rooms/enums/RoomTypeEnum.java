@@ -26,6 +26,7 @@ public enum RoomTypeEnum {
     INFERNUM("infernum.tmx"),
     START_LEFT("startLeft.tmx"),
     START_RIGHT("startRight.tmx"),
+    PEDESTAL("pedestal.tmx"),
     ;
 
     private final String mapFileName;

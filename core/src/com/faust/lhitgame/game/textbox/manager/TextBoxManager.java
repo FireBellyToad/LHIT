@@ -25,7 +25,9 @@ public class TextBoxManager {
 
     private static final float FONT_SIZE = 0.5f;
     private static final float MESSAGE_LIMIT = 1;
-    private static final int TOTAL_TEXTBOX_HEIGHT = 34;
+    private static final int TOTAL_TEXTBOX_HEIGHT = 17;
+    private static final int MAX_LINES_IN_BOX = 4;
+
 
     private final BitmapFont mainFont;
     private final List<TextBoxData> textBoxes = new ArrayList<>();
@@ -90,7 +92,7 @@ public class TextBoxManager {
     public void renderTextBoxes(final SpriteBatch batch, OrthographicCamera camera) {
 
         // Remove box if player is under a certain boundary and there is no splash screen
-        boolean twoline;
+        int textLines;
         float fontY;
         float innerBoxHeight;
         float outerBoxHeight;
@@ -99,10 +101,10 @@ public class TextBoxManager {
         for (TextBoxData box : textBoxes) {
 
             //Adjust rendering if text has only one line
-            twoline = box.getText().contains("\n");
-            outerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT : TOTAL_TEXTBOX_HEIGHT / 2;
-            innerBoxHeight = twoline ? TOTAL_TEXTBOX_HEIGHT - 4 : (TOTAL_TEXTBOX_HEIGHT / 2) - 4;
-            fontY = twoline ? TOTAL_TEXTBOX_HEIGHT - 8 : (TOTAL_TEXTBOX_HEIGHT / 2) - 6;
+            textLines = box.getText().split("\n").length;
+            outerBoxHeight =  TOTAL_TEXTBOX_HEIGHT * textLines;
+            innerBoxHeight =  (TOTAL_TEXTBOX_HEIGHT * textLines) - 4;
+            fontY = (TOTAL_TEXTBOX_HEIGHT * textLines) - (4+textLines*2); //Dynamic offset
 
             //White Corner
             batch.begin();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="176">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="185">
  <editorsettings>
   <export target="." format="json"/>
  </editorsettings>
@@ -18,12 +18,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="43" name="DECO" type="BOAT" x="79.8182" y="73.4545">
+  <object id="43" name="DECO" type="BOAT" x="68.441" y="74.6797">
    <point/>
   </object>
   <object id="44" name="WALL" x="0" y="0" width="160" height="16" visible="0"/>
   <object id="45" name="WALL" x="144" y="16" width="16" height="128" visible="0"/>
-  <object id="46" name="POI" type="SOIL" x="121.75" y="52">
+  <object id="46" name="POI" type="SOIL" x="131.727" y="32.9214">
    <properties>
     <property name="isEchoTrigger" type="bool" value="false"/>
    </properties>
@@ -32,22 +32,22 @@
   <object id="47" name="EMERGED" x="29.5" y="29.75" visible="0">
    <polygon points="-36.5,-31 -29.9886,4.8523 0.772728,17.7045 16.0455,51.9091 50.0341,85.1704 106.278,86.5511 114.023,104.682 133.932,-30.4091"/>
   </object>
-  <object id="48" name="ECHO_ACTOR" type="HORROR_BODY" x="126.182" y="48.8864">
+  <object id="48" name="ECHO_ACTOR" type="HORROR_BODY" x="105.874" y="48">
    <point/>
   </object>
   <object id="146" name="ECHO_ACTOR" type="HORROR" x="10" y="16">
    <point/>
   </object>
-  <object id="147" name="PathNode" x="112" y="96">
+  <object id="147" name="PathNode" x="105" y="100">
    <point/>
   </object>
-  <object id="149" name="PathNode" x="112" y="48">
+  <object id="149" name="PathNode" x="98.8738" y="52">
    <point/>
   </object>
-  <object id="150" name="PathNode" x="48" y="96">
+  <object id="150" name="PathNode" x="41" y="100">
    <point/>
   </object>
-  <object id="152" name="PathNode" x="45.6364" y="48.3636">
+  <object id="152" name="PathNode" x="38.6364" y="52.3636">
    <point/>
   </object>
   <object id="159" name="ECHO_ACTOR" type="HORROR" x="10" y="32">
@@ -93,6 +93,18 @@
    <point/>
   </object>
   <object id="174" name="ECHO_ACTOR" type="HORROR" x="135" y="137">
+   <point/>
+  </object>
+  <object id="176" name="ECHO_ACTOR" type="HORROR" x="94.323" y="66.0027">
+   <point/>
+  </object>
+  <object id="180" name="ECHO_ACTOR" type="HORROR" x="137.277" y="57.1017">
+   <point/>
+  </object>
+  <object id="182" name="ECHO_ACTOR" type="HORROR" x="105.874" y="32">
+   <point/>
+  </object>
+  <object id="184" name="ECHO_ACTOR" type="HORROR" x="120.073" y="56.5358">
    <point/>
   </object>
  </objectgroup>

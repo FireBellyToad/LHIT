@@ -5,13 +5,23 @@
     {
       "textBoxKey": "echo.infernum.first",
       "invisible": true,
-      "renderOnlyMapLayer": "ECHO_LAYER"
+      "renderOnlyMapLayer": "ECHO_LAYER",
+      "goTo" :{
+        "step": 2,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive":"ESCAPE_PORTAL"
+      }
     },
     {
       "invisible": true,
       "textBoxKey": "echo.infernum.second",
       "renderOnlyMapLayer": "ECHO_LAYER",
-      "hurtPlayer": 1
+      "hurtPlayer": 1,
+      "goTo" :{
+        "step": 2,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive":"ESCAPE_PORTAL"
+      }
     },
     {
       "invisible": true,

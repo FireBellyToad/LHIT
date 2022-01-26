@@ -13,9 +13,9 @@ public enum EchoCommandsEnum {
     SPEED("speed", Integer.class, true),
     STEP("step", Integer.class, true),
     TIMES("times", Integer.class),
-    UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE("untilAtLeastOneKillableAlive", String.class),
+    IF_AT_LEAST_ONE_KILLABLE_ALIVE("ifAtLeastOneKillableAlive", String.class),
     UNTIL_AT_LEAST_ONE_POI_EXAMINABLE("untilAtLeastOnePOIExaminable", String.class),
-    UNTIL_PLAYER_DAMAGE_IS_MORE_THAN("untilPlayerDamageIsMoreThan", Integer.class),
+    IF_PLAYER_DAMAGE_IS_LESS_THAN("ifPlayerDamageIsLessThan", Integer.class),
     SPLASH_TO_SHOW("splashToShow", String.class),
     INSTANCE_CLASS("instanceClass", String.class, true),
     IDENTIFIER("identifier", String.class, true),
@@ -23,14 +23,17 @@ public enum EchoCommandsEnum {
     Y("y", Integer.class),
     RELATIVE("relative", Boolean.class),
     INVISIBLE("invisible", Boolean.class),
-    HURT_PLAYER("hurtPlayer", Integer.class),
+    DAMAGE("damage",Integer.class,true),
+    CAN_KILL_PLAYER("canKillPlayer",Boolean.class),
     IF_NO_KILLABLE_ALIVE("ifNoKillableAlive", String.class),
     IF_PLAYER_DAMAGE_IS_MORE_THAN("ifPlayerDamageIsMoreThan", Integer.class),
+    MUST_END("mustEnd", Boolean.class),
 
 
     //Composite
+    HURT_PLAYER("hurtPlayer", EchoCommandsEnum.class, new EchoCommandsEnum[]{DAMAGE,CAN_KILL_PLAYER}),
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),
-    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, IF_NO_KILLABLE_ALIVE, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, UNTIL_PLAYER_DAMAGE_IS_MORE_THAN}),
+    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, IF_NO_KILLABLE_ALIVE, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN}),
     SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
 
     private final String commandString;

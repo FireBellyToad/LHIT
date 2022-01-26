@@ -11,21 +11,21 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
-import com.faust.lhitgame.game.gameentities.impl.EchoActorEntity;
-import com.faust.lhitgame.game.instances.AnimatedInstance;
-import com.faust.lhitgame.game.rooms.RoomContent;
-import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
-import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
-import com.faust.lhitgame.game.instances.interfaces.Damager;
-import com.faust.lhitgame.game.instances.interfaces.Killable;
+import com.faust.lhitgame.game.gameentities.impl.EchoActorEntity;
+import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.Spawner;
+import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
+import com.faust.lhitgame.game.rooms.RoomContent;
+import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
+import com.faust.lhitgame.game.world.manager.CollisionManager;
 
 import java.util.List;
 import java.util.Map;
@@ -82,7 +82,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
      *
      * @param commands    the commands - values Map
      * @param roomContent the room contents
-     * @param stateTime stateTime of the main loop
+     * @param stateTime   stateTime of the main loop
      */
     private void executeCommands(final Map<EchoCommandsEnum, Object> commands, RoomContent roomContent, float stateTime) {
         //Move if should
@@ -104,8 +104,9 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             deltaTime = stateTime;
             //If is not last step
             if (index + 1 < stepOrder.size()) {
-                //Before stepping out, hurt player
-                if (commands.containsKey(EchoCommandsEnum.HURT_PLAYER)) {
+                //Before stepping out, hurt player and check if canKill player
+                if (commands.containsKey(EchoCommandsEnum.DAMAGE) &&
+                        ((Boolean) commands.getOrDefault(EchoCommandsEnum.CAN_KILL_PLAYER, true) || !roomContent.player.isDying())) {
                     roomContent.player.hurt(this);
                 }
 
@@ -135,38 +136,38 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             final Integer index = (Integer) commands.get(EchoCommandsEnum.STEP);
             boolean mustGoToStep = true;
             //Check condition on until Player has at least less then N damage (priority on other checks)
-            if (commands.containsKey(EchoCommandsEnum.UNTIL_PLAYER_DAMAGE_IS_MORE_THAN)) {
+            if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN)) {
                 //Extract value of damage
-                final int value = (int) commands.get(EchoCommandsEnum.UNTIL_PLAYER_DAMAGE_IS_MORE_THAN);
+                final int value = (int) commands.get(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN);
                 mustGoToStep = roomContent.player.getDamage() <= value;
-            } else  if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN)) {
+            } else if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN)) {
                 //Check condition on if Player has more then N damage (priority on other checks)
                 final int value = (int) commands.get(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN);
                 mustGoToStep = roomContent.player.getDamage() > value;
             }
 
             //Check condition on until there is at least one enemy of type is alive in room
-            if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE)) {
+            if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE)) {
                 //Extract instance class from enum and do check
-                final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE));
+                final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE));
                 final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
                 mustGoToStep = mustGoToStep && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
-            } else  if (commands.containsKey(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE)) {
+            } else if (commands.containsKey(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE)) {
                 //Check condition on if there is no enemy of type is alive in room
                 //Extract instance class from enum and do check
                 final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE));
                 final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-                mustGoToStep = mustGoToStep && roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+                mustGoToStep = mustGoToStep && !roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
             }
 
             if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE)) {
                 //Extract Poi type and do check
-                final POIEnum poiEnum = POIEnum.valueOf ((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE));
+                final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE));
                 mustGoToStep = mustGoToStep && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
             }
 
-            if(mustGoToStep) {
-            //If no "until" condition, just jump to "go to step" value
+            if (mustGoToStep) {
+                //If no "until" condition, just jump to "go to step" value
                 return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
             }
 
@@ -178,12 +179,13 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
     /**
      * Spawn instance if doable
+     *
      * @param commands
      */
     private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
 
         //Should not spawn anything if has no identifier
-        if(!commands.containsKey(EchoCommandsEnum.IDENTIFIER))
+        if (!commands.containsKey(EchoCommandsEnum.IDENTIFIER))
             return;
 
         //FIXME use class name?
@@ -191,15 +193,15 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         EnemyEnum enemyEnum = null;
         POIEnum poiEnum = null;
 
-        try{
+        try {
             enemyEnum = EnemyEnum.valueOf(thingName);
-        }catch (Exception e){
+        } catch (Exception e) {
             //Nothing to do here...
         }
 
-        try{
+        try {
             poiEnum = POIEnum.valueOf(thingName);
-        }catch (Exception e){
+        } catch (Exception e) {
             //Nothing to do here...
         }
 
@@ -208,18 +210,18 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         float spawnY = startY;
         boolean useRelative = (boolean) commands.getOrDefault(EchoCommandsEnum.RELATIVE, false);
 
-        if(commands.containsKey(EchoCommandsEnum.X)){
+        if (commands.containsKey(EchoCommandsEnum.X)) {
             final int value = (int) commands.get(EchoCommandsEnum.X);
             spawnX = useRelative ? spawnX + value : value;
         }
-        if(commands.containsKey(EchoCommandsEnum.Y)){
+        if (commands.containsKey(EchoCommandsEnum.Y)) {
             final int value = (int) commands.get(EchoCommandsEnum.Y);
             spawnY = useRelative ? spawnY + value : value;
         }
 
-         if(Objects.nonNull(enemyEnum)) {
-            spawner.spawnInstance(enemyEnum.getInstanceClass(), spawnX, spawnY,enemyEnum.name());
-        } else if(Objects.nonNull(poiEnum)) {
+        if (Objects.nonNull(enemyEnum)) {
+            spawner.spawnInstance(enemyEnum.getInstanceClass(), spawnX, spawnY, enemyEnum.name());
+        } else if (Objects.nonNull(poiEnum)) {
             spawner.spawnInstance(POIInstance.class, spawnX, spawnY, poiEnum.name());
         }
     }
@@ -295,7 +297,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         }
 
         final Map<EchoCommandsEnum, Object> commands = ((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior);
-        if((Boolean) commands.getOrDefault(EchoCommandsEnum.INVISIBLE, false)) {
+        if ((Boolean) commands.getOrDefault(EchoCommandsEnum.INVISIBLE, false)) {
             //Don't draw anything
             return;
         }
@@ -364,8 +366,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     /**
-     *
-      * @return the Map layer to draw
+     * @return the Map layer to draw
      */
     public String overrideMapLayerDrawn() {
         final Map<EchoCommandsEnum, Object> extractedCommand = ((EchoActorEntity) this.entity).getCommandsForStep(currentBehavior);
@@ -373,7 +374,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         return Objects.isNull(layerString) ? MapLayersEnum.TERRAIN_LAYER.getLayerName() : MapLayersEnum.valueOf(layerString).getLayerName();
     }
 
-    public EchoesActorType getType(){
+    public EchoesActorType getType() {
         return ((EchoActorEntity) entity).getEchoesActorType();
     }
 }

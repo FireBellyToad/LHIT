@@ -100,7 +100,7 @@ public class ValidEcho {
 
                 //String values validation
                 switch (extractedCommand) {
-                    case UNTIL_AT_LEAST_ONE_KILLABLE_ALIVE:{
+                    case IF_AT_LEAST_ONE_KILLABLE_ALIVE:{
 
                         try {
                             enemyEnum = EnemyEnum.valueOf((String) extractedValue);

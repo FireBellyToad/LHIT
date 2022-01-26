@@ -13,7 +13,7 @@ In fase di startup dell'engine e come parte di un tool separato (ValidEcho.java)
 * goTo: oggetto composto da più campi. Solo *step* e uno degli altri campi è necessario.
     * step: (necessario) Step dello script in cui saltare.
     * times: Ripete il goTo per un certo numero di volte.
-    * untilAtLeastOneKillableAlive: Ripete il goTo fino a che c'è una GameInstance di tipo Killable che non sia morta nella stanza.
+    * ifAtLeastOneKillableAlive: Ripete il goTo fino a che c'è una GameInstance di tipo Killable che non sia morta nella stanza.
     * untilAtLeastOnePOIExaminable: Ripete il goTo fino a che c'è una POIInstance di un certo tipo non esaminata nella stanza.
     * untilAtLeastPlayerDamageIsLessThan: Ripete il goTo fino a che il Personaggio ha un numero di Danni minore o uguale ad un valore.
 * spawn: oggetto composto da più campi. genera una GameInstance in questo step

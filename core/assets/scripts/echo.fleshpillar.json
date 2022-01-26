@@ -3,14 +3,24 @@
   "description": "A flesh pillar that bounces the player around",
   "steps": [
     {
+      "goTo": {
+        "step": 2,
+        "ifPlayerDamageIsMoreThan": 5,
+        "ifNoKillableAlive": "ESCAPE_PORTAL"
+      }
     },
     {
+      "goTo": {
+        "step": 2,
+        "ifPlayerDamageIsMoreThan": 5,
+        "ifNoKillableAlive": "ESCAPE_PORTAL"
+      }
     },
     {
-      "goTo" :{
+      "goTo": {
         "step": 0,
-        "untilPlayerDamageIsMoreThan":5,
-        "untilAtLeastOneKillableAlive":"ESCAPE_PORTAL"
+        "ifPlayerDamageIsLessThan": 5,
+        "ifAtLeastOneKillableAlive": "ESCAPE_PORTAL"
       }
     }
   ]

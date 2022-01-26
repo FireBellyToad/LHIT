@@ -32,9 +32,10 @@ public class POIInstance extends GameInstance {
     private boolean enableFlicker = false; // flag for enable flickering
     private boolean mustFlicker = false;// flag that is true when the POI must be hidden
     private long startTime = 0; // flickering timer
-    private int poiIdInMap;
+    private final int poiIdInMap; // POI id in map
 
     private boolean isAlreadyExamined;
+    private final boolean mustTriggerAfterExamination;
     private final TextBoxManager textManager;
     private final SplashManager splashManager;
 
@@ -48,6 +49,7 @@ public class POIInstance extends GameInstance {
         this.splashManager = splashManager;
         this.guaranteedGoldcross = guaranteedGoldcross;
         this.poiIdInMap = id;
+        this.mustTriggerAfterExamination = poiType.mustTriggerAfterExamination();
     }
 
     /**
@@ -65,7 +67,7 @@ public class POIInstance extends GameInstance {
             final ItemEnum itemGiven = ((POIEntity) this.entity).getItemGiven();
 
             //Let player find item
-            if(itemGiven != null){
+            if(Objects.nonNull(itemGiven)){
                 player.foundItem(itemGiven);
             }
 
@@ -91,7 +93,9 @@ public class POIInstance extends GameInstance {
         }
 
         // Only on the first examination there is a chance to find something
-        isAlreadyExamined = true;
+        //BAPTISMAL can be examined again if player as no statue
+        //TODO remove hardcoding
+        isAlreadyExamined = !POIEnum.BAPTISMAL.equals(((POIEntity) this.entity).getType()) || player.hasStatue();
 
     }
 
@@ -102,6 +106,8 @@ public class POIInstance extends GameInstance {
                 return player.getFoundCrosses() < 9;
             case SOIL:
                 return player.getHolyLancePieces() < 2; //Should be random only if not guaranteed!
+            case BAPTISMAL:
+                return player.hasStatue();
             default:
                 return true;
         }
@@ -195,5 +201,9 @@ public class POIInstance extends GameInstance {
 
     public int getPoiIdInMap() {
         return poiIdInMap;
+    }
+
+    public boolean mustTriggerAfterExamination() {
+        return mustTriggerAfterExamination;
     }
 }

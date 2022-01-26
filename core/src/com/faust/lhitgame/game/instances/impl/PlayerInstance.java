@@ -72,6 +72,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean isChangingRoom = false;
     private boolean goToGameOver = false;
     private boolean pauseGame = false;
+    private boolean hasStatue = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -771,6 +772,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 hasArmor = true;
                 break;
             }
+            case STATUE: {
+                // Find statue
+                hasStatue = true;
+                break;
+            }
             default: {
                 Gdx.app.log("WARN", "No implementation for item" + itemFound.name());
             }
@@ -948,6 +954,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public int getHerbsFound() {
         return herbsFound;
+    }
+
+    public boolean hasStatue() {
+        return hasStatue;
+    }
+
+    public void setHasStatue(boolean hasStatue) {
+        this.hasStatue = hasStatue;
     }
 
     public boolean isPauseGame() {

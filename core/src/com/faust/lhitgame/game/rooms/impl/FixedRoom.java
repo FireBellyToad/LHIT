@@ -8,23 +8,22 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.faust.lhitgame.game.instances.PathfinderInstance;
-import com.faust.lhitgame.game.instances.interfaces.Killable;
-import com.faust.lhitgame.game.instances.impl.*;
-import com.faust.lhitgame.game.rooms.AbstractRoom;
-import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
-import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.instances.impl.*;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
+import com.faust.lhitgame.game.rooms.AbstractRoom;
+import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import com.faust.lhitgame.game.rooms.enums.MapObjNameEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
+import com.faust.lhitgame.game.world.manager.WorldManager;
 import com.faust.lhitgame.saves.RoomSaveEntry;
 import com.faust.lhitgame.utils.DepthComparatorUtils;
 
@@ -69,12 +68,12 @@ public class FixedRoom extends AbstractRoom {
 
         worldManager.insertEchoActorsIntoWorld(roomContent.echoActors);
 
-        if(Objects.nonNull(roomSaveEntry)){
-            roomSaveEntry.poiStates.forEach((id,isExamined)->{
+        if (Objects.nonNull(roomSaveEntry)) {
+            roomSaveEntry.poiStates.forEach((id, isExamined) -> {
                 //update POI status
                 POIInstance poi = this.roomContent.poiList.stream().filter(p -> id.equals(p.getPoiIdInMap())).findFirst().orElse(null);
 
-                if(Objects.nonNull(poi)){
+                if (Objects.nonNull(poi)) {
                     poi.setAlreadyExamined(isExamined);
                 }
             });
@@ -186,11 +185,6 @@ public class FixedRoom extends AbstractRoom {
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
-//        //FIXME remove
-        if (Objects.nonNull(roomContent.roomGraph)) {
-            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
-            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
-        }
 
     }
 
@@ -233,7 +227,7 @@ public class FixedRoom extends AbstractRoom {
                 }
 
                 //change only if is default
-                if(MapLayersEnum.TERRAIN_LAYER.getLayerName().equals(layerToDraw)){
+                if (MapLayersEnum.TERRAIN_LAYER.getLayerName().equals(layerToDraw)) {
                     layerToDraw = actor.overrideMapLayerDrawn();
                 }
             });
@@ -241,8 +235,9 @@ public class FixedRoom extends AbstractRoom {
             roomContent.echoActors.removeIf(EchoActorInstance::mustRemoveFromRoom);
         } else {
 
-            //activate room echo if needed
-            if (Objects.nonNull(echoTrigger)) {
+            //activate room echo if needed. If mustTriggerAfterExamination then wait for activation
+            if (Objects.nonNull(echoTrigger) &&
+                    (!((POIInstance) echoTrigger).mustTriggerAfterExamination() || ((POIInstance) echoTrigger).isAlreadyExamined())) {
                 echoIsActivated = roomContent.player.getBody().getPosition().dst(echoTrigger.getBody().getPosition()) <= ECHO_ACTIVATION_DISTANCE;
             }
 
@@ -263,7 +258,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
         roomContent.poiList.forEach(poiInstance -> {
-            roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined());
+            roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined());
         });
 
         //Disable Echo on room leave if trigger is already examined POI

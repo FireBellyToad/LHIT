@@ -26,8 +26,6 @@ public class TextBoxManager {
     private static final float FONT_SIZE = 0.5f;
     private static final float MESSAGE_LIMIT = 1;
     private static final int TOTAL_TEXTBOX_HEIGHT = 17;
-    private static final int MAX_LINES_IN_BOX = 4;
-
 
     private final BitmapFont mainFont;
     private final List<TextBoxData> textBoxes = new ArrayList<>();

@@ -164,10 +164,9 @@ public class ValidEcho {
 
     /**
      * Validate all game scripts
-     * @throws IOException
      * @throws EchoScriptValidationException
      */
-    public static void validateAllScriptsGdx() throws IOException, EchoScriptValidationException {
+    public static void validateAllScriptsGdx() throws EchoScriptValidationException {
 
         for (EchoesActorType echoesActorType : EchoesActorType.values()) {
             // start validate

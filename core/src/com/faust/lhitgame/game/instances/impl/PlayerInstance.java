@@ -960,13 +960,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         return hasStatue;
     }
 
-    public void setHasStatue(boolean hasStatue) {
-        this.hasStatue = hasStatue;
-    }
-
     public boolean isPauseGame() {
         return pauseGame;
     }
+
     public void setPauseGame(boolean pauseGame) {
         this.pauseGame = pauseGame;
     }

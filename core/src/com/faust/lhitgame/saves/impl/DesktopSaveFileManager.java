@@ -21,7 +21,6 @@ import java.util.*;
  */
 public class DesktopSaveFileManager extends AbstractSaveFileManager {
 
-    private final Json jsonParser = new Json();
     private final String selectedFileName = "saves/mainWorldSave.json";
 
     /**

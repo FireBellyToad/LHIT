@@ -58,9 +58,6 @@ public abstract class AbstractRoom implements Spawner {
     public static final float RIGHT_BOUNDARY = LHITGame.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHITGame.GAME_HEIGHT - 24;
 
-    //FIXME remove
-    protected final OrthographicCamera cameraTemp;
-
     protected TiledMap tiledMap;
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
     protected final MapObjects mapObjects;
@@ -98,8 +95,6 @@ public abstract class AbstractRoom implements Spawner {
 
         this.assetManager = assetManager;
         this.worldManager = worldManager;
-
-        this.cameraTemp = camera;
 
         // Load tiled map by name
         this.roomContent.roomType = roomType;

@@ -14,7 +14,6 @@ import java.util.*;
 public class MusicManager {
 
     private final Map<TuneEnum, Music> musicMap = new HashMap<>();
-    private final boolean disableMusic = false;
     private final List<TuneEnum> pausedTunes = new ArrayList<>();
 
     /**
@@ -94,18 +93,15 @@ public class MusicManager {
      */
     public void playMusic(TuneEnum tune, float volume, boolean loop) {
         Objects.requireNonNull(tune);
-        // If tune is enabled, play it
-        if (!disableMusic) {
-            final Music tuneToPlay = musicMap.get(tune);
-            Objects.requireNonNull(tuneToPlay);
+        final Music tuneToPlay = musicMap.get(tune);
+        Objects.requireNonNull(tuneToPlay);
 
-            //If tune is not already playing, stop previous and play it
-            if (!tuneToPlay.isPlaying()) {
-                stopMusic();
-                tuneToPlay.play();
-                tuneToPlay.setLooping(loop);
-                tuneToPlay.setVolume(volume);
-            }
+        //If tune is not already playing, stop previous and play it
+        if (!tuneToPlay.isPlaying()) {
+            stopMusic();
+            tuneToPlay.play();
+            tuneToPlay.setLooping(loop);
+            tuneToPlay.setVolume(volume);
         }
     }
 

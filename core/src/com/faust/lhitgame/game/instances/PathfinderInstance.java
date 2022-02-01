@@ -11,13 +11,14 @@ import com.badlogic.gdx.utils.Queue;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
 import com.faust.lhitgame.game.gameentities.GameEntity;
-import com.faust.lhitgame.game.instances.impl.DecorationInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
-import com.faust.lhitgame.game.rooms.areas.WallArea;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.utils.Pair;
 import com.faust.lhitgame.utils.PathfinderUtils;
+import com.faust.lhitgame.utils.RayCastUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -89,13 +90,10 @@ public abstract class PathfinderInstance extends AnimatedInstance {
         }
 
         //Do a raycast, save all instances that are caught by the ray
-        Array<Pair<Float, Object>> tempInstancesList = new Array<>();
-        RayCastCallback getPlayerAndWallsInRay = (fixture, point, normal, fraction) -> {
+        final List<Pair<Float, Object>> tempInstancesList = new ArrayList<>();
+        final RayCastCallback getPlayerAndWallsInRay = (fixture, point, normal, fraction) -> {
             //Select only walls, non passable decorations and player (excluding hitboxes)
-            if (fixture.getBody().getUserData() instanceof WallArea ||
-                    (fixture.getBody().getUserData() instanceof DecorationInstance &&
-                            !((DecorationInstance) fixture.getBody().getUserData()).isPassable()) ||
-                    fixture.getBody().equals(target.getBody())) {
+            if (RayCastUtils.isPlayerOrWall(fixture,target)) {
                 tempInstancesList.add(new Pair<>(fraction, fixture.getBody().getUserData()));
             }
             return 1;

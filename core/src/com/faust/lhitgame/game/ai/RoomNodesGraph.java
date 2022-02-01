@@ -15,6 +15,7 @@ import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
+import com.faust.lhitgame.utils.RayCastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,9 +50,7 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
         //Why AtomicBoolean? So that it can be changed on callback thread
         AtomicBoolean isConnected = new AtomicBoolean(true);
         RayCastCallback checkIfPathIsFree = (fixture, point, normal, fraction) -> {
-            if (Objects.nonNull(fixture.getBody()) &&
-                    !(fixture.getBody().getUserData() instanceof EmergedArea) &&
-                    BodyDef.BodyType.StaticBody.equals(fixture.getBody().getType())) {
+            if (RayCastUtils.isNotPassable(fixture)) {
                 isConnected.set(false);
             }
             return isConnected.get() ? 1 : 0;

@@ -10,7 +10,7 @@ public enum POIEnum {
     MICHAEL("poi.michael", ItemEnum.STATUE, "splash.michael"),
     BURNT_PAPER("poi.burntpaper"),
     BAPTISMAL("poi.baptismal", true),
-    BURNT_MONK("poi.burntmonk");
+    BURNT_MONK("poi.burntmonk","splash.burntmonk");
 
     private final String textKey;
     private final ItemEnum itemGiven;
@@ -38,6 +38,10 @@ public enum POIEnum {
 
     POIEnum(String textKey, ItemEnum itemGiven, String splashKey) {
         this(textKey, itemGiven, splashKey, false);
+    }
+
+    POIEnum(String textKey, String splashKey) {
+        this(textKey,null,splashKey,false);
     }
 
     public String getTextKey() {

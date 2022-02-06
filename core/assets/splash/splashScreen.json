@@ -35,6 +35,10 @@
     {
       "splashKey": "splash.michael",
       "splashPath": "splash/michael_splash.png"
+    },
+    {
+      "splashKey": "splash.burntmonk",
+      "splashPath": "splash/burntmonk_splash.png"
     }
   ]
 }

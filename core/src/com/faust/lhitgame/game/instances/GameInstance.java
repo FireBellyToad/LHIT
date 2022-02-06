@@ -29,6 +29,7 @@ public abstract class GameInstance {
     protected Body body;
     protected float startX = LHITGame.GAME_WIDTH / 2;
     protected float startY = LHITGame.GAME_HEIGHT / 3;
+    protected boolean alwaysInBackground = false;
 
     public GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);
@@ -112,4 +113,7 @@ public abstract class GameInstance {
         return pos;
     }
 
+    public boolean isAlwaysInBackground() {
+        return alwaysInBackground;
+    }
 }

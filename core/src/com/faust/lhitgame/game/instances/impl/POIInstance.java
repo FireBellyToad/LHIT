@@ -50,6 +50,8 @@ public class POIInstance extends GameInstance {
         this.guaranteedGoldcross = guaranteedGoldcross;
         this.poiIdInMap = id;
         this.mustTriggerAfterExamination = poiType.mustTriggerAfterExamination();
+
+        this.alwaysInBackground = poiType.equals(POIEnum.ECHO_CORPSE) || poiType.equals(POIEnum.SKELETON) || poiType.equals(POIEnum.BURNT_PAPER);
     }
 
     /**
@@ -62,22 +64,22 @@ public class POIInstance extends GameInstance {
         String messageKey = ((POIEntity) this.entity).getMessageKey();
 
         //If is not already examined (if randomized, nothing CAN happen)
-        if (!isAlreadyExamined && canCollectPOI(player) && ( !isRandomizedPOI() || MathUtils.randomBoolean())) {
+        if (!isAlreadyExamined && canCollectPOI(player) && (!isRandomizedPOI() || MathUtils.randomBoolean())) {
 
             final ItemEnum itemGiven = ((POIEntity) this.entity).getItemGiven();
 
             //Let player find item
-            if(Objects.nonNull(itemGiven)){
+            if (Objects.nonNull(itemGiven)) {
                 player.foundItem(itemGiven);
             }
 
             //If has splash screen
-            if(!((POIEntity) this.entity).getSplashKey().isEmpty()){
+            if (!((POIEntity) this.entity).getSplashKey().isEmpty()) {
                 String splashKey = ((POIEntity) this.entity).getSplashKey();
 
                 //Holy lance has to different splashes based on pieces found
-                if(itemGiven == ItemEnum.HOLY_LANCE){
-                    splashKey+= "."+player.getHolyLancePieces();
+                if (itemGiven == ItemEnum.HOLY_LANCE) {
+                    splashKey += "." + player.getHolyLancePieces();
                 }
 
                 // Show splash screen
@@ -87,7 +89,7 @@ public class POIInstance extends GameInstance {
                 // Just show message
                 textManager.addNewTextBox(messageKey + POIEntity.FOUND_ITEM_MESSAGE_KEY_SUFFIX);
             }
-        } else{
+        } else {
             // Just show message
             textManager.addNewTextBox(messageKey + POIEntity.EXAMINING_ITEM_MESSAGE_KEY_SUFFIX);
         }
@@ -101,7 +103,7 @@ public class POIInstance extends GameInstance {
 
     private boolean canCollectPOI(PlayerInstance player) {
 
-        switch (((POIEntity) entity).getType()){
+        switch (((POIEntity) entity).getType()) {
             case SKELETON:
                 return player.getFoundCrosses() < 9;
             case SOIL:
@@ -114,11 +116,10 @@ public class POIInstance extends GameInstance {
     }
 
     /**
-     *
      * @return true if the poi is randomized
      */
     private boolean isRandomizedPOI() {
-        switch (((POIEntity) entity).getType()){
+        switch (((POIEntity) entity).getType()) {
             case SKELETON:
                 return !guaranteedGoldcross; //Should be random only if not guaranteed!
             default:

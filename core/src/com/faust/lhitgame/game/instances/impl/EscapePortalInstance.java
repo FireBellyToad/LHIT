@@ -54,7 +54,7 @@ public class EscapePortalInstance extends AnimatedInstance implements Interactab
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set(x, y);
+        bodyDef.position.set(x, y- POSITION_OFFSET);
 
         // Define shape
         PolygonShape shape = new PolygonShape();
@@ -83,7 +83,7 @@ public class EscapePortalInstance extends AnimatedInstance implements Interactab
         Objects.requireNonNull(batch);
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
-        batch.draw(frame, 80 - POSITION_OFFSET, LHITGame.GAME_HEIGHT - POSITION_OFFSET - 108);
+        batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y );
         batch.end();
     }
 

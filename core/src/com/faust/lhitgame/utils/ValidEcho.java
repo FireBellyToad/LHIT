@@ -121,7 +121,7 @@ public class ValidEcho {
                         MapLayersEnum.valueOf((String) extractedValue);
                         break;
                     }
-                    case UNTIL_AT_LEAST_ONE_POI_EXAMINABLE: {
+                    case IF_AT_LEAST_ONE_POI_EXAMINABLE: {
                         POIEnum.valueOf((String) extractedValue);
                         break;
                     }

@@ -160,9 +160,9 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                 mustGoToStep = mustGoToStep && !roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
             }
 
-            if (commands.containsKey(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE)) {
+            if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
                 //Extract Poi type and do check
-                final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(EchoCommandsEnum.UNTIL_AT_LEAST_ONE_POI_EXAMINABLE));
+                final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE));
                 mustGoToStep = mustGoToStep && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
             }
 

@@ -27,10 +27,12 @@ public class DecorationInstance extends GameInstance implements Interactable {
     private boolean interacted = false;
 
     public DecorationInstance(float x, float y, DecorationsEnum type, AssetManager assetManager) {
-        super(new DecorationEntity(type,assetManager));
+        super(new DecorationEntity(type, assetManager));
         // Add Position Y offset for better position from tiled
-        this.startX = x ;
+        this.startX = x;
         this.startY = y + POSITION_OFFSET;
+        this.alwaysInBackground = type.equals(DecorationsEnum.ALLY_CORPSE_1) || type.equals(DecorationsEnum.ALLY_CORPSE_2) ||
+                type.equals(DecorationsEnum.ALLY_CORPSE_1);
     }
 
     @Override
@@ -52,7 +54,6 @@ public class DecorationInstance extends GameInstance implements Interactable {
     }
 
     /**
-     *
      * @return X offset for particular Decoration render
      */
     private int calculateAdditionalXOffset() {
@@ -64,7 +65,6 @@ public class DecorationInstance extends GameInstance implements Interactable {
     }
 
     /**
-     *
      * @return Y offset for particular Decoration render
      */
     private int calculateAdditionalYOffset() {
@@ -104,14 +104,14 @@ public class DecorationInstance extends GameInstance implements Interactable {
                 bodyDef.position.set(x, y - 16);
                 break;
             }
-            case BOAT:{
+            case BOAT: {
                 shape.setAsBox(12, 6);
                 bodyDef.position.set(x, y - 12);
                 break;
             }
             case STONE_1:
             case STONE_2:
-            case TREE_STUMP:{
+            case TREE_STUMP: {
                 shape.setAsBox(16, 8);
                 bodyDef.position.set(x, y - 16);
                 break;
@@ -162,7 +162,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
             case GRASS: {
                 ((DecorationEntity) entity).playGrassMove();
             }
-            default:{
+            default: {
                 //Do nothing
             }
         }

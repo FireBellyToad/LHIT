@@ -14,7 +14,7 @@ public enum EchoCommandsEnum {
     STEP("step", Integer.class, true),
     TIMES("times", Integer.class),
     IF_AT_LEAST_ONE_KILLABLE_ALIVE("ifAtLeastOneKillableAlive", String.class),
-    UNTIL_AT_LEAST_ONE_POI_EXAMINABLE("untilAtLeastOnePOIExaminable", String.class),
+    IF_AT_LEAST_ONE_POI_EXAMINABLE("ifAtLeastOnePOIExaminable", String.class),
     IF_PLAYER_DAMAGE_IS_LESS_THAN("ifPlayerDamageIsLessThan", Integer.class),
     SPLASH_TO_SHOW("splashToShow", String.class),
     INSTANCE_CLASS("instanceClass", String.class, true),
@@ -33,7 +33,7 @@ public enum EchoCommandsEnum {
     //Composite
     HURT_PLAYER("hurtPlayer", EchoCommandsEnum.class, new EchoCommandsEnum[]{DAMAGE,CAN_KILL_PLAYER}),
     MOVE("move", EchoCommandsEnum.class, new EchoCommandsEnum[]{DIRECTION, SPEED}),
-    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, IF_NO_KILLABLE_ALIVE, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, UNTIL_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN}),
+    GO_TO("goTo", EchoCommandsEnum.class, new EchoCommandsEnum[]{STEP, TIMES, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, IF_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN}),
     SPAWN("spawn", EchoCommandsEnum.class, new EchoCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
 
     private final String commandString;

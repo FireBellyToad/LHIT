@@ -134,39 +134,8 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         if (commands.containsKey(EchoCommandsEnum.STEP)) {
 
             final Integer index = (Integer) commands.get(EchoCommandsEnum.STEP);
-            boolean mustGoToStep = true;
-            //Check condition on until Player has at least less then N damage (priority on other checks)
-            if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN)) {
-                //Extract value of damage
-                final int value = (int) commands.get(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN);
-                mustGoToStep = roomContent.player.getDamage() <= value;
-            } else if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN)) {
-                //Check condition on if Player has more then N damage (priority on other checks)
-                final int value = (int) commands.get(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN);
-                mustGoToStep = roomContent.player.getDamage() > value;
-            }
 
-            //Check condition on until there is at least one enemy of type is alive in room
-            if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE)) {
-                //Extract instance class from enum and do check
-                final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE));
-                final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-                mustGoToStep = mustGoToStep && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
-            } else if (commands.containsKey(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE)) {
-                //Check condition on if there is no enemy of type is alive in room
-                //Extract instance class from enum and do check
-                final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE));
-                final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-                mustGoToStep = mustGoToStep && !roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
-            }
-
-            if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
-                //Extract Poi type and do check
-                final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE));
-                mustGoToStep = mustGoToStep && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
-            }
-
-            if (mustGoToStep) {
+            if (checkConditionalCommands(commands,roomContent)) {
                 //If no "until" condition, just jump to "go to step" value
                 return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
             }
@@ -175,6 +144,48 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
         // or else, just get next
         return stepOrder.indexOf(currentBehavior);
+    }
+
+    /**
+     *
+     * @param commands
+     * @param roomContent
+     * @return true if all conditionals commands are true
+     */
+    private boolean checkConditionalCommands(Map<EchoCommandsEnum, Object> commands, RoomContent roomContent) {
+        boolean areConditionTrue = true;
+        //Check condition on until Player has at least less then N damage (priority on other checks)
+        if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN)) {
+            //Extract value of damage
+            final int value = (int) commands.get(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN);
+            areConditionTrue = roomContent.player.getDamage() <= value;
+        } else if (commands.containsKey(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN)) {
+            //Check condition on if Player has more then N damage (priority on other checks)
+            final int value = (int) commands.get(EchoCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN);
+            areConditionTrue = roomContent.player.getDamage() > value;
+        }
+
+        //Check condition on until there is at least one enemy of type is alive in room
+        if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE)) {
+            //Extract instance class from enum and do check
+            final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE));
+            final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
+            areConditionTrue = areConditionTrue && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+        } else if (commands.containsKey(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE)) {
+            //Check condition on if there is no enemy of type is alive in room
+            //Extract instance class from enum and do check
+            final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE));
+            final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
+            areConditionTrue = areConditionTrue && !roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+        }
+
+        if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
+            //Extract Poi type and do check
+            final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE));
+            areConditionTrue = areConditionTrue && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+        }
+
+        return areConditionTrue;
     }
 
     /**

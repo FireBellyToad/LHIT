@@ -3,7 +3,6 @@
   "description": "The landscape goes hellish and with corrosive atmosphere",
   "steps": [
     {
-      "textBoxKey": "echo.infernum.first",
       "invisible": true,
       "renderOnlyMapLayer": "ECHO_LAYER",
       "goTo" :{
@@ -26,6 +25,7 @@
       }
     },
     {
+      "textBoxKey": "echo.infernum.first",
       "invisible": true,
       "renderOnlyMapLayer": "ECHO_LAYER",
       "goTo" :{

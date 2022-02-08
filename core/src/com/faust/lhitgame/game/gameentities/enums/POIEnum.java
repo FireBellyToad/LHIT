@@ -10,7 +10,8 @@ public enum POIEnum {
     MICHAEL("poi.michael", ItemEnum.STATUE, "splash.michael"),
     BURNT_PAPER("poi.burntpaper"),
     BAPTISMAL("poi.baptismal", true),
-    BURNT_MONK("poi.burntmonk","splash.burntmonk");
+    BURNT_MONK("poi.burntmonk","splash.burntmonk"),
+    ALTAR("poi.altar", true);
 
     private final String textKey;
     private final ItemEnum itemGiven;

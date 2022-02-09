@@ -119,6 +119,9 @@ public class FixedRoom extends AbstractRoom {
             }
 
             echoTrigger = instance;
+            if (Objects.nonNull(obj.getProperties().get("mustTriggerAfterExamination"))) {
+                ((POIInstance) echoTrigger).setMustTriggerAfterExamination(obj.getProperties().get("mustTriggerAfterExamination", Boolean.class));
+            }
         }
     }
 

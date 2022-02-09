@@ -33,7 +33,8 @@
  <objectgroup id="2" name="objects">
   <object id="40" name="POI" type="ALTAR" x="80" y="32">
    <properties>
-    <property name="isEchoTrigger" type="bool" value="false"/>
+    <property name="isEchoTrigger" type="bool" value="true"/>
+    <property name="mustTriggerAfterExamination" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

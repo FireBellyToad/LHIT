@@ -35,7 +35,7 @@ public class POIInstance extends GameInstance {
     private final int poiIdInMap; // POI id in map
 
     private boolean isAlreadyExamined;
-    private final boolean mustTriggerAfterExamination;
+    private boolean mustTriggerAfterExamination = false;
     private final TextBoxManager textManager;
     private final SplashManager splashManager;
 
@@ -48,8 +48,7 @@ public class POIInstance extends GameInstance {
         this.isAlreadyExamined = false;
         this.splashManager = splashManager;
         this.guaranteedGoldcross = guaranteedGoldcross;
-        this.poiIdInMap = id;
-        this.mustTriggerAfterExamination = poiType.mustTriggerAfterExamination();
+        this.poiIdInMap = id;;
 
         this.alwaysInBackground = poiType.equals(POIEnum.ECHO_CORPSE) || poiType.equals(POIEnum.SKELETON) || poiType.equals(POIEnum.BURNT_PAPER);
     }
@@ -206,5 +205,9 @@ public class POIInstance extends GameInstance {
 
     public boolean mustTriggerAfterExamination() {
         return mustTriggerAfterExamination;
+    }
+
+    public void setMustTriggerAfterExamination(boolean mustTriggerAfterExamination) {
+        this.mustTriggerAfterExamination = mustTriggerAfterExamination;
     }
 }

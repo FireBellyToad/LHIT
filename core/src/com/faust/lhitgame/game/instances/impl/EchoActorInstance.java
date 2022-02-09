@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.faust.lhitgame.game.echoes.enums.EchoCommandsEnum;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
@@ -114,7 +115,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                 showTextBox = true;
             } else {
                 removeFromRoom = true;
-                spawnInstancesOnEnd(commands);
+                spawnInstancesOnEnd(commands, false);
                 Gdx.app.log("DEBUG", "Echo Actor " + ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
             }
         }
@@ -189,11 +190,19 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     /**
-     * Spawn instance if doable
      *
      * @param commands
      */
     private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
+        spawnInstancesOnEnd(commands,false);
+    }
+    /**
+     * Spawn instance if doable
+     *
+     * @param commands
+     * @param errorIfNotPOI if spawnable is not a POI, error will be thrown
+     */
+    private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands, boolean errorIfNotPOI) {
 
         //Should not spawn anything if has no identifier
         if (!commands.containsKey(EchoCommandsEnum.IDENTIFIER))
@@ -214,6 +223,9 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             poiEnum = POIEnum.valueOf(thingName);
         } catch (Exception e) {
             //Nothing to do here...
+            if(errorIfNotPOI){
+                throw new GdxRuntimeException(e);
+            }
         }
 
         //Set spawn coordinates

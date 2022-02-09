@@ -70,6 +70,14 @@ public class FixedRoom extends AbstractRoom {
 
         if (Objects.nonNull(roomSaveEntry)) {
             roomSaveEntry.poiStates.forEach((id, isExamined) -> {
+                //FIXME harcoded, do better next time!
+                //In INFERNUM room respawn POI in needed
+                //Needed if player exit room without getting the statue
+                if (id == 0 && RoomTypeEnum.INFERNUM.equals(getRoomType())) {
+                    spawnInstance(POIInstance.class, 80, 32, "MICHAEL");
+
+                }
+
                 //update POI status
                 POIInstance poi = this.roomContent.poiList.stream().filter(p -> id.equals(p.getPoiIdInMap())).findFirst().orElse(null);
 

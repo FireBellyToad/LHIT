@@ -27,7 +27,7 @@ Walfrit ha con sé una lancia comune, che può usare per combattere, ma non rius
 * 3 - Oggetti
 
     Erbe: Si trovano nei cespugli. Possono essere usate per curarsi.
-    Morgengabi: Si trovano in alcuni scheletri. Sono piccole croci d'oro di grande valore.
+    Crocette auree: Si trovano in alcuni scheletri. Sono piccole croci d'oro di grande valore.
     Lancia sacra: Se ne troveranno i pezzi sparsi nelle secche del fiume Trebia. Trovarla era lo scopo della missione di Walfrit e una volta recuperati tutti i pezzi sarà possibile usarla al posto della lancia comune.
 
 Altri oggetti utili sono nascosti sulle secche del fiume, sta a Walfrit esplorare le terre maledette per trovarle

@@ -137,6 +137,16 @@ public class EndGameScreen implements Screen {
                 " : " + ((boolean) valuesMap.get(SaveFieldsEnum.ARMOR.getFieldName()) ? 1 : 0) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 1",
                 X_OFFSET,
                 Y_OFFSET - 12);
+
+        //Secret boss killed.
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * GameEntity.FRAME_DURATION),
+                X_OFFSET - 10,
+                Y_OFFSET - 18);
+
+        menu.getMainFont().draw(batch,
+                " : " + ((boolean) valuesMap.get(SaveFieldsEnum.KILLED_SECRET.getFieldName()) ? 1 : 0) + " " + textLocalizer.localizeFromKey("boxes", "endgame.of") + " 1",
+                X_OFFSET,
+                Y_OFFSET - 12);
         batch.end();
 
     }

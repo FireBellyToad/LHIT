@@ -6,7 +6,7 @@
       "invisible": true,
       "renderOnlyMapLayer": "ECHO_LAYER",
       "goTo" :{
-        "step": 2,
+        "step": 3,
         "ifPlayerDamageIsMoreThan":5,
         "ifNoKillableAlive":"ESCAPE_PORTAL"
       }
@@ -19,7 +19,7 @@
         "canKillPlayer": false
       },
       "goTo" :{
-        "step": 2,
+        "step": 3,
         "ifPlayerDamageIsMoreThan":5,
         "ifNoKillableAlive":"ESCAPE_PORTAL"
       }
@@ -32,6 +32,12 @@
         "step": 0,
         "ifPlayerDamageIsLessThan":5,
         "ifAtLeastOneKillableAlive":"ESCAPE_PORTAL"
+      }
+    },{
+      "spawn": {
+        "identifier": "MICHAEL",
+        "x": 80,
+        "y": 32
       }
     }
   ]

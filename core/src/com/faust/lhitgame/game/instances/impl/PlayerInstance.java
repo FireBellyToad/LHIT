@@ -73,6 +73,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean goToGameOver = false;
     private boolean pauseGame = false;
     private boolean hasStatue = false;
+    private boolean hasKilledSecretBoss = false;
 
     private final ParticleEffect waterWalkEffect;
 
@@ -968,6 +969,18 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         this.pauseGame = pauseGame;
     }
 
+    public boolean hasKilledSecretBoss() {
+        return this.hasKilledSecretBoss;
+    }
+
+    public void setHasKilledSecretBoss(boolean hasKilledSecretBoss) {
+        this.hasKilledSecretBoss = hasKilledSecretBoss;
+    }
+
+    public void setHasStatue(boolean hasStatue) {
+        this.hasStatue = hasStatue;
+    }
+
     @Override
     public boolean keyTyped(char character) {
         return false;
@@ -997,6 +1010,4 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public boolean scrolled(float amountX, float amountY) {
         return false;
     }
-
-
 }

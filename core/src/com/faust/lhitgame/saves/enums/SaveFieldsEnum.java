@@ -13,7 +13,9 @@ public enum SaveFieldsEnum {
     DAMAGE("damage"),
     HERBS_AVAILABLE("herbsAvailable"),
     HERBS_FOUND("herbsFound"),
-    PLAYER_INFO("playerInfo", new SaveFieldsEnum[]{LANCE, CROSSES,ARMOR,DAMAGE,HERBS_AVAILABLE,HERBS_FOUND}),
+    KILLED_SECRET("killedSecret"),
+    STAUTE_FOUND("statueFound"),
+    PLAYER_INFO("playerInfo", new SaveFieldsEnum[]{LANCE, CROSSES,ARMOR,DAMAGE,HERBS_AVAILABLE,HERBS_FOUND,KILLED_SECRET,STAUTE_FOUND}),
 
     X("x"),
     Y("y"),

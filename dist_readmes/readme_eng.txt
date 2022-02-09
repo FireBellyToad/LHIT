@@ -27,7 +27,7 @@ Walfrit has a common lance, that can be used in combat. However, not every enemy
 * 3 - Objects
 
     Herbs: Found in bushes. They can be used to heal wounds. 
-    Morgengabi: Found in some skeletons. They are really precious golden crosses.
+    Golden crosses: Found in some skeletons. They are really precious.
     Holy lance: Found somewhere on the shallows of river Trebia. It was the objective of Walfrit's mission, and can be used in the place of the common lance after all pieces have been found.
 	
 Other useful objects are hidden on the river shallows, if Walfrit will explore the cursed lands to find them.

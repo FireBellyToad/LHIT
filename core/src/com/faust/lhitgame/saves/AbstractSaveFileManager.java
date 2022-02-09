@@ -30,6 +30,8 @@ public abstract class AbstractSaveFileManager {
         entries.add(getField(SaveFieldsEnum.DAMAGE.getFieldName(), player.getDamage()));
         entries.add(getField(SaveFieldsEnum.HERBS_FOUND.getFieldName(), player.getHerbsFound()));
         entries.add(getField(SaveFieldsEnum.HERBS_AVAILABLE.getFieldName(), player.getAvailableHealthKits()));
+        entries.add(getField(SaveFieldsEnum.STAUTE_FOUND.getFieldName(), player.hasStatue()));
+        entries.add(getField(SaveFieldsEnum.KILLED_SECRET.getFieldName(), player.hasKilledSecretBoss()));
 
         String playerInfo = getField(SaveFieldsEnum.PLAYER_INFO.getFieldName(), String.join(",", entries), true);
 
@@ -151,6 +153,8 @@ public abstract class AbstractSaveFileManager {
         player.setDamage(playerInfo.getInt(SaveFieldsEnum.DAMAGE.getFieldName()));
         player.setHerbsFound(playerInfo.getInt(SaveFieldsEnum.HERBS_FOUND.getFieldName()));
         player.setAvailableHealthKits(playerInfo.getInt(SaveFieldsEnum.HERBS_AVAILABLE.getFieldName()));
+        player.setHasStatue(playerInfo.getBoolean(SaveFieldsEnum.STAUTE_FOUND.getFieldName()));
+        player.setHasKilledSecretBoss(playerInfo.getBoolean(SaveFieldsEnum.KILLED_SECRET.getFieldName()));
 
     }
 

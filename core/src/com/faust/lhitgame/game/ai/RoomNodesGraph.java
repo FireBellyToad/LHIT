@@ -123,6 +123,7 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
 
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         Color back = new Color(0x222222ff);
+        Color back2 = new Color(0x666666ff);
         for (PathNode node : nodeArray) {
             batch.begin();
             shapeRenderer.setColor(back);
@@ -141,9 +142,16 @@ public class RoomNodesGraph implements IndexedGraph<PathNode> {
         }
 
         batch.begin();
+        for (Path p : pathArray) {
+            shapeRenderer.setColor(back);
+            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.line(p.fromPathNode, p.toPathNode);
+            shapeRenderer.end();
+        }
         graphMap.forEach((k, v) -> {
-            for (Path p : v) {
-                shapeRenderer.setColor(back);
+            for (Path p : pathArray) {
+                shapeRenderer.setColor(back2);
                 shapeRenderer.setProjectionMatrix(cameraTemp.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.line(p.fromPathNode, p.toPathNode);

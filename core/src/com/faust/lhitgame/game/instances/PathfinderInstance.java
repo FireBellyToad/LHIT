@@ -71,13 +71,14 @@ public abstract class PathfinderInstance extends AnimatedInstance {
         newGoal = nodeArray.get(0);
 
         GraphPath<PathNode> graphPath = PathfinderUtils.generatePath(currentPos, newGoal, roomNodesGraph);
-        graphPath.forEach(pathNode -> {
+        for (PathNode pathNode : graphPath) {
             pathQueue.addLast(pathNode);
 
-            //limit queue size
-            if (pathQueue.size > 2)
-                return;
-        });
+            //Limit queue size
+            if(pathQueue.size >= 3){
+                break;
+            }
+        }
         recalculatePath = pathQueue.isEmpty();
         targetPathNode = pathQueue.isEmpty() ? currentPos : pathQueue.removeFirst();
     }

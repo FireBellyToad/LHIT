@@ -12,6 +12,7 @@ import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.instances.PathfinderInstance;
 import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.music.MusicManager;
@@ -180,7 +181,7 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    public void drawRoomContents(SpriteBatch batch, float stateTime) {
+    public void drawRoomContents(SpriteBatch batch, float stateTime, OrthographicCamera cameraTemp) {
         List<GameInstance> allInstance = new ArrayList<>();
 
         allInstance.addAll(roomContent.poiList);
@@ -197,6 +198,10 @@ public class FixedRoom extends AbstractRoom {
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
 
+//        if (Objects.nonNull(roomContent.roomGraph)) {
+//            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
+//            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));
+//        }
     }
 
     @Override
@@ -247,8 +252,8 @@ public class FixedRoom extends AbstractRoom {
         } else {
 
             //activate room echo if needed. If mustTriggerAfterExamination then wait for activation
-            if (Objects.nonNull(echoTrigger) &&
-                    (!((POIInstance) echoTrigger).mustTriggerAfterExamination() || ((POIInstance) echoTrigger).isAlreadyExamined())) {
+            if (Objects.nonNull(echoTrigger) && (echoTrigger instanceof DecorationInstance || echoTrigger instanceof POIInstance &&
+                    (!((POIInstance) echoTrigger).mustTriggerAfterExamination() || ((POIInstance) echoTrigger).isAlreadyExamined()))) {
                 echoIsActivated = roomContent.player.getBody().getPosition().dst(echoTrigger.getBody().getPosition()) <= ECHO_ACTIVATION_DISTANCE;
             }
 

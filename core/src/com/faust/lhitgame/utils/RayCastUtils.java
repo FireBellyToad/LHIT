@@ -1,6 +1,8 @@
 package com.faust.lhitgame.utils;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.impl.DecorationInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
@@ -36,6 +38,7 @@ public class RayCastUtils {
     public static boolean isNotPassable(Fixture fixture) {
         return Objects.nonNull(fixture.getBody()) && // has Body
                 !(fixture.getBody().getUserData() instanceof EmergedArea) && // is not an EmergedArea
+                !(ClassReflection.isAssignableFrom(AnimatedInstance.class, fixture.getBody().getUserData().getClass())) && // is not an AnimatedInstance
                 !(fixture.getBody().getUserData() instanceof DecorationInstance && ((DecorationInstance) fixture.getBody().getUserData()).isPassable()); // is not a non passable Decoration
     }
 }

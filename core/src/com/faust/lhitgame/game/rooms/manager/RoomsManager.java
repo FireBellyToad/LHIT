@@ -345,7 +345,7 @@ public class RoomsManager {
     public void drawCurrentRoomContents(SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
 
-        currentRoom.drawRoomContents(batch, stateTime);
+        currentRoom.drawRoomContents(batch, stateTime, camera);
     }
 
     /**

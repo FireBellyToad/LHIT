@@ -399,11 +399,11 @@ public abstract class AbstractRoom implements Spawner {
 
     /**
      * Draws room contents
-     *
-     * @param batch
+     *  @param batch
      * @param stateTime
+     * @param cameraTemp
      */
-    public void drawRoomContents(final SpriteBatch batch, float stateTime) {
+    public void drawRoomContents(final SpriteBatch batch, float stateTime, OrthographicCamera cameraTemp) {
 
         List<GameInstance> allInstance = new ArrayList<>();
 
@@ -416,7 +416,7 @@ public abstract class AbstractRoom implements Spawner {
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
         allInstance.forEach((i) -> i.draw(batch, stateTime));
-//
+
 //        if (Objects.nonNull(roomContent.roomGraph)) {
 //            roomContent.roomGraph.debugDraw(cameraTemp,roomContent,batch, assetManager);
 //            roomContent.enemyList.forEach(pi -> ((PathfinderInstance)pi).drawDebug(cameraTemp));

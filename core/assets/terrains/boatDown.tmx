@@ -45,37 +45,31 @@
   <object id="163" name="DECO" type="STONE_2" x="46.2617" y="69.0961">
    <point/>
   </object>
-  <object id="164" name="DECO" type="STONE_1" x="57.9058" y="57.9793">
+  <object id="164" name="DECO" type="STONE_1" x="57.9058" y="56.9793">
    <point/>
   </object>
   <object id="165" name="DECO" type="STONE_1" x="58.6016" y="85.2928">
    <point/>
   </object>
-  <object id="166" name="DECO" type="STONE_2" x="51.5589" y="101.694">
+  <object id="166" name="DECO" type="STONE_2" x="51.5589" y="100.694">
    <point/>
   </object>
-  <object id="167" name="PathNode" x="53" y="132">
+  <object id="168" name="PathNode" x="85" y="125">
    <point/>
   </object>
-  <object id="168" name="PathNode" x="85" y="112">
+  <object id="169" name="PathNode" x="21" y="125">
    <point/>
   </object>
-  <object id="169" name="PathNode" x="21" y="112">
+  <object id="170" name="PathNode" x="21" y="23">
    <point/>
   </object>
-  <object id="170" name="PathNode" x="21" y="32">
-   <point/>
-  </object>
-  <object id="171" name="PathNode" x="53" y="16">
-   <point/>
-  </object>
-  <object id="172" name="PathNode" x="85" y="32">
+  <object id="172" name="PathNode" x="85" y="23">
    <point/>
   </object>
   <object id="173" name="PathNode" x="94" y="64">
    <point/>
   </object>
-  <object id="174" name="PathNode" x="16" y="64">
+  <object id="174" name="PathNode" x="16" y="68">
    <point/>
   </object>
  </objectgroup>

@@ -1,0 +1,509 @@
+{
+    "activeFile": "terrains/boatDown.tmx",
+    "expandedProjectPaths": [
+        "terrains"
+    ],
+    "file.lastUsedOpenFilter": "Tutti i file (*)",
+    "fileStates": {
+        "E:/Repositories/LHIP/core/assets/cutscenes/endgame_1.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 153.72727272727272,
+                "y": 131.90909090909093
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/endgame_2.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 161.03075240063205,
+                "y": 168.99477330740245
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/endgame_3.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 235.24492524614075,
+                "y": 124.01118269113894
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/endgame_4.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 216.75,
+                "y": 153.625
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/intro_1.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 70.62598760179895,
+                "y": 98.28126899234229
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/intro_2.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.07779263400997,
+                "y": 115.95964507110733
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/intro_3.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 492.8066123738908,
+                "y": 237.08277622462623
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/intro_4.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 108.5,
+                "y": 111.875
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/cutscenes/intro_5.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 173.625,
+                "y": 67.125
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/boat.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 54.09090909090909,
+                "y": 63.72727272727273
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/boatDown.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.45454545454545,
+                "y": 66.0909090909091
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/boatLeft.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 194.63636363636363,
+                "y": 103
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/boatRight.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 138,
+                "y": 46.875
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/boat_down.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 102,
+                "y": 53.875
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual1.tmx": {
+            "scale": 4.833125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 90.21078494762705,
+                "y": 78.7275313591103
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual10.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 192.97435274097484,
+                "y": 110.00850856934483
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual11.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 127.875,
+                "y": 78.875
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual2.tmx": {
+            "scale": 4.833125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 123.62601836286046,
+                "y": 58.65770076296391
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual3.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 121.375,
+                "y": 86.375
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual4.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 99.33146955147684,
+                "y": 71.15108788136624
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual5.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 154.27272727272728,
+                "y": 67.9090909090909
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual6.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 158.375,
+                "y": 114.625
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual7.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 62.81818181818181,
+                "y": 55.909090909090914
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual8.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 126.28661723593046,
+                "y": 76.9271909566063
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/casual9.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 29.05554880272274,
+                "y": 73.77658927920262
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/cemeteryCenter.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 68.54545454545456,
+                "y": 87.72727272727273
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/cemeteryRight.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 87.5,
+                "y": 88.625
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/cemeteryTop.tmx": {
+            "scale": 4,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 103.25,
+                "y": 65.375
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/churchBottom.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 103.0909090909091,
+                "y": 38.09090909090909
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/churchEntrance.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 25.818181818181813,
+                "y": 74.0909090909091
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/churchLeft.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -3,
+                "y": 62.5
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/churchLeft2.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.16530934727118,
+                "y": 72.02625501397836
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/churchRight.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 189.9090909090909,
+                "y": 75.54545454545455
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/churchRight2.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.16530934727118,
+                "y": 72.02625501397836
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/crucified.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 140.36363636363637,
+                "y": 106.63636363636365
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/final.tmx": {
+            "scale": 4,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 212.25,
+                "y": 111.375
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/massacre.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 181.36363636363637,
+                "y": 107
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/start.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 80.0909090909091,
+                "y": 89.9090909090909
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/startLeft.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 87.36363636363636,
+                "y": 116.45454545454547
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/startRight.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 88.45454545454547,
+                "y": 105.18181818181819
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/test.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 100.125,
+                "y": 50.125
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/terrains/treeStump.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 123.625,
+                "y": 86.625
+            }
+        },
+        "E:/Repositories/LHIP/core/assets/test.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 44,
+                "y": -37.666666666666686
+            }
+        },
+        "E:/test.tmx": {
+            "scale": 4.908333333333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 122.95415959252972,
+                "y": 84.44821731748726
+            }
+        },
+        "cutscenes/credits_1.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 72.02625501397836,
+                "y": 72.02625501397836
+            }
+        },
+        "cutscenes/credits_2.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 72.02625501397836,
+                "y": 72.02625501397836
+            }
+        },
+        "cutscenes/endgame_3.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 158.66780114257932,
+                "y": 99.15643612495441
+            }
+        },
+        "cutscenes/endgame_4.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 95.65576759450589,
+                "y": 119.63534702807829
+            }
+        },
+        "terrains/boat.tmx": {
+            "scale": 8,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 79.9375,
+                "y": 71.9375
+            }
+        },
+        "terrains/boatDown.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 66.54545454545455,
+                "y": 86.63636363636365
+            }
+        },
+        "terrains/boatLeft.tmx": {
+            "scale": 8,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 79.875,
+                "y": 80.4375
+            }
+        },
+        "terrains/churchRight.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 118.58514646894372,
+                "y": 65.5500182326486
+            }
+        },
+        "terrains/crucified.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.07779263400997,
+                "y": 72.02625501397836
+            }
+        },
+        "terrains/infernum.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 108.25,
+                "y": 67.375
+            }
+        },
+        "terrains/massacre.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 80.07779263400997,
+                "y": 72.02625501397836
+            }
+        },
+        "terrains/pedestal.tmx": {
+            "scale": 4,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 79.875,
+                "y": 71.875
+            }
+        },
+        "terrains/startLeft.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.16530934727118,
+                "y": 72.02625501397836
+            }
+        },
+        "terrains/startRight.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 125.8490336696244,
+                "y": 78.50249179530813
+            }
+        },
+        "terrains/terrain.tsx": {
+            "scaleInDock": 3
+        }
+    },
+    "map.fixedSize": true,
+    "map.height": 9,
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.orientation": 1,
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 10,
+    "openFiles": [
+        "terrains/pedestal.tmx",
+        "terrains/boat.tmx",
+        "terrains/boatDown.tmx",
+        "terrains/infernum.tmx",
+        "terrains/boatLeft.tmx"
+    ],
+    "project": "lhit.tiled-project",
+    "property.type": "object",
+    "recentFiles": [
+        "terrains/pedestal.tmx",
+        "terrains/boat.tmx",
+        "terrains/boatLeft.tmx",
+        "terrains/infernum.tmx",
+        "terrains/boatDown.tmx"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    },
+    "tileset.transparentColor": "#ff00ff",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": false
+}

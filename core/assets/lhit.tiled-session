@@ -393,7 +393,7 @@
             "scale": 8,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 79.9375,
+                "x": 80,
                 "y": 71.9375
             }
         },
@@ -401,7 +401,7 @@
             "scale": 5.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 66.54545454545455,
+                "x": 66.63636363636365,
                 "y": 86.63636363636365
             }
         },
@@ -409,8 +409,8 @@
             "scale": 8,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 79.875,
-                "y": 80.4375
+                "x": 80,
+                "y": 71.9375
             }
         },
         "terrains/churchRight.tmx": {
@@ -433,8 +433,8 @@
             "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 108.25,
-                "y": 67.375
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/massacre.tmx": {
@@ -449,7 +449,7 @@
             "scale": 4,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 79.875,
+                "x": 80,
                 "y": 71.875
             }
         },

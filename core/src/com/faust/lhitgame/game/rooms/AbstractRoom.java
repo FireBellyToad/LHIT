@@ -483,6 +483,9 @@ public abstract class AbstractRoom implements Spawner {
 
         // Remove some dead enemies
         roomContent.enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
+
+        //Remove examined removable POI
+        roomContent.poiList.removeIf(poiInstance -> poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination());
     }
 
     @Override

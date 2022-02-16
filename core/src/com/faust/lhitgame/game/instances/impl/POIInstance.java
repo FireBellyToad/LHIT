@@ -36,6 +36,7 @@ public class POIInstance extends GameInstance {
 
     private boolean isAlreadyExamined;
     private boolean mustTriggerAfterExamination = false;
+    private boolean removableOnExamination = false;
     private final TextBoxManager textManager;
     private final SplashManager splashManager;
 
@@ -209,5 +210,13 @@ public class POIInstance extends GameInstance {
 
     public void setMustTriggerAfterExamination(boolean mustTriggerAfterExamination) {
         this.mustTriggerAfterExamination = mustTriggerAfterExamination;
+    }
+
+    /**
+     * FIXME hardcoded
+     * @return
+     */
+    public boolean isRemovableOnExamination() {
+        return POIEnum.MICHAEL.equals(getType());
     }
 }

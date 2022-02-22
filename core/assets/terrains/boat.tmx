@@ -25,7 +25,7 @@
   <object id="45" name="WALL" x="144" y="16" width="16" height="128" visible="0"/>
   <object id="46" name="POI" type="SOIL" x="131.727" y="32.9214">
    <properties>
-    <property name="isEchoTrigger" type="bool" value="false"/>
+    <property name="isEchoTrigger" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

@@ -31,18 +31,13 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="100" name="ECHO_ACTOR" type="PORTAL_SPAWNER" x="77.8899" y="127.599" visible="0">
-   <point/>
-  </object>
-  <object id="104" name="ECHO_ACTOR" type="INFERNUM" x="0" y="0" visible="0">
-   <point/>
-  </object>
   <object id="105" name="EMERGED" x="44.8086" y="-43.4083" visible="0">
    <polygon points="-18.5,53.3636 -18.5,161.909 88.9321,159.591 88.4775,55.2273"/>
   </object>
   <object id="181" name="POI" type="BAPTISMAL" x="80" y="64">
    <properties>
-    <property name="isEchoTrigger" type="bool" value="false"/>
+    <property name="isEchoTrigger" type="bool" value="true"/>
+    <property name="mustTriggerAfterExamination" type="bool" value="true"/>
    </properties>
    <point/>
   </object>

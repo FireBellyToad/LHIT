@@ -1,5 +1,5 @@
 {
-    "activeFile": "terrains/boatDown.tmx",
+    "activeFile": "terrains/crucified.tmx",
     "expandedProjectPaths": [
         "terrains"
     ],
@@ -401,8 +401,8 @@
             "scale": 5.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 66.63636363636365,
-                "y": 86.63636363636365
+                "x": 80,
+                "y": 72.0909090909091
             }
         },
         "terrains/boatLeft.tmx": {
@@ -411,6 +411,22 @@
             "viewCenter": {
                 "x": 80,
                 "y": 71.9375
+            }
+        },
+        "terrains/casual7.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 79.99027592074876,
+                "y": 71.85122158745594
+            }
+        },
+        "terrains/cemeteryCenter.tmx": {
+            "scale": 5.7131944444444445,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 79.99027592074876,
+                "y": 71.85122158745594
             }
         },
         "terrains/churchRight.tmx": {
@@ -425,16 +441,16 @@
             "scale": 5.7131944444444445,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 80.07779263400997,
-                "y": 72.02625501397836
+                "x": 99.7690531177829,
+                "y": 54.52291236173575
             }
         },
         "terrains/infernum.tmx": {
-            "scale": 4,
-            "selectedLayer": 0,
+            "scale": 5.5,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 80,
-                "y": 71.875
+                "y": 72.0909090909091
             }
         },
         "terrains/massacre.tmx": {
@@ -485,16 +501,22 @@
         "terrains/boat.tmx",
         "terrains/boatDown.tmx",
         "terrains/infernum.tmx",
-        "terrains/boatLeft.tmx"
+        "terrains/boatLeft.tmx",
+        "terrains/casual7.tmx",
+        "terrains/cemeteryCenter.tmx",
+        "terrains/crucified.tmx"
     ],
     "project": "lhit.tiled-project",
     "property.type": "object",
     "recentFiles": [
         "terrains/pedestal.tmx",
         "terrains/boat.tmx",
-        "terrains/boatLeft.tmx",
+        "terrains/boatDown.tmx",
         "terrains/infernum.tmx",
-        "terrains/boatDown.tmx"
+        "terrains/boatLeft.tmx",
+        "terrains/casual7.tmx",
+        "terrains/cemeteryCenter.tmx",
+        "terrains/crucified.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.margin": 0,

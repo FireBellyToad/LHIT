@@ -2,6 +2,8 @@ package com.faust.lhitgame.game.instances.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,7 +14,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
-import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.PathfinderInstance;
@@ -33,7 +34,7 @@ import java.util.Objects;
  */
 public class DiaconusInstance extends PathfinderInstance implements Interactable, Hurtable, Damager {
 
-    private static final float BOUNDED_SPEED = 40;
+    private static final float DIACONUS_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
@@ -42,6 +43,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
     private boolean isAggressive = false;
+    private boolean isSubmerged = false;
 
     private long startAttackCooldown = 0;
 
@@ -51,17 +53,26 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
     private Body rightSpathaBody;
     private Body upSpathaBody;
 
+    private final ParticleEffect waterWalkEffect;
+
     public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
         super(new DiaconusEntity(assetManager), target, rayCaster);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
+
+        // Init waterwalk effect
+        waterWalkEffect = new ParticleEffect();
+        // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
+        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk"), Gdx.files.internal("sprites/"));
+        waterWalkEffect.start();
     }
 
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
         translateAccessoryBodies();
+        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
@@ -75,7 +86,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
                 currentBehavior = GameBehavior.ATTACK;
             }
 
-            // Normal from bounded position to target
+            // Normal from Diaconus position to target
             Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
                     target.getBody().getPosition().y - body.getPosition().y).nor();
             currentDirectionEnum = extractDirectionFromNormal(direction);
@@ -90,7 +101,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
             currentBehavior = GameBehavior.WALK;
             calculateNewGoal(roomContent.roomGraph);
 
-            // Normal from Bounded position to target
+            // Normal from Diaconus position to target
             final Vector2 destination = getMovementDestination();
             Vector2 direction = new Vector2(destination.x - body.getPosition().x,
                     destination.y - body.getPosition().y).nor();
@@ -98,13 +109,14 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
             currentDirectionEnum = extractDirectionFromNormal(direction);
 
             // Move towards target
-            body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
+            body.setLinearVelocity(DIACONUS_SPEED * direction.x, DIACONUS_SPEED * direction.y);
             deactivateAttackBodies();
         } else {
             currentBehavior = GameBehavior.IDLE;
 
             body.setLinearVelocity(0, 0);
         }
+
     }
 
     /**
@@ -296,11 +308,25 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
+        int yOffset = 0;
+
+        //Draw watersteps if submerged
+        if (isSubmerged) {
+            waterWalkEffect.update(Gdx.graphics.getDeltaTime());
+            waterWalkEffect.draw(batch);
+            yOffset += 2;
+            // Do not loop if is not doing anything
+            if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
+                waterWalkEffect.reset();
+            }
+        } else {
+            waterWalkEffect.reset();
+        }
+
         //Draw shadow
-        batch.draw(((DiaconusEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
+        batch.draw(((DiaconusEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - yOffset - 2 - POSITION_Y_OFFSET);
 
-        //Draw Bounded
-
+        //Draw Diaconus
         // If not hurt or the flickering POI must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
             batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
@@ -313,7 +339,9 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
             // restart flickering timer
             startToFlickTime = TimeUtils.nanoTime();
         }
+
         batch.end();
+
     }
 
     @Override
@@ -327,7 +355,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
     }
 
     /**
-     * Method for hurting the Bounded
+     * Method for hurting the Diaconus
      *
      * @param attacker
      */
@@ -378,7 +406,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
             direction.x = (float) Math.cos(direction.x);
             direction.y = (float) Math.cos(direction.y);
         }
-        body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
+        body.setLinearVelocity(DIACONUS_SPEED * modifier * -direction.x, DIACONUS_SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
@@ -445,6 +473,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
                 upSpathaBody.destroyFixture(f));
         downSpathaBody.getFixtureList().forEach(f ->
                 downSpathaBody.destroyFixture(f));
+        waterWalkEffect.dispose();
     }
 
     @Override
@@ -476,6 +505,10 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
 
     @Override
     protected float getLineOfSight() {
-        return 70f;
+        return 90f;
+    }
+
+    public void setSubmerged(boolean submerged) {
+        isSubmerged = submerged;
     }
 }

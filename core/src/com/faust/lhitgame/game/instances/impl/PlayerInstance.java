@@ -87,7 +87,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         // Init waterwalk effect
         waterWalkEffect = new ParticleEffect();
         // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
-        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk_test"), Gdx.files.internal("sprites/"));
+        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk"), Gdx.files.internal("sprites/"));
         waterWalkEffect.start();
     }
 

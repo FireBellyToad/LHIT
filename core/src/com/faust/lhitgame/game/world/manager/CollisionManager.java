@@ -1,9 +1,9 @@
 package com.faust.lhitgame.game.world.manager;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
-import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
 import com.faust.lhitgame.game.rooms.areas.WallArea;
@@ -27,21 +27,27 @@ public class CollisionManager implements ContactListener {
             handlePlayerBeginContact(contact);
         }
 
-        //FIXME
         if (isContactOfClass(contact, BoundedInstance.class)) {
-            if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact,DecorationInstance.class)) {
+            if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact, DecorationInstance.class)) {
                 BoundedInstance bInst = ((BoundedInstance) getCorrectFixture(contact, BoundedInstance.class).getBody().getUserData());
                 bInst.forceRecalculation();
             }
         }
-        //FIXME
+
         if (isContactOfClass(contact, WillowispInstance.class)) {
-            if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact,DecorationInstance.class)) {
+            if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact, DecorationInstance.class)) {
                 WillowispInstance wInst = ((WillowispInstance) getCorrectFixture(contact, WillowispInstance.class).getBody().getUserData());
                 wInst.forceRecalculation();
             }
         }
 
+        if (isContactOfClass(contact, DiaconusInstance.class)) {
+            if (isContactOfClass(contact, EmergedArea.class)) {
+                //Diaconus emerges from water
+                DiaconusInstance pInst = ((DiaconusInstance) getCorrectFixture(contact, DiaconusInstance.class).getBody().getUserData());
+                pInst.setSubmerged(false);
+            }
+        }
 
     }
 
@@ -52,6 +58,13 @@ public class CollisionManager implements ContactListener {
             handlePlayerEndContact(contact);
         }
 
+        if (isContactOfClass(contact, DiaconusInstance.class)) {
+            if (isContactOfClass(contact, EmergedArea.class)) {
+                //Diaconus emerges from water
+                DiaconusInstance pInst = ((DiaconusInstance) getCorrectFixture(contact, DiaconusInstance.class).getBody().getUserData());
+                pInst.setSubmerged(true);
+            }
+        }
     }
 
     /**
@@ -94,7 +107,7 @@ public class CollisionManager implements ContactListener {
         }
 
         // Handle Dead hand Collision
-        if (isContactOfClass(contact, EchoActorInstance.class) ) {
+        if (isContactOfClass(contact, EchoActorInstance.class)) {
             EchoActorInstance echoActorInstance = ((EchoActorInstance) getCorrectFixture(contact, EchoActorInstance.class).getBody().getUserData());
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
             echoActorInstance.doPlayerInteraction(playerInstance);
@@ -125,9 +138,10 @@ public class CollisionManager implements ContactListener {
 
     /**
      * Global handler for player and enemy instances collision
+     *
      * @param contact
      * @param enemyGameInstanceClass
-     * @param <T> an Interactable and Killable instance, usually enemy
+     * @param <T>                    an Interactable and Killable instance, usually enemy
      */
     @SuppressWarnings("unchecked")
     private <T extends Interactable & Hurtable> void handleEnemyCollisionEvent(Contact contact, Class<T> enemyGameInstanceClass) {
@@ -147,7 +161,7 @@ public class CollisionManager implements ContactListener {
         } else if (BodyDef.BodyType.DynamicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.KinematicBody.equals(playerBody.getType())) {
             // Enemy hurt by player
             enemyInstance.hurt(playerInstance);
-        }else if (BodyDef.BodyType.KinematicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())) {
+        } else if (BodyDef.BodyType.KinematicBody.equals(enemyInstanceBody.getType()) && BodyDef.BodyType.DynamicBody.equals(playerBody.getType())) {
             // Player hurt by enemy
             playerInstance.hurt((GameInstance) enemyInstance);
         }
@@ -202,14 +216,15 @@ public class CollisionManager implements ContactListener {
 
     /**
      * Global handler for player and enemy instances collision
+     *
      * @param contact
      * @param enemyGameInstanceClass
-     * @param <T> an Interactable and Hurtable instance, usually enemy
+     * @param <T>                    an Interactable and Hurtable instance, usually enemy
      */
     @SuppressWarnings("unchecked")
-    private <T extends Interactable & Hurtable> void handleEnemyCollisionEventEnd(Contact contact, Class<T>  enemyGameInstanceClass) {
+    private <T extends Interactable & Hurtable> void handleEnemyCollisionEventEnd(Contact contact, Class<T> enemyGameInstanceClass) {
         //Just free the player from leech grapple
-        Body enemyBody = getCorrectFixture(contact,enemyGameInstanceClass).getBody();
+        Body enemyBody = getCorrectFixture(contact, enemyGameInstanceClass).getBody();
         T sInst = (T) enemyBody.getUserData();
 
         Body playerBody = getCorrectFixture(contact, PlayerInstance.class).getBody();

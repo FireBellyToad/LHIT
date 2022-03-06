@@ -390,11 +390,11 @@
             }
         },
         "terrains/boat.tmx": {
-            "scale": 8,
+            "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 80,
-                "y": 71.9375
+                "x": 102.75,
+                "y": 84.125
             }
         },
         "terrains/boatDown.tmx": {
@@ -402,15 +402,15 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 80,
-                "y": 72.0909090909091
+                "y": 71.9090909090909
             }
         },
         "terrains/boatLeft.tmx": {
-            "scale": 8,
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 80,
-                "y": 71.9375
+                "x": 86.99999999999999,
+                "y": 82.5
             }
         },
         "terrains/casual7.tmx": {
@@ -441,8 +441,8 @@
             "scale": 5.7131944444444445,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 99.7690531177829,
-                "y": 54.52291236173575
+                "x": 203.5638750455816,
+                "y": 112.80904339370366
             }
         },
         "terrains/infernum.tmx": {
@@ -450,7 +450,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 80,
-                "y": 72.0909090909091
+                "y": 71.9090909090909
             }
         },
         "terrains/massacre.tmx": {
@@ -465,8 +465,8 @@
             "scale": 4,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 80,
-                "y": 71.875
+                "x": 109.25,
+                "y": 72.125
             }
         },
         "terrains/startLeft.tmx": {

@@ -10,7 +10,9 @@ public enum EchoesActorType {
     HORROR_BODY("echo.horrorbody.json","sprites/horror_body_sheet.png", "sounds/terror.ogg"),
     INFERNUM("echo.infernum.json","sprites/fleshpillar_sheet.png", "sounds/terror.ogg"),
     FLESH_PILLAR("echo.fleshpillar.json","sprites/fleshpillar_sheet.png", null),
-    PORTAL_SPAWNER("echo.portal.json","sprites/fleshpillar_sheet.png", null);
+    PORTAL_SPAWNER("echo.portal.json","sprites/fleshpillar_sheet.png", null),
+    SECRET("echo.secret.json","sprites/horror_sheet.png", null),
+    DIACONUS("echo.diaconus.json","sprites/horror_body_sheet.png", "sounds/terror.ogg");
 
     private final String filename;
     private final String spriteFilename;

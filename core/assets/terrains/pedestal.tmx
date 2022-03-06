@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="182">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="217">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -39,6 +39,105 @@
     <property name="isEchoTrigger" type="bool" value="true"/>
     <property name="mustTriggerAfterExamination" type="bool" value="true"/>
    </properties>
+   <point/>
+  </object>
+  <object id="182" name="ECHO_ACTOR" type="DIACONUS" x="79.5" y="40.75">
+   <point/>
+  </object>
+  <object id="185" name="ECHO_ACTOR" type="SECRET" x="10" y="16">
+   <point/>
+  </object>
+  <object id="186" name="ECHO_ACTOR" type="SECRET" x="10" y="32">
+   <point/>
+  </object>
+  <object id="187" name="ECHO_ACTOR" type="SECRET" x="10" y="48">
+   <point/>
+  </object>
+  <object id="188" name="ECHO_ACTOR" type="SECRET" x="10" y="64">
+   <point/>
+  </object>
+  <object id="189" name="ECHO_ACTOR" type="SECRET" x="10" y="80">
+   <point/>
+  </object>
+  <object id="190" name="ECHO_ACTOR" type="SECRET" x="10" y="96">
+   <point/>
+  </object>
+  <object id="191" name="ECHO_ACTOR" type="SECRET" x="10" y="128">
+   <point/>
+  </object>
+  <object id="192" name="ECHO_ACTOR" type="SECRET" x="10" y="112">
+   <point/>
+  </object>
+  <object id="193" name="ECHO_ACTOR" type="SECRET" x="23" y="137">
+   <point/>
+  </object>
+  <object id="194" name="ECHO_ACTOR" type="SECRET" x="39" y="137">
+   <point/>
+  </object>
+  <object id="195" name="ECHO_ACTOR" type="SECRET" x="55" y="137">
+   <point/>
+  </object>
+  <object id="196" name="ECHO_ACTOR" type="SECRET" x="71" y="137">
+   <point/>
+  </object>
+  <object id="197" name="ECHO_ACTOR" type="SECRET" x="87" y="137">
+   <point/>
+  </object>
+  <object id="198" name="ECHO_ACTOR" type="SECRET" x="103" y="137">
+   <point/>
+  </object>
+  <object id="199" name="ECHO_ACTOR" type="SECRET" x="119" y="137">
+   <point/>
+  </object>
+  <object id="200" name="ECHO_ACTOR" type="SECRET" x="135" y="137">
+   <point/>
+  </object>
+  <object id="201" name="ECHO_ACTOR" type="SECRET" x="150.75" y="16.5">
+   <point/>
+  </object>
+  <object id="202" name="ECHO_ACTOR" type="SECRET" x="150.75" y="32.5">
+   <point/>
+  </object>
+  <object id="203" name="ECHO_ACTOR" type="SECRET" x="150.75" y="48.5">
+   <point/>
+  </object>
+  <object id="204" name="ECHO_ACTOR" type="SECRET" x="150.75" y="64.5">
+   <point/>
+  </object>
+  <object id="205" name="ECHO_ACTOR" type="SECRET" x="150.75" y="80.5">
+   <point/>
+  </object>
+  <object id="206" name="ECHO_ACTOR" type="SECRET" x="150.75" y="96.5">
+   <point/>
+  </object>
+  <object id="207" name="ECHO_ACTOR" type="SECRET" x="150.75" y="128.5">
+   <point/>
+  </object>
+  <object id="208" name="ECHO_ACTOR" type="SECRET" x="150.75" y="112.5">
+   <point/>
+  </object>
+  <object id="209" name="ECHO_ACTOR" type="SECRET" x="25.25" y="16">
+   <point/>
+  </object>
+  <object id="210" name="ECHO_ACTOR" type="SECRET" x="41.25" y="16">
+   <point/>
+  </object>
+  <object id="211" name="ECHO_ACTOR" type="SECRET" x="57.25" y="16">
+   <point/>
+  </object>
+  <object id="212" name="ECHO_ACTOR" type="SECRET" x="73.25" y="16">
+   <point/>
+  </object>
+  <object id="213" name="ECHO_ACTOR" type="SECRET" x="89.25" y="16">
+   <point/>
+  </object>
+  <object id="214" name="ECHO_ACTOR" type="SECRET" x="105.25" y="16">
+   <point/>
+  </object>
+  <object id="215" name="ECHO_ACTOR" type="SECRET" x="121.25" y="16">
+   <point/>
+  </object>
+  <object id="216" name="ECHO_ACTOR" type="SECRET" x="137.25" y="16">
    <point/>
   </object>
  </objectgroup>

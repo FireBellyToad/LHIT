@@ -12,6 +12,7 @@ public enum EnemyEnum {
     PORTAL(PortalInstance.class),
     WILLOWISP(WillowispInstance.class),
     ESCAPE_PORTAL(EscapePortalInstance.class),
+    DIACONUS(DiaconusInstance.class),
     UNDEFINED(null);
 
     private final Class<? extends AnimatedInstance> instanceClass;

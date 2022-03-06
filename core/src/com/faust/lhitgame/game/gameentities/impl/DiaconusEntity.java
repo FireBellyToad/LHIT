@@ -44,11 +44,11 @@ public class DiaconusEntity extends AnimatedEntity {
         TextureRegion[] walkFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 5, getTextureColumns() * 6);
         TextureRegion[] walkFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 6, getTextureColumns() * 7);
         TextureRegion[] walkFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 7, getTextureColumns() * 8);
-        TextureRegion[] attackFramesDown = Arrays.copyOfRange(allFrames, getTextureColumns() * 8, getTextureColumns() * 9);
-        TextureRegion[] attackFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 9, getTextureColumns() * 10);
-        TextureRegion[] attackFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 10, getTextureColumns() * 11);
-        TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
-        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1+(getTextureColumns() * 12));
+//        TextureRegion[] attackFramesDown = Arrays.copyOfRange(allFrames, getTextureColumns() * 8, getTextureColumns() * 9);
+//        TextureRegion[] attackFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 9, getTextureColumns() * 10);
+//        TextureRegion[] attackFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 10, getTextureColumns() * 11);
+//        TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
+//        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1+(getTextureColumns() * 12));
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, DirectionEnum.DOWN);
@@ -63,10 +63,11 @@ public class DiaconusEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.WALK, DirectionEnum.RIGHT);
 
         // Initialize the Walk Animation with the frame interval and array of frames
-        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesDown), GameBehavior.ATTACK, DirectionEnum.DOWN);
-        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesLeft), GameBehavior.ATTACK, DirectionEnum.LEFT);
-        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesUp), GameBehavior.ATTACK, DirectionEnum.UP);
-        addAnimationForDirection(new Animation<>(FRAME_DURATION, attackFramesRight), GameBehavior.ATTACK, DirectionEnum.RIGHT);
+        //FIXME attack animation
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.ATTACK, DirectionEnum.DOWN);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesLeft), GameBehavior.ATTACK, DirectionEnum.LEFT);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesUp), GameBehavior.ATTACK, DirectionEnum.UP);
+        addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.ATTACK, DirectionEnum.RIGHT);
 
         // Initialize the Hurt Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesDown), GameBehavior.HURT, DirectionEnum.DOWN);
@@ -81,7 +82,7 @@ public class DiaconusEntity extends AnimatedEntity {
         addAnimationForDirection(new Animation<>(FRAME_DURATION, walkFramesRight), GameBehavior.EVADE, DirectionEnum.RIGHT);
 
         // Initialize the Dead frame
-        addAnimation(new Animation<>(FRAME_DURATION, deadFrame), GameBehavior.DEAD);
+//        addAnimation(new Animation<>(FRAME_DURATION, deadFrame), GameBehavior.DEAD);
 
     }
 
@@ -91,7 +92,7 @@ public class DiaconusEntity extends AnimatedEntity {
     }
 
     @Override
-    protected int getTextureRows() { return 13; }
+    protected int getTextureRows() { return 8; }
 
     public Texture getShadowTexture() {
         return shadow;

@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
@@ -268,6 +269,15 @@ public abstract class AbstractRoom implements Spawner {
         }
 
         switch (enemyEnum) {
+            case DIACONUS:{
+                addedInstance = new DiaconusInstance(
+                        (float) obj.getProperties().get("x"),
+                        (float) obj.getProperties().get("y"),
+                        roomContent.player,
+                        assetManager,
+                        worldManager);
+                break;
+            }
             case PORTAL: {
                 addedInstance = new PortalInstance(assetManager);
                 break;
@@ -459,7 +469,7 @@ public abstract class AbstractRoom implements Spawner {
             if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
                 roomContent.player.setPrepareEndgame(true);
-            } else if (roomContent.enemyList.size() == 1 && ((Killable) ene).isDead()) {
+            } else if (roomContent.enemyList.size() == 1 && ClassReflection.isAssignableFrom(Killable.class,ene.getClass()) && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
             } else if (!roomContent.player.isDead() && (!RoomTypeEnum.FINAL.equals(roomContent.roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomContent.roomType)) &&
@@ -502,7 +512,7 @@ public abstract class AbstractRoom implements Spawner {
         mapObjectStub.getProperties().put("type", instanceIdentifierEnum);
 
         //Insert last enemy into world
-        if (instanceClass.equals(MeatInstance.class) || instanceClass.equals(WillowispInstance.class) || instanceClass.equals(EscapePortalInstance.class)) {
+        if (ClassReflection.isAssignableFrom(AnimatedInstance.class,instanceClass)) {
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {

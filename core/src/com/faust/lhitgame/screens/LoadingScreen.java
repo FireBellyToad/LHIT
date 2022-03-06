@@ -60,6 +60,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sprites/tutorial_sheet.png", Texture.class);
         assetManager.load("sprites/willowisp_sheet.png",Texture.class);
         assetManager.load("sprites/escape_portal_sheet.png", Texture.class);
+        assetManager.load("sprites/diaconus_sheet.png", Texture.class);
 
         assetManager.load("sounds/SFX_collect&bonus13.ogg", Sound.class);
         assetManager.load("sounds/SFX_hit&damage13.ogg", Sound.class);

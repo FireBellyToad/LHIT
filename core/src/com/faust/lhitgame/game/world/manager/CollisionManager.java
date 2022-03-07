@@ -134,6 +134,11 @@ public class CollisionManager implements ContactListener {
         if (isContactOfClass(contact, EscapePortalInstance.class)) {
             handleEnemyCollisionEvent(contact, EscapePortalInstance.class);
         }
+
+        // Handle Diaconus Collision
+        if (isContactOfClass(contact, DiaconusInstance.class)) {
+            handleEnemyCollisionEvent(contact, DiaconusInstance.class);
+        }
     }
 
     /**
@@ -211,6 +216,10 @@ public class CollisionManager implements ContactListener {
         // Handle Willowisp Collision end
         if (isContactOfClass(contact, WillowispInstance.class)) {
             handleEnemyCollisionEventEnd(contact, WillowispInstance.class);
+        }
+        // Handle DiaconusInstance Collision end
+        if (isContactOfClass(contact, DiaconusInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, DiaconusInstance.class);
         }
     }
 

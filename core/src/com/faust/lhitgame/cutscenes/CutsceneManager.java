@@ -201,9 +201,6 @@ public class CutsceneManager implements InputProcessor {
                 entity = new TutorialEntity(assetManager);
                 behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
                 direction = DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
-                if (Objects.isNull(direction)) {
-                    direction = DirectionEnum.UNUSED;
-                }
             }
 
             Objects.requireNonNull(entity);

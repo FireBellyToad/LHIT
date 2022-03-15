@@ -12,7 +12,6 @@ import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.GameInstance;
-import com.faust.lhitgame.game.instances.PathfinderInstance;
 import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.music.MusicManager;

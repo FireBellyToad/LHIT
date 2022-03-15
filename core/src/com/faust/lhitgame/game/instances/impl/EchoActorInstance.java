@@ -177,7 +177,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             //Extract instance class from enum and do check
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(EchoCommandsEnum.IF_NO_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-            areConditionsTrue = areConditionsTrue && !roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
         }
 
         if (commands.containsKey(EchoCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {

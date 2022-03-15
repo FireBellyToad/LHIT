@@ -31,8 +31,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
         // Add Position Y offset for better position from tiled
         this.startX = x;
         this.startY = y + POSITION_OFFSET;
-        this.alwaysInBackground = type.equals(DecorationsEnum.ALLY_CORPSE_1) || type.equals(DecorationsEnum.ALLY_CORPSE_2) ||
-                type.equals(DecorationsEnum.ALLY_CORPSE_1);
+        this.alwaysInBackground = type.equals(DecorationsEnum.ALLY_CORPSE_1) || type.equals(DecorationsEnum.ALLY_CORPSE_2);
     }
 
     @Override

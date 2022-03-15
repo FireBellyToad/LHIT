@@ -3,7 +3,6 @@ package com.faust.lhitgame.game.instances.impl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,7 +35,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
 
     private static final float DIACONUS_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;
-    private static final float CLAW_SENSOR_Y_OFFSET = 10;
+    private static final float SPATHA_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
 
@@ -123,10 +122,10 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
      * Translate all accessory body
      */
     private void translateAccessoryBodies() {
-        rightSpathaBody.setTransform(body.getPosition().x + 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        upSpathaBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + CLAW_SENSOR_Y_OFFSET, 0);
-        leftSpathaBody.setTransform(body.getPosition().x - 10, body.getPosition().y + CLAW_SENSOR_Y_OFFSET, 0);
-        downSpathaBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + CLAW_SENSOR_Y_OFFSET, 0);
+        rightSpathaBody.setTransform(body.getPosition().x + 10, body.getPosition().y + SPATHA_SENSOR_Y_OFFSET, 0);
+        upSpathaBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + SPATHA_SENSOR_Y_OFFSET, 0);
+        leftSpathaBody.setTransform(body.getPosition().x - 10, body.getPosition().y + SPATHA_SENSOR_Y_OFFSET, 0);
+        downSpathaBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + SPATHA_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
@@ -172,105 +171,105 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
         body.createFixture(fixtureDef);
         shape.dispose();
 
-        BodyDef rightClawDef = new BodyDef();
-        rightClawDef.type = BodyDef.BodyType.KinematicBody;
-        rightClawDef.fixedRotation = true;
-        rightClawDef.position.set(x + 2, y);
+        BodyDef rightSpathaDef = new BodyDef();
+        rightSpathaDef.type = BodyDef.BodyType.KinematicBody;
+        rightSpathaDef.fixedRotation = true;
+        rightSpathaDef.position.set(x + 2, y);
 
         // Define shape
-        PolygonShape rightClawShape = new PolygonShape();
-        rightClawShape.setAsBox(4, 6);
+        PolygonShape rightSpathaShape = new PolygonShape();
+        rightSpathaShape.setAsBox(4, 6);
 
         // Define Fixtures
-        FixtureDef rightClawFixtureDef = new FixtureDef();
-        rightClawFixtureDef.shape = rightClawShape;
-        rightClawFixtureDef.density = 1;
-        rightClawFixtureDef.friction = 1;
-        rightClawFixtureDef.isSensor = true;
-        rightClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        rightClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+        FixtureDef rightSpathaFixtureDef = new FixtureDef();
+        rightSpathaFixtureDef.shape = rightSpathaShape;
+        rightSpathaFixtureDef.density = 1;
+        rightSpathaFixtureDef.friction = 1;
+        rightSpathaFixtureDef.isSensor = true;
+        rightSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        rightSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        rightSpathaBody = world.createBody(rightClawDef);
+        rightSpathaBody = world.createBody(rightSpathaDef);
         rightSpathaBody.setUserData(this);
-        rightSpathaBody.createFixture(rightClawFixtureDef);
+        rightSpathaBody.createFixture(rightSpathaFixtureDef);
         rightSpathaBody.setActive(false);
-        rightClawShape.dispose();
+        rightSpathaShape.dispose();
 
-        BodyDef upClawDef = new BodyDef();
-        upClawDef.type = BodyDef.BodyType.KinematicBody;
-        upClawDef.fixedRotation = true;
-        upClawDef.position.set(x, y - 2);
+        BodyDef upSpathaDef = new BodyDef();
+        upSpathaDef.type = BodyDef.BodyType.KinematicBody;
+        upSpathaDef.fixedRotation = true;
+        upSpathaDef.position.set(x, y - 2);
 
         // Define shape
-        PolygonShape upClawShape = new PolygonShape();
-        upClawShape.setAsBox(6, 4);
+        PolygonShape upSpathaShape = new PolygonShape();
+        upSpathaShape.setAsBox(6, 4);
 
         // Define Fixtures
-        FixtureDef upClawFixtureDef = new FixtureDef();
-        upClawFixtureDef.shape = upClawShape;
-        upClawFixtureDef.density = 1;
-        upClawFixtureDef.friction = 1;
-        upClawFixtureDef.isSensor = true;
-        upClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        upClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+        FixtureDef upSpathaFixtureDef = new FixtureDef();
+        upSpathaFixtureDef.shape = upSpathaShape;
+        upSpathaFixtureDef.density = 1;
+        upSpathaFixtureDef.friction = 1;
+        upSpathaFixtureDef.isSensor = true;
+        upSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        upSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        upSpathaBody = world.createBody(upClawDef);
+        upSpathaBody = world.createBody(upSpathaDef);
         upSpathaBody.setUserData(this);
-        upSpathaBody.createFixture(upClawFixtureDef);
+        upSpathaBody.createFixture(upSpathaFixtureDef);
         upSpathaBody.setActive(false);
-        upClawShape.dispose();
+        upSpathaShape.dispose();
 
-        BodyDef leftClawDef = new BodyDef();
-        leftClawDef.type = BodyDef.BodyType.KinematicBody;
-        leftClawDef.fixedRotation = true;
-        leftClawDef.position.set(x - 2, y);
+        BodyDef leftSpathaDef = new BodyDef();
+        leftSpathaDef.type = BodyDef.BodyType.KinematicBody;
+        leftSpathaDef.fixedRotation = true;
+        leftSpathaDef.position.set(x - 2, y);
 
         // Define shape
-        PolygonShape leftClawShape = new PolygonShape();
-        leftClawShape.setAsBox(4, 6);
+        PolygonShape leftSpathaShape = new PolygonShape();
+        leftSpathaShape.setAsBox(4, 6);
 
         // Define Fixtures
-        FixtureDef leftClawFixtureDef = new FixtureDef();
-        leftClawFixtureDef.shape = leftClawShape;
-        leftClawFixtureDef.density = 1;
-        leftClawFixtureDef.friction = 1;
-        leftClawFixtureDef.isSensor = true;
-        leftClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        leftClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+        FixtureDef leftSpathaFixtureDef = new FixtureDef();
+        leftSpathaFixtureDef.shape = leftSpathaShape;
+        leftSpathaFixtureDef.density = 1;
+        leftSpathaFixtureDef.friction = 1;
+        leftSpathaFixtureDef.isSensor = true;
+        leftSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        leftSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        leftSpathaBody = world.createBody(leftClawDef);
+        leftSpathaBody = world.createBody(leftSpathaDef);
         leftSpathaBody.setUserData(this);
-        leftSpathaBody.createFixture(leftClawFixtureDef);
+        leftSpathaBody.createFixture(leftSpathaFixtureDef);
         leftSpathaBody.setActive(false);
-        leftClawShape.dispose();
+        leftSpathaShape.dispose();
 
-        BodyDef downClawDef = new BodyDef();
-        downClawDef.type = BodyDef.BodyType.KinematicBody;
-        downClawDef.fixedRotation = true;
-        downClawDef.position.set(x, y + 2);
+        BodyDef downSpathaDef = new BodyDef();
+        downSpathaDef.type = BodyDef.BodyType.KinematicBody;
+        downSpathaDef.fixedRotation = true;
+        downSpathaDef.position.set(x, y + 2);
 
         // Define shape
-        PolygonShape downClawShape = new PolygonShape();
-        downClawShape.setAsBox(6, 4);
+        PolygonShape downSpathaShape = new PolygonShape();
+        downSpathaShape.setAsBox(6, 4);
 
         // Define Fixtures
-        FixtureDef downClawFixtureDef = new FixtureDef();
-        downClawFixtureDef.shape = downClawShape;
-        downClawFixtureDef.density = 1;
-        downClawFixtureDef.friction = 1;
-        downClawFixtureDef.isSensor = true;
-        downClawFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        downClawFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
+        FixtureDef downSpathaFixtureDef = new FixtureDef();
+        downSpathaFixtureDef.shape = downSpathaShape;
+        downSpathaFixtureDef.density = 1;
+        downSpathaFixtureDef.friction = 1;
+        downSpathaFixtureDef.isSensor = true;
+        downSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
+        downSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
 
         // Associate body to world
-        downSpathaBody = world.createBody(downClawDef);
+        downSpathaBody = world.createBody(downSpathaDef);
         downSpathaBody.setUserData(this);
-        downSpathaBody.createFixture(downClawFixtureDef);
+        downSpathaBody.createFixture(downSpathaFixtureDef);
         downSpathaBody.setActive(false);
-        downClawShape.dispose();
+        downSpathaShape.dispose();
 
         // Hitbox definition
         BodyDef hitBoxDef = new BodyDef();

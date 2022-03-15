@@ -12,7 +12,6 @@ import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 

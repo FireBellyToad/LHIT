@@ -36,7 +36,6 @@ public class POIInstance extends GameInstance {
 
     private boolean isAlreadyExamined;
     private boolean mustTriggerAfterExamination = false;
-    private boolean removableOnExamination = false;
     private final TextBoxManager textManager;
     private final SplashManager splashManager;
 
@@ -49,7 +48,7 @@ public class POIInstance extends GameInstance {
         this.isAlreadyExamined = false;
         this.splashManager = splashManager;
         this.guaranteedGoldcross = guaranteedGoldcross;
-        this.poiIdInMap = id;;
+        this.poiIdInMap = id;
 
         this.alwaysInBackground = poiType.equals(POIEnum.ECHO_CORPSE) || poiType.equals(POIEnum.SKELETON) || poiType.equals(POIEnum.BURNT_PAPER);
     }

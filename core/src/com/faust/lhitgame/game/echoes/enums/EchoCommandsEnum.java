@@ -56,7 +56,7 @@ public enum EchoCommandsEnum {
         this.subCommands = null;
     }
 
-    EchoCommandsEnum(String commandString, Class<?> valueClass, EchoCommandsEnum[] subCommands) {
+    EchoCommandsEnum(String commandString, Class<EchoCommandsEnum> valueClass, EchoCommandsEnum[] subCommands) {
         this.commandString = commandString;
         this.valueClass = valueClass;
         this.isRequired = false;

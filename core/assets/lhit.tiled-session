@@ -421,6 +421,14 @@
                 "y": 71.85122158745594
             }
         },
+        "terrains/casual9.tmx": {
+            "scale": 5.664375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.06178969436169,
+                "y": 72.11740041928721
+            }
+        },
         "terrains/cemeteryCenter.tmx": {
             "scale": 5.7131944444444445,
             "selectedLayer": 1,
@@ -429,28 +437,60 @@
                 "y": 71.85122158745594
             }
         },
-        "terrains/churchRight.tmx": {
-            "scale": 5.7131944444444445,
-            "selectedLayer": 1,
+        "terrains/cemeteryRight.tmx": {
+            "scale": 5.664375,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 118.58514646894372,
-                "y": 65.5500182326486
+                "x": 80.06178969436169,
+                "y": 72.11740041928721
             }
         },
-        "terrains/crucified.tmx": {
+        "terrains/churchBottom.tmx": {
+            "scale": 5.664375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 80.06178969436169,
+                "y": 72.11740041928721
+            }
+        },
+        "terrains/churchEntrance.tmx": {
+            "scale": 5.664375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 88.8888888888889,
+                "y": 105.66037735849056
+            }
+        },
+        "terrains/churchLeft.tmx": {
+            "scale": 5.664375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 86.94692706609291,
+                "y": 108.30850711684873
+            }
+        },
+        "terrains/churchRight.tmx": {
             "scale": 5.7131944444444445,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 239.35821076941778,
-                "y": 151.66646408168225
+                "x": 73.77658927920262,
+                "y": 70.10088732223167
+            }
+        },
+        "terrains/crucified.tmx": {
+            "scale": 8,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 92.5625,
+                "y": 59.4375
             }
         },
         "terrains/infernum.tmx": {
             "scale": 5.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 80,
-                "y": 71.9090909090909
+                "x": 86.63636363636365,
+                "y": 58.27272727272727
             }
         },
         "terrains/massacre.tmx": {
@@ -462,11 +502,11 @@
             }
         },
         "terrains/pedestal.tmx": {
-            "scale": 4,
+            "scale": 5.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 80,
-                "y": 71.875
+                "x": 80.0909090909091,
+                "y": 64.27272727272727
             }
         },
         "terrains/startLeft.tmx": {

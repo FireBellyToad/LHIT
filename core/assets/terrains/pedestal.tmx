@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="217">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="218">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -9,8 +9,8 @@
 0,0,0,0,25,17,27,0,21,0,
 0,21,0,0,26,27,0,0,0,0,
 0,0,0,14,15,15,16,0,25,0,
-0,0,0,18,67,68,20,0,27,0,
-0,0,0,18,67,68,20,0,0,0,
+0,0,0,18,100,102,20,0,27,0,
+0,0,0,18,105,107,20,0,0,0,
 0,0,0,22,23,23,24,0,0,0,
 0,27,0,0,0,0,0,21,0,0,
 21,0,0,0,0,0,26,28,21,0,
@@ -30,18 +30,18 @@
 77,78,79,80,80,77,77,77,78,77
 </data>
  </layer>
- <objectgroup id="2" name="objects">
-  <object id="105" name="EMERGED" x="76.3995" y="-12.4538">
+ <objectgroup id="2" name="objects" offsetx="0" offsety="0.181818">
+  <object id="105" name="EMERGED" x="76.3995" y="-12.4538" visible="0">
    <polygon points="-18.5,53.3636 -19.4091,97.909 25.2957,97.7728 25.7502,54.8637"/>
   </object>
-  <object id="181" name="POI" type="BAPTISMAL" x="80" y="64">
+  <object id="181" name="POI" type="BAPTISMAL" x="80" y="53">
    <properties>
     <property name="isEchoTrigger" type="bool" value="true"/>
     <property name="mustTriggerAfterExamination" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
-  <object id="182" name="ECHO_ACTOR" type="DIACONUS" x="79.5" y="40.75">
+  <object id="182" name="ECHO_ACTOR" type="DIACONUS" x="80" y="40">
    <point/>
   </object>
   <object id="185" name="ECHO_ACTOR" type="SECRET" x="10" y="16">
@@ -140,5 +140,6 @@
   <object id="216" name="ECHO_ACTOR" type="SECRET" x="137.25" y="16">
    <point/>
   </object>
+  <object id="217" name="WALL" x="68" y="48" width="24" height="16"/>
  </objectgroup>
 </map>

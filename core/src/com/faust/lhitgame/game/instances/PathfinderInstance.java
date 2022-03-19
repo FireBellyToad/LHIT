@@ -134,6 +134,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
 
         if (canSeePlayer()) {
             //If can see player, just follow
+            isAggressive = true;
             recalculatePath = true;
             pathQueue.clear();
             return target.getBody().getPosition();

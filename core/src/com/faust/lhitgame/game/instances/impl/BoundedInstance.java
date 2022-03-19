@@ -371,11 +371,10 @@ public class BoundedInstance extends PathfinderInstance implements Interactable,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         float modifier = 4f;
-        //If evading, the leap is more subtle and perpendicular
+        //If evading, the leap is more subtle and perpendicular in a random direction
         if (GameBehavior.EVADE.equals(currentBehavior)) {
             modifier = 1.5f;
-            direction.x = (float) Math.cos(direction.x);
-            direction.y = (float) Math.cos(direction.y);
+            direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
         body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
         // Do nothing for half second

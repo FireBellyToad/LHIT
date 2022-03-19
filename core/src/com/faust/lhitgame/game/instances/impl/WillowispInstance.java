@@ -371,8 +371,7 @@ public class WillowispInstance extends PathfinderInstance implements Interactabl
         //If evading, the leap is more subtle and perpendicular
         if (GameBehavior.EVADE.equals(currentBehavior)) {
             modifier = 1.5f;
-            direction.x = (float) Math.cos(direction.x);
-            direction.y = (float) Math.cos(direction.y);
+            direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
         body.setLinearVelocity(WILLOWISP_SPEED * modifier * -direction.x, WILLOWISP_SPEED * modifier * -direction.y);
         // Do nothing for half second
@@ -476,6 +475,6 @@ public class WillowispInstance extends PathfinderInstance implements Interactabl
 
     @Override
     protected float getLineOfSight() {
-        return 150f;
+        return 1000f;
     }
 }

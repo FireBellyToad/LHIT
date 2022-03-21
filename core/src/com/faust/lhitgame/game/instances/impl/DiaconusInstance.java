@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.PathfinderInstance;
@@ -373,7 +374,7 @@ public class DiaconusInstance extends PathfinderInstance implements Interactable
             // Hurt by player
             double amount = ((Damager) attacker).damageRoll();
             //Diaconus halves normal lance damage
-            if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
+            if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
                 amount = Math.floor(amount / 2);
             }
 

@@ -4,9 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
-import com.faust.lhitgame.saves.RoomSaveEntry;
 import com.faust.lhitgame.saves.enums.SaveFieldsEnum;
 
 import java.util.*;
@@ -24,13 +24,15 @@ public abstract class AbstractSaveFileManager {
 
         //Player info
         List<String> entries = new ArrayList<>();
-        entries.add(getField(SaveFieldsEnum.LANCE.getFieldName(), player.getHolyLancePieces()));
-        entries.add(getField(SaveFieldsEnum.CROSSES.getFieldName(), player.getFoundCrosses()));
-        entries.add(getField(SaveFieldsEnum.ARMOR.getFieldName(), player.hasArmor()));
+        entries.add(getField(SaveFieldsEnum.LANCE.getFieldName(), player.getItemQuantityFound(ItemEnum.HOLY_LANCE)));
+        entries.add(getField(SaveFieldsEnum.CROSSES.getFieldName(), player.getItemQuantityFound(ItemEnum.GOLDCROSS)));
+        entries.add(getField(SaveFieldsEnum.ARMOR.getFieldName(), player.getItemQuantityFound(ItemEnum.ARMOR)));
         entries.add(getField(SaveFieldsEnum.DAMAGE.getFieldName(), player.getDamage()));
-        entries.add(getField(SaveFieldsEnum.HERBS_FOUND.getFieldName(), player.getHerbsFound()));
+        entries.add(getField(SaveFieldsEnum.HERBS_FOUND.getFieldName(), player.getItemQuantityFound(ItemEnum.HEALTH_KIT)));
         entries.add(getField(SaveFieldsEnum.HERBS_AVAILABLE.getFieldName(), player.getAvailableHealthKits()));
-        entries.add(getField(SaveFieldsEnum.STAUTE_FOUND.getFieldName(), player.hasStatue()));
+        entries.add(getField(SaveFieldsEnum.WATERSKIN.getFieldName(), player.getItemQuantityFound(ItemEnum.WATERSKIN)));
+        entries.add(getField(SaveFieldsEnum.RITUAL.getFieldName(), player.getItemQuantityFound(ItemEnum.RITUAL)));
+        entries.add(getField(SaveFieldsEnum.HOLY_WATER.getFieldName(), player.getItemQuantityFound(ItemEnum.HOLY_WATER)));
         entries.add(getField(SaveFieldsEnum.KILLED_SECRET.getFieldName(), player.hasKilledSecretBoss()));
 
         String playerInfo = getField(SaveFieldsEnum.PLAYER_INFO.getFieldName(), String.join(",", entries), true);
@@ -147,13 +149,15 @@ public abstract class AbstractSaveFileManager {
         if (Objects.isNull(playerInfo)) {
             return;
         }
-        player.setHolyLancePieces(playerInfo.getInt(SaveFieldsEnum.LANCE.getFieldName()));
-        player.setFoundCrosses(playerInfo.getInt(SaveFieldsEnum.CROSSES.getFieldName()));
-        player.setHasArmor(playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.HOLY_LANCE,playerInfo.getInt(SaveFieldsEnum.LANCE.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.GOLDCROSS,playerInfo.getInt(SaveFieldsEnum.CROSSES.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.ARMOR,playerInfo.getInt(SaveFieldsEnum.ARMOR.getFieldName()));
         player.setDamage(playerInfo.getInt(SaveFieldsEnum.DAMAGE.getFieldName()));
-        player.setHerbsFound(playerInfo.getInt(SaveFieldsEnum.HERBS_FOUND.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.HEALTH_KIT,playerInfo.getInt(SaveFieldsEnum.HERBS_FOUND.getFieldName()));
         player.setAvailableHealthKits(playerInfo.getInt(SaveFieldsEnum.HERBS_AVAILABLE.getFieldName()));
-        player.setHasStatue(playerInfo.getBoolean(SaveFieldsEnum.STAUTE_FOUND.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.WATERSKIN,playerInfo.getInt(SaveFieldsEnum.WATERSKIN.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.HOLY_WATER,playerInfo.getInt(SaveFieldsEnum.HOLY_WATER.getFieldName()));
+        player.setItemQuantityFound(ItemEnum.RITUAL,playerInfo.getInt(SaveFieldsEnum.RITUAL.getFieldName()));
         player.setHasKilledSecretBoss(playerInfo.getBoolean(SaveFieldsEnum.KILLED_SECRET.getFieldName()));
 
     }

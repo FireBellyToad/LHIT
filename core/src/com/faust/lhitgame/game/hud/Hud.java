@@ -12,6 +12,7 @@ import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.GameEntity;
 import com.faust.lhitgame.game.gameentities.SpriteEntity;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.hud.enums.HudIconsEnum;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
@@ -107,7 +108,7 @@ public class Hud {
                 goldcrossCountPosition.y - 6);
 
         textManager.getMainFont().draw(batch,
-                String.valueOf(player.getFoundCrosses()),
+                String.valueOf(player.getItemQuantityFound(ItemEnum.GOLDCROSS)),
                 goldcrossCountPosition.x,
                 goldcrossCountPosition.y);
 
@@ -117,7 +118,7 @@ public class Hud {
                 holyLancePiecesPosition.y - 6);
 
         textManager.getMainFont().draw(batch,
-                String.valueOf(player.getHolyLancePieces()),
+                String.valueOf(player.getItemQuantityFound(ItemEnum.HOLY_LANCE)),
                 holyLancePiecesPosition.x,
                 holyLancePiecesPosition.y);
 

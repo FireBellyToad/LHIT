@@ -14,23 +14,21 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
-import com.faust.lhitgame.game.instances.AnimatedInstance;
-import com.faust.lhitgame.game.rooms.RoomContent;
-import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.impl.PlayerEntity;
+import com.faust.lhitgame.game.instances.AnimatedInstance;
+import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
-import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.rooms.RoomContent;
+import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.screens.GameScreen;
 import com.faust.lhitgame.utils.ShaderWrapper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Player Instance class
@@ -61,18 +59,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private int availableHealthKits = 0; // available Health Kits
     private long startHealingTime;
-    private int foundCrosses = 0;
-    private int holyLancePieces = 0;
-    private int herbsFound = 0;
+    private Map<ItemEnum,Integer> itemsFound;
 
-    private boolean hasArmor = false;
     private boolean isSubmerged = false;
     private boolean isDead = false;
     private boolean prepareEndgame = false;
     private boolean isChangingRoom = false;
     private boolean goToGameOver = false;
     private boolean pauseGame = false;
-    private boolean hasStatue = false;
     private boolean hasKilledSecretBoss = false;
 
     private final ParticleEffect waterWalkEffect;
@@ -80,6 +74,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
 
+        itemsFound = new HashMap<>();
         currentDirectionEnum = DirectionEnum.DOWN;
 
         Gdx.input.setInputProcessor(this);
@@ -93,7 +88,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public int getResistance() {
-        return 6 + (hasArmor ? 2 : 0);
+        //6 without armor, 8 with armor
+        return 6 + ((getItemQuantityFound(ItemEnum.ARMOR) > 0) ? 2 : 0);
     }
 
     @Override
@@ -362,8 +358,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Get shader and set parameters
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
-        shader.addFlag("hasArmor", hasArmor);
-        shader.addFlag("hasHolyLance", holyLancePieces == 2);
+        shader.addFlag("hasArmor", itemsFound.getOrDefault(ItemEnum.ARMOR,0) == 1);
+        shader.addFlag("hasHolyLance", itemsFound.getOrDefault(ItemEnum.HOLY_LANCE,0) == 2);
         shader.setShaderOnBatchWithFlags(batch);
 
         Vector2 drawPosition = adjustPosition();
@@ -747,39 +743,21 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      *
      * @param itemFound
      */
-    public void foundItem(ItemEnum itemFound) {
+    public void onItemFound(ItemEnum itemFound) {
 
         ((PlayerEntity) entity).playBonusSound();
+
+        //Set item to 1 if not found before, or else add 1
+        itemsFound.merge(itemFound,1,Integer::sum);
 
         switch (itemFound) {
             case HEALTH_KIT: {
                 //Increase available Kits, max 3
                 availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
-                herbsFound++;
-                break;
-            }
-            case GOLDCROSS: {
-                //Increase found Morgangabes
-                foundCrosses++;
-                break;
-            }
-            case HOLY_LANCE: {
-                //Increase found holy lance pieces
-                holyLancePieces++;
-                break;
-            }
-            case ARMOR: {
-                // Find armor
-                hasArmor = true;
-                break;
-            }
-            case STATUE: {
-                // Find statue
-                hasStatue = true;
                 break;
             }
             default: {
-                Gdx.app.log("WARN", "No implementation for item" + itemFound.name());
+                Gdx.app.log("WARN", "No special implementation for item" + itemFound.name());
             }
         }
     }
@@ -796,21 +774,23 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     * @return the current number of found crosses
+     *
+     * @param itemFound
+     * @return quantity found of the item
      */
-    public int getFoundCrosses() {
-        return foundCrosses;
+    public int getItemQuantityFound(ItemEnum itemFound) {
+        Objects.requireNonNull(itemFound);
+        return itemsFound.getOrDefault(itemFound,0);
     }
 
     /**
-     * @return if has found armor
+     * Set the item quantity (usually from savefile)
+     * @param item
+     * @param quantity
      */
-    public boolean hasArmor() {
-        return hasArmor;
-    }
-
-    public void setFoundCrosses(int foundCrosses) {
-        this.foundCrosses = foundCrosses;
+    public void setItemQuantityFound(ItemEnum item, int quantity) {
+        Objects.requireNonNull(item);
+        itemsFound.put(item,quantity);
     }
 
     /**
@@ -819,19 +799,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public long getStartHealingTime() {
         return startHealingTime;
     }
-
-    public int getHolyLancePieces() {
-        return holyLancePieces;
-    }
-
-    public void setHolyLancePieces(int holyLancePieces) {
-        this.holyLancePieces = holyLancePieces;
-    }
-
-    public void setHasArmor(boolean armor) {
-        this.hasArmor = armor;
-    }
-
 
     /**
      * @return true if the damage is greater or equal than the resitance
@@ -949,18 +916,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Gdx.input.setInputProcessor(this);
     }
 
-    public void setHerbsFound(int herbsFound) {
-        this.herbsFound = herbsFound;
-    }
-
-    public int getHerbsFound() {
-        return herbsFound;
-    }
-
-    public boolean hasStatue() {
-        return hasStatue;
-    }
-
     public boolean isPauseGame() {
         return pauseGame;
     }
@@ -975,10 +930,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setHasKilledSecretBoss(boolean hasKilledSecretBoss) {
         this.hasKilledSecretBoss = hasKilledSecretBoss;
-    }
-
-    public void setHasStatue(boolean hasStatue) {
-        this.hasStatue = hasStatue;
     }
 
     @Override

@@ -69,7 +69,7 @@ public class POIInstance extends GameInstance {
 
             //Let player find item
             if (Objects.nonNull(itemGiven)) {
-                player.foundItem(itemGiven);
+                player.onItemFound(itemGiven);
             }
 
             //If has splash screen
@@ -77,8 +77,9 @@ public class POIInstance extends GameInstance {
                 String splashKey = ((POIEntity) this.entity).getSplashKey();
 
                 //Holy lance has to different splashes based on pieces found
+                //FIXME remove hardcoding
                 if (itemGiven == ItemEnum.HOLY_LANCE) {
-                    splashKey += "." + player.getHolyLancePieces();
+                    splashKey += "." + player.getItemQuantityFound(ItemEnum.HOLY_LANCE);
                 }
 
                 // Show splash screen
@@ -93,10 +94,10 @@ public class POIInstance extends GameInstance {
             textManager.addNewTextBox(messageKey + POIEntity.EXAMINING_ITEM_MESSAGE_KEY_SUFFIX);
         }
 
-        // Only on the first examination there is a chance to find something
-        //BAPTISMAL can be examined again if player as no statue
-        //TODO remove hardcoding
-        isAlreadyExamined = !POIEnum.BAPTISMAL.equals(((POIEntity) this.entity).getType()) || player.hasStatue();
+        //Only on the first examination there is a chance to find something
+        //Unless you don't have required item, then can be examined again
+        final ItemEnum requiredItem = ((POIEntity) this.entity).getItemRequired();
+        isAlreadyExamined = Objects.isNull(requiredItem) || player.getItemQuantityFound(requiredItem) > 0;
 
     }
 
@@ -104,11 +105,13 @@ public class POIInstance extends GameInstance {
 
         switch (((POIEntity) entity).getType()) {
             case SKELETON:
-                return player.getFoundCrosses() < 9;
+                return player.getItemQuantityFound(ItemEnum.GOLDCROSS) < 9;
             case SOIL:
-                return player.getHolyLancePieces() < 2; //Should be random only if not guaranteed!
+                return player.getItemQuantityFound(ItemEnum.HOLY_LANCE)  < 2; //Should be random only if not guaranteed!
             case BAPTISMAL:
-                return player.hasStatue();
+                return player.getItemQuantityFound(ItemEnum.WATERSKIN) > 0 ;
+            case ALTAR:
+                return player.getItemQuantityFound(ItemEnum.HOLY_WATER) > 0 ;
             default:
                 return true;
         }
@@ -212,10 +215,10 @@ public class POIInstance extends GameInstance {
     }
 
     /**
-     * FIXME hardcoded
+     *
      * @return
      */
     public boolean isRemovableOnExamination() {
-        return POIEnum.MICHAEL.equals(getType());
+        return ((POIEntity) entity).getRemovableOnExamination();
     }
 }

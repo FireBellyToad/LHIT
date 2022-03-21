@@ -19,12 +19,16 @@ public class POIEntity extends SpriteEntity {
     private final ItemEnum itemGiven;
     private final String splashKey;
     private final POIEnum type;
+    private final ItemEnum itemRequired;
+    private final Boolean isRemovableOnExamination;
 
     public POIEntity(POIEnum type, AssetManager assetManager) {
         super(assetManager.get("sprites/poi_sheet.png"), type.ordinal());
         this.messageKey = type.getTextKey();
         this.itemGiven = type.getItemGiven();
         this.splashKey = type.getSplashKey();
+        this.itemRequired = type.getItemRequired();
+        this.isRemovableOnExamination = type.getRemovableOnExamination();
         this.type = type;
     }
 
@@ -36,8 +40,16 @@ public class POIEntity extends SpriteEntity {
         return itemGiven;
     }
 
+    public ItemEnum getItemRequired() {
+        return itemRequired;
+    }
+
     public String getSplashKey() {
         return splashKey;
+    }
+
+    public Boolean getRemovableOnExamination() {
+        return isRemovableOnExamination;
     }
 
     @Override

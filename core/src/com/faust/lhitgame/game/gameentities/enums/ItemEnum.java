@@ -10,5 +10,7 @@ public enum ItemEnum {
     HOLY_LANCE,
     GOLDCROSS,
     ARMOR,
-    STATUE
+    RITUAL,
+    WATERSKIN,
+    HOLY_WATER
 }

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
@@ -188,18 +189,18 @@ public class RoomsManager {
 
         if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld).type)) {
             //If unvisited rooms are less than the number of found crosses to find, guarantee them
-            final boolean guaranteedGoldcross = player.getFoundCrosses() < 9 &&
-                    (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getFoundCrosses()));
+            final boolean guaranteedGoldcross = player.getItemQuantityFound(ItemEnum.GOLDCROSS) < 9 &&
+                    (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getItemQuantityFound(ItemEnum.GOLDCROSS)));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_GOLDCROSS, guaranteedGoldcross);
 
             //Only three herbs can be found
-            final boolean mustNotHaveHerb = player.getHerbsFound() >= 3 ||
+            final boolean mustNotHaveHerb = player.getItemQuantityFound(ItemEnum.HEALTH_KIT) >= 3 ||
                     saveMap.values().stream().filter(roomSaveEntry -> CasualRoom.BUSH_MAPS.contains(roomSaveEntry.casualNumber)).count() >= 3;
             newRoomFlags.put(RoomFlagEnum.WITHOUT_HERBS, mustNotHaveHerb);
 
             //If unvisited rooms (priority is on goldcross) are less than the number of found herbs to find, guarantee them
             final boolean guaranteedHerb = !mustNotHaveHerb && !guaranteedGoldcross &&
-                    (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getHerbsFound()));
+                    (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getItemQuantityFound(ItemEnum.HEALTH_KIT)));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_HERBS, guaranteedHerb);
 
         } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld).type)) {

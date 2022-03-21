@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
@@ -194,7 +195,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
             ((HiveEntity) entity).playHurtCry();
 
             //If Undead or Otherworldly, halve normal lance damage
-            if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
+            if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
                 textBoxManager.addNewTextBox("warn.hive.damage");
                 return;
             }

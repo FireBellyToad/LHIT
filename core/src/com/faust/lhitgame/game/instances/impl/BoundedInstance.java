@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.instances.PathfinderInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
@@ -345,7 +346,7 @@ public class BoundedInstance extends PathfinderInstance implements Interactable,
             // Hurt by player
             double amount = ((Damager) attacker).damageRoll();
             //If Undead or Otherworldly, halve normal lance damage
-            if (((PlayerInstance) attacker).getHolyLancePieces() < 2) {
+            if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
                 amount = Math.floor(amount / 2);
             }
 

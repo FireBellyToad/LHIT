@@ -146,10 +146,6 @@ public class DecorationInstance extends GameInstance implements Interactable {
         return this.interacted;
     }
 
-    public DecorationsEnum getType() {
-        return ((DecorationEntity) entity).getType();
-    }
-
 
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {

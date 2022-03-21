@@ -59,7 +59,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private int availableHealthKits = 0; // available Health Kits
     private long startHealingTime;
-    private Map<ItemEnum,Integer> itemsFound;
+    private final Map<ItemEnum,Integer> itemsFound;
 
     private boolean isSubmerged = false;
     private boolean isDead = false;

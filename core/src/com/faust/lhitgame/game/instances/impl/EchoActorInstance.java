@@ -190,13 +190,6 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     /**
-     *
-     * @param commands
-     */
-    private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
-        spawnInstancesOnEnd(commands,false);
-    }
-    /**
      * Spawn instance if doable
      *
      * @param commands

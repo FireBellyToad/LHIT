@@ -1,5 +1,5 @@
 {
-    "activeFile": "terrains/infernum.tmx",
+    "activeFile": "terrains/churchLeft.tmx",
     "expandedProjectPaths": [
         "terrains"
     ],
@@ -463,10 +463,10 @@
         },
         "terrains/churchLeft.tmx": {
             "scale": 5.664375,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 79.97351870241643,
-                "y": 71.94085843539668
+                "x": 80.15006068630697,
+                "y": 72.11740041928721
             }
         },
         "terrains/churchRight.tmx": {
@@ -558,15 +558,15 @@
         "terrains/pedestal.tmx",
         "terrains/boat.tmx",
         "terrains/boatDown.tmx",
+        "terrains/infernum.tmx",
+        "terrains/boatLeft.tmx",
+        "terrains/casual7.tmx",
+        "terrains/cemeteryCenter.tmx",
+        "terrains/crucified.tmx",
+        "terrains/cemeteryRight.tmx",
         "terrains/casual9.tmx",
         "terrains/churchBottom.tmx",
-        "terrains/churchEntrance.tmx",
-        "terrains/churchRight.tmx",
-        "terrains/churchLeft.tmx",
-        "terrains/cemeteryRight.tmx",
-        "terrains/crucified.tmx",
-        "terrains/cemeteryCenter.tmx",
-        "terrains/casual7.tmx"
+        "terrains/churchEntrance.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.margin": 0,

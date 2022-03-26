@@ -99,12 +99,13 @@ public class DesktopSaveFileManager extends AbstractSaveFileManager {
 
         //All subfields excluding Armor (which is not int)
         for (SaveFieldsEnum subField : SaveFieldsEnum.PLAYER_INFO.getSubFields()) {
-            if (!SaveFieldsEnum.ARMOR.equals(subField)) {
+            if (!SaveFieldsEnum.ARMOR.equals(subField) && !SaveFieldsEnum.KILLED_SECRET.equals(subField) ) {
                 rawValuesMap.put(subField.getFieldName(), playerInfo.getInt(subField.getFieldName()));
             }
         }
 
         rawValuesMap.put(SaveFieldsEnum.ARMOR.getFieldName(), playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
+        rawValuesMap.put(SaveFieldsEnum.KILLED_SECRET.getFieldName(), playerInfo.getBoolean(SaveFieldsEnum.ARMOR.getFieldName()));
 
         return rawValuesMap;
     }

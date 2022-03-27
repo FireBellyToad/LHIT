@@ -22,20 +22,20 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Smart chaser instance class, used on things that should follow the player smartly:
+ * Smart chaser instance class, used on things that should follow a target smartly:
  * - if can see him, just follow him
  * - if cannot see him, then do A* in nodegraph
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class PathfinderInstance extends AnimatedInstance {
+public abstract class ChaserInstance extends AnimatedInstance {
 
     protected final RayCaster rayCaster;
 
     //Current path node to follow
     protected PathNode targetPathNode;
-    //Target player instance
-    protected final PlayerInstance target;
+    //Target instance
+    protected final GameInstance target;
 
     protected boolean isAggressive = false;
     protected boolean recalculatePath = true;
@@ -45,7 +45,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
     private PathNode currentPos;
     private PathNode newGoal;
 
-    public PathfinderInstance(GameEntity entity, PlayerInstance target, RayCaster rayCaster) {
+    public ChaserInstance(GameEntity entity, GameInstance target, RayCaster rayCaster) {
         super(entity);
         this.target = target;
         this.rayCaster = rayCaster;
@@ -94,7 +94,7 @@ public abstract class PathfinderInstance extends AnimatedInstance {
         final List<Pair<Float, Object>> tempInstancesList = new ArrayList<>();
         final RayCastCallback getPlayerAndWallsInRay = (fixture, point, normal, fraction) -> {
             //Select only walls, non passable decorations and player (excluding hitboxes)
-            if (RayCastUtils.isPlayerOrWall(fixture,target)) {
+            if (RayCastUtils.isTargetOrWall(fixture, target)) {
                 tempInstancesList.add(new Pair<>(fraction, fixture.getBody().getUserData()));
             }
             return 1;

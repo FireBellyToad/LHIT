@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
-import com.faust.lhitgame.game.instances.PathfinderInstance;
+import com.faust.lhitgame.game.instances.ChaserInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
@@ -31,7 +31,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class WillowispInstance extends PathfinderInstance implements Interactable, Hurtable, Damager {
+public class WillowispInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
 
     private static final float WILLOWISP_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;

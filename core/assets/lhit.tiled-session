@@ -465,7 +465,7 @@
             "scale": 5.664375,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 80.15006068630697,
+                "x": 80.32660267019752,
                 "y": 72.11740041928721
             }
         },
@@ -503,7 +503,7 @@
         },
         "terrains/pedestal.tmx": {
             "scale": 4,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 84.25,
                 "y": 71.875

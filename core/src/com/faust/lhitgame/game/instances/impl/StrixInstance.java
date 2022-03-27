@@ -11,18 +11,19 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
-import com.faust.lhitgame.game.instances.PathfinderInstance;
-import com.faust.lhitgame.game.rooms.RoomContent;
-import com.faust.lhitgame.game.world.interfaces.RayCaster;
-import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.impl.StrixEntity;
+import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.instances.ChaserInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
-import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
+import com.faust.lhitgame.game.rooms.RoomContent;
+import com.faust.lhitgame.game.world.interfaces.RayCaster;
+import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.screens.GameScreen;
 
 import java.util.Objects;
@@ -32,7 +33,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class StrixInstance extends PathfinderInstance implements Interactable, Hurtable, Damager {
+public class StrixInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
 
     private static final float STRIX_SPEED = 35;
     private static final long LEECHING_FREQUENCY_IN_MILLIS = 1000;
@@ -41,7 +42,7 @@ public class StrixInstance extends PathfinderInstance implements Interactable, H
     private long leechStartTimer;
 
     public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
-        super(new StrixEntity(assetManager),target, rayCaster);
+        super(new StrixEntity(assetManager), target, rayCaster);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
@@ -76,7 +77,7 @@ public class StrixInstance extends PathfinderInstance implements Interactable, H
             body.setLinearVelocity(0, 0);
 
             //leech if attachedToPlayer
-            if (attachedToPlayer){
+            if (attachedToPlayer) {
                 currentBehavior = GameBehavior.ATTACK;
                 leechLife();
             } else {
@@ -236,9 +237,9 @@ public class StrixInstance extends PathfinderInstance implements Interactable, H
 
         //Keep leeching
         if (attachedToPlayer && TimeUtils.timeSinceNanos(leechStartTimer) > TimeUtils.millisToNanos(LEECHING_FREQUENCY_IN_MILLIS)) {
-            target.hurt(StrixInstance.this);
+            ((Hurtable) target).hurt(StrixInstance.this);
             //Prevents loop on gameover screen
-            if(target.isDead()){
+            if (((Killable) target).isDead()) {
                 ((StrixEntity) entity).stopLeechSound();
             }
             leechStartTimer = TimeUtils.nanoTime();
@@ -281,8 +282,8 @@ public class StrixInstance extends PathfinderInstance implements Interactable, H
         Objects.requireNonNull(attacker);
 
         //Should not be hurted if attached to player!
-        if(!isAttachedToPlayer()){
-            
+        if (!isAttachedToPlayer()) {
+
             if (isDying()) {
                 ((StrixEntity) entity).playDeathCry();
                 body.setLinearVelocity(0, 0);
@@ -290,7 +291,7 @@ public class StrixInstance extends PathfinderInstance implements Interactable, H
             } else if (!GameBehavior.HURT.equals(currentBehavior)) {
                 ((StrixEntity) entity).playHurtCry();
                 // Hurt by player
-                this.damage += ((Damager)attacker).damageRoll();
+                this.damage += ((Damager) attacker).damageRoll();
                 Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
                 postHurtLogic(attacker);
             }

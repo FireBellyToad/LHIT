@@ -15,8 +15,8 @@ import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
+import com.faust.lhitgame.game.instances.ChaserInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
-import com.faust.lhitgame.game.instances.PathfinderInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
@@ -32,7 +32,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class DiaconusInstance extends PathfinderInstance implements Interactable, Hurtable, Damager {
+public class DiaconusInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
 
     private static final float DIACONUS_SPEED = 35;
     private static final int LINE_OF_ATTACK = 15;

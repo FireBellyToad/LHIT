@@ -18,7 +18,7 @@ import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
-import com.faust.lhitgame.game.rooms.enums.MapObjNameEnum;
+import com.faust.lhitgame.game.rooms.enums.MapObjTypeEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhitgame.game.splash.SplashManager;
@@ -61,7 +61,7 @@ public class FixedRoom extends AbstractRoom {
         this.roomContent.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS if not disabled
-            if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjNameEnum.ECHO_ACTOR.name().equals(obj.getName())) {
+            if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjTypeEnum.ECHO_ACTOR.name().equals(obj.getProperties().get("type"))) {
                 addObjAsEchoActor(obj, assetManager);
             }
         });
@@ -70,13 +70,6 @@ public class FixedRoom extends AbstractRoom {
 
         if (Objects.nonNull(roomSaveEntry)) {
             roomSaveEntry.poiStates.forEach((id, isExamined) -> {
-                //FIXME harcoded, do better next time!
-                //In INFERNUM room respawn POI in needed
-                //Needed if player exit room without getting the statue
-                if (id == 0 && RoomTypeEnum.INFERNUM.equals(getRoomType())) {
-                    spawnInstance(POIInstance.class, 80, 32, "MICHAEL");
-
-                }
 
                 //update POI status
                 POIInstance poi = this.roomContent.poiList.stream().filter(p -> id.equals(p.getPoiIdInMap())).findFirst().orElse(null);
@@ -108,7 +101,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     protected void addObjAsPOI(MapObject obj, TextBoxManager textManager, AssetManager assetManager) {
 
-        POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("type"));
+        POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("poiType"));
         Objects.requireNonNull(poiType);
 
         POIInstance instance = new POIInstance(textManager,
@@ -141,7 +134,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
 
-        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("decoType"));
         Objects.requireNonNull(decoType);
 
         DecorationInstance instance = new DecorationInstance(
@@ -170,7 +163,7 @@ public class FixedRoom extends AbstractRoom {
      */
     private void addObjAsEchoActor(MapObject obj, AssetManager assetManager) {
 
-        EchoesActorType echoesActorType = EchoesActorType.getFromString((String) obj.getProperties().get("type"));
+        EchoesActorType echoesActorType = EchoesActorType.getFromString((String) obj.getProperties().get("echoesActorType"));
         Objects.requireNonNull(echoesActorType);
 
         roomContent.echoActors.add(new EchoActorInstance(echoesActorType,

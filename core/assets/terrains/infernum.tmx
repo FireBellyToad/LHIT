@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="187">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="187">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -31,237 +31,460 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="40" name="POI" type="ALTAR" x="80" y="32">
+  <object id="40" type="POI" x="80" y="32">
    <properties>
     <property name="isEchoTrigger" type="bool" value="true"/>
     <property name="mustTriggerAfterExamination" type="bool" value="true"/>
+    <property name="poiType" propertytype="PoiType" value="ALTAR"/>
    </properties>
    <point/>
   </object>
-  <object id="60" name="ECHO_ACTOR" type="FLESH_PILLAR" x="103.62" y="116.397" visible="0">
+  <object id="60" type="ECHO_ACTOR" x="103.62" y="116.397" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="65" name="ECHO_ACTOR" type="FLESH_PILLAR" x="50.5847" y="15.578" visible="0">
+  <object id="65" type="ECHO_ACTOR" x="50.5847" y="15.578" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="66" name="ECHO_ACTOR" type="FLESH_PILLAR" x="62.662" y="17.3283" visible="0">
+  <object id="66" type="ECHO_ACTOR" x="62.662" y="17.3283" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="67" name="ECHO_ACTOR" type="FLESH_PILLAR" x="81.3905" y="17.6784" visible="0">
+  <object id="67" type="ECHO_ACTOR" x="81.3905" y="17.6784" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="68" name="ECHO_ACTOR" type="FLESH_PILLAR" x="99.0689" y="19.9538" visible="0">
+  <object id="68" type="ECHO_ACTOR" x="99.0689" y="19.9538" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="69" name="ECHO_ACTOR" type="FLESH_PILLAR" x="115.522" y="19.0786" visible="0">
+  <object id="69" type="ECHO_ACTOR" x="115.522" y="19.0786" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="72" name="ECHO_ACTOR" type="FLESH_PILLAR" x="128.825" y="26.08" visible="0">
+  <object id="72" type="ECHO_ACTOR" x="128.825" y="26.08" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="73" name="ECHO_ACTOR" type="FLESH_PILLAR" x="131.8" y="40.4327" visible="0">
+  <object id="73" type="ECHO_ACTOR" x="131.8" y="40.4327" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="74" name="ECHO_ACTOR" type="FLESH_PILLAR" x="131.275" y="59.8614" visible="0">
+  <object id="74" type="ECHO_ACTOR" x="131.275" y="59.8614" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="76" name="ECHO_ACTOR" type="FLESH_PILLAR" x="131.45" y="75.2644" visible="0">
+  <object id="76" type="ECHO_ACTOR" x="131.45" y="75.2644" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="77" name="ECHO_ACTOR" type="FLESH_PILLAR" x="127.599" y="93.993" visible="0">
+  <object id="77" type="ECHO_ACTOR" x="127.599" y="93.993" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="78" name="ECHO_ACTOR" type="FLESH_PILLAR" x="127.599" y="105.195" visible="0">
+  <object id="78" type="ECHO_ACTOR" x="127.599" y="105.195" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="79" name="ECHO_ACTOR" type="FLESH_PILLAR" x="128.475" y="117.973" visible="0">
+  <object id="79" type="ECHO_ACTOR" x="128.475" y="117.973" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="81" name="ECHO_ACTOR" type="FLESH_PILLAR" x="116.047" y="116.922" visible="0">
+  <object id="81" type="ECHO_ACTOR" x="116.047" y="116.922" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="84" name="ECHO_ACTOR" type="FLESH_PILLAR" x="52.16" y="119.198" visible="0">
+  <object id="84" type="ECHO_ACTOR" x="52.16" y="119.198" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="86" name="ECHO_ACTOR" type="FLESH_PILLAR" x="33.2564" y="119.548" visible="0">
+  <object id="86" type="ECHO_ACTOR" x="33.2564" y="119.548" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="87" name="ECHO_ACTOR" type="FLESH_PILLAR" x="27.4802" y="109.746" visible="0">
+  <object id="87" type="ECHO_ACTOR" x="27.4802" y="109.746" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="88" name="ECHO_ACTOR" type="FLESH_PILLAR" x="25.0298" y="88.917" visible="0">
+  <object id="88" type="ECHO_ACTOR" x="25.0298" y="88.917" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="89" name="ECHO_ACTOR" type="FLESH_PILLAR" x="25.5549" y="77.3648" visible="0">
+  <object id="89" type="ECHO_ACTOR" x="25.5549" y="77.3648" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="90" name="ECHO_ACTOR" type="FLESH_PILLAR" x="27.4802" y="65.1124" visible="0">
+  <object id="90" type="ECHO_ACTOR" x="27.4802" y="65.1124" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="91" name="ECHO_ACTOR" type="FLESH_PILLAR" x="29.2306" y="52.16" visible="0">
+  <object id="91" type="ECHO_ACTOR" x="29.2306" y="52.16" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="92" name="ECHO_ACTOR" type="FLESH_PILLAR" x="31.331" y="38.5074" visible="0">
+  <object id="92" type="ECHO_ACTOR" x="31.331" y="38.5074" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="93" name="ECHO_ACTOR" type="FLESH_PILLAR" x="31.506" y="25.0298" visible="0">
+  <object id="93" type="ECHO_ACTOR" x="31.506" y="25.0298" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="94" name="ECHO_ACTOR" type="FLESH_PILLAR" x="33.7815" y="15.4029" visible="0">
+  <object id="94" type="ECHO_ACTOR" x="33.7815" y="15.4029" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="95" name="ECHO_ACTOR" type="FLESH_PILLAR" x="54.3012" y="80.175" visible="0">
+  <object id="95" type="ECHO_ACTOR" x="54.3012" y="80.175" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="96" name="ECHO_ACTOR" type="FLESH_PILLAR" x="80" y="64" visible="0">
+  <object id="96" type="ECHO_ACTOR" x="80" y="64" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="97" name="ECHO_ACTOR" type="FLESH_PILLAR" x="103.62" y="80.1653" visible="0">
+  <object id="97" type="ECHO_ACTOR" x="103.62" y="80.1653" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="98" name="ECHO_ACTOR" type="FLESH_PILLAR" x="106.07" y="41.4829" visible="0">
+  <object id="98" type="ECHO_ACTOR" x="106.07" y="41.4829" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="99" name="ECHO_ACTOR" type="FLESH_PILLAR" x="58.4612" y="132.85" visible="0">
+  <object id="99" type="ECHO_ACTOR" x="58.4612" y="132.85" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="100" name="ECHO_ACTOR" type="PORTAL_SPAWNER" x="77.8899" y="127.599" visible="0">
+  <object id="100" type="ECHO_ACTOR" x="77.8899" y="127.599" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="PORTAL_SPAWNER"/>
+   </properties>
    <point/>
   </object>
-  <object id="101" name="ECHO_ACTOR" type="FLESH_PILLAR" x="92.4176" y="133.726" visible="0">
+  <object id="101" type="ECHO_ACTOR" x="92.4176" y="133.726" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="102" name="ECHO_ACTOR" type="FLESH_PILLAR" x="52.8601" y="40.0827" visible="0">
+  <object id="102" type="ECHO_ACTOR" x="52.8601" y="40.0827" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="104" name="ECHO_ACTOR" type="INFERNUM" x="0" y="0">
+  <object id="104" type="ECHO_ACTOR" x="0" y="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="INFERNUM"/>
+   </properties>
    <point/>
   </object>
-  <object id="105" name="EMERGED" x="44.8086" y="-43.4083">
+  <object id="105" type="EMERGED" x="44.8086" y="-43.4083">
    <polygon points="-17.25,72.1136 -18.5,161.909 18.8126,175.602 57.3979,175.659 88.9321,159.591 90.2275,72.7273 71.9831,54.8864 1.48875,55.0455"/>
   </object>
-  <object id="106" name="ECHO_ACTOR" type="FLESH_PILLAR" x="31.0532" y="8.4251" visible="0">
+  <object id="106" type="ECHO_ACTOR" x="31.0532" y="8.4251">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="107" name="ECHO_ACTOR" type="FLESH_PILLAR" x="43.1305" y="10.1754" visible="0">
+  <object id="107" type="ECHO_ACTOR" x="43.1305" y="10.1754" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="108" name="ECHO_ACTOR" type="FLESH_PILLAR" x="61.859" y="10.5255" visible="0">
+  <object id="108" type="ECHO_ACTOR" x="61.859" y="10.5255" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="109" name="ECHO_ACTOR" type="FLESH_PILLAR" x="79.5374" y="12.8009" visible="0">
+  <object id="109" type="ECHO_ACTOR" x="79.5374" y="12.8009" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="110" name="ECHO_ACTOR" type="FLESH_PILLAR" x="95.9905" y="11.9257" visible="0">
+  <object id="110" type="ECHO_ACTOR" x="95.9905" y="11.9257" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="111" name="ECHO_ACTOR" type="FLESH_PILLAR" x="14.25" y="8.25" visible="0">
+  <object id="111" type="ECHO_ACTOR" x="14.25" y="8.25" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="124" name="ECHO_ACTOR" type="FLESH_PILLAR" x="133.303" y="8.9251" visible="0">
+  <object id="124" type="ECHO_ACTOR" x="133.303" y="8.9251" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="125" name="ECHO_ACTOR" type="FLESH_PILLAR" x="145.381" y="10.6754" visible="0">
+  <object id="125" type="ECHO_ACTOR" x="145.381" y="10.6754" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="129" name="ECHO_ACTOR" type="FLESH_PILLAR" x="116.5" y="8.75" visible="0">
+  <object id="129" type="ECHO_ACTOR" x="116.5" y="8.75" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="139" name="ECHO_ACTOR" type="FLESH_PILLAR" x="148.444" y="39.9046" visible="0">
+  <object id="139" type="ECHO_ACTOR" x="148.444" y="39.9046" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="140" name="ECHO_ACTOR" type="FLESH_PILLAR" x="151.419" y="54.2573" visible="0">
+  <object id="140" type="ECHO_ACTOR" x="151.419" y="54.2573" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="141" name="ECHO_ACTOR" type="FLESH_PILLAR" x="150.894" y="73.686" visible="0">
+  <object id="141" type="ECHO_ACTOR" x="150.894" y="73.686" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="142" name="ECHO_ACTOR" type="FLESH_PILLAR" x="151.069" y="89.089" visible="0">
+  <object id="142" type="ECHO_ACTOR" x="151.069" y="89.089" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="143" name="ECHO_ACTOR" type="FLESH_PILLAR" x="147.218" y="107.818" visible="0">
+  <object id="143" type="ECHO_ACTOR" x="147.218" y="107.818" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="144" name="ECHO_ACTOR" type="FLESH_PILLAR" x="147.218" y="119.02" visible="0">
+  <object id="144" type="ECHO_ACTOR" x="147.218" y="119.02" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="145" name="ECHO_ACTOR" type="FLESH_PILLAR" x="148.094" y="131.798" visible="0">
+  <object id="145" type="ECHO_ACTOR" x="148.094" y="131.798" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="146" name="ECHO_ACTOR" type="FLESH_PILLAR" x="135.666" y="130.747" visible="0">
+  <object id="146" type="ECHO_ACTOR" x="135.666" y="130.747" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="147" name="ECHO_ACTOR" type="FLESH_PILLAR" x="129" y="141.25" visible="0">
+  <object id="147" type="ECHO_ACTOR" x="129" y="141.25" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="148" name="ECHO_ACTOR" type="FLESH_PILLAR" x="50.5847" y="150.328" visible="0">
+  <object id="148" type="ECHO_ACTOR" x="50.5847" y="150.328" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="149" name="ECHO_ACTOR" type="FLESH_PILLAR" x="33.7815" y="150.153" visible="0">
+  <object id="149" type="ECHO_ACTOR" x="33.7815" y="150.153" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="150" name="ECHO_ACTOR" type="FLESH_PILLAR" x="31.0532" y="143.175" visible="0">
+  <object id="150" type="ECHO_ACTOR" x="31.0532" y="143.175" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="151" name="ECHO_ACTOR" type="FLESH_PILLAR" x="43.1305" y="144.925" visible="0">
+  <object id="151" type="ECHO_ACTOR" x="43.1305" y="144.925" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="152" name="ECHO_ACTOR" type="FLESH_PILLAR" x="61.859" y="145.275" visible="0">
+  <object id="152" type="ECHO_ACTOR" x="61.859" y="145.275" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="153" name="ECHO_ACTOR" type="FLESH_PILLAR" x="79.5374" y="147.551" visible="0">
+  <object id="153" type="ECHO_ACTOR" x="79.5374" y="147.551" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="154" name="ECHO_ACTOR" type="FLESH_PILLAR" x="95.9905" y="146.676" visible="0">
+  <object id="154" type="ECHO_ACTOR" x="95.9905" y="146.676" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="155" name="ECHO_ACTOR" type="FLESH_PILLAR" x="14.25" y="143" visible="0">
+  <object id="155" type="ECHO_ACTOR" x="14.25" y="143" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="156" name="ECHO_ACTOR" type="FLESH_PILLAR" x="133.303" y="143.675" visible="0">
+  <object id="156" type="ECHO_ACTOR" x="133.303" y="143.675" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="157" name="ECHO_ACTOR" type="FLESH_PILLAR" x="145.381" y="145.425" visible="0">
+  <object id="157" type="ECHO_ACTOR" x="145.381" y="145.425" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="158" name="ECHO_ACTOR" type="FLESH_PILLAR" x="116.5" y="143.5" visible="0">
+  <object id="158" type="ECHO_ACTOR" x="116.5" y="143.5" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="170" name="ECHO_ACTOR" type="FLESH_PILLAR" x="9.2564" y="132.798" visible="0">
+  <object id="170" type="ECHO_ACTOR" x="9.2564" y="132.798" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="171" name="ECHO_ACTOR" type="FLESH_PILLAR" x="3.4802" y="122.996" visible="0">
+  <object id="171" type="ECHO_ACTOR" x="3.4802" y="122.996" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="172" name="ECHO_ACTOR" type="FLESH_PILLAR" x="1.0298" y="102.167" visible="0">
+  <object id="172" type="ECHO_ACTOR" x="1.0298" y="102.167" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="173" name="ECHO_ACTOR" type="FLESH_PILLAR" x="1.5549" y="90.6148" visible="0">
+  <object id="173" type="ECHO_ACTOR" x="1.5549" y="90.6148" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="174" name="ECHO_ACTOR" type="FLESH_PILLAR" x="3.4802" y="78.3624" visible="0">
+  <object id="174" type="ECHO_ACTOR" x="3.4802" y="78.3624" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="175" name="ECHO_ACTOR" type="FLESH_PILLAR" x="5.2306" y="65.41" visible="0">
+  <object id="175" type="ECHO_ACTOR" x="5.2306" y="65.41" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="176" name="ECHO_ACTOR" type="FLESH_PILLAR" x="7.331" y="51.7574" visible="0">
+  <object id="176" type="ECHO_ACTOR" x="7.331" y="51.7574" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="177" name="ECHO_ACTOR" type="FLESH_PILLAR" x="7.506" y="38.2798" visible="0">
+  <object id="177" type="ECHO_ACTOR" x="7.506" y="38.2798" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="178" name="ECHO_ACTOR" type="FLESH_PILLAR" x="9.7815" y="28.6529" visible="0">
+  <object id="178" type="ECHO_ACTOR" x="9.7815" y="28.6529" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="179" name="ECHO_ACTOR" type="FLESH_PILLAR" x="7.0532" y="21.6751" visible="0">
+  <object id="179" type="ECHO_ACTOR" x="7.0532" y="21.6751" visible="0">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="FLESH_PILLAR"/>
+   </properties>
    <point/>
   </object>
-  <object id="182" name="WALL" x="68" y="32" width="24" height="8"/>
-  <object id="185" name="DECO" type="IMPALED" x="104" y="40">
+  <object id="182" type="WALL" x="68" y="32" width="24" height="8"/>
+  <object id="185" type="DECO" x="104" y="40">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="186" name="DECO" type="IMPALED" x="54" y="40">
+  <object id="186" type="DECO" x="54" y="40">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

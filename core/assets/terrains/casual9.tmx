@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="56">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="56">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -18,14 +18,20 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="44" name="EMERGED" x="-23.5" y="48.25">
+  <object id="44" type="EMERGED" x="-23.5" y="48.25" visible="0">
    <polygon points="172.306,-36.1998 172.828,85.3454 69.6209,83.7432 36.4629,51.9091 36.9259,-37.0119"/>
   </object>
-  <object id="53" name="WALL" x="96.3199" y="47.7597" width="31.2279" height="6"/>
-  <object id="54" name="DECO" type="DEAD_TREE" x="52.8601" y="91.0174">
+  <object id="53" type="WALL" x="96.3199" y="47.7597" width="31.2279" height="6"/>
+  <object id="54" type="DECO" x="52.8601" y="91.0174">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="DEAD_TREE"/>
+   </properties>
    <point/>
   </object>
-  <object id="55" name="DECO" type="DEAD_TREE" x="125.149" y="87.3417">
+  <object id="55" type="DECO" x="125.149" y="87.3417">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="DEAD_TREE"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

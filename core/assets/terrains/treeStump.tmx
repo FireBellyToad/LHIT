@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="35">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="35">
  <editorsettings>
   <export target="../../../../test..json" format="json"/>
  </editorsettings>
@@ -18,19 +18,26 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="20" name="DECO" type="TREE_STUMP" x="78.765" y="72.6389">
+  <object id="20" type="DECO" x="78.765" y="72.6389">
    <properties>
-    <property name="isEchoTrigger" type="bool" value="false"/>
+    <property name="decoType" propertytype="DecoType" value="TREE_STUMP"/>
+    <property name="isEchoTrigger" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
-  <object id="25" name="ECHO_ACTOR" type="VICTIM" x="90" y="73.4545">
+  <object id="25" type="ECHO_ACTOR" x="90" y="73.4545">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="VICTIM"/>
+   </properties>
    <point/>
   </object>
-  <object id="26" name="ECHO_ACTOR" type="DISCIPULUS" x="78.3637" y="56.6363">
+  <object id="26" type="ECHO_ACTOR" x="78.3637" y="56.6363">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="DISCIPULUS"/>
+   </properties>
    <point/>
   </object>
-  <object id="33" name="EMERGED" x="26" y="79" visible="0">
+  <object id="33" type="EMERGED" x="26" y="79" visible="0">
    <polygon points="3,1.72727 19.9091,-34.3636 55,-52.25 105.409,-16.6591 82.8182,17.5909 60.5,32.0227 38.6818,50.8636"/>
   </object>
  </objectgroup>

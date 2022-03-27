@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="57">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="57">
  <editorsettings>
-  <export target="." format="json"/>
+  <export format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="1" name="terrain" width="10" height="9">
@@ -18,55 +18,82 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="26" name="DECO" type="PLANT" x="35.75" y="38.25">
+  <object id="26" type="PLANT" x="35.75" y="38.25">
    <point/>
   </object>
-  <object id="30" name="DECO" type="GRASS" x="27.25" y="76.75">
+  <object id="30" type="DECO" x="27.25" y="76.75">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="31" name="DECO" type="GRASS" x="88.5" y="38.25">
+  <object id="31" type="DECO" x="88.5" y="38.25">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="34" name="DECO" type="PLANT" x="139" y="24.75">
+  <object id="34" type="PLANT" x="139" y="24.75">
    <point/>
   </object>
-  <object id="35" name="DECO" type="PLANT" x="143" y="53">
+  <object id="35" type="PLANT" x="143" y="53">
    <point/>
   </object>
-  <object id="36" name="DECO" type="GRASS" x="144.5" y="117">
+  <object id="36" type="DECO" x="144.5" y="117">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="39" name="DECO" type="GRASS" x="116.25" y="132.25">
+  <object id="39" type="DECO" x="116.25" y="132.25">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="40" name="DECO" type="PLANT" x="33" y="127.25">
+  <object id="40" type="PLANT" x="33" y="127.25">
    <point/>
   </object>
-  <object id="41" name="DECO" type="PLANT" x="118.25" y="44">
+  <object id="41" type="PLANT" x="118.25" y="44">
    <point/>
   </object>
-  <object id="43" name="POI" type="BUSH" x="79.5" y="78.25">
+  <object id="43" type="POI" x="79.5" y="78.25">
+   <properties>
+    <property name="poiType" propertytype="PoiType" value="BUSH"/>
+   </properties>
    <point/>
   </object>
-  <object id="44" name="DECO" type="GRASS" x="18" y="104.5">
+  <object id="44" type="DECO" x="18" y="104.5">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="45" name="DECO" type="PLANT" x="68.25" y="130.25">
+  <object id="45" type="PLANT" x="68.25" y="130.25">
    <point/>
   </object>
-  <object id="47" name="DECO" type="GRASS" x="15.25" y="21.75">
+  <object id="47" type="DECO" x="15.25" y="21.75">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="49" name="DECO" type="GRASS" x="131" y="80.5">
+  <object id="49" type="DECO" x="131" y="80.5">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="53" name="DECO" type="GRASS" x="60" y="21.5">
+  <object id="53" type="DECO" x="60" y="21.5">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="GRASS"/>
+   </properties>
    <point/>
   </object>
-  <object id="54" name="ENEMY" x="79" y="91">
+  <object id="54" type="ENEMY" x="79" y="91">
    <point/>
   </object>
-  <object id="56" name="EMERGED" x="58.3636" y="81.2727">
+  <object id="56" type="EMERGED" x="58.3636" y="81.2727">
    <polygon points="0.136364,-23.9318 43.9318,-23.5455 43,22.1818 -0.6591,20.0909"/>
   </object>
  </objectgroup>

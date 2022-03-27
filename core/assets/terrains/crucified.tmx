@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="39">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="39">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -18,26 +18,36 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="28" name="POI" type="CADAVER" x="79.3864" y="57.8864">
+  <object id="28" type="POI" x="79.3864" y="57.8864">
    <properties>
     <property name="isEchoTrigger" type="bool" value="false"/>
+    <property name="poiType" propertytype="PoiType" value="CADAVER"/>
    </properties>
    <point/>
   </object>
-  <object id="31" name="EMERGED" x="-20" y="-27.5">
+  <object id="31" type="EMERGED" x="-20" y="-27.5">
    <polygon points="46.477,37.0909 152.33,38.1705 152.727,128.722 46.3636,128.193"/>
   </object>
-  <object id="32" name="EMERGED" x="41.75" y="44">
+  <object id="32" type="EMERGED" x="41.75" y="44">
    <polygon points="95.727,76.3409 110.08,77.6705 108.727,91.472 94.8636,91.193"/>
   </object>
-  <object id="33" name="WALL" x="63.5" y="56.6818" width="32.5" height="13.3182"/>
-  <object id="34" name="ECHO_ACTOR" type="WOMAN" x="9.81817" y="89.2727">
+  <object id="33" type="WALL" x="63.5" y="56.6818" width="32.5" height="13.3182"/>
+  <object id="34" type="ECHO_ACTOR" x="9.81817" y="89.2727">
+   <properties>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="WOMAN"/>
+   </properties>
    <point/>
   </object>
-  <object id="37" name="DECO" type="IMPALED" x="128" y="95">
+  <object id="37" type="DECO" x="128" y="95">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="38" name="DECO" type="IMPALED" x="35" y="95">
+  <object id="38" type="DECO" x="35" y="95">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

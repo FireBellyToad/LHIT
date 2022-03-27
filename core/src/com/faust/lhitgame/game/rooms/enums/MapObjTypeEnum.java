@@ -5,7 +5,7 @@ package com.faust.lhitgame.game.rooms.enums;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public enum MapObjNameEnum {
+public enum MapObjTypeEnum {
     POI,
     DECO,
     ENEMY,

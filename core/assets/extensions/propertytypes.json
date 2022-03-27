@@ -1,0 +1,85 @@
+[
+    {
+        "id": 2,
+        "name": "DecoType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "PLANT",
+            "CROSS_WOOD",
+            "CROSS_IRON",
+            "STONE_1",
+            "STONE_2",
+            "GRASS",
+            "TREE_STUMP",
+            "BOAT",
+            "ALLY_CORPSE_1",
+            "ALLY_CORPSE_2",
+            "TUMOR",
+            "IMPALED",
+            "DEAD_TREE",
+            "PAPER"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 3,
+        "name": "EchoesActorType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "DISCIPULUS",
+            "VICTIM",
+            "WOMAN",
+            "DEAD_HAND",
+            "DEAD_DOUBLE_HAND",
+            "HORROR",
+            "HORROR_BODY",
+            "INFERNUM",
+            "FLESH_PILLAR",
+            "PORTAL_SPAWNER",
+            "SECRET",
+            "DIACONUS"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 4,
+        "name": "EnemyType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "UNDEFINED,",
+            "STRIX",
+            "BOUNDED",
+            "HIVE",
+            "SPITTER",
+            "MEAT",
+            "PORTAL",
+            "WILLOWISP",
+            "ESCAPE_PORTAL",
+            "DIACONUS"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 1,
+        "name": "PoiType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "SKELETON",
+            "BUSH",
+            "SOIL",
+            "CADAVER",
+            "BROTHER",
+            "ECHO_CORPSE",
+            "BURNT_PAPER",
+            "BAPTISMAL",
+            "BURNT_MONK",
+            "ALTAR",
+            "WATERSKIN"
+        ],
+        "valuesAsFlags": false
+    }
+]

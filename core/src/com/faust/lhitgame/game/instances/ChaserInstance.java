@@ -93,7 +93,7 @@ public abstract class ChaserInstance extends AnimatedInstance {
         //Do a raycast, save all instances that are caught by the ray
         final List<Pair<Float, Object>> tempInstancesList = new ArrayList<>();
         final RayCastCallback getTargetAndWallsInRay = (fixture, point, normal, fraction) -> {
-            //Select only walls, non passable decorations and player (excluding hitboxes)
+            //Select only walls, non passable decorations and target (excluding hitboxes)
             if (RayCastUtils.isTargetOrWall(fixture, target)) {
                 tempInstancesList.add(new Pair<>(fraction, fixture.getBody().getUserData()));
             }
@@ -126,14 +126,14 @@ public abstract class ChaserInstance extends AnimatedInstance {
     }
 
     /**
-     * Check if should go to player or another point
+     * Check if should go to target or another point
      *
      * @return
      */
     protected Vector2 getMovementDestination() {
 
         if (canSeeTarget()) {
-            //If can see player, just follow
+            //If can see target, just follow
             isAggressive = true;
             recalculatePath = true;
             pathQueue.clear();

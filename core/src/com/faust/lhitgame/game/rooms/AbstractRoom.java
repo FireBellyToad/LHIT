@@ -31,7 +31,7 @@ import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
 import com.faust.lhitgame.game.rooms.areas.WallArea;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
-import com.faust.lhitgame.game.rooms.enums.MapObjNameEnum;
+import com.faust.lhitgame.game.rooms.enums.MapObjTypeEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhitgame.game.splash.SplashManager;
@@ -124,33 +124,35 @@ public abstract class AbstractRoom implements Spawner {
         // Place objects in room
         this.mapObjects.forEach(obj -> {
 
+            String typeString = (String) obj.getProperties().get("type");
+
             // Prepare POI
-            if (MapObjNameEnum.POI.name().equals(obj.getName())) {
+            if (MapObjTypeEnum.POI.name().equals(typeString)) {
                 addObjAsPOI(obj, textManager, assetManager);
             }
 
             // Prepare decoration
-            if (MapObjNameEnum.DECO.name().equals(obj.getName())) {
+            if (MapObjTypeEnum.DECO.name().equals(typeString)) {
                 addObjAsDecoration(obj, assetManager);
             }
 
             // Prepare enemy if they are enabled
-            if (!roomSaveEntry.savedFlags.get(RoomFlagEnum.DISABLED_ENEMIES) && MapObjNameEnum.ENEMY.name().equals(obj.getName())) {
+            if (!roomSaveEntry.savedFlags.get(RoomFlagEnum.DISABLED_ENEMIES) && MapObjTypeEnum.ENEMY.name().equals(typeString)) {
                 addObjAsEnemy(obj, assetManager, false);
             }
 
             // Prepare enemy (casual choice)
-            if (MapObjNameEnum.WALL.name().equals(obj.getName())) {
+            if (MapObjTypeEnum.WALL.name().equals(typeString)) {
                 addObjAsWall(obj);
             }
 
             // Prepare enemy (casual choice)
-            if (MapObjNameEnum.EMERGED.name().equals(obj.getName())) {
+            if (MapObjTypeEnum.EMERGED.name().equals(typeString)) {
                 addObjAsEmerged(obj);
             }
 
             // Prepare PathNodes
-            if (PathNode.class.getSimpleName().equals(obj.getName())) {
+            if (PathNode.class.getSimpleName().equals(typeString)) {
                 addObjAsPathNode(obj);
             }
         });
@@ -220,7 +222,7 @@ public abstract class AbstractRoom implements Spawner {
      */
     protected void addObjAsPOI(MapObject obj, TextBoxManager textManager, AssetManager assetManager) {
 
-        POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("type"));
+        POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("poiType"));
         Objects.requireNonNull(poiType);
 
         Gdx.app.log("DEBUG", "GUARANTEED_GOLDCROSS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
@@ -242,7 +244,7 @@ public abstract class AbstractRoom implements Spawner {
      */
     protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
 
-        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("type"));
+        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("decoType"));
         Objects.requireNonNull(decoType);
 
         roomContent.decorationList.add(new DecorationInstance(
@@ -262,8 +264,8 @@ public abstract class AbstractRoom implements Spawner {
         // Enemies are usually dynamically determined, with a couple of exceptional cases
         // which should be set as "type" property on MapObject
         EnemyEnum enemyEnum = EnemyEnum.UNDEFINED;
-        if (obj.getProperties().containsKey("type")) {
-            enemyEnum = EnemyEnum.valueOf((String) obj.getProperties().get("type"));
+        if (obj.getProperties().containsKey("enemyType")) {
+            enemyEnum = EnemyEnum.valueOf((String) obj.getProperties().get("enemyType"));
             Objects.requireNonNull(enemyEnum);
         }
 

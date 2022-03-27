@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="175">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="175">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -20,56 +20,77 @@
  <objectgroup id="2" name="objects">
   <object id="44" name="WALL" x="0" y="0" width="160" height="16" visible="0"/>
   <object id="45" name="WALL" x="144" y="0" width="16" height="144"/>
-  <object id="46" name="ENEMY" x="89.5967" y="73.578">
-   <properties>
-    <property name="isEchoTrigger" type="bool" value="false"/>
-   </properties>
+  <object id="46" type="ENEMY" x="89.5967" y="73.578">
    <point/>
   </object>
   <object id="47" name="EMERGED" x="29.5" y="29.75" visible="0">
    <polygon points="102.25,-22 -0.125132,-17.7725 -18.1923,-0.107952 -18.4742,68.2357 1.8979,89.8454 94.2044,113.606 116.848,113.737 116.682,-32.9091"/>
   </object>
   <object id="147" name="WALL" x="128.727" y="31.1818" width="16" height="56"/>
-  <object id="155" name="DECO" type="STONE_2" x="124.403" y="61.0445">
+  <object id="155" type="DECO" x="124.403" y="61.0445">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_2"/>
+   </properties>
    <point/>
   </object>
-  <object id="156" name="DECO" type="STONE_1" x="140.948" y="53.9535">
+  <object id="156" type="DECO" x="140.948" y="53.9535">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_1"/>
+   </properties>
    <point/>
   </object>
-  <object id="157" name="DECO" type="STONE_1" x="126.766" y="82.3172">
+  <object id="157" type="DECO" x="126.766" y="82.3172">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_2"/>
+   </properties>
    <point/>
   </object>
-  <object id="158" name="DECO" type="STONE_2" x="144.403" y="90.3172">
+  <object id="158" type="DECO" x="144.403" y="90.3172">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_2"/>
+   </properties>
    <point/>
   </object>
-  <object id="163" name="DECO" type="STONE_2" x="46.2617" y="69.0961">
+  <object id="163" type="DECO" x="46.2617" y="69.0961">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_1"/>
+   </properties>
    <point/>
   </object>
-  <object id="164" name="DECO" type="STONE_1" x="57.9058" y="56.9793">
+  <object id="164" type="DECO" x="57.9058" y="56.9793">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_2"/>
+   </properties>
    <point/>
   </object>
-  <object id="165" name="DECO" type="STONE_1" x="58.6016" y="85.2928">
+  <object id="165" type="DECO" x="58.6016" y="85.2928">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_2"/>
+   </properties>
    <point/>
   </object>
-  <object id="166" name="DECO" type="STONE_2" x="51.5589" y="100.694">
+  <object id="166" type="DECO" x="51.5589" y="100.694">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="STONE_1"/>
+   </properties>
    <point/>
   </object>
-  <object id="168" name="PathNode" x="85" y="125">
+  <object id="168" type="PathNode" x="85" y="125">
    <point/>
   </object>
-  <object id="169" name="PathNode" x="21" y="125">
+  <object id="169" type="PathNode" x="21" y="125">
    <point/>
   </object>
-  <object id="170" name="PathNode" x="21" y="23">
+  <object id="170" type="PathNode" x="21" y="23">
    <point/>
   </object>
-  <object id="172" name="PathNode" x="85" y="23">
+  <object id="172" type="PathNode" x="85" y="23">
    <point/>
   </object>
-  <object id="173" name="PathNode" x="94" y="64">
+  <object id="173" type="PathNode" x="94" y="64">
    <point/>
   </object>
-  <object id="174" name="PathNode" x="16" y="68">
+  <object id="174" type="PathNode" x="16" y="68">
    <point/>
   </object>
  </objectgroup>

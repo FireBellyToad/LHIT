@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="44">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="44">
  <editorsettings>
-  <export target="." format="json"/>
+  <export format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="terrain.tsx"/>
  <layer id="3" name="overlay" width="10" height="9">
@@ -31,20 +31,32 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="20" name="DECO" type="CROSS_WOOD" x="34" y="131">
+  <object id="20" type="DECO" x="34" y="131">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="CROSS_WOOD"/>
+   </properties>
    <point/>
   </object>
-  <object id="21" name="DECO" type="CROSS_IRON" x="61.5" y="122.75">
+  <object id="21" type="DECO" x="61.5" y="122.75">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="CROSS_IRON"/>
+   </properties>
    <point/>
   </object>
-  <object id="22" name="DECO" type="PLANT" x="88.5" y="23.75">
+  <object id="22" type="DECO" x="88.5" y="23.75">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="PLANT"/>
+   </properties>
    <point/>
   </object>
-  <object id="25" name="DECO" type="CROSS_WOOD" x="90.75" y="134.5">
+  <object id="25" type="DECO" x="90.75" y="134.5">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="CROSS_WOOD"/>
+   </properties>
    <point/>
   </object>
-  <object id="41" name="WALL" x="0" y="0" width="16" height="144"/>
-  <object id="43" name="EMERGED" x="-4" y="38">
+  <object id="41" type="WALL" x="0" y="0" width="16" height="144"/>
+  <object id="43" type="EMERGED" x="-4" y="38">
    <polygon points="8.75,-32.5 55.5,-8 104.75,22.75 136,18.75 154.75,37.375 163.75,106.5 7,106"/>
   </object>
  </objectgroup>

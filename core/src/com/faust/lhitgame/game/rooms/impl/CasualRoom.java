@@ -29,18 +29,22 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
+    //List of map casual numbers with a Golden cross
     public static final List<Integer> GOLDCROSS_MAPS = new ArrayList<Integer>() {{
         this.add(1);
         this.add(5);
         this.add(6);
         this.add(10);
     }};
+
+    //List of Map casual numbers with a bush
     public static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
         this.add(3);
         this.add(8);
     }};
 
-    public static final int CASUAL_TOTAL = 11;
+    // Total number of supported casual rooms
+    public static final int CASUAL_TOTAL = 12;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
         super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry,  musicManager);

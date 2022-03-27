@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="40">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="40">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -18,31 +18,49 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="22" name="EMERGED" x="-8.25" y="38" visible="0">
+  <object id="22" type="EMERGED" x="-8.25" y="38" visible="0">
    <polygon points="3.25,-37.5 173.25,-37.75 155.75,15 141.375,19.1875 141.25,63.125 36,63.8125 32,19.5313 22,13.25"/>
   </object>
-  <object id="27" name="ENEMY" x="36.7273" y="43.8181">
+  <object id="27" type="ENEMY" x="36.7273" y="43.8181">
    <point/>
   </object>
-  <object id="28" name="ENEMY" x="126.363" y="43.8182">
+  <object id="28" type="ENEMY" x="126.363" y="43.8182">
    <point/>
   </object>
-  <object id="29" name="DECO" type="IMPALED" x="56" y="80">
+  <object id="29" type="DECO" x="56" y="80">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="30" name="DECO" type="IMPALED" x="56" y="50.3636">
+  <object id="30" type="DECO" x="56" y="50.3636">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="31" name="DECO" type="IMPALED" x="56.4545" y="28.1818">
+  <object id="31" type="DECO" x="56.4545" y="28.1818">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="36" name="DECO" type="IMPALED" x="104.909" y="80.1819">
+  <object id="36" type="DECO" x="104.909" y="80.1819">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="37" name="DECO" type="IMPALED" x="104.909" y="50.5455">
+  <object id="37" type="DECO" x="104.909" y="50.5455">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
-  <object id="38" name="DECO" type="IMPALED" x="105.364" y="28.3637">
+  <object id="38" type="DECO" x="105.364" y="28.3637">
+   <properties>
+    <property name="decoType" propertytype="DecoType" value="IMPALED"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

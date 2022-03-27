@@ -83,7 +83,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeePlayer() ||isAggressive )) {
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeeTarget() ||isAggressive )) {
 
             deactivateAttackBodies();
             isAggressive = true;

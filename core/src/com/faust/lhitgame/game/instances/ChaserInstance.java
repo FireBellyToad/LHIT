@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Queue;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
 import com.faust.lhitgame.game.gameentities.GameEntity;
-import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.utils.Pair;
 import com.faust.lhitgame.utils.PathfinderUtils;
@@ -57,10 +56,11 @@ public abstract class ChaserInstance extends AnimatedInstance {
      */
     public void calculateNewGoal(RoomNodesGraph roomNodesGraph) {
 
-        if (!recalculatePath || Objects.isNull(roomNodesGraph) || canSeePlayer())
+        //Do not calculate if has no nodesGraph or if target is in line of sight
+        if (!recalculatePath || Objects.isNull(roomNodesGraph) || canSeeTarget())
             return;
 
-        Array<PathNode> nodeArray = roomNodesGraph.getNodeArray();
+        final Array<PathNode> nodeArray = roomNodesGraph.getNodeArray();
 
         //get nearest to This
         nodeArray.sort((n1, n2) -> Float.compare(body.getPosition().dst(n1), body.getPosition().dst(n2)));
@@ -70,7 +70,7 @@ public abstract class ChaserInstance extends AnimatedInstance {
         nodeArray.sort((n1, n2) -> Float.compare(target.getBody().getPosition().dst(n1), target.getBody().getPosition().dst(n2)));
         newGoal = nodeArray.get(0);
 
-        GraphPath<PathNode> graphPath = PathfinderUtils.generatePath(currentPos, newGoal, roomNodesGraph);
+        final GraphPath<PathNode> graphPath = PathfinderUtils.generatePath(currentPos, newGoal, roomNodesGraph);
         for (PathNode pathNode : graphPath) {
             pathQueue.addLast(pathNode);
 
@@ -83,16 +83,16 @@ public abstract class ChaserInstance extends AnimatedInstance {
         targetPathNode = pathQueue.isEmpty() ? currentPos : pathQueue.removeFirst();
     }
 
-    protected boolean canSeePlayer() {
-        //Check if player is in range
-        if ((getDistanceFromPlayer() > (getLineOfSight() * 0.75) && !isAggressive) ||
-                (getDistanceFromPlayer() > getLineOfSight() && isAggressive)) {
+    protected boolean canSeeTarget() {
+        //Check if target is in range
+        if ((getDistanceFromTarget() > (getLineOfSight() * 0.75) && !isAggressive) ||
+                (getDistanceFromTarget() > getLineOfSight() && isAggressive)) {
             return false;
         }
 
         //Do a raycast, save all instances that are caught by the ray
         final List<Pair<Float, Object>> tempInstancesList = new ArrayList<>();
-        final RayCastCallback getPlayerAndWallsInRay = (fixture, point, normal, fraction) -> {
+        final RayCastCallback getTargetAndWallsInRay = (fixture, point, normal, fraction) -> {
             //Select only walls, non passable decorations and player (excluding hitboxes)
             if (RayCastUtils.isTargetOrWall(fixture, target)) {
                 tempInstancesList.add(new Pair<>(fraction, fixture.getBody().getUserData()));
@@ -100,11 +100,11 @@ public abstract class ChaserInstance extends AnimatedInstance {
             return 1;
         };
 
-        rayCaster.rayCast(getPlayerAndWallsInRay, body.getPosition(), target.getBody().getPosition());
+        rayCaster.rayCast(getTargetAndWallsInRay, body.getPosition(), target.getBody().getPosition());
         //Order by distance from this, using fraction
         tempInstancesList.sort((p1, p2) -> Float.compare(p1.getFirst(), p2.getFirst()));
-        //Check if first one is player
-        return !tempInstancesList.isEmpty() && tempInstancesList.get(0).getSecond() instanceof PlayerInstance;
+        //Check if first one is target
+        return !tempInstancesList.isEmpty() && tempInstancesList.get(0).getSecond().equals(target);
     }
 
     /**
@@ -119,9 +119,9 @@ public abstract class ChaserInstance extends AnimatedInstance {
     /**
      * Can be overridden
      *
-     * @return Distance From Player
+     * @return Distance From target
      */
-    protected float getDistanceFromPlayer() {
+    protected float getDistanceFromTarget() {
         return target.getBody().getPosition().dst(body.getPosition());
     }
 
@@ -132,7 +132,7 @@ public abstract class ChaserInstance extends AnimatedInstance {
      */
     protected Vector2 getMovementDestination() {
 
-        if (canSeePlayer()) {
+        if (canSeeTarget()) {
             //If can see player, just follow
             isAggressive = true;
             recalculatePath = true;

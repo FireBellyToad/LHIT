@@ -56,7 +56,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
         if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (!attachedToPlayer && (canSeePlayer() || isAggressive)) {
+        if (!attachedToPlayer && (canSeeTarget() || isAggressive)) {
             currentBehavior = GameBehavior.WALK;
             isAggressive = true;
             calculateNewGoal(roomContent.roomGraph);

@@ -94,7 +94,7 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeePlayer() || isAggressive)) {
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeeTarget() || isAggressive)) {
 
             deactivateAttackBodies();
             isAggressive = true;

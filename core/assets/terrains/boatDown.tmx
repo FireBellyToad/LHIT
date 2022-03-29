@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="175">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="176">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -92,6 +92,9 @@
   </object>
   <object id="174" type="PathNode" x="16" y="68">
    <point/>
+  </object>
+  <object id="175" type="EMERGED" x="145.25" y="-0.25">
+   <polygon points="-118.5,11 -133,29 -132.25,102.75 -114.25,119 17.25,154.25 17,-1.75"/>
   </object>
  </objectgroup>
 </map>

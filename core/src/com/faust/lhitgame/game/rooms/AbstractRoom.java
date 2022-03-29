@@ -510,19 +510,21 @@ public abstract class AbstractRoom implements Spawner {
         final MapObject mapObjectStub = new MapObject();
         mapObjectStub.getProperties().put("x", startX);
         mapObjectStub.getProperties().put("y", startY);
-        mapObjectStub.getProperties().put("type", instanceIdentifierEnum);
 
         //Insert last enemy into world
         if (ClassReflection.isAssignableFrom(AnimatedInstance.class,instanceClass)) {
+            mapObjectStub.getProperties().put("enemyType", instanceIdentifierEnum);
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
         } else if (instanceClass.equals(POIInstance.class)) {
+            mapObjectStub.getProperties().put("poiType", instanceIdentifierEnum);
             mapObjectStub.getProperties().put("id", 0);
             addObjAsPOI(mapObjectStub, textManager, assetManager);
             POIInstance lastPOIInstance = roomContent.poiList.get(roomContent.poiList.size() - 1);
             worldManager.insertPOIIntoWorld(Collections.singletonList(lastPOIInstance));
             roomContent.player.changePOIList(roomContent.poiList);
         } else  if (instanceClass.equals(PortalInstance.class)) {
+            mapObjectStub.getProperties().put("enemyType", instanceIdentifierEnum);
             addObjAsEnemy(mapObjectStub, assetManager, true);
         }
     }

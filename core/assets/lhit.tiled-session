@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "terrains/pedestal.tmx",
+    "activeFile": "terrains/casual12.tmx",
     "expandedProjectPaths": [
         "terrains"
     ],
@@ -405,8 +405,8 @@
             "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 51.625,
-                "y": 100.875
+                "x": 71.75,
+                "y": 53.375
             }
         },
         "terrains/boatLeft.tmx": {
@@ -439,6 +439,14 @@
             "viewCenter": {
                 "x": 98.82149688406244,
                 "y": 130.21533905102734
+            }
+        },
+        "terrains/casual12.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 80,
+                "y": 72.125
             }
         },
         "terrains/casual2.tmx": {
@@ -626,7 +634,7 @@
             }
         },
         "terrains/terrain.tsx": {
-            "scaleInDock": 3
+            "scaleInDock": 2
         },
         "terrains/treeStump.tmx": {
             "scale": 3.8296875,
@@ -637,7 +645,7 @@
             }
         }
     },
-    "last.objectTypesPath": "E:/Repositories/LHIT/core/assets/extensions/propertytypes.json",
+    "last.objectTypesPath": "E:/Repositories/LHIT/core/assets/extensions/objecttypes.xml",
     "map.fixedSize": true,
     "map.height": 9,
     "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
@@ -646,24 +654,13 @@
     "map.tileWidth": 16,
     "map.width": 10,
     "openFiles": [
-        "terrains/pedestal.tmx",
-        "terrains/boat.tmx",
-        "terrains/boatDown.tmx",
-        "terrains/infernum.tmx",
-        "terrains/boatLeft.tmx",
-        "terrains/casual7.tmx",
-        "terrains/cemeteryCenter.tmx",
-        "terrains/crucified.tmx",
-        "terrains/cemeteryRight.tmx",
-        "terrains/churchLeft.tmx",
-        "terrains/churchRight.tmx",
-        "terrains/churchEntrance.tmx",
-        "terrains/churchBottom.tmx",
-        "terrains/casual9.tmx"
+        "terrains/casual12.tmx"
     ],
     "project": "lhit.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "terrains/boatDown.tmx",
+        "terrains/casual12.tmx",
         "terrains/casual1.tmx",
         "terrains/casual11.tmx",
         "terrains/cemeteryCenter.tmx",
@@ -673,10 +670,9 @@
         "terrains/casual5.tmx",
         "terrains/casual8.tmx",
         "terrains/startLeft.tmx",
-        "terrains/startRight.tmx",
-        "terrains/treeStump.tmx",
-        "terrains/start.tmx"
+        "terrains/startRight.tmx"
     ],
+    "textEdit.monospace": false,
     "tileset.embedInMap": false,
     "tileset.margin": 0,
     "tileset.spacing": 0,

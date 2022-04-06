@@ -15,7 +15,7 @@ import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
-import com.faust.lhitgame.game.instances.ChaserInstance;
+import com.faust.lhitgame.game.instances.DistancerInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
@@ -32,31 +32,23 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class DiaconusInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
+public class DiaconusInstance extends DistancerInstance implements Interactable, Hurtable, Damager {
 
     private static final float DIACONUS_SPEED = 35;
-    private static final int LINE_OF_ATTACK = 15;
-    private static final float SPATHA_SENSOR_Y_OFFSET = 10;
+    private static final int LINE_OF_ATTACK = 50;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
-    private boolean isAggressive = false;
     private boolean isSubmerged = false;
 
     private long startAttackCooldown = 0;
 
-    //Body for spear attacks
-    private Body downSpathaBody;
-    private Body leftSpathaBody;
-    private Body rightSpathaBody;
-    private Body upSpathaBody;
-
     private final ParticleEffect waterWalkEffect;
 
     public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
-        super(new DiaconusEntity(assetManager), target, rayCaster);
+        super(new DiaconusEntity(assetManager), target);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
@@ -72,14 +64,13 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
-        translateAccessoryBodies();
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
         if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
-                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+                target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK) {
 
             //Start animation
             if (!GameBehavior.ATTACK.equals(currentBehavior)) {
@@ -95,10 +86,8 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeeTarget() || isAggressive)) {
-
-            deactivateAttackBodies();
-            isAggressive = true;
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) < LINE_OF_ATTACK) {
+            //FIXME add check that if still attacking keeps attacking
             currentBehavior = GameBehavior.WALK;
             calculateNewGoal(roomContent.roomGraph);
 
@@ -111,24 +100,12 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
 
             // Move towards target
             body.setLinearVelocity(DIACONUS_SPEED * direction.x, DIACONUS_SPEED * direction.y);
-            deactivateAttackBodies();
         } else {
             currentBehavior = GameBehavior.IDLE;
 
             body.setLinearVelocity(0, 0);
         }
 
-    }
-
-    /**
-     * Translate all accessory body
-     */
-    private void translateAccessoryBodies() {
-        rightSpathaBody.setTransform(body.getPosition().x + 10, body.getPosition().y + SPATHA_SENSOR_Y_OFFSET, 0);
-        upSpathaBody.setTransform(body.getPosition().x, body.getPosition().y + 11 + SPATHA_SENSOR_Y_OFFSET, 0);
-        leftSpathaBody.setTransform(body.getPosition().x - 10, body.getPosition().y + SPATHA_SENSOR_Y_OFFSET, 0);
-        downSpathaBody.setTransform(body.getPosition().x, body.getPosition().y - 11 + SPATHA_SENSOR_Y_OFFSET, 0);
-        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
     /**
@@ -172,106 +149,6 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
         body.setUserData(this);
         body.createFixture(fixtureDef);
         shape.dispose();
-
-        BodyDef rightSpathaDef = new BodyDef();
-        rightSpathaDef.type = BodyDef.BodyType.KinematicBody;
-        rightSpathaDef.fixedRotation = true;
-        rightSpathaDef.position.set(x + 2, y);
-
-        // Define shape
-        PolygonShape rightSpathaShape = new PolygonShape();
-        rightSpathaShape.setAsBox(4, 6);
-
-        // Define Fixtures
-        FixtureDef rightSpathaFixtureDef = new FixtureDef();
-        rightSpathaFixtureDef.shape = rightSpathaShape;
-        rightSpathaFixtureDef.density = 1;
-        rightSpathaFixtureDef.friction = 1;
-        rightSpathaFixtureDef.isSensor = true;
-        rightSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        rightSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
-
-        // Associate body to world
-        rightSpathaBody = world.createBody(rightSpathaDef);
-        rightSpathaBody.setUserData(this);
-        rightSpathaBody.createFixture(rightSpathaFixtureDef);
-        rightSpathaBody.setActive(false);
-        rightSpathaShape.dispose();
-
-        BodyDef upSpathaDef = new BodyDef();
-        upSpathaDef.type = BodyDef.BodyType.KinematicBody;
-        upSpathaDef.fixedRotation = true;
-        upSpathaDef.position.set(x, y - 2);
-
-        // Define shape
-        PolygonShape upSpathaShape = new PolygonShape();
-        upSpathaShape.setAsBox(6, 4);
-
-        // Define Fixtures
-        FixtureDef upSpathaFixtureDef = new FixtureDef();
-        upSpathaFixtureDef.shape = upSpathaShape;
-        upSpathaFixtureDef.density = 1;
-        upSpathaFixtureDef.friction = 1;
-        upSpathaFixtureDef.isSensor = true;
-        upSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        upSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
-
-        // Associate body to world
-        upSpathaBody = world.createBody(upSpathaDef);
-        upSpathaBody.setUserData(this);
-        upSpathaBody.createFixture(upSpathaFixtureDef);
-        upSpathaBody.setActive(false);
-        upSpathaShape.dispose();
-
-        BodyDef leftSpathaDef = new BodyDef();
-        leftSpathaDef.type = BodyDef.BodyType.KinematicBody;
-        leftSpathaDef.fixedRotation = true;
-        leftSpathaDef.position.set(x - 2, y);
-
-        // Define shape
-        PolygonShape leftSpathaShape = new PolygonShape();
-        leftSpathaShape.setAsBox(4, 6);
-
-        // Define Fixtures
-        FixtureDef leftSpathaFixtureDef = new FixtureDef();
-        leftSpathaFixtureDef.shape = leftSpathaShape;
-        leftSpathaFixtureDef.density = 1;
-        leftSpathaFixtureDef.friction = 1;
-        leftSpathaFixtureDef.isSensor = true;
-        leftSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        leftSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
-
-        // Associate body to world
-        leftSpathaBody = world.createBody(leftSpathaDef);
-        leftSpathaBody.setUserData(this);
-        leftSpathaBody.createFixture(leftSpathaFixtureDef);
-        leftSpathaBody.setActive(false);
-        leftSpathaShape.dispose();
-
-        BodyDef downSpathaDef = new BodyDef();
-        downSpathaDef.type = BodyDef.BodyType.KinematicBody;
-        downSpathaDef.fixedRotation = true;
-        downSpathaDef.position.set(x, y + 2);
-
-        // Define shape
-        PolygonShape downSpathaShape = new PolygonShape();
-        downSpathaShape.setAsBox(6, 4);
-
-        // Define Fixtures
-        FixtureDef downSpathaFixtureDef = new FixtureDef();
-        downSpathaFixtureDef.shape = downSpathaShape;
-        downSpathaFixtureDef.density = 1;
-        downSpathaFixtureDef.friction = 1;
-        downSpathaFixtureDef.isSensor = true;
-        downSpathaFixtureDef.filter.categoryBits = CollisionManager.WEAPON_GROUP;
-        downSpathaFixtureDef.filter.maskBits = CollisionManager.PLAYER_GROUP;
-
-        // Associate body to world
-        downSpathaBody = world.createBody(downSpathaDef);
-        downSpathaBody.setUserData(this);
-        downSpathaBody.createFixture(downSpathaFixtureDef);
-        downSpathaBody.setActive(false);
-        downSpathaShape.dispose();
 
         // Hitbox definition
         BodyDef hitBoxDef = new BodyDef();
@@ -439,41 +316,13 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
-            switch (currentDirectionEnum) {
-                case UP: {
-                    upSpathaBody.setActive(true);
-                    break;
-                }
-                case DOWN: {
-                    downSpathaBody.setActive(true);
-                    break;
-                }
-                case LEFT: {
-                    leftSpathaBody.setActive(true);
-                    break;
-                }
-                case RIGHT: {
-                    rightSpathaBody.setActive(true);
-                    break;
-                }
-            }
-        } else {
-            deactivateAttackBodies();
-        }
 
+        }
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        rightSpathaBody.getFixtureList().forEach(f ->
-                rightSpathaBody.destroyFixture(f));
-        leftSpathaBody.getFixtureList().forEach(f ->
-                leftSpathaBody.destroyFixture(f));
-        upSpathaBody.getFixtureList().forEach(f ->
-                upSpathaBody.destroyFixture(f));
-        downSpathaBody.getFixtureList().forEach(f ->
-                downSpathaBody.destroyFixture(f));
         waterWalkEffect.dispose();
     }
 
@@ -492,21 +341,6 @@ public class DiaconusInstance extends ChaserInstance implements Interactable, Hu
                 return stateTime;
             }
         }
-    }
-
-    /**
-     * Deactivate all attacker bodies
-     */
-    private void deactivateAttackBodies() {
-        rightSpathaBody.setActive(false);
-        upSpathaBody.setActive(false);
-        leftSpathaBody.setActive(false);
-        downSpathaBody.setActive(false);
-    }
-
-    @Override
-    protected float getLineOfSight() {
-        return 90f;
     }
 
     public void setSubmerged(boolean submerged) {

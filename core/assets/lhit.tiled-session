@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "terrains/casual12.tmx",
+    "activeFile": "terrains/infernum.tmx",
     "expandedProjectPaths": [
         "terrains"
     ],
@@ -405,8 +405,8 @@
             "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 71.75,
-                "y": 53.375
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/boatLeft.tmx": {
@@ -446,7 +446,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 80,
-                "y": 72.125
+                "y": 71.875
             }
         },
         "terrains/casual2.tmx": {
@@ -570,11 +570,11 @@
             }
         },
         "terrains/crucified.tmx": {
-            "scale": 3,
+            "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 35.16666666666667,
-                "y": 95.16666666666666
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/final.tmx": {
@@ -586,11 +586,11 @@
             }
         },
         "terrains/infernum.tmx": {
-            "scale": 5.5,
+            "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 80,
-                "y": 32.090909090909086
+                "x": 82.99999999999999,
+                "y": 52.83333333333333
             }
         },
         "terrains/massacre.tmx": {
@@ -606,7 +606,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 76.5,
-                "y": -12.125
+                "y": 50.875
             }
         },
         "terrains/start.tmx": {
@@ -654,23 +654,27 @@
     "map.tileWidth": 16,
     "map.width": 10,
     "openFiles": [
-        "terrains/casual12.tmx"
+        "terrains/casual12.tmx",
+        "terrains/boatDown.tmx",
+        "terrains/crucified.tmx",
+        "terrains/pedestal.tmx",
+        "terrains/infernum.tmx"
     ],
     "project": "lhit.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "terrains/boatDown.tmx",
         "terrains/casual12.tmx",
+        "terrains/boatDown.tmx",
+        "terrains/crucified.tmx",
+        "terrains/pedestal.tmx",
+        "terrains/infernum.tmx",
         "terrains/casual1.tmx",
         "terrains/casual11.tmx",
         "terrains/cemeteryCenter.tmx",
         "terrains/cemeteryRight.tmx",
         "terrains/casual7.tmx",
         "terrains/casual6.tmx",
-        "terrains/casual5.tmx",
-        "terrains/casual8.tmx",
-        "terrains/startLeft.tmx",
-        "terrains/startRight.tmx"
+        "terrains/casual5.tmx"
     ],
     "textEdit.monospace": false,
     "tileset.embedInMap": false,

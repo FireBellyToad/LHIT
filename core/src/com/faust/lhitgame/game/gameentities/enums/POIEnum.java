@@ -17,7 +17,9 @@ public enum POIEnum {
     BAPTISMAL("poi.baptismal", ItemEnum.HOLY_WATER, ItemEnum.WATERSKIN),
     BURNT_MONK("poi.burntmonk", "splash.burntmonk"),
     ALTAR("poi.altar", null, ItemEnum.HOLY_WATER),
-    WATERSKIN("poi.waterskin", ItemEnum.WATERSKIN, true);
+    WATERSKIN("poi.waterskin", ItemEnum.WATERSKIN, "", ItemEnum.RITUAL, true),
+    PARCHMENT("poi.parchment"),
+    RITUAL("poi.ritual",ItemEnum.RITUAL);
 
     private final String textKey;
     private final ItemEnum itemGiven;
@@ -53,9 +55,6 @@ public enum POIEnum {
         this(textKey, null, splashKey, null, false);
     }
 
-    POIEnum(String textKey, ItemEnum itemGiven, boolean isRemovableOnExamination) {
-        this(textKey, itemGiven, "", null, isRemovableOnExamination);
-    }
 
     public String getTextKey() {
 

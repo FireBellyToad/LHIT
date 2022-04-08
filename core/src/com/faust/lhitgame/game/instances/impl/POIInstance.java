@@ -103,15 +103,18 @@ public class POIInstance extends GameInstance {
 
     private boolean canCollectPOI(PlayerInstance player) {
 
+        //If has required Item. then collect it
+        ItemEnum requiredItemToCollect = ((POIEntity) entity).getType().getItemRequired();
+        if(Objects.nonNull(requiredItemToCollect)){
+            return player.getItemQuantityFound(requiredItemToCollect) >0;
+        }
+
+        // Custom checks
         switch (((POIEntity) entity).getType()) {
             case SKELETON:
                 return player.getItemQuantityFound(ItemEnum.GOLDCROSS) < 9;
             case SOIL:
                 return player.getItemQuantityFound(ItemEnum.HOLY_LANCE)  < 2; //Should be random only if not guaranteed!
-            case BAPTISMAL:
-                return player.getItemQuantityFound(ItemEnum.WATERSKIN) > 0 ;
-            case ALTAR:
-                return player.getItemQuantityFound(ItemEnum.HOLY_WATER) > 0 ;
             default:
                 return true;
         }

@@ -410,11 +410,11 @@
             }
         },
         "terrains/boatLeft.tmx": {
-            "scale": 4,
+            "scale": 8,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 59.375,
-                "y": 53.125
+                "x": 85.8125,
+                "y": 73.6875
             }
         },
         "terrains/casual1.tmx": {
@@ -565,7 +565,7 @@
             "scale": 5.7131944444444445,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 29.843199222073654,
+                "x": 29.84319922207365,
                 "y": 43.14573963777805
             }
         },
@@ -587,10 +587,10 @@
         },
         "terrains/infernum.tmx": {
             "scale": 3,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 82.99999999999999,
-                "y": 52.83333333333333
+                "x": 130,
+                "y": 33.5
             }
         },
         "terrains/massacre.tmx": {
@@ -605,8 +605,8 @@
             "scale": 4,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 76.5,
-                "y": 50.875
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/start.tmx": {
@@ -629,8 +629,8 @@
             "scale": 5.7131944444444445,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 98.28126899234229,
-                "y": 133.9880880029172
+                "x": 98.80636927190957,
+                "y": 38.769903974717394
             }
         },
         "terrains/terrain.tsx": {
@@ -645,7 +645,7 @@
             }
         }
     },
-    "last.objectTypesPath": "E:/Repositories/LHIT/core/assets/extensions/objecttypes.xml",
+    "last.objectTypesPath": "E:/Repositories/LHIT/core/assets/extensions/propertytypes.json",
     "map.fixedSize": true,
     "map.height": 9,
     "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
@@ -661,7 +661,7 @@
         "terrains/infernum.tmx"
     ],
     "project": "lhit.tiled-project",
-    "property.type": "bool",
+    "property.type": "object",
     "recentFiles": [
         "terrains/casual12.tmx",
         "terrains/boatDown.tmx",

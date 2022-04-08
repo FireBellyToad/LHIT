@@ -17,5 +17,6 @@
   <property name="mustTriggerAfterExamination" type="bool" default="false"/>
   <property name="poiType" type="string" propertytype="PoiType" default="SKELETON"/>
  </objecttype>
+ <objecttype name="TRIGGER" color="#ffaa00"/>
  <objecttype name="WALL" color="#000000"/>
 </objecttypes>

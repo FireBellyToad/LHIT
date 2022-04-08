@@ -78,7 +78,20 @@
             "BAPTISMAL",
             "BURNT_MONK",
             "ALTAR",
-            "WATERSKIN"
+            "WATERSKIN",
+            "PARCHMENT",
+            "RITUAL"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 5,
+        "name": "TriggerType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "CONTACT",
+            "USE"
         ],
         "valuesAsFlags": false
     }

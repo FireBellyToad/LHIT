@@ -750,15 +750,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         //Set item to 1 if not found before, or else add 1
         itemsFound.merge(itemFound,1,Integer::sum);
 
-        switch (itemFound) {
-            case HEALTH_KIT: {
-                //Increase available Kits, max 3
-                availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
-                break;
-            }
-            default: {
-                Gdx.app.log("WARN", "No special implementation for item " + itemFound.name());
-            }
+        if (itemFound == ItemEnum.HEALTH_KIT) {//Increase available Kits, max 3
+            availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
+        } else {
+            Gdx.app.log("WARN", "No special implementation for item " + itemFound.name());
         }
     }
 

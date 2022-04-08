@@ -3,6 +3,7 @@
   "description": "Diaconus spawns in the altar map",
   "steps": [
     {
+      "textBoxKey": "echo.diaconus.first"
     },
     {
     },

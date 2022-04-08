@@ -124,12 +124,10 @@ public class POIInstance extends GameInstance {
      * @return true if the poi is randomized
      */
     private boolean isRandomizedPOI() {
-        switch (((POIEntity) entity).getType()) {
-            case SKELETON:
-                return !guaranteedGoldcross; //Should be random only if not guaranteed!
-            default:
-                return false;
+        if (((POIEntity) entity).getType() == POIEnum.SKELETON) {
+            return !guaranteedGoldcross; //Should be random only if not guaranteed!
         }
+        return false;
     }
 
     @Override

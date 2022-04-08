@@ -115,7 +115,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
                 showTextBox = true;
             } else {
                 removeFromRoom = true;
-                spawnInstancesOnEnd(commands, false);
+                spawnInstancesOnEnd(commands);
                 Gdx.app.log("DEBUG", "Echo Actor " + ((EchoActorEntity) entity).getEchoesActorType() + " must be removed ");
             }
         }
@@ -191,11 +191,10 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
     /**
      * Spawn instance if doable
+     *  @param commands
      *
-     * @param commands
-     * @param errorIfNotPOI if spawnable is not a POI, error will be thrown
      */
-    private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands, boolean errorIfNotPOI) {
+    private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
 
         //Should not spawn anything if has no identifier
         if (!commands.containsKey(EchoCommandsEnum.IDENTIFIER))
@@ -216,9 +215,6 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             poiEnum = POIEnum.valueOf(thingName);
         } catch (Exception e) {
             //Nothing to do here...
-            if(errorIfNotPOI){
-                throw new GdxRuntimeException(e);
-            }
         }
 
         //Set spawn coordinates

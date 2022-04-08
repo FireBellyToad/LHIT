@@ -451,14 +451,10 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
     private float mapStateTimeFromBehaviour(float stateTime) {
 
-        switch (currentBehavior) {
-            case ATTACK: {
-                return (stateTime - attackDeltaTime);
-            }
-            default: {
-                return stateTime;
-            }
+        if (currentBehavior == GameBehavior.ATTACK) {
+            return (stateTime - attackDeltaTime);
         }
+        return stateTime;
     }
 
     /**

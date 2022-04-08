@@ -337,14 +337,10 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     private float mapStateTimeFromBehaviour(float stateTime) {
 
-        switch (currentBehavior) {
-            case ATTACK: {
-                return (stateTime - attackDeltaTime);
-            }
-            default: {
-                return stateTime;
-            }
+        if (currentBehavior == GameBehavior.ATTACK) {
+            return (stateTime - attackDeltaTime);
         }
+        return stateTime;
     }
 
     public void setSubmerged(boolean submerged) {

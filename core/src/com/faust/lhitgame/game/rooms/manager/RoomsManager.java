@@ -161,15 +161,10 @@ public class RoomsManager {
         }
 
 
-        switch (mainWorld.get(currentRoomPosInWorld).type) {
-            case CASUAL: {
-                currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
-                break;
-            }
-            default: {
-                currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
-                break;
-            }
+        if (mainWorld.get(currentRoomPosInWorld).type == RoomTypeEnum.CASUAL) {
+            currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
+        } else {
+            currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
         }
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms

@@ -41,7 +41,6 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
-
     private long startAttackCooldown = 0;
 
     //Body for spear attacks

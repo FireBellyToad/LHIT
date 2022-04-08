@@ -38,6 +38,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
     private static final int LINE_OF_ATTACK = 50;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
+    private static final long ATTACK_COUNTER_LIMIT = 6; // in millis
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -64,6 +65,10 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
+        //Move hitbox with main body
+        hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
+
+        //Move emitter
         waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
 
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
@@ -246,6 +251,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             ((DiaconusEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             currentBehavior = GameBehavior.DEAD;
+            ((PlayerInstance) attacker).setHasKilledSecretBoss(true);
         } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
             ((DiaconusEntity) entity).playHurtCry();
 
@@ -280,9 +286,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         float modifier = 4f;
         //If evading, the leap is more subtle and perpendicular
         if (GameBehavior.EVADE.equals(currentBehavior)) {
-            modifier = 1.5f;
-            direction.x = (float) Math.cos(direction.x);
-            direction.y = (float) Math.cos(direction.y);
+            modifier = 2f;
         }
         body.setLinearVelocity(DIACONUS_SPEED * modifier * -direction.x, DIACONUS_SPEED * modifier * -direction.y);
         // Do nothing for half second

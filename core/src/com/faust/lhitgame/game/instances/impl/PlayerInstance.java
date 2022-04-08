@@ -757,7 +757,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 break;
             }
             default: {
-                Gdx.app.log("WARN", "No special implementation for item" + itemFound.name());
+                Gdx.app.log("WARN", "No special implementation for item " + itemFound.name());
             }
         }
     }

@@ -133,11 +133,4 @@ public abstract class DistancerInstance extends AnimatedInstance {
             shapeRenderer.end();
         }
     }
-
-    /**
-     * Force this instance to use graph
-     */
-    public void forceRecalculation() {
-        recalculatePath = true;
-    }
 }

@@ -48,7 +48,7 @@ public class DiaconusEntity extends AnimatedEntity {
         TextureRegion[] attackFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 9, getTextureColumns() * 10);
         TextureRegion[] attackFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 10, getTextureColumns() * 11);
         TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
-        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1+(getTextureColumns() * 12));//FIXME
+        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1+(getTextureColumns() * 13));
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, DirectionEnum.DOWN);

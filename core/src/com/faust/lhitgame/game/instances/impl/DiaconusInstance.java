@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 public class DiaconusInstance extends DistancerInstance implements Interactable, Hurtable, Damager {
 
-    private static final float DIACONUS_SPEED = 35;
+    private static final float DIACONUS_SPEED = 40;
     private static final int LINE_OF_ATTACK = 50;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis

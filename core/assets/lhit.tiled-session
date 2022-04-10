@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "terrains/infernum.tmx",
+    "activeFile": "terrains/boatDown.tmx",
     "expandedProjectPaths": [
         "terrains"
     ],
@@ -405,16 +405,16 @@
             "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 80,
-                "y": 40.375
+                "x": 48.75,
+                "y": 64.625
             }
         },
         "terrains/boatLeft.tmx": {
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 15.666666666666657,
-                "y": 29.83333333333333
+                "x": 80,
+                "y": 71.83333333333334
             }
         },
         "terrains/casual1.tmx": {
@@ -445,7 +445,7 @@
             "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 80,
+                "x": 84,
                 "y": 71.875
             }
         },
@@ -461,8 +461,8 @@
             "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 58.5,
-                "y": 81.375
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/casual4.tmx": {
@@ -525,16 +525,16 @@
             "scale": 4,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 86.5,
-                "y": 44.125
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/cemeteryTop.tmx": {
             "scale": 3.811875,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 34.36628955566486,
-                "y": 130.5131988850631
+                "x": 79.75077881619937,
+                "y": 71.74946712575831
             }
         },
         "terrains/churchBottom.tmx": {
@@ -549,8 +549,8 @@
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 60,
-                "y": 97.5
+                "x": 80,
+                "y": 72.5
             }
         },
         "terrains/churchLeft.tmx": {
@@ -565,8 +565,8 @@
             "scale": 5.7131944444444445,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 22.579312021392973,
-                "y": 43.14573963777805
+                "x": 79.99027592074876,
+                "y": 71.85122158745594
             }
         },
         "terrains/crucified.tmx": {
@@ -589,8 +589,8 @@
             "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 91,
-                "y": 71.125
+                "x": 80,
+                "y": 71.875
             }
         },
         "terrains/massacre.tmx": {
@@ -603,7 +603,7 @@
         },
         "terrains/pedestal.tmx": {
             "scale": 4,
-            "selectedLayer": 2,
+            "selectedLayer": -1,
             "viewCenter": {
                 "x": 80,
                 "y": 71.875
@@ -613,24 +613,24 @@
             "scale": 3,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 81.33333333333331,
-                "y": 75.5
+                "x": 80,
+                "y": 71.83333333333334
             }
         },
         "terrains/startLeft.tmx": {
             "scale": 5.7131944444444445,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 98.19375227908107,
-                "y": 111.7588428345691
+                "x": 79.99027592074876,
+                "y": 71.85122158745594
             }
         },
         "terrains/startRight.tmx": {
             "scale": 5.7131944444444445,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 91.54248207122887,
-                "y": 38.769903974717394
+                "x": 79.99027592074876,
+                "y": 71.85122158745594
             }
         },
         "terrains/terrain.tsx": {
@@ -658,23 +658,32 @@
         "terrains/boatDown.tmx",
         "terrains/crucified.tmx",
         "terrains/pedestal.tmx",
-        "terrains/infernum.tmx"
+        "terrains/infernum.tmx",
+        "terrains/startRight.tmx",
+        "terrains/churchRight.tmx",
+        "terrains/boatLeft.tmx",
+        "terrains/casual3.tmx",
+        "terrains/churchEntrance.tmx",
+        "terrains/cemeteryTop.tmx",
+        "terrains/start.tmx",
+        "terrains/startLeft.tmx",
+        "terrains/cemeteryRight.tmx"
     ],
     "project": "lhit.tiled-project",
     "property.type": "object",
     "recentFiles": [
         "terrains/casual12.tmx",
-        "terrains/boatDown.tmx",
-        "terrains/crucified.tmx",
-        "terrains/pedestal.tmx",
-        "terrains/infernum.tmx",
-        "terrains/casual1.tmx",
-        "terrains/casual11.tmx",
-        "terrains/cemeteryCenter.tmx",
         "terrains/cemeteryRight.tmx",
-        "terrains/casual7.tmx",
-        "terrains/casual6.tmx",
-        "terrains/casual5.tmx"
+        "terrains/startLeft.tmx",
+        "terrains/start.tmx",
+        "terrains/cemeteryTop.tmx",
+        "terrains/churchEntrance.tmx",
+        "terrains/casual3.tmx",
+        "terrains/boatLeft.tmx",
+        "terrains/churchRight.tmx",
+        "terrains/startRight.tmx",
+        "terrains/infernum.tmx",
+        "terrains/pedestal.tmx"
     ],
     "textEdit.monospace": false,
     "tileset.embedInMap": false,

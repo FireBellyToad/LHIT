@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.gameentities.SpriteEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
@@ -23,7 +23,7 @@ import java.util.*;
  */
 public class SimpleActor {
 
-    private final GameEntity entity;
+    private final TexturedEntity entity;
     private final Vector2 position;
     private final GameBehavior currentBehavior;
     private final DirectionEnum direction;
@@ -41,7 +41,7 @@ public class SimpleActor {
      * @param y
      * @param params
      */
-    public SimpleActor(GameEntity entity, GameBehavior currentBehavior, DirectionEnum direction, float x, float y, Set<SimpleActorParametersEnum> params) {
+    public SimpleActor(TexturedEntity entity, GameBehavior currentBehavior, DirectionEnum direction, float x, float y, Set<SimpleActorParametersEnum> params) {
         this.entity = entity;
         this.currentBehavior = currentBehavior;
         this.direction = direction;

@@ -7,12 +7,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.AnimatedEntity;
+import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.gameentities.SpriteEntity;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.impl.DecorationEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
+import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
 
 import java.util.Objects;
@@ -41,7 +43,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
         TextureRegion frame;
 
         if (interacted) {
-            frame = ((SpriteEntity) entity).getFrame(GameEntity.FRAME_DURATION);
+            frame = ((SpriteEntity) entity).getFrame(AnimatedEntity.FRAME_DURATION);
         } else {
             frame = ((SpriteEntity) entity).getFrame(0);
         }
@@ -75,6 +77,11 @@ public class DecorationInstance extends GameInstance implements Interactable {
             return -8;
         }
         return 0;
+    }
+
+    @Override
+    public void doLogic(float stateTime, RoomContent roomContent) {
+        //Nothing to do here... yet
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.utils.PathfinderUtils;
 
 import java.util.Objects;
@@ -34,7 +34,7 @@ public abstract class DistancerInstance extends AnimatedInstance {
     private PathNode currentPos;
     private PathNode newGoal;
 
-    public DistancerInstance(GameEntity entity, GameInstance target) {
+    public DistancerInstance(TexturedEntity entity, GameInstance target) {
         super(entity);
         this.target = target;
         this.targetPathNode = new PathNode(target.getBody().getPosition());

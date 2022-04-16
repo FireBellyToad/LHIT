@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
@@ -156,7 +156,7 @@ public class CutsceneManager implements InputProcessor {
 
         //extract mapObject properties and create simpleActor
         actorsMapObjects.forEach(obj -> {
-            GameEntity entity = null;
+            TexturedEntity entity = null;
             GameBehavior behavior = null;
             DirectionEnum direction = null;
             Set<SimpleActorParametersEnum> params = new HashSet<>();

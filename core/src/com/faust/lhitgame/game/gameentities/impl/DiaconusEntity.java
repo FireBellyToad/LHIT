@@ -1,9 +1,11 @@
 package com.faust.lhitgame.game.gameentities.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
@@ -23,12 +25,21 @@ public class DiaconusEntity extends AnimatedEntity {
     private final Sound evadeSwift;
     private final Texture shadow;
 
+    private final ParticleEffect waterWalkEffect;
+
     public DiaconusEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/diaconus_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
         hurtCry = assetManager.get("sounds/SFX_shot4.ogg");
         deathCry = assetManager.get("sounds/death_scream.ogg");
         evadeSwift = assetManager.get("sounds/evade.ogg");
+
+        // Init waterwalk effect
+        waterWalkEffect = new ParticleEffect();
+
+        // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
+        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk"), Gdx.files.internal("sprites/"));
+        waterWalkEffect.start();
     }
 
     @Override
@@ -48,7 +59,7 @@ public class DiaconusEntity extends AnimatedEntity {
         TextureRegion[] attackFramesLeft = Arrays.copyOfRange(allFrames, getTextureColumns() * 9, getTextureColumns() * 10);
         TextureRegion[] attackFramesUp = Arrays.copyOfRange(allFrames, getTextureColumns() * 10, getTextureColumns() * 11);
         TextureRegion[] attackFramesRight = Arrays.copyOfRange(allFrames, getTextureColumns() * 11, getTextureColumns() * 12);
-        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1+(getTextureColumns() * 12));
+        TextureRegion[] deadFrame = Arrays.copyOfRange(allFrames, getTextureColumns() * 12, 1 + (getTextureColumns() * 12));
 
         // Initialize the Idle Animation with the frame interval and array of frames
         addAnimationForDirection(new Animation<>(FRAME_DURATION, idleFramesDown), GameBehavior.IDLE, DirectionEnum.DOWN);
@@ -91,7 +102,9 @@ public class DiaconusEntity extends AnimatedEntity {
     }
 
     @Override
-    protected int getTextureRows() { return 13; }
+    protected int getTextureRows() {
+        return 13;
+    }
 
     public Texture getShadowTexture() {
         return shadow;
@@ -109,5 +122,7 @@ public class DiaconusEntity extends AnimatedEntity {
         evadeSwift.play();
     }
 
-
+    public ParticleEffect getWaterWalkEffect() {
+        return waterWalkEffect;
+    }
 }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.utils.Pair;
 import com.faust.lhitgame.utils.PathfinderUtils;
@@ -44,7 +44,7 @@ public abstract class ChaserInstance extends AnimatedInstance {
     private PathNode currentPos;
     private PathNode newGoal;
 
-    public ChaserInstance(GameEntity entity, GameInstance target, RayCaster rayCaster) {
+    public ChaserInstance(TexturedEntity entity, GameInstance target, RayCaster rayCaster) {
         super(entity);
         this.target = target;
         this.rayCaster = rayCaster;

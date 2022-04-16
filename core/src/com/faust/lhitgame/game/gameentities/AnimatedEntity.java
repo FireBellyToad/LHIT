@@ -15,7 +15,9 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class AnimatedEntity extends GameEntity {
+public abstract class AnimatedEntity extends TexturedEntity {
+
+    public static final float FRAME_DURATION = 0.1f;
 
     //Animations given Behavior and Direction
     protected final Map<GameBehavior, Map<DirectionEnum, Animation>> animations = new HashMap<>();

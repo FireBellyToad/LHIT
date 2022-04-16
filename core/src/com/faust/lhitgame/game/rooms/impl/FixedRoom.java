@@ -185,6 +185,8 @@ public class FixedRoom extends AbstractRoom {
             allInstance.addAll(roomContent.echoActors);
         }
 
+        allInstance.addAll(roomContent.spellEffects);
+
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
         allInstance.sort(DepthComparatorUtils::compareEntities);
 

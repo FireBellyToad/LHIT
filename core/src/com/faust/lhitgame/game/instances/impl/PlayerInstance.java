@@ -69,8 +69,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean pauseGame = false;
     private boolean hasKilledSecretBoss = false;
 
-    private final ParticleEffect waterWalkEffect;
-
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
 
@@ -78,12 +76,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         currentDirectionEnum = DirectionEnum.DOWN;
 
         Gdx.input.setInputProcessor(this);
-
-        // Init waterwalk effect
-        waterWalkEffect = new ParticleEffect();
-        // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
-        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk"), Gdx.files.internal("sprites/"));
-        waterWalkEffect.start();
     }
 
     @Override
@@ -96,7 +88,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void doLogic(float stateTime, RoomContent roomContent) {
 
         translateAccessoryBodies();
-        waterWalkEffect.getEmitters().first().setPosition(body.getPosition().x, body.getPosition().y);
+        ((PlayerEntity) entity).getWaterWalkEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
         //if is Dead, play death animation and then game over
         if (isDead()) {
@@ -365,6 +357,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Vector2 drawPosition = adjustPosition();
         //Draw shadow
         batch.draw(((PlayerEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
+
+        final ParticleEffect waterWalkEffect = ((PlayerEntity) entity).getWaterWalkEffect();
 
         //Draw watersteps if submerged
         if (isSubmerged) {
@@ -816,7 +810,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void cleanReferences() {
         nearestPOIInstance = null;
         //Reset particle emitter and change position
-        final ParticleEmitter firstEmitter = waterWalkEffect.getEmitters().first();
+        final ParticleEmitter firstEmitter = ((PlayerEntity) entity).getWaterWalkEffect().getEmitters().first();
         firstEmitter.setPosition(startX, startY);
         firstEmitter.reset();
     }
@@ -859,7 +853,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 leftSpearBody.destroyFixture(f));
         downSpearBody.getFixtureList().forEach(f ->
                 downSpearBody.destroyFixture(f));
-        waterWalkEffect.dispose();
+        ((PlayerEntity) entity).getWaterWalkEffect().dispose();
 
     }
 

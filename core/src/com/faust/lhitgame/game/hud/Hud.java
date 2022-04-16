@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.faust.lhitgame.LHITGame;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.AnimatedEntity;
+import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.SpriteEntity;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
@@ -88,7 +89,7 @@ public class Hud {
             for (int r = 0; r < player.getResistance(); r++) {
                 frame = hudTexture.getFrame(r < player.getDamageDelta() ?
                         HudIconsEnum.LIFE_METER_FULL.ordinal() :
-                        HudIconsEnum.LIFE_METER_EMPTY.ordinal() * GameEntity.FRAME_DURATION);
+                        HudIconsEnum.LIFE_METER_EMPTY.ordinal() * AnimatedEntity.FRAME_DURATION);
                 batch.draw(frame, meterPosition.x + (r * frame.getRegionWidth()), meterPosition.y);
             }
         }
@@ -103,7 +104,7 @@ public class Hud {
 
 
         //crosses found count. Set in red if all has been found
-        batch.draw(hudTexture.getFrame(HudIconsEnum.GOLDCROSS.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(hudTexture.getFrame(HudIconsEnum.GOLDCROSS.ordinal() * AnimatedEntity.FRAME_DURATION),
                 goldcrossCountPosition.x - 10,
                 goldcrossCountPosition.y - 6);
 
@@ -113,7 +114,7 @@ public class Hud {
                 goldcrossCountPosition.y);
 
         //Holy lance pieces found count. Set in red if all has been found
-        batch.draw(hudTexture.getFrame(HudIconsEnum.LANCE.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(hudTexture.getFrame(HudIconsEnum.LANCE.ordinal() * AnimatedEntity.FRAME_DURATION),
                 holyLancePiecesPosition.x - 10,
                 holyLancePiecesPosition.y - 6);
 
@@ -123,7 +124,7 @@ public class Hud {
                 holyLancePiecesPosition.y);
 
         //Healthkits found count
-        batch.draw(hudTexture.getFrame(HudIconsEnum.HERBS.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(hudTexture.getFrame(HudIconsEnum.HERBS.ordinal() * AnimatedEntity.FRAME_DURATION),
                 healthKitCountPosition.x - 10,
                 healthKitCountPosition.y - 6);
 

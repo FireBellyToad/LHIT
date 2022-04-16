@@ -1,9 +1,11 @@
 package com.faust.lhitgame.game.gameentities.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
@@ -27,6 +29,8 @@ public class PlayerEntity extends AnimatedEntity {
     private final Sound waterSplash;
     private final Sound deathCry;
 
+    private final ParticleEffect waterWalkEffect;
+
     public PlayerEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/walfrit_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
@@ -36,6 +40,12 @@ public class PlayerEntity extends AnimatedEntity {
         waterSplash = assetManager.get("sounds/SFX_waterSplash.ogg");
         deathCry = assetManager.get("sounds/death_scream.ogg");
         playerShader = new ShaderWrapper("shaders/player_vertex.glsl","shaders/player_fragment.glsl");
+
+        // Init waterwalk effect
+        waterWalkEffect = new ParticleEffect();
+        // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
+        waterWalkEffect.load(Gdx.files.internal("particles/waterwalk"), Gdx.files.internal("sprites/"));
+        waterWalkEffect.start();
    }
 
     @Override
@@ -129,5 +139,9 @@ public class PlayerEntity extends AnimatedEntity {
 
     public ShaderWrapper getPlayerShader() {
         return playerShader;
+    }
+
+    public ParticleEffect getWaterWalkEffect() {
+        return waterWalkEffect;
     }
 }

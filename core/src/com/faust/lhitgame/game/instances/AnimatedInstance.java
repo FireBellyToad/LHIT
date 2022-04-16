@@ -2,10 +2,9 @@ package com.faust.lhitgame.game.instances;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
-import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.rooms.RoomContent;
 
 import java.util.Objects;
@@ -24,16 +23,9 @@ public abstract class AnimatedInstance extends GameInstance {
 
     protected Body hitBox;
 
-    public AnimatedInstance(final GameEntity entity) {
+    public AnimatedInstance(final TexturedEntity entity) {
         super(entity);
     }
-
-    /**
-     * Handles the LivingEntity game logic
-     * @param stateTime
-     * @param roomContent
-     */
-    public abstract void doLogic(float stateTime, RoomContent roomContent);
 
     /**
      * Utility for extracting Direction from a directionNormal normal

@@ -14,6 +14,7 @@ import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.gameentities.impl.POIEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
 import com.faust.lhitgame.screens.GameScreen;
@@ -128,6 +129,11 @@ public class POIInstance extends GameInstance {
             return !guaranteedGoldcross; //Should be random only if not guaranteed!
         }
         return false;
+    }
+
+    @Override
+    public void doLogic(float stateTime, RoomContent roomContent) {
+        //Nothing to do here... yet
     }
 
     @Override

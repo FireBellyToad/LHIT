@@ -2,6 +2,7 @@ package com.faust.lhitgame.game.rooms;
 
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
+import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.DecorationInstance;
 import com.faust.lhitgame.game.instances.impl.EchoActorInstance;
 import com.faust.lhitgame.game.instances.impl.POIInstance;
@@ -30,6 +31,7 @@ public class RoomContent {
     public RoomTypeEnum roomType;
     public String roomFileName;
     public List<EchoActorInstance> echoActors; //Can have Echo actors
+    public List<GameInstance> spellEffects;
 
     public Map<RoomFlagEnum, Boolean> roomFlags;
     public RoomNodesGraph roomGraph;

@@ -1,20 +1,19 @@
 package com.faust.lhitgame.game.instances.impl;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.faust.lhitgame.game.gameentities.AnimatedEntity;
-import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
+import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
-import com.faust.lhitgame.game.gameentities.impl.MeatEntity;
-import com.faust.lhitgame.game.instances.AnimatedInstance;
+import com.faust.lhitgame.game.gameentities.impl.ParticleEffectEntity;
+import com.faust.lhitgame.game.gameentities.impl.PlayerEntity;
+import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
@@ -24,60 +23,44 @@ import com.faust.lhitgame.game.world.manager.CollisionManager;
 import java.util.Objects;
 
 /**
- * Meat enemy instance class
+ * Hurt spell instance class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class MeatInstance extends AnimatedInstance implements Interactable, Damager, Killable {
+public class HurtSpellInstance extends GameInstance implements Interactable, Damager, Killable {
 
-    private static final float MEAT_SPEED = 65;
+    private static final float PROJECTILE_SPEED = 70;
 
     private final Vector2 target; // Target x and y;
-    private long startAttackCooldown = 0;
 
-    public MeatInstance(float x, float y, PlayerInstance playerInstance, AssetManager assetManager) {
-        super(new MeatEntity(assetManager));
-        currentDirectionEnum = DirectionEnum.DOWN;
+    private GameBehavior currentBehavior;
+
+    public HurtSpellInstance(float x, float y, PlayerInstance playerInstance) {
+        super(new ParticleEffectEntity("hurt_spell"));
         this.startX = x;
         this.startY = y;
 
         target = playerInstance.getBody().getPosition().cpy();
         currentBehavior = GameBehavior.WALK;
+        ((ParticleEffectEntity) entity).getParticleEffect().start();
     }
 
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
-        switch (currentBehavior) {
-            case ATTACK: {
-                if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(3000)) {
-                    currentBehavior = GameBehavior.DEAD;
-                    dispose();
-                }
-                break;
-            }
-            case WALK: {
-                Vector2 direction = new Vector2(target.x - body.getPosition().x, target.y - body.getPosition().y).nor();
+        //Translate emitter
+        ((ParticleEffectEntity) entity).getParticleEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
-                currentDirectionEnum = extractDirectionFromNormal(direction);
+        if (GameBehavior.WALK.equals(currentBehavior)) {
+            Vector2 direction = new Vector2(target.x - body.getPosition().x, target.y - body.getPosition().y).nor();
 
-                // Move towards target
-                body.setLinearVelocity(MEAT_SPEED * direction.x, MEAT_SPEED * direction.y);
+            // Move towards target
+            body.setLinearVelocity(PROJECTILE_SPEED * direction.x, PROJECTILE_SPEED * direction.y);
 
-                // If near target, starts attacking
-                if (target.dst(getBody().getPosition()) < 1) {
-                    currentBehavior = GameBehavior.ATTACK;
-                    startAttackCooldown = TimeUtils.nanoTime();
-                    body.setLinearVelocity(0, 0);
-                }
-                break;
-            }
-            default: {
-                throw new GdxRuntimeException("Unexpected MeatInstance behaviour!");
-            }
+        } else {
+            throw new GdxRuntimeException("Unexpected MeatInstance behaviour!");
+
         }
-
-
     }
 
     @Override
@@ -92,7 +75,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
 
         // Define shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(8, 2);
+        shape.setAsBox(4, 4);
 
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -120,9 +103,9 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        Vector2 drawPosition = adjustPosition();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
-        batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
+        final ParticleEffect particleEffect = ((ParticleEffectEntity) entity).getParticleEffect();
+        particleEffect.update(Gdx.graphics.getDeltaTime());
+        particleEffect.draw(batch);
         batch.end();
     }
 
@@ -146,18 +129,18 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
         return 2;
     }
 
-    private float mapStateTimeFromBehaviour(float stateTime) {
-        return stateTime * 0.75f;
-    }
-
     @Override
     public boolean isDying() {
         //is never dying...
         return false;
     }
 
+    /**
+     * @return true if outside of screen
+     */
     @Override
     public boolean isDead() {
-        return GameBehavior.DEAD.equals(currentBehavior);
+        final Vector2 position = body.getPosition();
+        return position.x < 0 || position.x > LHITGame.GAME_WIDTH || position.y < 0 || position.y > LHITGame.GAME_HEIGHT;
     }
 }

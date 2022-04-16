@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.camera.CameraManager;
-import com.faust.lhitgame.game.gameentities.GameEntity;
+import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.SpriteEntity;
 import com.faust.lhitgame.game.hud.enums.HudIconsEnum;
 import com.faust.lhitgame.game.music.MusicManager;
@@ -109,7 +109,7 @@ public class EndGameScreen implements Screen {
                 Y_OFFSET + 30);
 
         //crosses found count.
-        batch.draw(itemsTexture.getFrame(HudIconsEnum.GOLDCROSS.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.GOLDCROSS.ordinal() * AnimatedEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET + 6);
 
@@ -119,7 +119,7 @@ public class EndGameScreen implements Screen {
                 Y_OFFSET + 12);
 
         //Herb found count.
-        batch.draw(itemsTexture.getFrame(HudIconsEnum.HERBS.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.HERBS.ordinal() * AnimatedEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET - 6);
 
@@ -129,7 +129,7 @@ public class EndGameScreen implements Screen {
                 Y_OFFSET);
 
         //Armor found.
-        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * AnimatedEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET - 18);
 
@@ -139,7 +139,7 @@ public class EndGameScreen implements Screen {
                 Y_OFFSET - 12);
 
         //Secret boss killed.
-        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * GameEntity.FRAME_DURATION),
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * AnimatedEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET - 18);
 

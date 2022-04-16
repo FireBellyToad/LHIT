@@ -122,7 +122,7 @@ public class WorldManager implements RayCaster {
     }
 
     /**
-     * Insert a list of Enemies into world, in random positions
+     * Insert a list of Enemies into world
      *
      * @param enemiesInstance
      */
@@ -161,6 +161,17 @@ public class WorldManager implements RayCaster {
         Objects.requireNonNull(echoActors);
 
         echoActors.forEach((a) -> a.createBody(this.world, a.getStartX(), a.getStartY()));
+    }
+
+    /**
+     * Insert a list of Spells into world
+     *
+     * @param spellInstances
+     */
+    public void insertSpellsIntoWorld(List<GameInstance> spellInstances) {
+        Objects.requireNonNull(spellInstances);
+
+        spellInstances.forEach((s) -> this.insertIntoWorld(s, s.getStartX(), s.getStartY()));
     }
 
     @Override

@@ -120,6 +120,7 @@ public abstract class AbstractRoom implements Spawner {
         this.roomContent.enemyList = new ArrayList<>();
         this.roomContent.wallList = new ArrayList<>();
         this.roomContent.emergedAreaList = new ArrayList<>();
+        this.roomContent.spellEffects = new ArrayList<>();
 
         // Place objects in room
         this.mapObjects.forEach(obj -> {
@@ -276,7 +277,7 @@ public abstract class AbstractRoom implements Spawner {
                         (float) obj.getProperties().get("y"),
                         roomContent.player,
                         assetManager,
-                        worldManager);
+                        worldManager, this);
                 break;
             }
             case PORTAL: {
@@ -422,6 +423,7 @@ public abstract class AbstractRoom implements Spawner {
         allInstance.addAll(roomContent.decorationList);
         allInstance.add(roomContent.player);
         allInstance.addAll(roomContent.enemyList);
+        allInstance.addAll(roomContent.spellEffects);
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
         allInstance.sort(DepthComparatorUtils::compareEntities);
@@ -492,6 +494,17 @@ public abstract class AbstractRoom implements Spawner {
 
         //Remove examined removable POI
         roomContent.poiList.removeIf(poiInstance -> poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination());
+
+        //Dispose spells
+        roomContent.spellEffects.forEach(spell -> {
+            if (spell.isDisposable()) {
+                spell.dispose();
+            }
+        });
+
+
+        //Remove spells
+        roomContent.spellEffects.removeIf(spell -> ((Killable) spell).isDead());
     }
 
     @Override
@@ -521,6 +534,14 @@ public abstract class AbstractRoom implements Spawner {
         } else  if (instanceClass.equals(PortalInstance.class)) {
             mapObjectStub.getProperties().put("enemyType", instanceIdentifierEnum);
             addObjAsEnemy(mapObjectStub, assetManager, true);
+        } else  if (instanceClass.equals(ConfusionSpellInstance.class)) {
+            roomContent.spellEffects.add(new ConfusionSpellInstance(startX,startY, roomContent.player));
+            GameInstance lastSpellInstance = roomContent.spellEffects.get( roomContent.spellEffects.size()-1);
+            worldManager.insertSpellsIntoWorld(Collections.singletonList( lastSpellInstance));
+        }else  if (instanceClass.equals(HurtSpellInstance.class)) {
+            roomContent.spellEffects.add(new HurtSpellInstance(startX,startY, roomContent.player));
+            GameInstance lastSpellInstance = roomContent.spellEffects.get( roomContent.spellEffects.size()-1);
+            worldManager.insertSpellsIntoWorld(Collections.singletonList( lastSpellInstance));
         }
     }
 

@@ -11,7 +11,7 @@ import java.util.Arrays;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class SpriteEntity extends GameEntity {
+public abstract class SpriteEntity extends TexturedEntity {
 
     protected static final float FRAME_DURATION = 0.1f;
 

@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -76,6 +75,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         currentDirectionEnum = DirectionEnum.DOWN;
 
         Gdx.input.setInputProcessor(this);
+        ((PlayerEntity) entity).getWaterWalkEffect().start();
     }
 
     @Override
@@ -362,8 +362,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Draw watersteps if submerged
         if (isSubmerged) {
-            waterWalkEffect.update(Gdx.graphics.getDeltaTime());
-            waterWalkEffect.draw(batch);
+            waterWalkEffect.draw(batch,Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
             if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
@@ -810,9 +809,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void cleanReferences() {
         nearestPOIInstance = null;
         //Reset particle emitter and change position
-        final ParticleEmitter firstEmitter = ((PlayerEntity) entity).getWaterWalkEffect().getEmitters().first();
-        firstEmitter.setPosition(startX, startY);
-        firstEmitter.reset();
+        ((PlayerEntity) entity).getWaterWalkEffect().setPosition(startX, startY);
+        ((PlayerEntity) entity).getWaterWalkEffect().reset();
     }
 
     public void setSubmerged(boolean submerged) {

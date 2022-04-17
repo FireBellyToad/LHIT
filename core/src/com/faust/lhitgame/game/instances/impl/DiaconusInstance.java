@@ -15,10 +15,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
-import com.faust.lhitgame.game.gameentities.enums.EnemyEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
+import com.faust.lhitgame.game.gameentities.impl.PlayerEntity;
 import com.faust.lhitgame.game.instances.DistancerInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.Spawner;
@@ -59,6 +59,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
+        ((DiaconusEntity) entity).getWaterWalkEffect().start();
     }
 
     @Override
@@ -68,8 +69,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
         //Move emitter
-        final ParticleEffect waterWalkEffect = ((DiaconusEntity) entity).getWaterWalkEffect();
-        waterWalkEffect.setPosition(body.getPosition().x, body.getPosition().y);
+        ((DiaconusEntity) entity).getWaterWalkEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
@@ -196,8 +196,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         //Draw watersteps if submerged
         if (isSubmerged) {
-            waterWalkEffect.update(Gdx.graphics.getDeltaTime());
-            waterWalkEffect.draw(batch);
+            waterWalkEffect.draw(batch,Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
             if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {

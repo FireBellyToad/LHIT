@@ -42,7 +42,8 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
 
         target = playerInstance.getBody().getPosition().cpy();
         currentBehavior = GameBehavior.WALK;
-        ((ParticleEffectEntity) entity).getParticleEffect().start();
+        ((ParticleEffectEntity) entity).getParticleEffect().start();;
+
     }
 
     @Override
@@ -103,9 +104,7 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        final ParticleEffect particleEffect = ((ParticleEffectEntity) entity).getParticleEffect();
-        particleEffect.update(Gdx.graphics.getDeltaTime());
-        particleEffect.draw(batch);
+        ((ParticleEffectEntity) entity).getParticleEffect().draw(batch,Gdx.graphics.getDeltaTime());
         batch.end();
     }
 

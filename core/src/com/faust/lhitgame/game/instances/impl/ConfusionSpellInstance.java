@@ -57,8 +57,8 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
                 // Count to 1 seconds
                 if (TimeUtils.timeSinceNanos(attackTimer) > TimeUtils.millisToNanos(1000)) {
                     // after 1 seconds, explode
-                    currentBehavior = GameBehavior.ATTACK;
-                    attackTimer = TimeUtils.nanoTime();
+                    currentBehavior = GameBehavior.DEAD;
+                    dispose();
                 }
                 break;
             }
@@ -135,9 +135,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        final ParticleEffect particleEffect = ((ParticleEffectEntity) entity).getParticleEffect();
-        particleEffect.update(Gdx.graphics.getDeltaTime());
-        particleEffect.draw(batch);
+        ((ParticleEffectEntity) entity).getParticleEffect().draw(batch,Gdx.graphics.getDeltaTime());
         batch.end();
     }
 
@@ -159,10 +157,6 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
 
     public double damageRoll() {
         return 2;
-    }
-
-    private float mapStateTimeFromBehaviour(float stateTime) {
-        return stateTime * 0.75f;
     }
 
     @Override

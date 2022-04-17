@@ -39,7 +39,6 @@ public class DiaconusEntity extends AnimatedEntity {
 
         // First is particle configuration, second is particle sprite path (file is embeeded in configuration)
         waterWalkEffect.load(Gdx.files.internal("particles/waterwalk"), Gdx.files.internal("sprites/"));
-        waterWalkEffect.start();
     }
 
     @Override

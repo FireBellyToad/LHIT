@@ -495,6 +495,9 @@ public abstract class AbstractRoom implements Spawner {
         //Remove examined removable POI
         roomContent.poiList.removeIf(poiInstance -> poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination());
 
+        //Spells logic
+        roomContent.spellEffects.forEach(spell -> spell.doLogic(stateTime, roomContent));
+
         //Dispose spells
         roomContent.spellEffects.forEach(spell -> {
             if (spell.isDisposable()) {

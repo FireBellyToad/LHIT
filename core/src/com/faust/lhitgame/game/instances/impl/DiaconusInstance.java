@@ -322,7 +322,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
 
-            spawner.spawnInstance(ConfusionSpellInstance.class,
+            spawner.spawnInstance(HurtSpellInstance.class,
                     this.body.getPosition().x,
                     this.body.getPosition().y, null);
 

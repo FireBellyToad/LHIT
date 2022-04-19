@@ -31,7 +31,7 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
 
     private static final float PROJECTILE_SPEED = 70;
 
-    private final Vector2 target; // Target x and y;
+    private final Vector2 direction; // Target x and y;
 
     private GameBehavior currentBehavior;
 
@@ -40,9 +40,10 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
         this.startX = x;
         this.startY = y;
 
-        target = playerInstance.getBody().getPosition().cpy();
+        final Vector2 target = playerInstance.getBody().getPosition().cpy();
         currentBehavior = GameBehavior.WALK;
         ((ParticleEffectEntity) entity).getParticleEffect().start();;
+        direction = new Vector2(target.x - x, target.y - y).nor();
 
     }
 
@@ -53,7 +54,6 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
         ((ParticleEffectEntity) entity).getParticleEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
         if (GameBehavior.WALK.equals(currentBehavior)) {
-            Vector2 direction = new Vector2(target.x - body.getPosition().x, target.y - body.getPosition().y).nor();
 
             // Move towards target
             body.setLinearVelocity(PROJECTILE_SPEED * direction.x, PROJECTILE_SPEED * direction.y);

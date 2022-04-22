@@ -18,7 +18,6 @@ import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
-import com.faust.lhitgame.game.gameentities.impl.PlayerEntity;
 import com.faust.lhitgame.game.instances.DistancerInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.Spawner;
@@ -196,7 +195,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         //Draw watersteps if submerged
         if (isSubmerged) {
-            waterWalkEffect.draw(batch,Gdx.graphics.getDeltaTime());
+            waterWalkEffect.draw(batch, Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
             if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
@@ -317,14 +316,22 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
+        //FIXME
         //Activate weapon sensor on frame
-        //FIXME set right time
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
 
-            spawner.spawnInstance(HurtSpellInstance.class,
-                    this.body.getPosition().x,
-                    this.body.getPosition().y, null);
+//            if (MathUtils.random(1, 4) > 3) {
+                spawner.spawnInstance(ConfusionSpellInstance.class,
+                        this.body.getPosition().x,
+                        this.body.getPosition().y, null);
+
+//            } else {
+//                spawner.spawnInstance(HurtSpellInstance.class,
+//                        this.body.getPosition().x,
+//                        this.body.getPosition().y, null);
+//
+//            }
 
         }
     }

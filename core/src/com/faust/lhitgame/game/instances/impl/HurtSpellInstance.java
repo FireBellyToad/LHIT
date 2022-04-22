@@ -50,6 +50,9 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
+        if(isDead())
+            return;
+
         //Translate emitter
         ((ParticleEffectEntity) entity).getParticleEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
@@ -59,7 +62,7 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
             body.setLinearVelocity(PROJECTILE_SPEED * direction.x, PROJECTILE_SPEED * direction.y);
 
         } else {
-            throw new GdxRuntimeException("Unexpected MeatInstance behaviour!");
+            throw new GdxRuntimeException("Unexpected HurtSpellInstance behaviour!");
 
         }
     }
@@ -117,6 +120,7 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
         playerInstance.hurt(this);
+        currentBehavior = GameBehavior.DEAD;
     }
 
     @Override
@@ -140,6 +144,6 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
     @Override
     public boolean isDead() {
         final Vector2 position = body.getPosition();
-        return position.x < 0 || position.x > LHITGame.GAME_WIDTH || position.y < 0 || position.y > LHITGame.GAME_HEIGHT;
+        return GameBehavior.DEAD.equals(currentBehavior) || (position.x < 0 || position.x > LHITGame.GAME_WIDTH || position.y < 0 || position.y > LHITGame.GAME_HEIGHT);
     }
 }

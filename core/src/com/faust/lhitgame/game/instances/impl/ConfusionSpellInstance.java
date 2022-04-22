@@ -1,7 +1,6 @@
 package com.faust.lhitgame.game.instances.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.impl.ParticleEffectEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
@@ -23,13 +21,11 @@ import com.faust.lhitgame.game.world.manager.CollisionManager;
 import java.util.Objects;
 
 /**
- * Hurt spell instance class
+ * Confusion spell instance class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class ConfusionSpellInstance extends GameInstance implements Interactable, Damager, Killable {
-
-    private static final float SPELL_SPEED = 70;
 
     private final Vector2 target; // Target x and y;
 
@@ -49,11 +45,14 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
+        if(isDead())
+            return;
+
         //Translate emitter
         ((ParticleEffectEntity) entity).getParticleEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
         switch (currentBehavior) {
-            case ATTACK:{
+            case ATTACK: {
                 // Count to 1 seconds
                 if (TimeUtils.timeSinceNanos(attackTimer) > TimeUtils.millisToNanos(1000)) {
                     // after 1 seconds, explode
@@ -75,7 +74,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
             }
             case WALK: {
                 // Overlap and keep on target
-                body.setTransform(target,0);
+                body.setTransform(target, 0);
 
                 // Count to 2 seconds
                 if (attackTimer == 0) {
@@ -135,7 +134,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        ((ParticleEffectEntity) entity).getParticleEffect().draw(batch,Gdx.graphics.getDeltaTime());
+        ((ParticleEffectEntity) entity).getParticleEffect().draw(batch, Gdx.graphics.getDeltaTime());
         batch.end();
     }
 
@@ -147,7 +146,9 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Bounce player away
-        playerInstance.hurt(this);
+        if (isDead()) {
+            playerInstance.setConfused(true);
+        }
     }
 
     @Override

@@ -139,6 +139,20 @@ public class CollisionManager implements ContactListener {
         if (isContactOfClass(contact, DiaconusInstance.class)) {
             handleEnemyCollisionEvent(contact, DiaconusInstance.class);
         }
+
+        // Handle HurtSpell Collision
+        if (isContactOfClass(contact, HurtSpellInstance.class)) {
+            HurtSpellInstance hurtSpellInstance = ((HurtSpellInstance) getCorrectFixture(contact, HurtSpellInstance.class).getBody().getUserData());
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            hurtSpellInstance.doPlayerInteraction(playerInstance);
+        }
+
+        // Handle ConfusionSpell Collision
+        if (isContactOfClass(contact, ConfusionSpellInstance.class)) {
+            ConfusionSpellInstance confusionSpellInstance = ((ConfusionSpellInstance) getCorrectFixture(contact, ConfusionSpellInstance.class).getBody().getUserData());
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            confusionSpellInstance.doPlayerInteraction(playerInstance);
+        }
     }
 
     /**

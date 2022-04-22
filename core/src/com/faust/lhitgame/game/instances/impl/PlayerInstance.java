@@ -43,6 +43,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 3;
+    private static final long CONFUSION_TIME = 3000;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -58,7 +59,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     private int availableHealthKits = 0; // available Health Kits
     private long startHealingTime;
-    private final Map<ItemEnum,Integer> itemsFound;
+    private long confusionTimeout = 0;
+    private final Map<ItemEnum, Integer> itemsFound;
 
     private boolean isSubmerged = false;
     private boolean isDead = false;
@@ -67,6 +69,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean goToGameOver = false;
     private boolean pauseGame = false;
     private boolean hasKilledSecretBoss = false;
+    private boolean isConfused = false;
+
 
     public PlayerInstance(AssetManager assetManager) {
         super(new PlayerEntity(assetManager));
@@ -192,6 +196,17 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 nearestPOIInstance.setEnableFlicker(true);
             }
         }
+
+        //If is confused, check if must start countdown or end confusion
+        if (isConfused) {
+            if (TimeUtils.timeSinceNanos(confusionTimeout) >= TimeUtils.millisToNanos(CONFUSION_TIME)) {
+                confusionTimeout = 0;
+                isConfused = false;
+            } else if (confusionTimeout == 0) {
+                confusionTimeout = TimeUtils.nanoTime();
+            }
+
+        }
     }
 
     /**
@@ -228,7 +243,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Strix and Infernum must not send player back on hurt
         if (!(attacker instanceof StrixInstance) &&
-                !(attacker instanceof EchoActorInstance && (EchoesActorType.INFERNUM.equals(((EchoActorInstance) attacker).getType())))){
+                !(attacker instanceof EchoActorInstance && (EchoesActorType.INFERNUM.equals(((EchoActorInstance) attacker).getType())))) {
             body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
         currentBehavior = GameBehavior.HURT;
@@ -350,8 +365,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Get shader and set parameters
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
-        shader.addFlag("hasArmor", itemsFound.getOrDefault(ItemEnum.ARMOR,0) == 1);
-        shader.addFlag("hasHolyLance", itemsFound.getOrDefault(ItemEnum.HOLY_LANCE,0) == 2);
+        shader.addFlag("hasArmor", itemsFound.getOrDefault(ItemEnum.ARMOR, 0) == 1);
+        shader.addFlag("hasHolyLance", itemsFound.getOrDefault(ItemEnum.HOLY_LANCE, 0) == 2);
+        shader.addFlag("isConfused", isConfused ? 1 : 0);
         shader.setShaderOnBatchWithFlags(batch);
 
         Vector2 drawPosition = adjustPosition();
@@ -362,7 +378,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Draw watersteps if submerged
         if (isSubmerged) {
-            waterWalkEffect.draw(batch,Gdx.graphics.getDeltaTime());
+            waterWalkEffect.draw(batch, Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
             if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
@@ -678,6 +694,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
         }
 
+        //If is confused, invert commands
+        if (isConfused) {
+            horizontalVelocity = -horizontalVelocity;
+            verticalVelocity = -verticalVelocity;
+        }
+
         setPlayerLinearVelocity(horizontalVelocity, verticalVelocity);
         return true;
     }
@@ -741,7 +763,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         ((PlayerEntity) entity).playBonusSound();
 
         //Set item to 1 if not found before, or else add 1
-        itemsFound.merge(itemFound,1,Integer::sum);
+        itemsFound.merge(itemFound, 1, Integer::sum);
 
         if (itemFound == ItemEnum.HEALTH_KIT) {//Increase available Kits, max 3
             availableHealthKits = Math.min(MAX_AVAILABLE_HEALTH_KIT, availableHealthKits + 1);
@@ -762,23 +784,23 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     *
      * @param itemFound
      * @return quantity found of the item
      */
     public int getItemQuantityFound(ItemEnum itemFound) {
         Objects.requireNonNull(itemFound);
-        return itemsFound.getOrDefault(itemFound,0);
+        return itemsFound.getOrDefault(itemFound, 0);
     }
 
     /**
      * Set the item quantity (usually from savefile)
+     *
      * @param item
      * @param quantity
      */
     public void setItemQuantityFound(ItemEnum item, int quantity) {
         Objects.requireNonNull(item);
-        itemsFound.put(item,quantity);
+        itemsFound.put(item, quantity);
     }
 
     /**
@@ -830,8 +852,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         //Clamp speed if over the maximum one
-        setPlayerLinearVelocity(MathUtils.clamp(velocity.x ,-PLAYER_SPEED,PLAYER_SPEED),
-                MathUtils.clamp(velocity.y,-PLAYER_SPEED,PLAYER_SPEED));
+        setPlayerLinearVelocity(MathUtils.clamp(velocity.x, -PLAYER_SPEED, PLAYER_SPEED),
+                MathUtils.clamp(velocity.y, -PLAYER_SPEED, PLAYER_SPEED));
 
         isSubmerged = submerged;
     }
@@ -917,6 +939,14 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setHasKilledSecretBoss(boolean hasKilledSecretBoss) {
         this.hasKilledSecretBoss = hasKilledSecretBoss;
+    }
+
+    public boolean isConfused() {
+        return isConfused;
+    }
+
+    public void setConfused(boolean confused) {
+        isConfused = confused;
     }
 
     @Override

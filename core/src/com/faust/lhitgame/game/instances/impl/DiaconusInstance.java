@@ -337,11 +337,6 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
     }
 
     @Override
-    public void dispose() {
-        super.dispose();
-    }
-
-    @Override
     public boolean isDisposable() {
         return isDead();
     }

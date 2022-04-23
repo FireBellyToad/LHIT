@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.GameEntity;
-import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.rooms.RoomContent;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.faust.lhitgame.game.instances.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.impl.ParticleEffectEntity;
-import com.faust.lhitgame.game.gameentities.impl.PlayerEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
@@ -42,7 +40,7 @@ public class HurtSpellInstance extends GameInstance implements Interactable, Dam
 
         final Vector2 target = playerInstance.getBody().getPosition().cpy();
         currentBehavior = GameBehavior.WALK;
-        ((ParticleEffectEntity) entity).getParticleEffect().start();;
+        ((ParticleEffectEntity) entity).getParticleEffect().start();
         direction = new Vector2(target.x - x, target.y - y).nor();
 
     }

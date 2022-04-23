@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.DecorationInstance;
-import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
 import com.faust.lhitgame.game.rooms.areas.WallArea;
 

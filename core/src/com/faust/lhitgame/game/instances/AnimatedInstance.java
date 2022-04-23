@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.faust.lhitgame.game.gameentities.TexturedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
-import com.faust.lhitgame.game.rooms.RoomContent;
 
 import java.util.Objects;
 

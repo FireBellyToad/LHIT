@@ -18,9 +18,9 @@ float Walfrit_red_b = 36.0/255.0;
 float Walfrit_yellow_r = 255.0/255.0;
 float Walfrit_yellow_g = 219.0/255.0;
 float Walfrit_yellow_b = 92.0/255.0;
-float Walfrit_pink_r = 100.0/255.0;
-float Walfrit_pink_g = 68.2/255.0;
-float Walfrit_pink_b = 78.8/255.0;
+float Walfrit_pink_r = 255.0/255.0;
+float Walfrit_pink_g = 174.0/255.0;
+float Walfrit_pink_b = 201.0/255.0;
 
 vec3 Walfrit_red_color = vec3(Walfrit_red_r, Walfrit_red_g, Walfrit_red_b);
 vec3 Walfrit_yellow_color = vec3(Walfrit_yellow_r, Walfrit_yellow_g, Walfrit_yellow_b);

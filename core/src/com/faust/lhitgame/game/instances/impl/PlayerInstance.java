@@ -43,7 +43,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final float SPEAR_SENSOR_Y_OFFSET = 8;
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 3;
-    private static final long CONFUSION_TIME = 3000;
+    private static final long CONFUSION_TIME_IN_MILLIS = 3000;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -199,13 +199,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //If is confused, check if must start countdown or end confusion
         if (isConfused) {
-            if (TimeUtils.timeSinceNanos(confusionTimeout) >= TimeUtils.millisToNanos(CONFUSION_TIME)) {
+            if (confusionTimeout == 0) {
+                confusionTimeout = TimeUtils.nanoTime();
+            }else if (TimeUtils.timeSinceNanos(confusionTimeout) >= TimeUtils.millisToNanos(CONFUSION_TIME_IN_MILLIS)) {
+                //Stop confusion after 3 seconds
                 confusionTimeout = 0;
                 isConfused = false;
-            } else if (confusionTimeout == 0) {
-                confusionTimeout = TimeUtils.nanoTime();
             }
-
         }
     }
 
@@ -241,8 +241,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        //Strix and Infernum must not send player back on hurt
-        if (!(attacker instanceof StrixInstance) &&
+        //Strix, Hurtspell and Infernum must not send player back on hurt
+        if (!(attacker instanceof StrixInstance) && !(attacker instanceof HurtSpellInstance) &&
                 !(attacker instanceof EchoActorInstance && (EchoesActorType.INFERNUM.equals(((EchoActorInstance) attacker).getType())))) {
             body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
@@ -368,6 +368,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         shader.addFlag("hasArmor", itemsFound.getOrDefault(ItemEnum.ARMOR, 0) == 1);
         shader.addFlag("hasHolyLance", itemsFound.getOrDefault(ItemEnum.HOLY_LANCE, 0) == 2);
         shader.addFlag("isConfused", isConfused ? 1 : 0);
+
         shader.setShaderOnBatchWithFlags(batch);
 
         Vector2 drawPosition = adjustPosition();

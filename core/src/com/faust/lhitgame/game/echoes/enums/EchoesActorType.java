@@ -11,7 +11,7 @@ public enum EchoesActorType {
     INFERNUM("echo.infernum.json","sprites/fleshpillar_sheet.png", "sounds/terror.ogg"),
     FLESH_PILLAR("echo.fleshpillar.json","sprites/fleshpillar_sheet.png", null),
     PORTAL_SPAWNER("echo.portal.json","sprites/fleshpillar_sheet.png", null),
-    SECRET("echo.secret.json","sprites/horror_sheet.png", null),
+    SECRET("echo.secret.json","sprites/fleshpillar_sheet.png", null),
     DIACONUS("echo.diaconus.json","sprites/diaconus_echo_sheet.png", "sounds/terror.ogg");
 
     private final String filename;

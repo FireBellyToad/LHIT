@@ -53,6 +53,7 @@ public class EchoActorEntity extends AnimatedEntity {
         TextureRegion[] allFrames = getFramesFromTexture();
 
         int stepCounter = 0;
+        int reusedAnimationSteps = 0;
         for (JsonValue s : parsedSteps) {
 
             GameBehavior behaviour = GameBehavior.getFromOrdinal(stepCounter);
@@ -60,11 +61,19 @@ public class EchoActorEntity extends AnimatedEntity {
             stepOrder.add(behaviour);
 
             commands.put(behaviour, extractValue(new HashMap<>(), s.child));
-            addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * stepCounter, getTextureColumns() * (stepCounter + 1))), behaviour);
+
+            //If this step doesn't reuse another step's animation, save it
+            if (!commands.get(behaviour).containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
+                addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * (stepCounter - reusedAnimationSteps), getTextureColumns() * (stepCounter - reusedAnimationSteps + 1))), behaviour);
+            } else {
+                reusedAnimationSteps++;
+            }
 
             stepCounter++;
         }
 
+        //reduce rows with precalculation
+        precalculatedRows -= reusedAnimationSteps;
     }
 
     /**
@@ -87,7 +96,7 @@ public class EchoActorEntity extends AnimatedEntity {
                     values.put(extractedCommand, jsonValue.asInt());
                 } else if (extractedCommand.getValueClass().equals(Boolean.class)) {
                     values.put(extractedCommand, jsonValue.asBoolean());
-                }  else if (extractedCommand.getValueClass().equals(EchoCommandsEnum.class)) {
+                } else if (extractedCommand.getValueClass().equals(EchoCommandsEnum.class)) {
                     extractValue(values, jsonValue.child);
                 }
 
@@ -129,7 +138,7 @@ public class EchoActorEntity extends AnimatedEntity {
      * @param step
      * @return
      */
-    public  Map<EchoCommandsEnum, Object> getCommandsForStep(GameBehavior step){
+    public Map<EchoCommandsEnum, Object> getCommandsForStep(GameBehavior step) {
         return commands.getOrDefault(step, null);
     }
 

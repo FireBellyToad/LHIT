@@ -94,8 +94,14 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
             body.setLinearVelocity(0, 0);
         }
 
+        //Reuse animation of another step if specified
+        GameBehavior animationToUse = currentBehavior;
+        if(commands.containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
+            animationToUse = ((EchoActorEntity) entity).getStepOrder().get((Integer) commands.get(EchoCommandsEnum.USE_ANIMATION_OF_STEP));
+        }
+
         //If animation is finished pass to the next step
-        if (((EchoActorEntity) this.entity).isAnimationFinished(currentBehavior, mapStateTimeFromBehaviour(stateTime))) {
+        if (((EchoActorEntity) this.entity).isAnimationFinished(animationToUse, mapStateTimeFromBehaviour(stateTime))) {
             final List<GameBehavior> stepOrder = ((EchoActorEntity) entity).getStepOrder();
             int index = getNewIndex(stepOrder, commands, roomContent);
 
@@ -135,7 +141,7 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
             final Integer index = (Integer) commands.get(EchoCommandsEnum.STEP);
 
-            if (checkConditionalCommands(commands,roomContent)) {
+            if (checkConditionalCommands(commands, roomContent)) {
                 //If no "until" condition, just jump to "go to step" value
                 return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
             }
@@ -147,7 +153,6 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     }
 
     /**
-     *
      * @param commands
      * @param roomContent
      * @return true if all conditionals commands are true
@@ -190,8 +195,8 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
     /**
      * Spawn instance if doable
-     *  @param commands
      *
+     * @param commands
      */
     private void spawnInstancesOnEnd(Map<EchoCommandsEnum, Object> commands) {
 
@@ -315,8 +320,14 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
         batch.begin();
 
+        //Reuse animation of another step if specified
+        GameBehavior animationToUse = currentBehavior;
+        if(commands.containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
+           animationToUse = ((EchoActorEntity) entity).getStepOrder().get((Integer) commands.get(EchoCommandsEnum.USE_ANIMATION_OF_STEP));
+        }
+
         // Should not loop!
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(animationToUse, mapStateTimeFromBehaviour(stateTime));
 
         batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
         batch.end();

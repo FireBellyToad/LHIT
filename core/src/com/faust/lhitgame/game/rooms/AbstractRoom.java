@@ -277,7 +277,7 @@ public abstract class AbstractRoom implements Spawner {
                         (float) obj.getProperties().get("y"),
                         roomContent.player,
                         assetManager,
-                        worldManager, this);
+                        this);
                 break;
             }
             case PORTAL: {

@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 public class ConfusionSpellInstance extends GameInstance implements Interactable, Damager, Killable {
 
-    private final Vector2 target; // Target x and y;
+    private final PlayerInstance target; // Target x and y;
 
     private GameBehavior currentBehavior;
     private long attackTimer = 0;
@@ -37,7 +37,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
         this.startX = x;
         this.startY = y;
 
-        target = playerInstance.getBody().getPosition();
+        target = playerInstance;
         currentBehavior = GameBehavior.WALK;
         ((ParticleEffectEntity) entity).getParticleEffect().start();
     }
@@ -45,18 +45,22 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
-        if(isDead())
+        if (isDead())
             return;
+
+        final Vector2 targetPosition = target.getBody().getPosition();
 
         //Translate emitter
         ((ParticleEffectEntity) entity).getParticleEffect().setPosition(body.getPosition().x, body.getPosition().y);
 
         switch (currentBehavior) {
             case ATTACK: {
-                // Count to 1 seconds
                 if (TimeUtils.timeSinceNanos(attackTimer) > TimeUtils.millisToNanos(1000)) {
-                    // after 1 seconds, explode
                     currentBehavior = GameBehavior.DEAD;
+                    //FIXME workaround because collision only in attack behavior is not working!
+                    if(this.body.getPosition().dst(targetPosition) < 5){
+                        target.setConfused(true);
+                    }
                     dispose();
                 }
                 break;
@@ -74,13 +78,13 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
             }
             case WALK: {
                 // Overlap and keep on target
-                body.setTransform(target, 0);
+                body.setTransform(targetPosition, 0);
 
                 // Count to 2 seconds
                 if (attackTimer == 0) {
                     attackTimer = TimeUtils.nanoTime();
                 } else {
-                    // after 2 seconds, start attacking
+                    // after 2 seconds, stop
                     if (TimeUtils.timeSinceNanos(attackTimer) > TimeUtils.millisToNanos(2000)) {
                         currentBehavior = GameBehavior.ATTACK;
                         attackTimer = TimeUtils.nanoTime();
@@ -145,10 +149,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
 
     @Override
     public void doPlayerInteraction(PlayerInstance playerInstance) {
-        // Bounce player away
-        if (isDead()) {
-            playerInstance.setConfused(true);
-        }
+        // Nothing to do here... yet
     }
 
     @Override

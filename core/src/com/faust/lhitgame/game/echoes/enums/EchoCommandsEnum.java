@@ -28,6 +28,7 @@ public enum EchoCommandsEnum {
     IF_NO_KILLABLE_ALIVE("ifNoKillableAlive", String.class),
     IF_PLAYER_DAMAGE_IS_MORE_THAN("ifPlayerDamageIsMoreThan", Integer.class),
     MUST_END("mustEnd", Boolean.class),
+    USE_ANIMATION_OF_STEP("useAnimationOfStep", Integer.class),
 
 
     //Composite

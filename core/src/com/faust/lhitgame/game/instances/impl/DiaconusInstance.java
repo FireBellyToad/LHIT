@@ -38,7 +38,7 @@ import java.util.Objects;
  */
 public class DiaconusInstance extends DistancerInstance implements Interactable, Hurtable, Damager {
 
-    private static final float DIACONUS_SPEED = 40;
+    private static final float DIACONUS_SPEED = 45;
     private static final int LINE_OF_ATTACK = 50;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
@@ -52,7 +52,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     private long startAttackCooldown = 0;
 
-    public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster, Spawner spawner) {
+    public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, Spawner spawner) {
         super(new DiaconusEntity(assetManager), target);
         this.spawner = spawner;
         currentDirectionEnum = DirectionEnum.DOWN;
@@ -321,17 +321,17 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
 
-//            if (MathUtils.random(1, 4) > 3) {
+            if (MathUtils.random(1, 4) > 3) {
                 spawner.spawnInstance(ConfusionSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);
 
-//            } else {
-//                spawner.spawnInstance(HurtSpellInstance.class,
-//                        this.body.getPosition().x,
-//                        this.body.getPosition().y, null);
-//
-//            }
+            } else {
+                spawner.spawnInstance(HurtSpellInstance.class,
+                        this.body.getPosition().x,
+                        this.body.getPosition().y, null);
+
+            }
 
         }
     }

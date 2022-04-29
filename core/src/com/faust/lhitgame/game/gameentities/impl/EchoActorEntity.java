@@ -50,8 +50,7 @@ public class EchoActorEntity extends AnimatedEntity {
         //Precalculate rows from steps
         precalculatedRows = parsedSteps.size;
 
-        TextureRegion[] allFrames = getFramesFromTexture();
-
+        //Commands map initialization and calculation of repeated animation rows.
         int stepCounter = 0;
         int reusedAnimationSteps = 0;
         for (JsonValue s : parsedSteps) {
@@ -62,18 +61,36 @@ public class EchoActorEntity extends AnimatedEntity {
 
             commands.put(behaviour, extractValue(new HashMap<>(), s.child));
 
+            if (commands.get(behaviour).containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
+                reusedAnimationSteps++;
+            }
+
+            stepCounter++;
+        }
+        //reduce rows with precalculated reusedAnimationSteps value
+        precalculatedRows -= reusedAnimationSteps;
+
+        //Extract all TextureRegion, given the new amout if rows were duplicated
+        TextureRegion[] allFrames = getFramesFromTexture();
+
+        //We need to reinitialize this because we must go from first row to last
+        stepCounter = 0;
+        //We need to reinitialize this because we can support duplicated rows in between EchoActor animations!
+        reusedAnimationSteps = 0;
+        //Bind each animation row to each step
+        for (Map.Entry<GameBehavior, Map<EchoCommandsEnum, Object>> entry : commands.entrySet()) {
             //If this step doesn't reuse another step's animation, save it
-            if (!commands.get(behaviour).containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
-                addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * (stepCounter - reusedAnimationSteps), getTextureColumns() * (stepCounter - reusedAnimationSteps + 1))), behaviour);
+            if (!entry.getValue().containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
+                addAnimation(new Animation<>(FRAME_DURATION,
+                                Arrays.copyOfRange(allFrames, getTextureColumns() * (stepCounter - reusedAnimationSteps), getTextureColumns() * (stepCounter - reusedAnimationSteps + 1))),
+                        entry.getKey());
             } else {
                 reusedAnimationSteps++;
             }
 
             stepCounter++;
         }
-
-        //reduce rows with precalculation
-        precalculatedRows -= reusedAnimationSteps;
+        ;
     }
 
     /**

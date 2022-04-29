@@ -38,7 +38,7 @@ import java.util.Objects;
  */
 public class DiaconusInstance extends DistancerInstance implements Interactable, Hurtable, Damager {
 
-    private static final float DIACONUS_SPEED = 45;
+    private static final float DIACONUS_SPEED = 40;
     private static final int LINE_OF_ATTACK = 50;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
@@ -316,12 +316,11 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
-        //FIXME
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
 
-            if (MathUtils.random(1, 4) > 3) {
+            if (MathUtils.random(1, 5) > 4) {
                 spawner.spawnInstance(ConfusionSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);

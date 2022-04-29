@@ -5,6 +5,7 @@
     {
     },
     {
+      "useAnimationOfStep": 0
     },
     {
     },
@@ -14,7 +15,7 @@
     {
       "spawn": {
         "identifier": "DIACONUS",
-        "y" : 12,
+        "y" : 4,
         "relative": true
       }
     }

@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.utils.ValidEcho;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.camera.CameraManager;
@@ -79,20 +82,15 @@ public class LoadingScreen implements Screen {
         assetManager.load("sounds/rattling-bones.ogg", Sound.class);
         assetManager.load("sounds/terror.ogg", Sound.class);
 
-        musicManager.loadMusicFromFiles(assetManager);
-
-        assetManager.load("splash/strix_splash.png", Texture.class);
-        assetManager.load("splash/bounded_splash.png", Texture.class);
-        assetManager.load("splash/goldcross_splash.png", Texture.class);
-        assetManager.load("splash/gameover_splash.png", Texture.class);
-        assetManager.load("splash/holy_splash1.png", Texture.class);
-        assetManager.load("splash/holy_splash2.png", Texture.class);
-        assetManager.load("splash/hive_splash.png", Texture.class);
-        assetManager.load("splash/spitter_splash.png", Texture.class);
-        assetManager.load("splash/michael_splash.png", Texture.class);
-        assetManager.load("splash/burntmonk_splash.png", Texture.class);
         assetManager.load("sprites/hud.png", Texture.class);
         assetManager.load("sprites/darkness_overlay.png", Texture.class);
+
+        musicManager.loadMusicFromFiles(assetManager);
+
+        JsonValue allSplashScreens = new JsonReader().parse(Gdx.files.internal("splash/splashScreen.json")).get("splashScreens");
+        for (JsonValue splashInfo : allSplashScreens) {
+            assetManager.load(splashInfo.getString("splashPath"), Texture.class);
+        }
 
         for(EchoesActorType echoActor : EchoesActorType.values()){
             assetManager.load(echoActor.getSpriteFilename(), Texture.class);

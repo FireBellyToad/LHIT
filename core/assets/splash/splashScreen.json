@@ -43,6 +43,10 @@
     {
       "splashKey": "splash.ritual",
       "splashPath": "splash/ritual_splash.png"
+    },
+    {
+      "splashKey": "splash.waterskin",
+      "splashPath": "splash/waterskin_splash.png"
     }
   ]
 }

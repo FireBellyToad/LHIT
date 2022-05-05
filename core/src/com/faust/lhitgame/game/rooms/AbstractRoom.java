@@ -205,7 +205,7 @@ public abstract class AbstractRoom implements Spawner {
 
         PolygonMapObject mapObject = (PolygonMapObject) obj;
 
-        roomContent.emergedAreaList.add(new EmergedArea(mapObject.getPolygon()));
+        roomContent.emergedAreaList.add(new EmergedArea(mapObject));
     }
 
     /**

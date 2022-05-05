@@ -37,7 +37,7 @@ public class RayCastUtils {
      */
     public static boolean isNotPassable(Fixture fixture) {
         return Objects.nonNull(fixture.getBody()) && // has Body
-                !(fixture.getBody().getUserData() instanceof EmergedArea) && // is not an EmergedArea
+                !(fixture.getBody().getUserData() instanceof EmergedArea && !((EmergedArea) fixture.getBody().getUserData()).isBlocksNodePath()) && // is not an BlocksNodePath EmergedArea
                 !(ClassReflection.isAssignableFrom(AnimatedInstance.class, fixture.getBody().getUserData().getClass())) && // is not an AnimatedInstance
                 !(fixture.getBody().getUserData() instanceof DecorationInstance && ((DecorationInstance) fixture.getBody().getUserData()).isPassable()); // is not a non passable Decoration
     }

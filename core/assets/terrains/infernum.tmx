@@ -17,7 +17,7 @@
 0,0,0,25,27,21,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="echo" width="10" height="9">
+ <layer id="4" name="echo" width="10" height="9" visible="0">
   <data encoding="csv">
 112,112,126,112,112,112,112,112,112,126,
 112,112,117,115,115,115,115,118,112,112,
@@ -40,6 +40,9 @@
    <point/>
   </object>
   <object id="105" type="EMERGED" x="44.8086" y="-43.4083">
+   <properties>
+    <property name="blocksNodePath" type="bool" value="true"/>
+   </properties>
    <polygon points="-2.5,69.409 -4.1874,147.602 70.6821,147.841 70.7331,69.6364"/>
   </object>
   <object id="182" type="WALL" x="68.5" y="55.5" width="24" height="8"/>

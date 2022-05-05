@@ -1,5 +1,6 @@
 package com.faust.lhitgame.game.rooms.areas;
 
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -16,12 +17,14 @@ public class EmergedArea {
     private final PolygonShape polygonShape;
     private final float x;
     private final float y;
+    private boolean blocksNodePath = false;
 
-    public EmergedArea(Polygon polygon) {
+    public EmergedArea(PolygonMapObject polygon) {
         this.polygonShape = new PolygonShape();
-        x = polygon.getX();
-        y = polygon.getY();
-        this.polygonShape.set(polygon.getVertices());
+        x = polygon.getPolygon().getX();
+        y = polygon.getPolygon().getY();
+        this.polygonShape.set(polygon.getPolygon().getVertices());
+        blocksNodePath = polygon.getProperties().get("blocksNodePath",false,Boolean.class);
     }
 
     public void dispose() {
@@ -53,5 +56,9 @@ public class EmergedArea {
         body.createFixture(fixtureDef);
 
         polygonShape.dispose();
+    }
+
+    public boolean isBlocksNodePath() {
+        return blocksNodePath;
     }
 }

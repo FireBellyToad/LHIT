@@ -114,6 +114,7 @@ public class CasualRoom extends AbstractRoom {
     @Override
     public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
         roomContent.poiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(),poiInstance.isAlreadyExamined()));
+        roomContent.removedPoiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined()));
 
         //always enable enemies
         roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, false);

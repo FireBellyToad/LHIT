@@ -10,5 +10,5 @@ public enum HudIconsEnum {
     GOLDCROSS,
     LANCE,
     ARMOR,
-    DISCIPULUS
+    SECRET
 }

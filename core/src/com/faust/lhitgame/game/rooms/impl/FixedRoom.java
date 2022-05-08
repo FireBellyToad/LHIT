@@ -264,6 +264,7 @@ public class FixedRoom extends AbstractRoom {
     @Override
     public void onRoomLeave(RoomSaveEntry roomSaveEntry) {
         roomContent.poiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined()));
+        roomContent.removedPoiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined()));
 
         //Disable Echo on room leave if trigger is already examined POI
         if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&

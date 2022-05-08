@@ -1,3 +1,4 @@
+
 package com.faust.lhitgame.game.instances.impl;
 
 import com.badlogic.gdx.assets.AssetManager;

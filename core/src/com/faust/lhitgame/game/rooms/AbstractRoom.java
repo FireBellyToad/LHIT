@@ -121,6 +121,7 @@ public abstract class AbstractRoom implements Spawner {
         this.roomContent.wallList = new ArrayList<>();
         this.roomContent.emergedAreaList = new ArrayList<>();
         this.roomContent.spellEffects = new ArrayList<>();
+        this.roomContent.removedPoiList = new ArrayList<>();
 
         // Place objects in room
         this.mapObjects.forEach(obj -> {
@@ -495,7 +496,15 @@ public abstract class AbstractRoom implements Spawner {
         roomContent.enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
 
         //Remove examined removable POI
-        roomContent.poiList.removeIf(poiInstance -> poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination());
+        roomContent.poiList.removeIf(poiInstance -> {
+            boolean check =  poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination();
+
+            if(check){
+                roomContent.removedPoiList.add(poiInstance);
+            }
+
+            return check;
+        });
 
         //Spells logic
         roomContent.spellEffects.forEach(spell -> spell.doLogic(stateTime, roomContent));

@@ -32,6 +32,7 @@ public class RoomContent {
     public String roomFileName;
     public List<EchoActorInstance> echoActors; //Can have Echo actors
     public List<GameInstance> spellEffects;
+    public List<POIInstance> removedPoiList;
 
     public Map<RoomFlagEnum, Boolean> roomFlags;
     public RoomNodesGraph roomGraph;

@@ -24,6 +24,8 @@ import com.faust.lhitgame.game.instances.Spawner;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
+import com.faust.lhitgame.game.music.MusicManager;
+import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
@@ -39,12 +41,13 @@ import java.util.Objects;
 public class DiaconusInstance extends DistancerInstance implements Interactable, Hurtable, Damager {
 
     private static final float DIACONUS_SPEED = 40;
-    private static final int LINE_OF_ATTACK = 50;
+    private static final int LINE_OF_ATTACK = 40;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
     private static final long ATTACK_COUNTER_LIMIT = 6; // in millis
 
     private final Spawner spawner;
+    private final MusicManager musicManager;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -52,13 +55,17 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     private long startAttackCooldown = 0;
 
-    public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, Spawner spawner) {
+    public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, MusicManager musicManager, Spawner spawner) {
         super(new DiaconusEntity(assetManager), target);
         this.spawner = spawner;
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
         ((DiaconusEntity) entity).getWaterWalkEffect().start();
+
+        //Change Music
+        this.musicManager = musicManager;
+
     }
 
     @Override
@@ -69,6 +76,14 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         //Move emitter
         ((DiaconusEntity) entity).getWaterWalkEffect().setPosition(body.getPosition().x, body.getPosition().y);
+
+
+        //Change Music
+        if (!musicManager.isPlaying() && !((PlayerInstance )target).isDead()) {
+            this.musicManager.stopMusic();
+            this.musicManager.playMusic(TuneEnum.SECRET, 0.45f);
+        }
+
 
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
@@ -248,8 +263,9 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         final boolean canEvade = (MathUtils.random(1, 100)) >= 50;
         if (isDying()) {
             ((DiaconusEntity) entity).playDeathCry();
-            body.setLinearVelocity(0, 0);
-            currentBehavior = GameBehavior.DEAD;
+            this.musicManager.stopMusic();
+            this.body.setLinearVelocity(0, 0);
+            this.currentBehavior = GameBehavior.DEAD;
             ((PlayerInstance) attacker).setHasKilledSecretBoss(true);
         } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
             ((DiaconusEntity) entity).playHurtCry();

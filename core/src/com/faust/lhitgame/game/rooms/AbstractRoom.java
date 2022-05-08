@@ -276,7 +276,7 @@ public abstract class AbstractRoom implements Spawner {
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
                         roomContent.player,
-                        assetManager,
+                        assetManager, musicManager,
                         this);
                 break;
             }
@@ -464,13 +464,15 @@ public abstract class AbstractRoom implements Spawner {
 
             ene.doLogic(stateTime, roomContent);
 
-            if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
+            if (roomContent.player.isDead()) {
+                musicManager.stopMusic();
+            } else if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
                 roomContent.player.setPrepareEndgame(true);
             } else if (roomContent.enemyList.size() == 1 && ClassReflection.isAssignableFrom(Killable.class,ene.getClass()) && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
-            } else if (!roomContent.player.isDead() && (!RoomTypeEnum.FINAL.equals(roomContent.roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomContent.roomType)) &&
+            } else if ((!RoomTypeEnum.FINAL.equals(roomContent.roomType) && !RoomTypeEnum.INFERNUM.equals(roomContent.roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomContent.roomType)) &&
                     !GameBehavior.IDLE.equals(ene.getCurrentBehavior())) {
                 musicManager.playMusic(TuneEnum.ATTACK, 0.65f, true);
             }

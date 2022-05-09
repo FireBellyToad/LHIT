@@ -201,7 +201,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if (isConfused) {
             if (confusionTimeout == 0) {
                 confusionTimeout = TimeUtils.nanoTime();
-            }else if (TimeUtils.timeSinceNanos(confusionTimeout) >= TimeUtils.millisToNanos(CONFUSION_TIME_IN_MILLIS)) {
+            } else if (TimeUtils.timeSinceNanos(confusionTimeout) >= TimeUtils.millisToNanos(CONFUSION_TIME_IN_MILLIS)) {
                 //Stop confusion after 3 seconds
                 confusionTimeout = 0;
                 isConfused = false;
@@ -223,16 +223,17 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public void hurt(GameInstance attacker) {
 
-        double damageReceived = ((Damager) attacker).damageRoll();
-        if (damageReceived > 0 && isDying()) {
-            isDead = true;
-        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
-            ((PlayerEntity) entity).playHurtCry();
-            this.damage += Math.min(getResistance(), damageReceived);
-            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
-            postHurtLogic(attacker);
+        if (!GameBehavior.HURT.equals(currentBehavior)) {
+            double damageReceived = ((Damager) attacker).damageRoll();
+            if (damageReceived > 0 && isDying()) {
+                isDead = true;
+            } else {
+                ((PlayerEntity) entity).playHurtCry();
+                this.damage += Math.min(getResistance(), damageReceived);
+                Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+                postHurtLogic(attacker);
+            }
         }
-
     }
 
     @Override
@@ -251,6 +252,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                ;
                 currentBehavior = GameBehavior.IDLE;
                 body.setLinearVelocity(0, 0);
             }

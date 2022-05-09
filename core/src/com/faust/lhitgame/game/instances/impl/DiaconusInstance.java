@@ -88,7 +88,20 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
+        if (target.getBody().getPosition().dst(getBody().getPosition()) > 70) {
+            currentBehavior = GameBehavior.WALK;
+            calculateNewGoal(roomContent.roomGraph);
+
+            // Normal from Diaconus position to target
+            final Vector2 destination = target.getBody().getPosition();
+            Vector2 direction = new Vector2(destination.x - body.getPosition().x,
+                    destination.y - body.getPosition().y).nor();
+
+            currentDirectionEnum = extractDirectionFromNormal(direction);
+
+            // Move towards target
+            body.setLinearVelocity(DIACONUS_SPEED * direction.x, DIACONUS_SPEED * direction.y);
+        } else if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
                 target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK) {
 
             //Start animation
@@ -302,6 +315,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         //If evading, the leap is more subtle and perpendicular
         if (GameBehavior.EVADE.equals(currentBehavior)) {
             modifier = 2f;
+            direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
         body.setLinearVelocity(DIACONUS_SPEED * modifier * -direction.x, DIACONUS_SPEED * modifier * -direction.y);
         // Do nothing for half second

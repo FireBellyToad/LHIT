@@ -139,7 +139,7 @@ public class EndGameScreen implements Screen {
                 Y_OFFSET - 12);
 
         //Secret boss killed.
-        batch.draw(itemsTexture.getFrame(HudIconsEnum.ARMOR.ordinal() * AnimatedEntity.FRAME_DURATION),
+        batch.draw(itemsTexture.getFrame(HudIconsEnum.SECRET.ordinal() * AnimatedEntity.FRAME_DURATION),
                 X_OFFSET - 10,
                 Y_OFFSET - 30);
 

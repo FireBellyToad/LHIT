@@ -67,8 +67,8 @@ public abstract class ChaserInstance extends AnimatedInstance {
         currentPos = nodeArray.get(0);
 
         //get nearest to Target
-//        nodeArray.sort((n1, n2) -> Float.compare(target.getBody().getPosition().dst(n1), target.getBody().getPosition().dst(n2)));
-        newGoal = nodeArray.get(1);
+        nodeArray.sort((n1, n2) -> Float.compare(target.getBody().getPosition().dst(n1), target.getBody().getPosition().dst(n2)));
+        newGoal = nodeArray.get(0);
 
         final GraphPath<PathNode> graphPath = PathfinderUtils.generatePath(currentPos, newGoal, roomNodesGraph);
         for (PathNode pathNode : graphPath) {

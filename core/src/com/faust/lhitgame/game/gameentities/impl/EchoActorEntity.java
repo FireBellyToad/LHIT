@@ -78,12 +78,10 @@ public class EchoActorEntity extends AnimatedEntity {
         //We need to reinitialize this because we can support duplicated rows in between EchoActor animations!
         reusedAnimationSteps = 0;
         //Bind each animation row to each step
-        for (Map.Entry<GameBehavior, Map<EchoCommandsEnum, Object>> entry : commands.entrySet()) {
+        for (GameBehavior step : stepOrder) {
             //If this step doesn't reuse another step's animation, save it
-            if (!entry.getValue().containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
-                addAnimation(new Animation<>(FRAME_DURATION,
-                                Arrays.copyOfRange(allFrames, getTextureColumns() * (stepCounter - reusedAnimationSteps), getTextureColumns() * (stepCounter - reusedAnimationSteps + 1))),
-                        entry.getKey());
+            if (!commands.get(step).containsKey(EchoCommandsEnum.USE_ANIMATION_OF_STEP)) {
+                addAnimation(new Animation<>(FRAME_DURATION, Arrays.copyOfRange(allFrames, getTextureColumns() * (stepCounter - reusedAnimationSteps), getTextureColumns() * (stepCounter - reusedAnimationSteps + 1))), step);
             } else {
                 reusedAnimationSteps++;
             }

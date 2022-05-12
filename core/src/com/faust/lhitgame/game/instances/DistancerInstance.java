@@ -92,45 +92,4 @@ public abstract class DistancerInstance extends AnimatedInstance {
 
         return targetPathNode;
     }
-
-    /**
-     * FIXME REMOVE
-     */
-    public void drawDebug(OrthographicCamera cameraTemp) {
-
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        Color back = new Color(0xffffffff);
-
-        PathNode previous = null;
-        for (PathNode p : pathQueue) {
-
-            if (Objects.isNull(previous)) {
-                previous = p;
-                continue;
-            }
-            shapeRenderer.setColor(back);
-            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.line(p, previous);
-            shapeRenderer.end();
-            previous = p;
-        }
-
-        if (Objects.nonNull(currentPos)) {
-
-            shapeRenderer.setColor(back);
-            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(currentPos.x, currentPos.y, 5);
-            shapeRenderer.end();
-        }
-        if (Objects.nonNull(newGoal)) {
-
-            shapeRenderer.setColor(back);
-            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(newGoal.x, newGoal.y, 5);
-            shapeRenderer.end();
-        }
-    }
 }

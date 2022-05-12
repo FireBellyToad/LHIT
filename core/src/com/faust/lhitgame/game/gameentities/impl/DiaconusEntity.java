@@ -23,6 +23,7 @@ public class DiaconusEntity extends AnimatedEntity {
     private final Sound hurtCry;
     private final Sound deathCry;
     private final Sound evadeSwift;
+    private final Sound spellcast;
     private final Texture shadow;
 
     private final ParticleEffect waterWalkEffect;
@@ -33,6 +34,7 @@ public class DiaconusEntity extends AnimatedEntity {
         hurtCry = assetManager.get("sounds/SFX_shot4.ogg");
         deathCry = assetManager.get("sounds/death_scream.ogg");
         evadeSwift = assetManager.get("sounds/evade.ogg");
+        spellcast = assetManager.get("sounds/SFX_flame1.ogg");
 
         // Init waterwalk effect
         waterWalkEffect = new ParticleEffect();
@@ -119,6 +121,10 @@ public class DiaconusEntity extends AnimatedEntity {
 
     public void playEvadeSwift() {
         evadeSwift.play();
+    }
+
+    public void playSpellcast() {
+        spellcast.play();
     }
 
     public ParticleEffect getWaterWalkEffect() {

@@ -151,7 +151,7 @@ public class ValidEcho {
                 }
             }
         } catch (EchoScriptValidationException e) {
-            //Just throws its
+            //Just throws it
             throw e;
         } catch (Exception e) {
             //Prepare nice output!

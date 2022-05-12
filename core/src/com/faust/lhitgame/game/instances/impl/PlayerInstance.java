@@ -44,6 +44,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private static final long HEALTH_KIT_TIME_IN_MILLIS = 4000;
     private static final int MAX_AVAILABLE_HEALTH_KIT = 3;
     private static final long CONFUSION_TIME_IN_MILLIS = 3000;
+    private static final long POST_HURT_COOLDOWN_DURATION = 500;
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -60,6 +61,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private int availableHealthKits = 0; // available Health Kits
     private long startHealingTime;
     private long confusionTimeout = 0;
+    private long postHurtCooldown = 0;
     private final Map<ItemEnum, Integer> itemsFound;
 
     private boolean isSubmerged = false;
@@ -223,11 +225,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public void hurt(GameInstance attacker) {
 
-        if (!GameBehavior.HURT.equals(currentBehavior)) {
+        //If not in post hurt invincibility, take damage or die
+        if (TimeUtils.timeSinceNanos(postHurtCooldown) > TimeUtils.millisToNanos(POST_HURT_COOLDOWN_DURATION)) {
             double damageReceived = ((Damager) attacker).damageRoll();
             if (damageReceived > 0 && isDying()) {
                 isDead = true;
             } else {
+                postHurtCooldown = TimeUtils.nanoTime();
                 ((PlayerEntity) entity).playHurtCry();
                 this.damage += Math.min(getResistance(), damageReceived);
                 Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);

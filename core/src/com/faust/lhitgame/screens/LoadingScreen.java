@@ -80,6 +80,7 @@ public class LoadingScreen implements Screen {
         assetManager.load("sounds/evade.ogg", Sound.class);
         assetManager.load("sounds/rattling-bones.ogg", Sound.class);
         assetManager.load("sounds/terror.ogg", Sound.class);
+        assetManager.load("sounds/SFX_flame1.ogg", Sound.class);
 
         assetManager.load("sprites/hud.png", Texture.class);
         assetManager.load("sprites/darkness_overlay.png", Texture.class);

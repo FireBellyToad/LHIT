@@ -43,7 +43,6 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
     private static final int LINE_OF_ATTACK = 40;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
-    private static final long ATTACK_COUNTER_LIMIT = 6; // in millis
 
     private final Spawner spawner;
     private final MusicManager musicManager;
@@ -348,6 +347,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
+            ((DiaconusEntity) entity).playSpellcast();
 
             if (MathUtils.random(1, 5) > 4) {
                 spawner.spawnInstance(ConfusionSpellInstance.class,

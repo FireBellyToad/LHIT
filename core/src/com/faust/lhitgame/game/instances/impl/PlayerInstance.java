@@ -252,7 +252,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                ;
                 currentBehavior = GameBehavior.IDLE;
                 body.setLinearVelocity(0, 0);
             }

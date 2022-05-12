@@ -20,7 +20,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
     public static final float FRAME_DURATION = 0.1f;
 
     //Animations given Behavior and Direction
-    protected final Map<GameBehavior, Map<DirectionEnum, Animation>> animations = new HashMap<>();
+    protected final Map<GameBehavior, Map<DirectionEnum, Animation<TextureRegion>>> animations = new HashMap<>();
 
     public AnimatedEntity(Texture texture) {
         super(texture);
@@ -40,7 +40,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
      * @param animation the animation itself
      * @param behavior  the behaviour associated to the animation
      */
-    protected void addAnimation(Animation animation, GameBehavior behavior) {
+    protected void addAnimation(Animation<TextureRegion> animation, GameBehavior behavior) {
         this.addAnimationForDirection(animation, behavior, DirectionEnum.UNUSED);
     }
 
@@ -52,7 +52,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
      * @param behavior  the behaviour associated to the animation
      * @param directionEnum the direction of the animation
      */
-    protected void addAnimationForDirection(Animation animation, GameBehavior behavior, DirectionEnum directionEnum) {
+    protected void addAnimationForDirection(Animation<TextureRegion> animation, GameBehavior behavior, DirectionEnum directionEnum) {
         Objects.requireNonNull(behavior);
         Objects.requireNonNull(directionEnum);
 
@@ -110,7 +110,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
         Objects.requireNonNull(directionEnum);
 
         // Get all animations for behaviour
-        Map<DirectionEnum, Animation> behaviorAnimations = this.animations.get(behavior);
+        Map<DirectionEnum, Animation<TextureRegion>> behaviorAnimations = this.animations.get(behavior);
 
         Objects.requireNonNull(behaviorAnimations);
 
@@ -140,7 +140,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
         Objects.requireNonNull(directionEnum);
 
         // Get all animations for behaviour
-        Map<DirectionEnum, Animation> behaviorAnimations = this.animations.get(behavior);
+        Map<DirectionEnum, Animation<TextureRegion>> behaviorAnimations = this.animations.get(behavior);
 
         Objects.requireNonNull(behaviorAnimations);
 
@@ -168,7 +168,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
         Objects.requireNonNull(directionEnum);
 
         // Get all animations for behaviour
-        Map<DirectionEnum, Animation> behaviorAnimations = this.animations.get(behavior);
+        Map<DirectionEnum, Animation<TextureRegion>> behaviorAnimations = this.animations.get(behavior);
 
         Objects.requireNonNull(behaviorAnimations);
 

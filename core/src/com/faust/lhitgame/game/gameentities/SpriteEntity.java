@@ -15,7 +15,7 @@ public abstract class SpriteEntity extends TexturedEntity {
 
     protected static final float FRAME_DURATION = 0.1f;
 
-    protected Animation animation;
+    protected Animation<TextureRegion> animation;
 
     public SpriteEntity(Texture texture) {
         super(texture);

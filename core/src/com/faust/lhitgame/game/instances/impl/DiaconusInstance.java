@@ -27,7 +27,6 @@ import com.faust.lhitgame.game.instances.interfaces.Interactable;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.RoomContent;
-import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.screens.GameScreen;
 

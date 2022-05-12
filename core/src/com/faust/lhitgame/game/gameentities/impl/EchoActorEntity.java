@@ -88,7 +88,6 @@ public class EchoActorEntity extends AnimatedEntity {
 
             stepCounter++;
         }
-        ;
     }
 
     /**

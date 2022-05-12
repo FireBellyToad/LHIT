@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.utils.ValidEcho;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.camera.CameraManager;

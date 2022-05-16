@@ -22,6 +22,7 @@ import java.util.Objects;
  */
 public abstract class DistancerInstance extends AnimatedInstance {
 
+    private static final float DISTANCE_LIMIT_TO_EVALUATE = 70;
     //Current path node to follow
     protected PathNode targetPathNode;
     //Target instance
@@ -49,15 +50,22 @@ public abstract class DistancerInstance extends AnimatedInstance {
         if (!recalculatePath || Objects.isNull(roomNodesGraph))
             return;
 
+        //Get a subarray of only the nearest nodes to the DistancerInstance to improve the escape
         final Array<PathNode> nodeArray = roomNodesGraph.getNodeArray();
+        Array<PathNode> nearestNodes = new Array<>();
+        for (PathNode n : nodeArray) {
+            if (n.dst(body.getPosition()) <= DISTANCE_LIMIT_TO_EVALUATE) {
+                nearestNodes.add(n);
+            }
+        }
 
         //get nearest to This
-        nodeArray.sort((n1, n2) -> Float.compare(body.getPosition().dst(n1), body.getPosition().dst(n2)));
-        currentPos = nodeArray.get(0);
+        nearestNodes.sort((n1, n2) -> Float.compare(body.getPosition().dst(n1), body.getPosition().dst(n2)));
+        currentPos = nearestNodes.get(0);
 
         //get farthest to Target
-        nodeArray.sort((n1, n2) -> Float.compare(target.getBody().getPosition().dst(n2), target.getBody().getPosition().dst(n1)));
-        newGoal = nodeArray.get(0);
+        nearestNodes.sort((n1, n2) -> Float.compare(target.getBody().getPosition().dst(n2), target.getBody().getPosition().dst(n1)));
+        newGoal = nearestNodes.get(0);
 
         final GraphPath<PathNode> graphPath = PathfinderUtils.generatePath(currentPos, newGoal, roomNodesGraph);
         for (PathNode pathNode : graphPath) {

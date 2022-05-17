@@ -5,6 +5,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.saves.impl.DesktopSaveFileManager;
 
+import java.util.Arrays;
+
 public class DesktopLauncher {
 	private static final int SCALE_FACTOR = 6;
 
@@ -15,7 +17,7 @@ public class DesktopLauncher {
 		config.width = LHITGame.GAME_WIDTH * SCALE_FACTOR;
 		config.height = LHITGame.GAME_HEIGHT * SCALE_FACTOR;
 		//if parameter w is set, go windowed
-		config.fullscreen = false;//!Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
+		config.fullscreen = !Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
 		new LwjglApplication(new LHITGame(new DesktopSaveFileManager()), config);
 	}
 }

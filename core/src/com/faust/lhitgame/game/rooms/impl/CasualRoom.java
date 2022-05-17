@@ -44,7 +44,7 @@ public class CasualRoom extends AbstractRoom {
     }};
 
     // Total number of supported casual rooms
-    public static final int CASUAL_TOTAL = 12;
+    public static final int CASUAL_TOTAL = 13;
 
     public CasualRoom(WorldManager worldManager, TextBoxManager textManager, SplashManager splashManager, PlayerInstance player, OrthographicCamera camera, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
         super(RoomTypeEnum.CASUAL, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry,  musicManager);

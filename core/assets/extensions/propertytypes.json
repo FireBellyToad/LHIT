@@ -18,7 +18,8 @@
             "TUMOR",
             "IMPALED",
             "DEAD_TREE",
-            "PAPER"
+            "PAPER",
+            "BIG_TREE"
         ],
         "valuesAsFlags": false
     },
@@ -49,7 +50,7 @@
         "storageType": "string",
         "type": "enum",
         "values": [
-            "UNDEFINED,",
+            "UNDEFINED",
             "STRIX",
             "BOUNDED",
             "HIVE",

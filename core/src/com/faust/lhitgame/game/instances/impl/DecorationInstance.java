@@ -116,6 +116,7 @@ public class DecorationInstance extends GameInstance implements Interactable {
             }
             case STONE_1:
             case STONE_2:
+            case BIG_TREE:
             case TREE_STUMP: {
                 shape.setAsBox(16, 8);
                 bodyDef.position.set(x, y - 16);

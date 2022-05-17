@@ -347,14 +347,15 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
             startAttackCooldown = TimeUtils.nanoTime();
-            ((DiaconusEntity) entity).playSpellcast();
 
             if (MathUtils.random(1, 5) > 4) {
+                ((DiaconusEntity) entity).playConfusionSpellSound();
                 spawner.spawnInstance(ConfusionSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);
 
             } else {
+                ((DiaconusEntity) entity).playHurtSpellSound();
                 spawner.spawnInstance(HurtSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);

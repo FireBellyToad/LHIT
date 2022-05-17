@@ -14,7 +14,8 @@ public enum DecorationsEnum {
     TUMOR,
     IMPALED,
     DEAD_TREE,
-    PAPER;
+    PAPER,
+    BIG_TREE;
 
     public static DecorationsEnum getFromString(String name) {
         for (DecorationsEnum e : DecorationsEnum.values()) {

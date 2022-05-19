@@ -16,7 +16,7 @@ public enum POIEnum {
     BURNT_PAPER("poi.burntpaper"),
     BAPTISMAL("poi.baptismal", ItemEnum.HOLY_WATER, ItemEnum.WATERSKIN),
     BURNT_MONK("poi.burntmonk", "splash.burntmonk"),
-    ALTAR("poi.altar", null, ItemEnum.HOLY_WATER),
+    ALTAR("poi.altar", null,"splash.diaconus", ItemEnum.HOLY_WATER, false),
     WATERSKIN("poi.waterskin", ItemEnum.WATERSKIN, "splash.waterskin", ItemEnum.RITUAL, true),
     PARCHMENT("poi.parchment"),
     RITUAL("poi.ritual",ItemEnum.RITUAL,"splash.ritual", null,true);

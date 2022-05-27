@@ -48,11 +48,34 @@ public class TextBoxManager {
     }
 
     /**
+     * Generate a new text box with a time limit, after which it will be hidden from game screen
+     *
+     * @param textKey the key of the message to be shown
+     */
+    public void addNewTimedTextBox(final String textKey) {
+        this.addNewTextBox(textKey);
+
+        TextBoxData newText = textBoxes.get(textBoxes.size() - 1);
+
+        // Hide box after time
+        currentTimer = Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (!textBoxes.isEmpty()) {
+                    textBoxes.remove(newText);
+                    currentTimer.cancel();
+                    currentTimer = null;
+                }
+            }
+        }, newText.getTimeToShow());
+    }
+
+    /**
      * Generate a new text box
      *
      * @param textKey the key of the message to be shown
      */
-    public void addNewTextBox(final String textKey) {
+    public void addNewTextBox(String textKey) {
         Objects.requireNonNull(textKey);
 
         if (textBoxes.size() == MESSAGE_LIMIT) {
@@ -67,18 +90,6 @@ public class TextBoxManager {
         //Create text box given a textKey.
         TextBoxData newText = new TextBoxData(textLocalizer.localizeFromKey("boxes",textKey));
         textBoxes.add(newText);
-
-        // Hide box after time
-        currentTimer = Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                if (!textBoxes.isEmpty()) {
-                    textBoxes.remove(newText);
-                    currentTimer.cancel();
-                    currentTimer = null;
-                }
-            }
-        }, newText.getTimeToShow());
     }
 
     /**
@@ -122,7 +133,7 @@ public class TextBoxManager {
 
             //Text
             batch.begin();
-            mainFont.draw(batch, box.getText(), 6, fontY);
+            mainFont.draw(batch, box.getTextIncremental(), 6, fontY);
             batch.end();
         }
     }
@@ -144,5 +155,14 @@ public class TextBoxManager {
     public void removeAllBoxes() {
         textBoxes.clear();
     }
+
+    /**
+     *
+     * @return true if no boxes to draw are added
+     */
+    public boolean hasNoBoxesToDraw() {
+        return textBoxes.isEmpty();
+    }
+
 }
 

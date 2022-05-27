@@ -61,11 +61,14 @@ public class SplashManager implements InputProcessor {
         batch.begin();
         batch.draw(this.splashScreens.get(splashToShow), 0, 0);
 
-        textManager.addNewTextBox(splashToShow);
+        if(textManager.hasNoBoxesToDraw()){
+            textManager.addNewTextBox(splashToShow);
+        }
+
+        //draw  K keys X
         batch.draw( arrows.getFrame(GameBehavior.IDLE, DirectionEnum.DOWN,stateTime), LHITGame.GAME_WIDTH-24, LHITGame.GAME_HEIGHT -  16);
         batch.draw( arrows.getFrame(GameBehavior.IDLE, DirectionEnum.UP,stateTime), LHITGame.GAME_WIDTH-40, LHITGame.GAME_HEIGHT - 16);
 
-        //TODO draw Tutorial Entity for K X
         batch.end();
     }
 

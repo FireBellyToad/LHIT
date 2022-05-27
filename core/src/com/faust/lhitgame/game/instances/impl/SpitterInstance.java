@@ -265,7 +265,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
             //If 0 HiveInstance  in room, SpitterInstance can be damaged
             if (!canBeDamaged) {
-                textBoxManager.addNewTextBox("warn.spitter.damage");
+                textBoxManager.addNewTimedTextBox("warn.spitter.damage");
                 return;
             }
 

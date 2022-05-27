@@ -196,7 +196,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
 
             //If Undead or Otherworldly, halve normal lance damage
             if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
-                textBoxManager.addNewTextBox("warn.hive.damage");
+                textBoxManager.addNewTimedTextBox("warn.hive.damage");
                 return;
             }
 

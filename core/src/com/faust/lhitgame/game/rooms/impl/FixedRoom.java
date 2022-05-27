@@ -225,7 +225,7 @@ public class FixedRoom extends AbstractRoom {
                 actor.doLogic(stateTime, roomContent);
 
                 if (actor.hasCurrentTextBoxToShow()) {
-                    this.textManager.addNewTextBox(actor.getCurrentTextBoxToShow());
+                    this.textManager.addNewTimedTextBox(actor.getCurrentTextBoxToShow());
                 }
 
                 if (actor.mustRemoveFromRoom()) {
@@ -254,7 +254,7 @@ public class FixedRoom extends AbstractRoom {
                     musicManager.stopMusic();
 
                     if (echoActorInstance.hasCurrentTextBoxToShow()) {
-                        this.textManager.addNewTextBox(echoActorInstance.getCurrentTextBoxToShow());
+                        this.textManager.addNewTimedTextBox(echoActorInstance.getCurrentTextBoxToShow());
                     }
                 });
             }

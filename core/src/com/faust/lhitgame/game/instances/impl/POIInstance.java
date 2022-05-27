@@ -88,11 +88,11 @@ public class POIInstance extends GameInstance {
                 Gdx.input.setInputProcessor(splashManager);
             } else {
                 // Just show message
-                textManager.addNewTextBox(messageKey + POIEntity.FOUND_ITEM_MESSAGE_KEY_SUFFIX);
+                textManager.addNewTimedTextBox(messageKey + POIEntity.FOUND_ITEM_MESSAGE_KEY_SUFFIX);
             }
         } else {
             // Just show message
-            textManager.addNewTextBox(messageKey + POIEntity.EXAMINING_ITEM_MESSAGE_KEY_SUFFIX);
+            textManager.addNewTimedTextBox(messageKey + POIEntity.EXAMINING_ITEM_MESSAGE_KEY_SUFFIX);
         }
 
         //Only on the first examination there is a chance to find something

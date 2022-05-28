@@ -1,11 +1,11 @@
 {
     "platform": "windows64",
-    "jdk": "C:\\Program Files\\Java\\jdk1.8.0_111",
+    "jdk": "C:\\Program Files\\Java\\jdk-15.0.2",
     "executable": "LHIT",
     "classpath": [
         "E:\\Repositories\\LHIT\\desktop\\build\\libs\\desktop-1.0.jar"
     ],
-    "mainclass": "faust.lhitgame.desktop.DesktopLauncher",
+    "mainclass": "com.faust.lhitgame.desktop.DesktopLauncher",
     "minimizejre": "soft",
     "output": "LHIT_win",
 	"resources ": [

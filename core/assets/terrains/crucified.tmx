@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="39">
+<map version="1.8" tiledversion="1.8.6" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="40">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -35,6 +35,7 @@
   <object id="34" type="ECHO_ACTOR" x="9.81817" y="89.2727">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="WOMAN"/>
+    <property name="triggeredById" type="int" value="39"/>
    </properties>
    <point/>
   </object>
@@ -49,6 +50,11 @@
     <property name="decoType" propertytype="DecoType" value="IMPALED"/>
    </properties>
    <point/>
+  </object>
+  <object id="39" type="TRIGGER" x="48" y="32" width="64" height="48">
+   <properties>
+    <property name="triggerType" propertytype="TriggerType"  value="CONTACT"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

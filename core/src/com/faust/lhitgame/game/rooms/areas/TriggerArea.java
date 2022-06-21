@@ -3,6 +3,8 @@ package com.faust.lhitgame.game.rooms.areas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
+import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.enums.TriggerTypeEnum;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Objects;
 
 /**
  * Trigger area.
+ *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class TriggerArea {
@@ -17,15 +20,19 @@ public class TriggerArea {
     private final long triggerId;
     private final TriggerTypeEnum triggerTypeEnum;
     private final List<ItemEnum> itemsNeededForTrigger;
+    private boolean activated;
+    private GameInstance referencedInstance;
 
     private Body body;
     private final Rectangle triggerRect;
 
-    public TriggerArea(long triggerId, TriggerTypeEnum triggerTypeEnum, List<ItemEnum> itemsNeededForTrigger, Rectangle wallRect) {
+    public TriggerArea(long triggerId, TriggerTypeEnum triggerTypeEnum, List<ItemEnum> itemsNeededForTrigger, Rectangle wallRect, GameInstance referencedInstance) {
         this.triggerId = triggerId;
         this.triggerTypeEnum = triggerTypeEnum;
         this.itemsNeededForTrigger = itemsNeededForTrigger;
         this.triggerRect = wallRect;
+        this.referencedInstance = referencedInstance;
+        this.activated= false;
     }
 
     public void dispose() {
@@ -48,9 +55,9 @@ public class TriggerArea {
         // Define Fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density =  1;
-        fixtureDef.friction =  1;
-        fixtureDef.isSensor = false;
+        fixtureDef.density =  0;
+        fixtureDef.friction = 0;
+        fixtureDef.isSensor = true;
 
         // Associate body to world
         body = world.createBody(bodyDef);
@@ -78,5 +85,22 @@ public class TriggerArea {
 
     public Rectangle getTriggerRect() {
         return triggerRect;
+    }
+
+    /**
+     *
+     * @param player
+     */
+    public void activate(PlayerInstance player){
+
+        final boolean missingNeededItem= !itemsNeededForTrigger.isEmpty() && itemsNeededForTrigger.stream().anyMatch(itemEnum -> player.getItemQuantityFound(itemEnum) == 0);
+        final boolean playerIsUsingOnUsable= TriggerTypeEnum.USE.equals(this.triggerTypeEnum);
+
+        this.activated = !missingNeededItem && !playerIsUsingOnUsable;
+
+    }
+
+    public boolean isActivated() {
+        return activated;
     }
 }

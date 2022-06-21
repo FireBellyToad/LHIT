@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -17,10 +19,9 @@ import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
-import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
-import com.faust.lhitgame.game.rooms.enums.MapObjTypeEnum;
-import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
-import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
+import com.faust.lhitgame.game.rooms.areas.EmergedArea;
+import com.faust.lhitgame.game.rooms.areas.TriggerArea;
+import com.faust.lhitgame.game.rooms.enums.*;
 import com.faust.lhitgame.game.splash.SplashManager;
 import com.faust.lhitgame.game.textbox.manager.TextBoxManager;
 import com.faust.lhitgame.game.world.manager.WorldManager;
@@ -28,6 +29,7 @@ import com.faust.lhitgame.saves.RoomSaveEntry;
 import com.faust.lhitgame.utils.DepthComparatorUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,11 +40,7 @@ import java.util.Objects;
  */
 public class FixedRoom extends AbstractRoom {
 
-    private static final float ECHO_ACTIVATION_DISTANCE = 40;
-    private boolean echoIsActivated = false;
-    private GameInstance echoTrigger;
     private String layerToDraw = MapLayersEnum.TERRAIN_LAYER.getLayerName();
-
 
     public FixedRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
         super(roomType, worldManager, textManager, splashManager, player, camera, assetManager, roomSaveEntry, musicManager);
@@ -58,6 +56,16 @@ public class FixedRoom extends AbstractRoom {
 
     @Override
     protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
+
+        this.roomContent.triggerAreaList = new ArrayList<>();
+        mapObjects.forEach(obj -> {
+
+            // Prepare Triggers if not disabled
+            if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && MapObjTypeEnum.TRIGGER.name().equals(obj.getProperties().get("type"))) {
+                addObjAsTrigger(obj);
+            }
+        });
+
         this.roomContent.echoActors = new ArrayList<>();
         mapObjects.forEach(obj -> {
             // Prepare ECHO ACTORS if not disabled
@@ -67,6 +75,7 @@ public class FixedRoom extends AbstractRoom {
         });
 
         worldManager.insertEchoActorsIntoWorld(roomContent.echoActors);
+        worldManager.insertTriggersIntoWorld(roomContent.triggerAreaList);
 
         if (Objects.nonNull(roomSaveEntry)) {
             roomSaveEntry.poiStates.forEach((id, isExamined) -> {
@@ -91,70 +100,6 @@ public class FixedRoom extends AbstractRoom {
             musicManager.playMusic(TuneEnum.AMBIENCE, 0.85f);
         }
     }
-
-    /**
-     * Add a object as POI, with custom echo logic
-     *
-     * @param obj
-     * @param textManager
-     */
-    @Override
-    protected void addObjAsPOI(MapObject obj, TextBoxManager textManager, AssetManager assetManager) {
-
-        POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("poiType"));
-        Objects.requireNonNull(poiType);
-
-        POIInstance instance = new POIInstance(textManager,
-                (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"),
-                poiType, (int) obj.getProperties().get("id"), splashManager, assetManager,
-                roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
-
-        roomContent.poiList.add(instance);
-
-        //Check if is Echo trigger
-        if (Objects.nonNull(obj.getProperties().get("isEchoTrigger"))) {
-
-            if (Objects.nonNull(echoTrigger)) {
-                throw new RuntimeException("More than one echo trigger in the room!");
-            }
-
-            echoTrigger = instance;
-            if (Objects.nonNull(obj.getProperties().get("mustTriggerAfterExamination"))) {
-                ((POIInstance) echoTrigger).setMustTriggerAfterExamination(obj.getProperties().get("mustTriggerAfterExamination", Boolean.class));
-            }
-        }
-    }
-
-    /**
-     * Add a object as Decoration, with custom echo logic
-     *
-     * @param obj MapObject to add
-     */
-    @Override
-    protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
-
-        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("decoType"));
-        Objects.requireNonNull(decoType);
-
-        DecorationInstance instance = new DecorationInstance(
-                (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"),
-                decoType, assetManager);
-
-        roomContent.decorationList.add(instance);
-
-        //Check if is Echo trigger
-        if (Objects.nonNull(obj.getProperties().get("isEchoTrigger"))) {
-
-            if (Objects.nonNull(echoTrigger)) {
-                throw new RuntimeException("More than one echo trigger in the room!");
-            }
-
-            echoTrigger = instance;
-        }
-    }
-
     /**
      * Add a object as Echo Actor
      *
@@ -163,13 +108,40 @@ public class FixedRoom extends AbstractRoom {
      */
     private void addObjAsEchoActor(MapObject obj, AssetManager assetManager) {
 
-        EchoesActorType echoesActorType = EchoesActorType.getFromString((String) obj.getProperties().get("echoesActorType"));
-        Objects.requireNonNull(echoesActorType);
+        EchoesActorType echoesActorType = EchoesActorType.valueOf((String) obj.getProperties().get("echoesActorType"));
+        int triggeredById = (int) obj.getProperties().get("triggeredById");
+
+        TriggerArea triggerForActor = roomContent.triggerAreaList.stream().filter(t -> t.getTriggerId() == triggeredById).findFirst().orElse(null);
 
         roomContent.echoActors.add(new EchoActorInstance(echoesActorType,
                 (float) obj.getProperties().get("x"),
-                (float) obj.getProperties().get("y"), assetManager, this));
+                (float) obj.getProperties().get("y"),
+                assetManager, triggerForActor, this));
 
+    }
+
+    /**
+     * Add invisible emerged areas
+     *
+     * @param obj
+     */
+    protected void addObjAsTrigger(MapObject obj) {
+
+        RectangleMapObject mapObject = (RectangleMapObject) obj;
+
+        TriggerTypeEnum triggerTypeEnum = TriggerTypeEnum.valueOf((String) mapObject.getProperties().get("triggerType"));
+//        int referencedInstanceId = (int) mapObject.getProperties().get("referencedInstance");
+
+        GameInstance referencedInstance = null;//roomContent.decorationList.stream().filter(d -> d.getDecoIdInMap() == referencedInstanceId).findFirst().orElse(null);
+//
+//        if(Objects.isNull(referencedInstance)){
+//            referencedInstance = roomContent.poiList.stream().filter(p -> p.getPoiIdInMap() == referencedInstanceId).findFirst().orElse(null);
+//        }
+
+        //FIXME should pass a real list!
+        roomContent.triggerAreaList.add(new TriggerArea((int) mapObject.getProperties().get("id"),
+                triggerTypeEnum, Collections.emptyList(),
+                mapObject.getRectangle(),referencedInstance));
     }
 
     @Override
@@ -181,8 +153,11 @@ public class FixedRoom extends AbstractRoom {
         allInstance.add(roomContent.player);
         allInstance.addAll(roomContent.enemyList);
 
-        if (echoIsActivated && Objects.nonNull(roomContent.echoActors)) {
-            allInstance.addAll(roomContent.echoActors);
+        //add all actors with an activated trigger
+        for(EchoActorInstance echoActorInstance : roomContent.echoActors){
+            if(echoActorInstance.isEchoIsActive()){
+                allInstance.add(echoActorInstance);
+            }
         }
 
         allInstance.addAll(roomContent.spellEffects);
@@ -220,45 +195,44 @@ public class FixedRoom extends AbstractRoom {
         roomContent.enemyList.removeIf(ene -> ene instanceof EscapePortalInstance && ((Killable) ene).isDead());
 
         // Manage echo actors
-        if (echoIsActivated) {
-            roomContent.echoActors.forEach(actor -> {
-                actor.doLogic(stateTime, roomContent);
-
-                if (actor.hasCurrentTextBoxToShow()) {
-                    this.textManager.addNewTimedTextBox(actor.getCurrentTextBoxToShow());
-                }
-
-                if (actor.mustRemoveFromRoom()) {
-                    actor.dispose();
-                }
-
-                //change only if is default
-                if (MapLayersEnum.TERRAIN_LAYER.getLayerName().equals(layerToDraw)) {
-                    layerToDraw = actor.overrideMapLayerDrawn();
-                }
-            });
-
-            roomContent.echoActors.removeIf(EchoActorInstance::mustRemoveFromRoom);
-        } else {
-
-            //activate room echo if needed. If mustTriggerAfterExamination then wait for activation
-            if (Objects.nonNull(echoTrigger) && (echoTrigger instanceof DecorationInstance || echoTrigger instanceof POIInstance &&
-                    (!((POIInstance) echoTrigger).mustTriggerAfterExamination() || ((POIInstance) echoTrigger).isAlreadyExamined()))) {
-                echoIsActivated = roomContent.player.getBody().getPosition().dst(echoTrigger.getBody().getPosition()) <= ECHO_ACTIVATION_DISTANCE;
-            }
-
-            //Show echo text if NOW is active
-            if (echoIsActivated) {
-                roomContent.echoActors.forEach(echoActorInstance -> {
-                    echoActorInstance.playStartingSound();
+        roomContent.echoActors.forEach(actor -> {
+            //If actor is not active
+            if(!actor.isEchoIsActive()) {
+                //Check if trigger is activated, then...
+                if(actor.getTriggerForActor().isActivated()){
+                    //activate the actor
+                    actor.playStartingSound();
                     musicManager.stopMusic();
 
-                    if (echoActorInstance.hasCurrentTextBoxToShow()) {
-                        this.textManager.addNewTimedTextBox(echoActorInstance.getCurrentTextBoxToShow());
+                    if (actor.hasCurrentTextBoxToShow()) {
+                        this.textManager.addNewTimedTextBox(actor.getCurrentTextBoxToShow());
                     }
-                });
+
+                } else {
+                    //Nothing to do yet
+                    return;
+                }
             }
-        }
+
+            //Do logic
+            actor.doLogic(stateTime, roomContent);
+
+            if (actor.hasCurrentTextBoxToShow()) {
+                this.textManager.addNewTimedTextBox(actor.getCurrentTextBoxToShow());
+            }
+
+            if (actor.mustRemoveFromRoom()) {
+                actor.dispose();
+            }
+
+            //change only if is default
+            if (MapLayersEnum.TERRAIN_LAYER.getLayerName().equals(layerToDraw)) {
+                layerToDraw = actor.overrideMapLayerDrawn();
+            }
+        });
+
+        roomContent.echoActors.removeIf(EchoActorInstance::mustRemoveFromRoom);
+
     }
 
     @Override
@@ -267,9 +241,8 @@ public class FixedRoom extends AbstractRoom {
         roomContent.removedPoiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined()));
 
         //Disable Echo on room leave if trigger is already examined POI
-        if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && Objects.nonNull(echoTrigger) &&
-                (echoTrigger instanceof DecorationInstance || ((POIInstance) echoTrigger).isAlreadyExamined())) {
-            roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, echoIsActivated);
+        if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && roomContent.triggerAreaList.stream().anyMatch(t->t.isActivated())) {
+            roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
         }
 
         //always enable enemies

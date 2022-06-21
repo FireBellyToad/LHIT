@@ -1,5 +1,6 @@
 package com.faust.lhitgame.game.rooms;
 
+import com.badlogic.gdx.ai.btree.utils.DistributionAdapters;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
@@ -8,6 +9,7 @@ import com.faust.lhitgame.game.instances.impl.EchoActorInstance;
 import com.faust.lhitgame.game.instances.impl.POIInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
+import com.faust.lhitgame.game.rooms.areas.TriggerArea;
 import com.faust.lhitgame.game.rooms.areas.WallArea;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.game.rooms.enums.RoomTypeEnum;
@@ -33,6 +35,7 @@ public class RoomContent {
     public List<EchoActorInstance> echoActors; //Can have Echo actors
     public List<GameInstance> spellEffects;
     public List<POIInstance> removedPoiList;
+    public List<TriggerArea> triggerAreaList;
 
     public Map<RoomFlagEnum, Boolean> roomFlags;
     public RoomNodesGraph roomGraph;

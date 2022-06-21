@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.impl.EchoActorInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
+import com.faust.lhitgame.game.rooms.areas.TriggerArea;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.DecorationInstance;
@@ -173,6 +174,16 @@ public class WorldManager implements RayCaster {
 
         spellInstances.forEach((s) -> this.insertIntoWorld(s, s.getStartX(), s.getStartY()));
     }
+
+    /**
+     * @param triggers
+     */
+    public void insertTriggersIntoWorld(List<TriggerArea> triggers) {
+        Objects.requireNonNull(triggers);
+
+        triggers.forEach((a) -> a.createBody(this.world));
+    }
+
 
     @Override
     public void rayCast(RayCastCallback callback, Vector2 from, Vector2 to) {

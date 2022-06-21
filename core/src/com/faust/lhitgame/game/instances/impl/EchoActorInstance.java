@@ -24,6 +24,7 @@ import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.rooms.RoomContent;
+import com.faust.lhitgame.game.rooms.areas.TriggerArea;
 import com.faust.lhitgame.game.rooms.enums.MapLayersEnum;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
 
@@ -39,6 +40,7 @@ import java.util.Objects;
  */
 public class EchoActorInstance extends AnimatedInstance implements Interactable, Damager {
 
+    private final TriggerArea triggerForActor;
     private boolean removeFromRoom = false;
     private boolean showTextBox = true;
     private float deltaTime = 0; // Time delta between step start and current
@@ -46,12 +48,13 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
     private final Spawner spawner;
 
 
-    public EchoActorInstance(EchoesActorType echoesActorType, float x, float y, AssetManager assetManager, Spawner spawner) {
+    public EchoActorInstance(EchoesActorType echoesActorType, float x, float y, AssetManager assetManager, TriggerArea triggerForActor, Spawner spawner) {
         super(new EchoActorEntity(echoesActorType, assetManager));
         this.startX = x;
         this.startY = y;
         this.echoIsActive = false;
         this.spawner = spawner;
+        this.triggerForActor = triggerForActor;
 
         //get first step
         this.currentBehavior = ((EchoActorEntity) this.entity).getStepOrder().get(0);
@@ -398,5 +401,13 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
 
     public EchoesActorType getType() {
         return ((EchoActorEntity) entity).getEchoesActorType();
+    }
+
+    public TriggerArea getTriggerForActor() {
+        return triggerForActor;
+    }
+
+    public boolean isEchoIsActive() {
+        return echoIsActive;
     }
 }

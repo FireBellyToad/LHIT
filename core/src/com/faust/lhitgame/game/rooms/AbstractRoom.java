@@ -246,12 +246,12 @@ public abstract class AbstractRoom implements Spawner {
      */
     protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
 
-        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("decoType"));
-        Objects.requireNonNull(decoType);
+        DecorationsEnum decoType = DecorationsEnum.valueOf((String) obj.getProperties().get("decoType"));
 
         roomContent.decorationList.add(new DecorationInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
+                (int)  obj.getProperties().get("id"),
                 decoType, assetManager));
     }
 

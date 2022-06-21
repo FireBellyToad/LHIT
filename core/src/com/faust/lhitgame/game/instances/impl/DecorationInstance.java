@@ -25,14 +25,17 @@ import java.util.Objects;
  */
 public class DecorationInstance extends GameInstance implements Interactable {
 
+    private final int decoIdInMap; // Decoration id in map
+
     private boolean interacted = false;
 
-    public DecorationInstance(float x, float y, DecorationsEnum type, AssetManager assetManager) {
+    public DecorationInstance(float x, float y, int id,  DecorationsEnum type, AssetManager assetManager) {
         super(new DecorationEntity(type, assetManager));
         // Add Position Y offset for better position from tiled
         this.startX = x;
         this.startY = y + POSITION_OFFSET;
         this.alwaysInBackground = type.equals(DecorationsEnum.ALLY_CORPSE_1) || type.equals(DecorationsEnum.ALLY_CORPSE_2);
+        this.decoIdInMap = id;
     }
 
     @Override
@@ -175,5 +178,9 @@ public class DecorationInstance extends GameInstance implements Interactable {
     @Override
     public void endPlayerInteraction(PlayerInstance playerInstance) {
         this.interacted = false;
+    }
+
+    public int getDecoIdInMap() {
+        return decoIdInMap;
     }
 }

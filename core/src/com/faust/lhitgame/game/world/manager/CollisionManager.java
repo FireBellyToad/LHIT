@@ -159,6 +159,7 @@ public class CollisionManager implements ContactListener {
         if (isContactOfClass(contact, TriggerArea.class)) {
             TriggerArea tInst = ((TriggerArea) getCorrectFixture(contact, TriggerArea.class).getBody().getUserData());
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            playerInstance.setTriggerToActivate(tInst);
             tInst.activate(playerInstance);
         }
     }

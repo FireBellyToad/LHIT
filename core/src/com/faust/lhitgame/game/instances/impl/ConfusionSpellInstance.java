@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.gameentities.impl.ParticleEffectEntity;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
@@ -59,7 +60,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
                     currentBehavior = GameBehavior.DEAD;
                     //FIXME workaround because collision only in attack behavior is not working!
                     if(this.body.getPosition().dst(targetPosition) < 5){
-                        target.setConfused(true);
+                        target.setPlayerFlagValue(PlayerFlag.IS_CONFUSED,true);
                     }
                     dispose();
                 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.faust.lhitgame.game.echoes.enums.EchoesActorType;
 import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
+import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.gameentities.enums.POIEnum;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.*;
@@ -130,18 +131,29 @@ public class FixedRoom extends AbstractRoom {
         RectangleMapObject mapObject = (RectangleMapObject) obj;
 
         TriggerTypeEnum triggerTypeEnum = TriggerTypeEnum.valueOf((String) mapObject.getProperties().get("triggerType"));
-//        int referencedInstanceId = (int) mapObject.getProperties().get("referencedInstance");
+        int referencedInstanceId = (int) mapObject.getProperties().get("referencedInstanceId");
 
-        GameInstance referencedInstance = null;//roomContent.decorationList.stream().filter(d -> d.getDecoIdInMap() == referencedInstanceId).findFirst().orElse(null);
-//
-//        if(Objects.isNull(referencedInstance)){
-//            referencedInstance = roomContent.poiList.stream().filter(p -> p.getPoiIdInMap() == referencedInstanceId).findFirst().orElse(null);
-//        }
+        GameInstance referencedInstance = null;
+        List<ItemEnum> requiredItemList = Collections.emptyList();
 
-        //FIXME should pass a real list!
+        if(Objects.nonNull(referencedInstanceId)){
+
+            referencedInstance = roomContent.poiList.stream().filter(p -> p.getPoiIdInMap() == referencedInstanceId).findFirst().orElse(null);
+
+            //Fallback on decorations
+            if(Objects.isNull(referencedInstance)){
+                referencedInstance = roomContent.decorationList.stream().filter(d -> d.getDecoIdInMap() == referencedInstanceId).findFirst().orElse(null);
+            } else {
+                POIInstance poi = ((POIInstance) referencedInstance);
+                if(Objects.nonNull(poi.getType().getItemRequired())){
+                    requiredItemList = Collections.singletonList(poi.getType().getItemRequired());
+                }
+            }
+        }
+
         roomContent.triggerAreaList.add(new TriggerArea((int) mapObject.getProperties().get("id"),
-                triggerTypeEnum, Collections.emptyList(),
-                mapObject.getRectangle(),referencedInstance));
+                triggerTypeEnum, requiredItemList,
+                mapObject.getRectangle(), referencedInstance));
     }
 
     @Override

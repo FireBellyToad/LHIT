@@ -78,7 +78,7 @@ public class POIInstance extends GameInstance {
                 String splashKey = ((POIEntity) this.entity).getSplashKey();
 
                 //Some items have different splashes based on quantity found
-                if (itemGiven.hasMultipleSplashes()) {
+                if (Objects.nonNull(itemGiven) && itemGiven.hasMultipleSplashes()) {
                     splashKey += "." + player.getItemQuantityFound(itemGiven);
                 }
 

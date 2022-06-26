@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhitgame.saves.enums.SaveFieldsEnum;
@@ -33,7 +34,7 @@ public abstract class AbstractSaveFileManager {
         entries.add(getField(SaveFieldsEnum.WATERSKIN.getFieldName(), player.getItemQuantityFound(ItemEnum.WATERSKIN)));
         entries.add(getField(SaveFieldsEnum.RITUAL.getFieldName(), player.getItemQuantityFound(ItemEnum.RITUAL)));
         entries.add(getField(SaveFieldsEnum.HOLY_WATER.getFieldName(), player.getItemQuantityFound(ItemEnum.HOLY_WATER)));
-        entries.add(getField(SaveFieldsEnum.KILLED_SECRET.getFieldName(), player.hasKilledSecretBoss()));
+        entries.add(getField(SaveFieldsEnum.KILLED_SECRET.getFieldName(), player.getPlayerFlagValue(PlayerFlag.HAS_KILLED_SECRET_BOSS)));
 
         String playerInfo = getField(SaveFieldsEnum.PLAYER_INFO.getFieldName(), String.join(",", entries), true);
 
@@ -158,7 +159,7 @@ public abstract class AbstractSaveFileManager {
         player.setItemQuantityFound(ItemEnum.WATERSKIN,playerInfo.getInt(SaveFieldsEnum.WATERSKIN.getFieldName()));
         player.setItemQuantityFound(ItemEnum.HOLY_WATER,playerInfo.getInt(SaveFieldsEnum.HOLY_WATER.getFieldName()));
         player.setItemQuantityFound(ItemEnum.RITUAL,playerInfo.getInt(SaveFieldsEnum.RITUAL.getFieldName()));
-        player.setHasKilledSecretBoss(playerInfo.getBoolean(SaveFieldsEnum.KILLED_SECRET.getFieldName()));
+        player.setPlayerFlagValue(PlayerFlag.HAS_KILLED_SECRET_BOSS,playerInfo.getBoolean(SaveFieldsEnum.KILLED_SECRET.getFieldName()));
 
     }
 

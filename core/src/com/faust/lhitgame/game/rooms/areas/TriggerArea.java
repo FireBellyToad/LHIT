@@ -3,7 +3,9 @@ package com.faust.lhitgame.game.rooms.areas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.instances.GameInstance;
+import com.faust.lhitgame.game.instances.impl.POIInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.rooms.enums.TriggerTypeEnum;
 
@@ -21,7 +23,7 @@ public class TriggerArea {
     private final TriggerTypeEnum triggerTypeEnum;
     private final List<ItemEnum> itemsNeededForTrigger;
     private boolean activated;
-    private GameInstance referencedInstance;
+    private final GameInstance referencedInstance;
 
     private Body body;
     private final Rectangle triggerRect;
@@ -71,36 +73,29 @@ public class TriggerArea {
         return triggerId;
     }
 
-    public TriggerTypeEnum getTriggerTypeEnum() {
-        return triggerTypeEnum;
-    }
-
-    public List<ItemEnum> getItemsNeededForTrigger() {
-        return itemsNeededForTrigger;
-    }
-
     public Body getBody() {
         return body;
     }
 
-    public Rectangle getTriggerRect() {
-        return triggerRect;
-    }
-
     /**
+     * Check if can activate the trigger, and do that is needed
      *
      * @param player
      */
     public void activate(PlayerInstance player){
 
         final boolean missingNeededItem= !itemsNeededForTrigger.isEmpty() && itemsNeededForTrigger.stream().anyMatch(itemEnum -> player.getItemQuantityFound(itemEnum) == 0);
-        final boolean playerIsUsingOnUsable= TriggerTypeEnum.USE.equals(this.triggerTypeEnum);
+        final boolean referencedInstanceHasBeenUsed = referencedInstance instanceof POIInstance && ((POIInstance)referencedInstance).isAlreadyExamined();
 
-        this.activated = !missingNeededItem && !playerIsUsingOnUsable;
+        this.activated = !missingNeededItem && (TriggerTypeEnum.CONTACT.equals(this.triggerTypeEnum)  || referencedInstanceHasBeenUsed);
 
     }
 
     public boolean isActivated() {
         return activated;
+    }
+
+    public GameInstance getReferencedInstance() {
+        return referencedInstance;
     }
 }

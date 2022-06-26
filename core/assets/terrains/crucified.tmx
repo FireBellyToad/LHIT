@@ -51,7 +51,7 @@
    </properties>
    <point/>
   </object>
-  <object id="39" type="TRIGGER" x="48" y="32" width="64" height="48">
+  <object id="39" type="TRIGGER" x="48" y="32" width="64" height="64">
    <properties>
     <property name="triggerType" propertytype="TriggerType"  value="CONTACT"/>
    </properties>

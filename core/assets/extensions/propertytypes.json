@@ -95,5 +95,156 @@
             "USE"
         ],
         "valuesAsFlags": false
+    },
+    {
+        "color": "#ffffffff",
+        "id": 6,
+        "members": [
+            {
+                "name": "decoType",
+                "propertyType": "DecoType",
+                "type": "string",
+                "value": "PLANT"
+            },
+            {
+                "name": "isEchoTrigger",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "DECO",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ffffaa00",
+        "id": 7,
+        "members": [
+            {
+                "name": "echoesActorType",
+                "propertyType": "EchoesActorType",
+                "type": "string",
+                "value": "DISCIPULUS"
+            }
+        ],
+        "name": "ECHO_ACTOR",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ffa0a0a4",
+        "id": 8,
+        "members": [
+            {
+                "name": "blocksNodePath",
+                "type": "bool",
+                "value": false
+            }
+        ],
+        "name": "EMERGED",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ffff0000",
+        "id": 9,
+        "members": [
+            {
+                "name": "enemyType",
+                "propertyType": "EnemyType",
+                "type": "string",
+                "value": "UNDEFINED,"
+            }
+        ],
+        "name": "ENEMY",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ffffff00",
+        "id": 10,
+        "members": [
+        ],
+        "name": "PathNode",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ff0000ff",
+        "id": 11,
+        "members": [
+            {
+                "name": "isEchoTrigger",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "mustTriggerAfterExamination",
+                "type": "bool",
+                "value": false
+            },
+            {
+                "name": "poiType",
+                "propertyType": "PoiType",
+                "type": "string",
+                "value": "SKELETON"
+            }
+        ],
+        "name": "POI",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ffffaa00",
+        "id": 12,
+        "members": [
+            {
+                "name": "referencedInstanceId",
+                "type": "int",
+                "value": 0
+            },
+            {
+                "name": "triggerType",
+                "propertyType": "TriggerType",
+                "type": "string",
+                "value": "CONTACT"
+            }
+        ],
+        "name": "TRIGGER",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
+    },
+    {
+        "color": "#ff000000",
+        "id": 13,
+        "members": [
+        ],
+        "name": "WALL",
+        "type": "class",
+        "useAs": [
+            "object",
+            "tile"
+        ]
     }
 ]

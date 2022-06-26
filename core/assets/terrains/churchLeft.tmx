@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="26">
+<map version="1.8" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="26">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -21,7 +21,7 @@
   <object id="22" type="WALL" x="144" y="0" width="16" height="86"/>
   <object id="23" type="WALL" x="0" y="-0.5" width="144" height="16"/>
   <object id="24" type="EMERGED" x="-4" y="38">
-   <polygon points="3.5,-38 165.25,-37.75 164.5,106.25 132.75,97.5 120,68.75 85.75,35.375 25,0.75"/>
+   <polygon points="3.5,-38 164.058,-38.0481 163.904,107.442 127.832,92.4325 97.047,60.1054 87.8366,42.5292 3.83558,-5.95703"/>
   </object>
   <object id="25" type="POI" x="125" y="44">
    <properties>

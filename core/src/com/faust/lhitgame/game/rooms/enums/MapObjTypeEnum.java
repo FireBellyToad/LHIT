@@ -11,5 +11,6 @@ public enum MapObjTypeEnum {
     ENEMY,
     WALL,
     ECHO_ACTOR,
-    EMERGED
+    EMERGED,
+    TRIGGER
 }

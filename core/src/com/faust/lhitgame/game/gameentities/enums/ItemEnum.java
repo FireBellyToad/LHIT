@@ -7,10 +7,23 @@ package com.faust.lhitgame.game.gameentities.enums;
  */
 public enum ItemEnum {
     HEALTH_KIT,
-    HOLY_LANCE,
+    HOLY_LANCE(true),
     GOLDCROSS,
     ARMOR,
     RITUAL,
     WATERSKIN,
-    HOLY_WATER
+    HOLY_WATER;
+
+    final boolean hasMultipleSplashes;
+
+    ItemEnum() {
+        hasMultipleSplashes = false;
+    }
+    ItemEnum(boolean hasMultipleSplashes) {
+        this.hasMultipleSplashes = hasMultipleSplashes;
+    }
+
+    public boolean hasMultipleSplashes() {
+        return hasMultipleSplashes;
+    }
 }

@@ -77,10 +77,9 @@ public class POIInstance extends GameInstance {
             if (!((POIEntity) this.entity).getSplashKey().isEmpty()) {
                 String splashKey = ((POIEntity) this.entity).getSplashKey();
 
-                //Holy lance has to different splashes based on pieces found
-                //FIXME remove hardcoding
-                if (itemGiven == ItemEnum.HOLY_LANCE) {
-                    splashKey += "." + player.getItemQuantityFound(ItemEnum.HOLY_LANCE);
+                //Some items have different splashes based on quantity found
+                if (Objects.nonNull(itemGiven) && itemGiven.hasMultipleSplashes()) {
+                    splashKey += "." + player.getItemQuantityFound(itemGiven);
                 }
 
                 // Show splash screen

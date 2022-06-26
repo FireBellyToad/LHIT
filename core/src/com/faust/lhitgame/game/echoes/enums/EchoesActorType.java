@@ -28,15 +28,6 @@ public enum EchoesActorType {
         return filename;
     }
 
-    public static EchoesActorType getFromString(String name) {
-        for (EchoesActorType e : EchoesActorType.values()) {
-            if (e.name().equals(name)) {
-                return e;
-            }
-        }
-        return null;
-    }
-
     public String getSpriteFilename() {
         return spriteFilename;
     }

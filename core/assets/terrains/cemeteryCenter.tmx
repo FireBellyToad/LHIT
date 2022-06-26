@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="68">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="69">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -69,74 +69,87 @@
   <object id="56" type="ECHO_ACTOR" x="100" y="108">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="57" type="ECHO_ACTOR" x="104.182" y="21.2727">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_DOUBLE_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="58" type="ECHO_ACTOR" x="143.273" y="55.8182">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="59" type="ECHO_ACTOR" x="29.6364" y="30.1818">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="60" type="ECHO_ACTOR" x="30" y="103.818">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="61" type="ECHO_ACTOR" x="146.727" y="119.091">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="62" type="ECHO_ACTOR" x="122.727" y="24">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="63" type="ECHO_ACTOR" x="94.7273" y="60.7273">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="64" type="ECHO_ACTOR" x="124" y="71.4545">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_DOUBLE_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="65" type="ECHO_ACTOR" x="36" y="48.1818">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_DOUBLE_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="66" type="ECHO_ACTOR" x="120.182" y="122">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_DOUBLE_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
   <object id="67" type="ECHO_ACTOR" x="47.0909" y="119.091">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="DEAD_DOUBLE_HAND"/>
+    <property name="triggeredById" type="int" value="55"/>
    </properties>
    <point/>
   </object>
+  <object id="68" type="TRIGGER" x="48" y="32" width="64" height="48"/>
  </objectgroup>
 </map>

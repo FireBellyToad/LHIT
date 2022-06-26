@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.camera.CameraManager;
 import com.faust.lhitgame.game.PauseManager;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.hud.DarknessRenderer;
 import com.faust.lhitgame.game.hud.Hud;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
@@ -158,13 +159,13 @@ public class GameScreen implements Screen {
         roomsManager.doRoomContentsLogic(stateTime);
 
         //Pause
-        if (player.isPauseGame()) {
+        if (player.getPlayerFlagValue(PlayerFlag.PAUSE_GAME)) {
             pauseManager.pauseGame();
-            player.setPauseGame(false);
+            player.setPlayerFlagValue(PlayerFlag.PAUSE_GAME,false);
         }
 
         if (Objects.isNull(endGameTimer)) {
-            if (player.goToGameOver()) {
+            if (player.getPlayerFlagValue(PlayerFlag.GO_TO_GAMEOVER)) {
                 //Save game and go to game over
                 endGameTimer =Timer.schedule(new Timer.Task() {
                     @Override
@@ -175,7 +176,7 @@ public class GameScreen implements Screen {
                         game.setScreen(new GameOverScreen(game));
                     }
                 }, 3f);
-            } else if (player.isPrepareEndgame()) {
+            } else if (player.getPlayerFlagValue(PlayerFlag.PREPARE_END_GAME)) {
                 endGameTimer =Timer.schedule(new Timer.Task() {
                             @Override
                             public void run() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="185">
+<map version="1.8" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="10" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="186">
  <editorsettings>
   <export format="json"/>
  </editorsettings>
@@ -33,18 +33,20 @@
    </properties>
    <point/>
   </object>
-  <object id="47" type="EMERGED" x="29.5" y="29.75">
+  <object id="47" type="EMERGED" x="29.5" y="29.75" visible="0">
    <polygon points="-36.5,-31 -29.9886,4.8523 0.772728,17.7045 16.0455,51.9091 50.0341,85.1704 106.278,86.5511 114.023,104.682 133.932,-30.4091"/>
   </object>
   <object id="48" type="ECHO_ACTOR" x="105.874" y="48">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="146" type="ECHO_ACTOR" x="10" y="16">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
@@ -62,117 +64,141 @@
   </object>
   <object id="159" type="ECHO_ACTOR" x="10" y="32">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="160" type="ECHO_ACTOR" x="10" y="48">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="161" type="ECHO_ACTOR" x="10" y="64">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="162" type="ECHO_ACTOR" x="10" y="80">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="163" type="ECHO_ACTOR" x="10" y="96">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="164" type="ECHO_ACTOR" x="10" y="128">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="165" type="ECHO_ACTOR" x="10" y="112">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="166" type="ECHO_ACTOR" x="23" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="168" type="ECHO_ACTOR" x="39" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="169" type="ECHO_ACTOR" x="55" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="170" type="ECHO_ACTOR" x="71" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="171" type="ECHO_ACTOR" x="87" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="172" type="ECHO_ACTOR" x="103" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="173" type="ECHO_ACTOR" x="119" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="174" type="ECHO_ACTOR" x="135" y="137">
    <properties>
-    <property name="echoesActorType" value="HORROR"/>
+    <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="176" type="ECHO_ACTOR" x="94.323" y="66.0027">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR_BODY"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="180" type="ECHO_ACTOR" x="137.277" y="57.1017">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="182" type="ECHO_ACTOR" x="105.874" y="32">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
   </object>
   <object id="184" type="ECHO_ACTOR" x="120.073" y="56.5358">
    <properties>
     <property name="echoesActorType" propertytype="EchoesActorType" value="HORROR"/>
+    <property name="triggeredById" type="int" value="185"/>
    </properties>
    <point/>
+  </object>
+  <object id="185" type="TRIGGER" x="80" y="16" width="64" height="64">
+   <properties>
+    <property name="triggerType" propertytype="TriggerType" value="CONTACT"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

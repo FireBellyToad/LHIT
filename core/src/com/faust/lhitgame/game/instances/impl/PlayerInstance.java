@@ -17,12 +17,14 @@ import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.gameentities.impl.PlayerEntity;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.rooms.RoomContent;
+import com.faust.lhitgame.game.rooms.areas.TriggerArea;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
 import com.faust.lhitgame.screens.GameScreen;
 import com.faust.lhitgame.utils.ShaderWrapper;
@@ -63,15 +65,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private long confusionTimeout = 0;
     private long postHurtCooldown = 0;
     private final Map<ItemEnum, Integer> itemsFound;
-
-    private boolean isSubmerged = false;
-    private boolean isDead = false;
-    private boolean prepareEndgame = false;
-    private boolean isChangingRoom = false;
-    private boolean goToGameOver = false;
-    private boolean pauseGame = false;
-    private boolean hasKilledSecretBoss = false;
-    private boolean isConfused = false;
+    private final Map<PlayerFlag, Boolean> playerFlags = new HashMap<>();
+    private TriggerArea triggerToActivate;
 
 
     public PlayerInstance(AssetManager assetManager) {
@@ -82,6 +77,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         Gdx.input.setInputProcessor(this);
         ((PlayerEntity) entity).getWaterWalkEffect().start();
+
+        for(PlayerFlag flag : PlayerFlag.values()){
+            playerFlags.put(flag,false);
+        }
     }
 
     @Override
@@ -98,7 +97,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //if is Dead, play death animation and then game over
         if (isDead()) {
-            isChangingRoom = true;
+            playerFlags.put(PlayerFlag.IS_CHANGING_ROOM,true);
             setPlayerLinearVelocity(0, 0);
             leftSpearBody.setActive(false);
             upSpearBody.setActive(false);
@@ -110,21 +109,21 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 attackDeltaTime = stateTime;
                 ((PlayerEntity) entity).playDeathCry();
             } else if (((PlayerEntity) entity).isAnimationFinished(currentBehavior, mapStateTimeFromBehaviour(stateTime))) {
-                goToGameOver = true;
+                playerFlags.put(PlayerFlag.GO_TO_GAMEOVER,true);
             }
             //Do not do anything else
             return;
         }
 
         //In endgame do nothing
-        if (isPrepareEndgame()) {
+        if (playerFlags.get(PlayerFlag.PREPARE_END_GAME)) {
             currentBehavior = GameBehavior.IDLE;
             setPlayerLinearVelocity(0, 0);
             return;
         }
 
         //In roomchange, idling and do nothing
-        if (isChangingRoom) {
+        if (playerFlags.get(PlayerFlag.IS_CHANGING_ROOM)) {
             currentBehavior = GameBehavior.IDLE;
             return;
         }
@@ -200,13 +199,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         //If is confused, check if must start countdown or end confusion
-        if (isConfused) {
+        if (playerFlags.get(PlayerFlag.IS_CONFUSED)) {
             if (confusionTimeout == 0) {
                 confusionTimeout = TimeUtils.nanoTime();
             } else if (TimeUtils.timeSinceNanos(confusionTimeout) >= TimeUtils.millisToNanos(CONFUSION_TIME_IN_MILLIS)) {
                 //Stop confusion after 3 seconds
                 confusionTimeout = 0;
-                isConfused = false;
+                playerFlags.put(PlayerFlag.IS_CONFUSED,false);
             }
         }
     }
@@ -229,7 +228,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if (TimeUtils.timeSinceNanos(postHurtCooldown) > TimeUtils.millisToNanos(POST_HURT_COOLDOWN_DURATION)) {
             double damageReceived = ((Damager) attacker).damageRoll();
             if (damageReceived > 0 && isDying()) {
-                isDead = true;
+                playerFlags.put(PlayerFlag.IS_DEAD,true);
             } else {
                 postHurtCooldown = TimeUtils.nanoTime();
                 ((PlayerEntity) entity).playHurtCry();
@@ -372,7 +371,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
         shader.addFlag("hasArmor", itemsFound.getOrDefault(ItemEnum.ARMOR, 0) == 1);
         shader.addFlag("hasHolyLance", itemsFound.getOrDefault(ItemEnum.HOLY_LANCE, 0) == 2);
-        shader.addFlag("isConfused", isConfused ? 1 : 0);
+        shader.addFlag("isConfused", playerFlags.get(PlayerFlag.IS_CONFUSED) ? 1 : 0);
 
         shader.setShaderOnBatchWithFlags(batch);
 
@@ -383,7 +382,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         final ParticleEffect waterWalkEffect = ((PlayerEntity) entity).getWaterWalkEffect();
 
         //Draw watersteps if submerged
-        if (isSubmerged) {
+        if (playerFlags.get(PlayerFlag.IS_SUBMERGED)) {
             waterWalkEffect.draw(batch, Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
@@ -622,7 +621,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     @Override
     public boolean keyDown(int keycode) {
 
-        if (isPrepareEndgame()) {
+        if (playerFlags.get(PlayerFlag.PREPARE_END_GAME)) {
             setPlayerLinearVelocity(0, 0);
             return false;
         }
@@ -642,28 +641,28 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.W:
             case Input.Keys.UP: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != -PLAYER_SPEED) {
-                    verticalVelocity = isSubmerged ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
+                    verticalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != PLAYER_SPEED) {
-                    verticalVelocity = isSubmerged ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
+                    verticalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.A:
             case Input.Keys.LEFT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != PLAYER_SPEED) {
-                    horizontalVelocity = isSubmerged ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
+                    horizontalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
                 }
                 break;
             }
             case Input.Keys.D:
             case Input.Keys.RIGHT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != -PLAYER_SPEED) {
-                    horizontalVelocity = isSubmerged ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
+                    horizontalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
                 }
                 break;
             }
@@ -673,6 +672,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                     examineNearestPOI();
                     horizontalVelocity = 0;
                     verticalVelocity = 0;
+
+                    //If nearest POI is referenced by a Echo trigger, activate that echo
+                    if(Objects.nonNull(triggerToActivate) && nearestPOIInstance.equals(triggerToActivate.getReferencedInstance())){
+                        triggerToActivate.activate(this);
+                    }
                 }
                 break;
             }
@@ -695,13 +699,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.ESCAPE:
             case Input.Keys.P: {
                 //Pause game
-                pauseGame = true;
+                playerFlags.put(PlayerFlag.PAUSE_GAME, true);
                 break;
             }
         }
 
         //If is confused, invert commands
-        if (isConfused) {
+        if (playerFlags.get(PlayerFlag.IS_CONFUSED)) {
             horizontalVelocity = -horizontalVelocity;
             verticalVelocity = -verticalVelocity;
         }
@@ -714,7 +718,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public boolean keyUp(int keycode) {
 
         // Do not handle anything if is in endgame
-        if (isPrepareEndgame()) {
+        if (playerFlags.get(PlayerFlag.PREPARE_END_GAME)) {
             return false;
         }
 
@@ -740,6 +744,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.LEFT:
             case Input.Keys.RIGHT: {
                 horizontalVelocity = 0;
+                break;
+            }
+            case Input.Keys.X:
+            case Input.Keys.K: {
                 break;
             }
         }
@@ -826,7 +834,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public boolean isDead() {
-        return isDead;
+        return playerFlags.get(PlayerFlag.IS_DEAD);
     }
 
 
@@ -843,7 +851,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setSubmerged(boolean submerged) {
         Vector2 velocity = this.body.getLinearVelocity();
-        if (!isChangingRoom && submerged && !isSubmerged) {
+        if (!playerFlags.get(PlayerFlag.IS_CHANGING_ROOM) && submerged && !playerFlags.get(PlayerFlag.IS_SUBMERGED)) {
             //Play sound when Walfrit gets in water
             ((PlayerEntity) entity).playWaterSplash();
 
@@ -861,7 +869,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         setPlayerLinearVelocity(MathUtils.clamp(velocity.x, -PLAYER_SPEED, PLAYER_SPEED),
                 MathUtils.clamp(velocity.y, -PLAYER_SPEED, PLAYER_SPEED));
 
-        isSubmerged = submerged;
+        playerFlags.put(PlayerFlag.IS_SUBMERGED, submerged);
     }
 
     public double damageRoll() {
@@ -900,59 +908,39 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     /**
-     * @return true if must go to gameover
+     *
+     * @param flagToGet
+     * @return flag value
      */
-    public boolean goToGameOver() {
-        return goToGameOver;
+    public boolean setPlayerFlagValue(PlayerFlag flagToGet, boolean value){
+        Objects.requireNonNull(flagToGet);
+
+        return playerFlags.put(flagToGet, value);
     }
 
     /**
-     * @return true if game is ending
+     *
+     * @param flagToGet
+     * @return flag value
      */
-    public boolean isPrepareEndgame() {
-        return prepareEndgame;
-    }
+    public boolean getPlayerFlagValue(PlayerFlag flagToGet){
+        Objects.requireNonNull(flagToGet);
 
-    public void setPrepareEndgame(boolean prepareEndgame) {
-        this.prepareEndgame = prepareEndgame;
-    }
-
-    public void setChangingRoom(boolean changingRoom) {
-        isChangingRoom = changingRoom;
+        return playerFlags.get(flagToGet);
     }
 
     /**
      * Reset this PlayerInstance as inputprocessor
      */
     public void setAsInputProcessor() {
-        pauseGame = false;
+        playerFlags.put(PlayerFlag.PAUSE_GAME,false);
         currentBehavior = GameBehavior.IDLE;
         setPlayerLinearVelocity(0, 0);
         Gdx.input.setInputProcessor(this);
     }
 
-    public boolean isPauseGame() {
-        return pauseGame;
-    }
-
-    public void setPauseGame(boolean pauseGame) {
-        this.pauseGame = pauseGame;
-    }
-
-    public boolean hasKilledSecretBoss() {
-        return this.hasKilledSecretBoss;
-    }
-
-    public void setHasKilledSecretBoss(boolean hasKilledSecretBoss) {
-        this.hasKilledSecretBoss = hasKilledSecretBoss;
-    }
-
-    public boolean isConfused() {
-        return isConfused;
-    }
-
-    public void setConfused(boolean confused) {
-        isConfused = confused;
+    public void setTriggerToActivate(TriggerArea triggerToActivate) {
+        this.triggerToActivate = triggerToActivate;
     }
 
     @Override

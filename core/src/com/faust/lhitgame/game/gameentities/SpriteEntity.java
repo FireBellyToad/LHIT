@@ -45,7 +45,7 @@ public abstract class SpriteEntity extends TexturedEntity {
      * @return the TextureRegion of the frame
      */
     public TextureRegion getFrame(float stateTime) {
-        return (TextureRegion) animation.getKeyFrame(stateTime, true);
+        return animation.getKeyFrame(stateTime, true);
     }
 
 }

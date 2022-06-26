@@ -6,6 +6,7 @@ import com.faust.lhitgame.game.instances.impl.*;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
 import com.faust.lhitgame.game.rooms.areas.EmergedArea;
+import com.faust.lhitgame.game.rooms.areas.TriggerArea;
 import com.faust.lhitgame.game.rooms.areas.WallArea;
 
 import java.util.Objects;
@@ -153,6 +154,14 @@ public class CollisionManager implements ContactListener {
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
             confusionSpellInstance.doPlayerInteraction(playerInstance);
         }
+
+        // Handle TriggerArea Collision
+        if (isContactOfClass(contact, TriggerArea.class)) {
+            TriggerArea tInst = ((TriggerArea) getCorrectFixture(contact, TriggerArea.class).getBody().getUserData());
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            playerInstance.setTriggerToActivate(tInst);
+            tInst.activate(playerInstance);
+        }
     }
 
     /**
@@ -234,6 +243,12 @@ public class CollisionManager implements ContactListener {
         // Handle DiaconusInstance Collision end
         if (isContactOfClass(contact, DiaconusInstance.class)) {
             handleEnemyCollisionEventEnd(contact, DiaconusInstance.class);
+        }
+
+        // Handle TriggerArea Collision
+        if (isContactOfClass(contact, TriggerArea.class)) {
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            playerInstance.setTriggerToActivate(null);
         }
     }
 

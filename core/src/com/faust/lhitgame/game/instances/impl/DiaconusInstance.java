@@ -17,6 +17,7 @@ import com.faust.lhitgame.game.gameentities.AnimatedEntity;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.gameentities.impl.DiaconusEntity;
 import com.faust.lhitgame.game.instances.DistancerInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
@@ -277,7 +278,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             this.musicManager.stopMusic();
             this.body.setLinearVelocity(0, 0);
             this.currentBehavior = GameBehavior.DEAD;
-            ((PlayerInstance) attacker).setHasKilledSecretBoss(true);
+            ((PlayerInstance) attacker).setPlayerFlagValue(PlayerFlag.HAS_KILLED_SECRET_BOSS, true);
         } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
             ((DiaconusEntity) entity).playHurtCry();
 

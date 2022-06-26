@@ -17,10 +17,7 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.ai.PathNode;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
-import com.faust.lhitgame.game.gameentities.enums.DecorationsEnum;
-import com.faust.lhitgame.game.gameentities.enums.EnemyEnum;
-import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
-import com.faust.lhitgame.game.gameentities.enums.POIEnum;
+import com.faust.lhitgame.game.gameentities.enums.*;
 import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;
@@ -246,12 +243,12 @@ public abstract class AbstractRoom implements Spawner {
      */
     protected void addObjAsDecoration(MapObject obj, AssetManager assetManager) {
 
-        DecorationsEnum decoType = DecorationsEnum.getFromString((String) obj.getProperties().get("decoType"));
-        Objects.requireNonNull(decoType);
+        DecorationsEnum decoType = DecorationsEnum.valueOf((String) obj.getProperties().get("decoType"));
 
         roomContent.decorationList.add(new DecorationInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
+                (int)  obj.getProperties().get("id"),
                 decoType, assetManager));
     }
 
@@ -469,7 +466,7 @@ public abstract class AbstractRoom implements Spawner {
                 musicManager.stopMusic();
             } else if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
-                roomContent.player.setPrepareEndgame(true);
+                roomContent.player.setPlayerFlagValue(PlayerFlag.PREPARE_END_GAME,true);
             } else if (roomContent.enemyList.size() == 1 && ClassReflection.isAssignableFrom(Killable.class,ene.getClass()) && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);

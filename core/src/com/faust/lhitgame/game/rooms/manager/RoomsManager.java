@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.game.gameentities.enums.DirectionEnum;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
+import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.rooms.AbstractRoom;
@@ -129,7 +130,7 @@ public class RoomsManager {
     public void changeCurrentRoom(int newRoomPosX, int newRoomPosY) {
 
         //stop logic and sounds
-        player.setChangingRoom(true);
+        player.setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,true);
 
         //Do stuff while leaving room
         RoomSaveEntry currentRoomSaveEntry = saveMap.get(currentRoomPosInWorld);
@@ -170,8 +171,7 @@ public class RoomsManager {
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld.cpy(), currentRoomSaveEntry);
 
-
-        player.setChangingRoom(false);
+        player.setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,false);
 
     }
 

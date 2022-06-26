@@ -1,6 +1,5 @@
 package com.faust.lhitgame.game.rooms;
 
-import com.badlogic.gdx.ai.btree.utils.DistributionAdapters;
 import com.faust.lhitgame.game.ai.RoomNodesGraph;
 import com.faust.lhitgame.game.instances.AnimatedInstance;
 import com.faust.lhitgame.game.instances.GameInstance;

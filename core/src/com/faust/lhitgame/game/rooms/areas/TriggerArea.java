@@ -3,7 +3,6 @@ package com.faust.lhitgame.game.rooms.areas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
-import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.instances.GameInstance;
 import com.faust.lhitgame.game.instances.impl.POIInstance;
 import com.faust.lhitgame.game.instances.impl.PlayerInstance;

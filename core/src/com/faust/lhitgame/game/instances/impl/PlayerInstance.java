@@ -673,6 +673,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                     horizontalVelocity = 0;
                     verticalVelocity = 0;
 
+                    //If nearest POI is referenced by a Echo trigger, activate that echo
                     if(Objects.nonNull(triggerToActivate) && nearestPOIInstance.equals(triggerToActivate.getReferencedInstance())){
                         triggerToActivate.activate(this);
                     }

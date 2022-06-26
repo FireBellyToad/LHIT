@@ -13,5 +13,5 @@ public enum PlayerFlag {
     GO_TO_GAMEOVER,
     PAUSE_GAME,
     HAS_KILLED_SECRET_BOSS,
-    IS_CONFUSED;
+    IS_CONFUSED
 }

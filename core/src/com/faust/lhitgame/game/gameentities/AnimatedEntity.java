@@ -117,9 +117,9 @@ public abstract class AnimatedEntity extends TexturedEntity {
         TextureRegion toReturn;
         // If the animations doesn't have any direction, then return the unused one
         if (behaviorAnimations.containsKey(DirectionEnum.UNUSED)) {
-            toReturn = (TextureRegion) behaviorAnimations.get(DirectionEnum.UNUSED).getKeyFrame(stateTime, looping);
+            toReturn = behaviorAnimations.get(DirectionEnum.UNUSED).getKeyFrame(stateTime, looping);
         } else {
-            toReturn = (TextureRegion) behaviorAnimations.get(directionEnum).getKeyFrame(stateTime, looping);
+            toReturn = behaviorAnimations.get(directionEnum).getKeyFrame(stateTime, looping);
         }
 
         Objects.requireNonNull(toReturn);

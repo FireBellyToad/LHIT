@@ -5,8 +5,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.saves.impl.DesktopSaveFileManager;
 
-import java.util.Arrays;
-
 public class DesktopLauncher {
 	private static final int SCALE_FACTOR = 6;
 

@@ -244,6 +244,12 @@ public class CollisionManager implements ContactListener {
         if (isContactOfClass(contact, DiaconusInstance.class)) {
             handleEnemyCollisionEventEnd(contact, DiaconusInstance.class);
         }
+
+        // Handle TriggerArea Collision
+        if (isContactOfClass(contact, TriggerArea.class)) {
+            PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
+            playerInstance.setTriggerToActivate(null);
+        }
     }
 
     /**

@@ -15,5 +15,5 @@ public enum DecorationsEnum {
     IMPALED,
     DEAD_TREE,
     PAPER,
-    BIG_TREE;
+    BIG_TREE
 }

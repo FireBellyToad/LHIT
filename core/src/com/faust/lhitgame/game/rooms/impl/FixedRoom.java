@@ -127,7 +127,7 @@ public class FixedRoom extends AbstractRoom {
         RectangleMapObject mapObject = (RectangleMapObject) obj;
 
         TriggerTypeEnum triggerTypeEnum = TriggerTypeEnum.valueOf((String) mapObject.getProperties().get("triggerType"));
-        int referencedInstanceId = (int) mapObject.getProperties().get("referencedInstanceId");
+        Integer referencedInstanceId = (Integer) (mapObject.getProperties().containsKey("referencedInstanceId") ? mapObject.getProperties().get("referencedInstanceId") : null);
 
         GameInstance referencedInstance = null;
         List<ItemEnum> requiredItemList = Collections.emptyList();
@@ -248,8 +248,11 @@ public class FixedRoom extends AbstractRoom {
         roomContent.poiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined()));
         roomContent.removedPoiList.forEach(poiInstance -> roomSaveEntry.poiStates.put(poiInstance.getPoiIdInMap(), poiInstance.isAlreadyExamined()));
 
-        //Disable Echo on room leave if trigger is already examined POI
-        if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && roomContent.triggerAreaList.stream().anyMatch(t->t.isActivated())) {
+        //Disable Echo on room leave if activated trigger is already examined POI
+        if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && roomContent.triggerAreaList.stream().anyMatch(t->
+                (t.isActivated() && Objects.isNull(t.getReferencedInstance())) || //activated trigger without referenced Instance
+                (t.isActivated() && Objects.nonNull(t.getReferencedInstance()) && !(t.getReferencedInstance() instanceof POIInstance)) ||  //activated trigger with a non POI referenced Instance
+                (t.isActivated() && Objects.nonNull(t.getReferencedInstance()) && t.getReferencedInstance() instanceof POIInstance && ((POIInstance) t.getReferencedInstance()).isAlreadyExamined()))) {//activated trigger with an activated POI referenced Instance
             roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
         }
 

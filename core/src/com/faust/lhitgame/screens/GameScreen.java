@@ -195,7 +195,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        player.setPlayerFlagValue(PlayerFlag.PAUSE_GAME, true);
     }
 
     @Override

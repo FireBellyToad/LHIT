@@ -3,6 +3,7 @@ package com.faust.lhitgame.game.instances.impl;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -82,7 +83,8 @@ public class EscapePortalInstance extends AnimatedInstance implements Interactab
         Objects.requireNonNull(batch);
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
-        batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y );
+        Vector2 drawPosition = adjustPosition();
+        batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y );
         batch.end();
     }
 

@@ -332,7 +332,8 @@ public class EchoActorInstance extends AnimatedInstance implements Interactable,
         // Should not loop!
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(animationToUse, mapStateTimeFromBehaviour(stateTime));
 
-        batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+        Vector2 drawPosition = adjustPosition();
+        batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         batch.end();
     }
 

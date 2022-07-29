@@ -294,12 +294,12 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
-        Vector2 drawPosition = adjustPosition();
         //Draw Will o wisp
         // While it WALKs, do not show. Is invisible! FIXME use spell
         // If not hurt or the flickering POI must be shown, draw the texture.
         if (!GameBehavior.WALK.equals(currentBehavior) && (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior))) {
             //Draw shadow
+            Vector2 drawPosition = adjustPosition();
             batch.draw(((WillowispEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - 2 - POSITION_Y_OFFSET);
             batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         }

@@ -294,14 +294,15 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
         batch.begin();
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
 
+        Vector2 drawPosition = adjustPosition();
         //Draw shadow
-        batch.draw(((BoundedEntity) entity).getShadowTexture(), body.getPosition().x - POSITION_OFFSET, body.getPosition().y - 2 - POSITION_Y_OFFSET);
+        batch.draw(((BoundedEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - 2 - POSITION_Y_OFFSET);
 
         //Draw Bounded
 
         // If not hurt or the flickering POI must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET);
+            batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

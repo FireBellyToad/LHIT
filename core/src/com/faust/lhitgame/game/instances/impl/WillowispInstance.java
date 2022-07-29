@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.instances.ChaserInstance;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
@@ -64,8 +65,10 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
-                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+        //Try to attack if not dead. If is attacking and is too far away, still needs to end the attack before following
+        //the player
+        if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.IDLE.equals(currentBehavior) ||
+                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK)) {
 
             //Wait in visible IDLE before attacking
             if (!GameBehavior.IDLE.equals(currentBehavior) && !GameBehavior.ATTACK.equals(currentBehavior)) {

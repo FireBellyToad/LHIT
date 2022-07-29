@@ -25,6 +25,7 @@ import com.faust.lhitgame.game.instances.Spawner;
 import com.faust.lhitgame.game.instances.interfaces.Damager;
 import com.faust.lhitgame.game.instances.interfaces.Hurtable;
 import com.faust.lhitgame.game.instances.interfaces.Interactable;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.music.MusicManager;
 import com.faust.lhitgame.game.music.enums.TuneEnum;
 import com.faust.lhitgame.game.rooms.RoomContent;
@@ -87,7 +88,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (target.getBody().getPosition().dst(getBody().getPosition()) > 70) {
+        if (target.getBody().getPosition().dst(getBody().getPosition()) > 70  && !GameBehavior.ATTACK.equals(currentBehavior)) {
             currentBehavior = GameBehavior.WALK;
             calculateNewGoal(roomContent.roomGraph);
 
@@ -100,9 +101,11 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             // Move towards target
             body.setLinearVelocity(DIACONUS_SPEED * direction.x, DIACONUS_SPEED * direction.y);
-        } else if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
-                target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK) {
+        } else if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.ATTACK.equals(currentBehavior) ||
+                    target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK)) {
 
+            //Try to attack if not dead. If is attacking and is too near, still needs to end the attack before escaping
+            //from the player
             //Start animation
             if (!GameBehavior.ATTACK.equals(currentBehavior)) {
                 attackDeltaTime = stateTime;
@@ -117,7 +120,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) < LINE_OF_ATTACK) {
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) < LINE_OF_ATTACK  && !GameBehavior.ATTACK.equals(currentBehavior)) {
             //FIXME add check that if still attacking keeps attacking
             currentBehavior = GameBehavior.WALK;
             calculateNewGoal(roomContent.roomGraph);

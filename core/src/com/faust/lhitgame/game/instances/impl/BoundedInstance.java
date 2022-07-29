@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.game.gameentities.enums.ItemEnum;
 import com.faust.lhitgame.game.instances.ChaserInstance;
+import com.faust.lhitgame.game.instances.interfaces.Killable;
 import com.faust.lhitgame.game.rooms.RoomContent;
 import com.faust.lhitgame.game.world.interfaces.RayCaster;
 import com.faust.lhitgame.game.world.manager.CollisionManager;
@@ -37,7 +38,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
     private static final int LINE_OF_ATTACK = 15;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
+    private static final long ATTACK_COOLDOWN_TIME = 150; // in millis
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
@@ -61,11 +62,13 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
         translateAccessoryBodies();
 
-        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
-        if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) &&
-                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK) {
+        //Try to attack if not dead. If is attacking and is too far away, still needs to end the attack before following
+        //the player
+        if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.ATTACK.equals(currentBehavior) ||
+                target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK)) {
 
             //Start animation
             if (!GameBehavior.ATTACK.equals(currentBehavior)) {
@@ -81,7 +84,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeeTarget() ||isAggressive )) {
+        } else if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK && (canSeeTarget() || isAggressive )) {
 
             deactivateAttackBodies();
             isAggressive = true;

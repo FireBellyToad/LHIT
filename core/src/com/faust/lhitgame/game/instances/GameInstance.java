@@ -105,13 +105,9 @@ public abstract class GameInstance {
         }
 
         // If stopped, adjust position
-        Vector2 pos = getBody().getPosition();
-
-        if (pos.x != (int) pos.x)
-            pos.x = MathUtils.floor(pos.x);
-
-        if (pos.y != (int) pos.y)
-            pos.y = MathUtils.floor(pos.y);
+        Vector2 pos = getBody().getPosition().cpy();
+        pos.x = MathUtils.round(pos.x);
+        pos.y = MathUtils.round(pos.y);
 
         return pos;
     }

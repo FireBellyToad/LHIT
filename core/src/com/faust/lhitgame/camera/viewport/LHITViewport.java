@@ -28,7 +28,7 @@ public class LHITViewport extends ScalingViewport {
 
         //Use fillY logic, but scaling down to nearest integer
         Vector2 scaled = new Vector2();
-        float scale = MathUtils.floor(screenHeight / getWorldHeight());
+        float scale = MathUtils.round(screenHeight / getWorldHeight());
 
         scaled.x = getWorldWidth() * scale;
         scaled.y = getWorldHeight() * scale;

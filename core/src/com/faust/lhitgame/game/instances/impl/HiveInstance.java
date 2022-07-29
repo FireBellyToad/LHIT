@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -149,7 +150,8 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         //Draw Hive
         // If not hurt or the flickering Hive must be shown, draw the texture
         if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
-            batch.draw(frame, body.getPosition().x - POSITION_OFFSET, body.getPosition().y - POSITION_Y_OFFSET-4);
+            Vector2 drawPosition = adjustPosition();
+            batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET-4);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect

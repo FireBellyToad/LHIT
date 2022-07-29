@@ -3,6 +3,7 @@ package com.faust.lhitgame.game.instances.impl;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -50,9 +51,10 @@ public class DecorationInstance extends GameInstance implements Interactable {
             frame = ((SpriteEntity) entity).getFrame(0);
         }
 
+        Vector2 drawPosition = adjustPosition();
         //Rivedere
-        batch.draw(frame, body.getPosition().x + calculateAdditionalXOffset() - POSITION_OFFSET,
-                body.getPosition().y + calculateAdditionalYOffset() - POSITION_Y_OFFSET);
+        batch.draw(frame, drawPosition.x + calculateAdditionalXOffset() - POSITION_OFFSET,
+                drawPosition.y + calculateAdditionalYOffset() - POSITION_Y_OFFSET);
         batch.end();
     }
 

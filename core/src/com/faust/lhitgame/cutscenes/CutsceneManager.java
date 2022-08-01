@@ -201,6 +201,10 @@ public class CutsceneManager implements InputProcessor {
                 entity = new TutorialEntity(assetManager);
                 behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
                 direction = DirectionEnum.valueOf((String) obj.getProperties().get("direction"));
+            } else if (obj.getName().equals(HalfDarknessEntity.class.getSimpleName())) {
+                entity = new HalfDarknessEntity(assetManager);
+                behavior = GameBehavior.IDLE;
+                direction = DirectionEnum.UNUSED;
             }
 
             Objects.requireNonNull(entity);

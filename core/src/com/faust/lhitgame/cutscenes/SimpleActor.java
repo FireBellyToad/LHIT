@@ -66,6 +66,12 @@ public class SimpleActor {
             shader = setShaderOn(batch);
         }
 
+        if (entity instanceof PlayerEntity) {
+            batch.begin();
+            batch.draw(((PlayerEntity) entity).getShadowTexture(), MathUtils.floor(position.x) - 16, MathUtils.floor(position.y)-8);
+            batch.end();
+        }
+
         if (entity instanceof AnimatedEntity) {
             frame = ((AnimatedEntity) entity).getFrame(currentBehavior, direction, stateTime, true);
         } else if (entity instanceof SpriteEntity) {

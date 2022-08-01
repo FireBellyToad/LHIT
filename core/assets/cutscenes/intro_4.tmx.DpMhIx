@@ -43,13 +43,16 @@
   <object id="60" name="DecorationEntity" type="STONE_2" x="95.6364" y="132.455">
    <point/>
   </object>
+  <object id="61" name="DecorationEntity" type="STONE_2" x="137.273" y="149.364">
+   <point/>
+  </object>
   <object id="62" name="DecorationEntity" type="ALLY_CORPSE_1" x="54.9091" y="102.545">
    <point/>
   </object>
   <object id="63" name="DecorationEntity" type="ALLY_CORPSE_2" x="106.909" y="103.091">
    <point/>
   </object>
-  <object id="64" name="HalfDarknessEntity" x="22" y="138">
+  <object id="64" name="HalfDarknessEntity" x="22" y="137.364">
    <point/>
   </object>
  </objectgroup>

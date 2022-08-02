@@ -24,7 +24,7 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new LHITGame(new HtmlSaveFileManager());
+                return new LHITGame(true, new HtmlSaveFileManager());
         }
 
         @Override

@@ -15,6 +15,7 @@ public class LHITGame extends Game {
     public static final int GAME_WIDTH = 160;
     public static final int GAME_HEIGHT = 144;
 
+    private boolean isWebBuild = false;
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;
@@ -22,8 +23,9 @@ public class LHITGame extends Game {
     private MusicManager musicManager;
     private TextLocalizer textLocalizer;
 
-    public LHITGame(AbstractSaveFileManager saveFileManager) {
+    public LHITGame(boolean isWebBuild, AbstractSaveFileManager saveFileManager) {
         super();
+        this.isWebBuild = isWebBuild;
         this.saveFileManager = saveFileManager;
     }
 
@@ -49,6 +51,10 @@ public class LHITGame extends Game {
         assetManager.dispose();
         cameraManager.dispose();
         batch.dispose();
+    }
+
+    public boolean isWebBuild() {
+        return isWebBuild;
     }
 
     @Override

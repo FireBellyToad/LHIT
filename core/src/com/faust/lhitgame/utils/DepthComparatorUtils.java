@@ -17,7 +17,7 @@ public class DepthComparatorUtils {
         //Special conditions for Echo Corpse spawned POI
         if (o2 instanceof POIInstance && POIEnum.ECHO_CORPSE.equals(((POIInstance) o2).getType()) && o1 instanceof DecorationInstance) {
             return -1;
-        } else if (o2 instanceof POIInstance && POIEnum.ECHO_CORPSE.equals(((POIInstance) o2).getType()) && o2 instanceof DecorationInstance) {
+        } else if (o1 instanceof POIInstance && POIEnum.ECHO_CORPSE.equals(((POIInstance) o1).getType()) && o2 instanceof DecorationInstance) {
             return 1;
         }
 

@@ -1,5 +1,6 @@
 package com.faust.lhitgame.game.world.manager;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
@@ -26,13 +27,24 @@ import java.util.Objects;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class WorldManager implements RayCaster {
-    private static final float TIME_STEP = 1 / 60f;
-    private static final int VELOCITY_ITERATIONS = 8;
-    private static final int POSITION_ITERATIONS = 3;
+
+    private static final float DEFAULT_TIME_STEP = 1 / 60f;
+    private static final int DEFAULT_VELOCITY_ITERATIONS = 8;
+    private static final int DEFAULT_POSITION_ITERATIONS = 3;
 
     private final World world;
 
-    public WorldManager() {
+    private final float timeStep;
+    private final int velocityIterations;
+    private final int positionIterations;
+
+    public WorldManager(boolean isWebBuild) {
+
+        //Web build physics need to be slow down at 3/4 of desktop speed.
+        timeStep = isWebBuild ? DEFAULT_TIME_STEP * 0.75f : DEFAULT_TIME_STEP;
+        velocityIterations = isWebBuild ? (int) (DEFAULT_VELOCITY_ITERATIONS * 0.75f) : DEFAULT_VELOCITY_ITERATIONS;
+        positionIterations = isWebBuild ? (int) (DEFAULT_POSITION_ITERATIONS * 0.75f) : DEFAULT_POSITION_ITERATIONS;
+
         this.world = new World(new Vector2(0, 0), true);
         world.setContactListener(new CollisionManager());
 
@@ -42,7 +54,7 @@ public class WorldManager implements RayCaster {
      * Makes the world step to next
      */
     public void doStep() {
-        world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+        world.step(timeStep,velocityIterations,positionIterations);
     }
 
     public void dispose() {

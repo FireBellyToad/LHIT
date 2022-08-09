@@ -1,0 +1,20 @@
+{
+  "name": "Horror",
+  "description": "Darkness stays until Willowisp created by (echo.horrorbody.json) is killed",
+  "steps": [
+    {
+    },
+    {
+    },
+    {
+    },
+    {
+    },
+    {
+      "goTo" :{
+        "step": 0,
+        "ifAtLeastOneKillableAlive": "WILLOWISP"
+      }
+    }
+  ]
+}

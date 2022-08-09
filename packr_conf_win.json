@@ -1,0 +1,15 @@
+{
+    "platform": "windows64",
+    "jdk": "C:\\Program Files\\Java\\jdk-15.0.2",
+    "executable": "LHEngine",
+    "classpath": [
+        "E:\\Repositories\\LHEngine\\desktop\\build\\libs\\desktop-1.0.jar"
+    ],
+    "mainclass": "com.faust.lhitgame.desktop.DesktopLauncher",
+    "minimizejre": "soft",
+    "output": "LHIT_win",
+	"resources ": [
+        "E:\\Repositories\\LHEngine\\dist_readmes\\readme_eng.txt",
+        "E:\\Repositories\\LHEngine\\dist_readmes\\readme_ita.txt"
+    ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Infernum",
+  "description": "The landscape goes hellish and with corrosive atmosphere",
+  "steps": [
+    {
+      "invisible": true,
+      "renderOnlyMapLayer": "ECHO_LAYER",
+      "goTo" :{
+        "step": 3,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive":"ESCAPE_PORTAL"
+      }
+    },
+    {
+      "invisible": true,
+      "renderOnlyMapLayer": "ECHO_LAYER",
+      "hurtPlayer": {
+        "damage": 1,
+        "canKillPlayer": false
+      },
+      "goTo" :{
+        "step": 3,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive":"ESCAPE_PORTAL"
+      }
+    },
+    {
+      "textBoxKey": "echo.infernum.first",
+      "invisible": true,
+      "renderOnlyMapLayer": "ECHO_LAYER",
+      "goTo" :{
+        "step": 0,
+        "ifPlayerDamageIsLessThan":5,
+        "ifAtLeastOneKillableAlive":"ESCAPE_PORTAL"
+      }
+    }
+  ]
+}

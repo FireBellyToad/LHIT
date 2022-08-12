@@ -22,3 +22,4 @@ In fase di startup dell'engine e come parte di un tool separato (ValidEcho.java)
     * y: posizione Y dove verrà generata. Di default è quella dell'Echoactor.
     * relative: se true, le coordinate qui sopra sono aggiunte algebricamente alla posizone dell'Echoactor
 * splashToShow: splash da mostrare fino alla fine dello step.
+

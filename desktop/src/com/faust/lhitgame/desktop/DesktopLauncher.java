@@ -1,5 +1,6 @@
 package com.faust.lhitgame.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhitgame.LHITGame;
@@ -18,6 +19,7 @@ public class DesktopLauncher {
 		config.height = LHITGame.GAME_HEIGHT * SCALE_FACTOR;
 		//if parameter w is set, go windowed
 		config.fullscreen = !Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
+		config.addIcon("icon.png", Files.FileType.Internal);
 		new LwjglApplication(new LHITGame(false, new DesktopSaveFileManager()), config);
 	}
 }

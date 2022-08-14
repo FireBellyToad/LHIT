@@ -1,5 +1,6 @@
 package com.faust.lhengine.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhengine.LHEngine;
@@ -18,6 +19,7 @@ public class DesktopLauncher {
 		config.height = LHEngine.GAME_HEIGHT * SCALE_FACTOR;
 		//if parameter w is set, go windowed
 		config.fullscreen = !Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
+		config.addIcon("icon.png", Files.FileType.Internal);
 		new LwjglApplication(new LHEngine(false, new DesktopSaveFileManager()), config);
 	}
 }

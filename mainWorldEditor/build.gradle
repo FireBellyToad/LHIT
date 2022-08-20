@@ -23,8 +23,8 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-  mainModule = 'com.faust.lhengine.mainworldeditor.controllers'
-  mainClass = 'com.faust.lhengine.mainworldeditor.controllers.MainWorldEditorApplication'
+  mainModule = 'com.faust.lhengine.mainworldeditor'
+  mainClass = 'com.faust.lhengine.mainworldeditor.MainWorldEditorApplication'
 }
 
 javafx {

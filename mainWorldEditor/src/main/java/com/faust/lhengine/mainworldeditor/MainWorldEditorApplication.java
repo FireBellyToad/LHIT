@@ -1,4 +1,4 @@
-package com.faust.lhengine.mainworldeditor.controllers;
+package com.faust.lhengine.mainworldeditor;
 
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
 import javafx.application.Application;
@@ -21,7 +21,7 @@ public class MainWorldEditorApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         //Opens up main view
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource(MainWorldEditorScenes.MAIN.getFilename())));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("controllers/"+MainWorldEditorScenes.MAIN.getFilename())));
         stage.setTitle("LH-Engine Main World Editor");
         stage.setScene(scene);
         stage.show();

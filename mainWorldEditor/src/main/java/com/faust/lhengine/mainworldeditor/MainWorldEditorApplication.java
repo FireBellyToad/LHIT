@@ -1,5 +1,6 @@
 package com.faust.lhengine.mainworldeditor;
 
+import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,14 +11,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
+ * Main World Editor Application
+ *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class MainWorldEditorApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainWorldEditorApplication.class.getResource("mainWorldEditorUI.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+
+        //Opens up main view
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource(MainWorldEditorScenes.MAIN.getFilename())));
         stage.setTitle("LH-Engine Main World Editor");
         stage.setScene(scene);
         stage.show();

@@ -43,6 +43,20 @@ public class MainWorldEditorController extends AbstractController {
         openModalPopup(modalUserData);
     }
 
+    private void openModalPopup(String modalUserData) throws IOException {
+        Objects.requireNonNull(modalUserData);
+
+        final String filename = MainWorldEditorScenes.valueOf(modalUserData).getFilename();
+
+        final Stage openedModal = new Stage();
+        openedModal.initModality(Modality.APPLICATION_MODAL);
+        openedModal.initOwner(rootVbox.getScene().getWindow());
+
+        final Scene dialogScene = new Scene(FXMLLoader.load(getClass().getResource(filename)));
+        openedModal.setScene(dialogScene);
+        openedModal.show();
+    }
+
     @FXML
     protected void closeCurrentMainWorld() throws IOException {
         changeScene(MainWorldEditorScenes.MAIN);

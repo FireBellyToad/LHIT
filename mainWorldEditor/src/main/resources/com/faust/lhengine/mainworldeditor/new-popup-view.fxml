@@ -12,8 +12,8 @@
          <children>
             <Label layoutX="21.0" layoutY="32.0" text="Larghezza" />
             <Label layoutX="21.0" layoutY="66.0" text="Altezza" />
-            <TextField layoutX="85.0" layoutY="28.0" />
-            <TextField layoutX="85.0" layoutY="62.0" />
+            <TextField fx:id="widthField" layoutX="85.0" layoutY="28.0" />
+            <TextField fx:id="heightField" layoutX="85.0" layoutY="62.0" />
             <Button layoutX="55.0" layoutY="124.0" mnemonicParsing="false" onMouseClicked="#createNewMainWorld" text="Crea" />
             <Button layoutX="153.0" layoutY="124.0" mnemonicParsing="false" onMouseClicked="#closeStage" text="Annulla" />
          </children>

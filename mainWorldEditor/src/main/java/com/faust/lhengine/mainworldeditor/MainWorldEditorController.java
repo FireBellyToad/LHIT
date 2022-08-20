@@ -3,21 +3,16 @@ package com.faust.lhengine.mainworldeditor;
 import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
+import com.faust.lhengine.utils.Pair;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Main World Editor Controller
@@ -30,6 +25,7 @@ public class MainWorldEditorController extends AbstractController {
     private ComboBox<RoomTypeEnum> terrainTypesCombobox;
 
     private List<RoomModel> mainWorldData;
+    private Pair<Integer,Integer> worldLimit;
 
     @FXML
     protected void openModalPopupFromMenu(Event event) throws IOException {
@@ -55,5 +51,11 @@ public class MainWorldEditorController extends AbstractController {
             System.out.println("Load all terrains");
             terrainTypesCombobox.setItems(FXCollections.observableList(List.of(RoomTypeEnum.values())));
         }
+    }
+
+    public void createNewWorld(int widthField, int heightField) {
+
+        worldLimit = new Pair<>(widthField,heightField);
+        System.out.println(worldLimit);
     }
 }

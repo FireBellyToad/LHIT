@@ -1,9 +1,8 @@
 package com.faust.lhengine.mainworldeditor.mediator;
 
-import com.faust.lhengine.mainworldeditor.AbstractController;
-import com.faust.lhengine.mainworldeditor.MainWorldEditorController;
+import com.faust.lhengine.mainworldeditor.controllers.AbstractController;
+import com.faust.lhengine.mainworldeditor.controllers.MainWorldEditorController;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.util.Map;

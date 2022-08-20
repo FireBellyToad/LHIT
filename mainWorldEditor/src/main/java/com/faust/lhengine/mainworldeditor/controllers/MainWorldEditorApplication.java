@@ -1,4 +1,4 @@
-package com.faust.lhengine.mainworldeditor;
+package com.faust.lhengine.mainworldeditor.controllers;
 
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
 import javafx.application.Application;

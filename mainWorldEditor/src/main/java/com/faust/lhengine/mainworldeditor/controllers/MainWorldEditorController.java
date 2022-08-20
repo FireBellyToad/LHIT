@@ -1,4 +1,4 @@
-package com.faust.lhengine.mainworldeditor;
+package com.faust.lhengine.mainworldeditor.controllers;
 
 import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;

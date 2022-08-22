@@ -332,25 +332,6 @@ public class RoomsManager {
         }
     }
 
-    /**
-     * Draws all the POIs and the Decorations
-     *
-     * @param batch
-     * @param stateTime
-     */
-    public void drawCurrentRoomContents(SpriteBatch batch, float stateTime) {
-        Objects.requireNonNull(batch);
-
-        currentRoom.drawRoomContents(batch, stateTime, camera);
-    }
-
-    /**
-     * Draws the current room background terrain
-     */
-    public void drawCurrentRoomBackground() {
-        currentRoom.drawRoomTerrain();
-    }
-
     public Vector2 getCurrentRoomPosInWorld() {
         return currentRoomPosInWorld;
     }
@@ -364,14 +345,15 @@ public class RoomsManager {
         currentRoom.dispose();
     }
 
-    /**
-     * Draws the current room overlay tiles
-     */
-    public void drawCurrentRoomOverlays() {
-        currentRoom.drawRoomOverlay();
-    }
-
     public Map<Vector2, RoomSaveEntry> getSaveMap() {
         return saveMap;
+    }
+
+    /**
+     *
+     * @return current room
+     */
+    public AbstractRoom getCurrentRoom() {
+        return currentRoom;
     }
 }

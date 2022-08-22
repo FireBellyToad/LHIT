@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager(), game.getMusicManager());
-        worldRenderer = new TopViewWorldRenderer(game.getBatch(), cameraManager, splashManager, roomsManager, assetManager);
+        worldRenderer = new TopViewWorldRenderer(game.getBatch(), cameraManager, splashManager, new DarknessRenderer(assetManager));
 
 
     }
@@ -107,14 +107,14 @@ public class GameScreen implements Screen {
         if (!splashManager.isDrawingSplash()) {
 
             //Draw gray background
-            worldRenderer.drawBackground();
+            worldRenderer.drawBackground(roomsManager.getCurrentRoom());
 
             //Draw Room and all contents
-            worldRenderer.drawRoomAndContents(stateTime);
+            worldRenderer.drawRoomAndContents(stateTime, roomsManager.getCurrentRoom());
         }
 
         //Draw all overlays
-        worldRenderer.drawOverlays(stateTime,hud, player, pauseManager, textManager);
+        worldRenderer.drawOverlays(stateTime,hud, player,roomsManager.getCurrentRoom(), pauseManager, textManager);
 
 //       cameraManager.box2DDebugRenderer(worldManager.getWorld());
 

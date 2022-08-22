@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 
@@ -30,13 +31,13 @@ public class DarknessRenderer {
 
     }
 
-    public void drawDarkness(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
+    public void drawDarkness(SpriteBatch batch, Vector2 position, OrthographicCamera camera) {
         Objects.requireNonNull(batch);
-        Objects.requireNonNull(player);
+        Objects.requireNonNull(position);
         Objects.requireNonNull(camera);
 
-        final float xOffset = player.getBody().getPosition().x + 6 - LHEngine.GAME_WIDTH / 2;
-        final float yOffset = player.getBody().getPosition().y + 8 - LHEngine.GAME_HEIGHT / 2;
+        final float xOffset = position.x + 6 - LHEngine.GAME_WIDTH / 2;
+        final float yOffset = position.y + 8 - LHEngine.GAME_HEIGHT / 2;
 
         //Left overflow
         if (0 + xOffset > 0) {

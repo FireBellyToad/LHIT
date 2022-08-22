@@ -557,4 +557,12 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     public abstract void onRoomLeave(RoomSaveEntry roomSaveEntry);
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
+
+    public RoomContent getRoomContent(){
+        return roomContent;
+    }
 }

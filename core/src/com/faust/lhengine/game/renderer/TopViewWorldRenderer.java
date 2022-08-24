@@ -1,6 +1,8 @@
 package com.faust.lhengine.game.renderer;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.PauseManager;
@@ -8,8 +10,11 @@ import com.faust.lhengine.game.hud.DarknessRenderer;
 import com.faust.lhengine.game.hud.Hud;
 import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
+import com.faust.lhengine.game.instances.impl.ScriptActorInstance;
 import com.faust.lhengine.game.rooms.AbstractRoom;
+import com.faust.lhengine.game.rooms.OnRoomChangeListener;
 import com.faust.lhengine.game.rooms.RoomContent;
+import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.utils.DepthComparatorUtils;
@@ -23,7 +28,7 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class TopViewWorldRenderer {
+public class TopViewWorldRenderer implements WorldRenderer<AbstractRoom>, OnRoomChangeListener {
 
     private final SpriteBatch batch;
     private final CameraManager cameraManager;
@@ -48,7 +53,18 @@ public class TopViewWorldRenderer {
         batch.begin();
         cameraManager.renderBackground();
         batch.end();
-        currentRoom.drawRoomTerrain();
+
+        final RoomContent roomContent = currentRoom.getRoomContent();
+
+        MapLayers mapLayers = roomContent.tiledMap.getLayers();
+        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) mapLayers.get(currentRoom.getLayerToDraw());
+
+        //Overlay layer should is required
+        Objects.requireNonNull(terrainLayer);
+
+        tiledMapRenderer.getBatch().begin();
+        tiledMapRenderer.renderTileLayer(terrainLayer);
+        tiledMapRenderer.getBatch().end();
     }
 
     /**
@@ -62,17 +78,27 @@ public class TopViewWorldRenderer {
      * @param textManager
      */
     public void drawOverlays(float stateTime, Hud hud, PlayerInstance player, AbstractRoom currentRoom, PauseManager pauseManager, TextBoxManager textManager) {
+        final RoomContent roomContent = currentRoom.getRoomContent();
+
         //Draw overlay tiles
-        currentRoom.drawRoomOverlay();
+        MapLayers mapLayers = roomContent.tiledMap.getLayers();
+        TiledMapTileLayer overlayLayer = (TiledMapTileLayer) mapLayers.get(MapLayersEnum.OVERLAY_LAYER.getLayerName());
+
+        //Overlay layer should not be required
+        if (Objects.nonNull(overlayLayer)) {
+            tiledMapRenderer.getBatch().begin();
+            tiledMapRenderer.renderTileLayer(overlayLayer);
+            tiledMapRenderer.getBatch().end();
+        }
 
         // Draw splash XOR hud
         if (splashManager.isDrawingSplash()) {
-            splashManager.drawSplash(batch,stateTime);
+            splashManager.drawSplash(batch, stateTime);
         } else {
             darknessRenderer.drawDarkness(batch, player.getBody().getPosition(), cameraManager.getCamera());
             hud.drawHud(batch, player, cameraManager.getCamera());
             if (pauseManager.isGamePaused()) {
-                pauseManager.draw(batch,cameraManager.getCamera());
+                pauseManager.draw(batch, cameraManager.getCamera());
             }
         }
         // draw text
@@ -86,7 +112,8 @@ public class TopViewWorldRenderer {
      * @param stateTime
      * @param currentRoom
      */
-    public void drawRoomAndContents(float stateTime, AbstractRoom currentRoom) {
+    @Override
+    public void drawWorld(float stateTime, AbstractRoom currentRoom) {
         final RoomContent roomContent = currentRoom.getRoomContent();
 
         List<GameInstance> allInstance = new ArrayList<>();
@@ -95,6 +122,16 @@ public class TopViewWorldRenderer {
         allInstance.addAll(roomContent.decorationList);
         allInstance.add(roomContent.player);
         allInstance.addAll(roomContent.enemyList);
+
+        //add all actors with an activated trigger
+        if (Objects.nonNull(roomContent.echoActors)) {
+            for (ScriptActorInstance echoActorInstance : roomContent.echoActors) {
+                if (echoActorInstance.isEchoIsActive()) {
+                    allInstance.add(echoActorInstance);
+                }
+            }
+        }
+
         allInstance.addAll(roomContent.spellEffects);
 
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
@@ -103,4 +140,14 @@ public class TopViewWorldRenderer {
         allInstance.forEach((i) -> i.draw(batch, stateTime));
     }
 
+    @Override
+    public void dispose() {
+        tiledMapRenderer.dispose();
+    }
+
+    @Override
+    public void onRoomChange(AbstractRoom newRoom) {
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(newRoom.getRoomContent().tiledMap);
+        tiledMapRenderer.setView(cameraManager.getCamera());
+    }
 }

@@ -73,6 +73,8 @@ public class GameScreen implements Screen {
                 assetManager, game.getSaveFileManager(), game.getMusicManager());
         worldRenderer = new TopViewWorldRenderer(game.getBatch(), cameraManager, splashManager, new DarknessRenderer(assetManager));
 
+        roomsManager.addRoomChangeListener(worldRenderer);
+        roomsManager.changeCurrentRoom(3, 0); // start room
 
     }
 
@@ -110,7 +112,7 @@ public class GameScreen implements Screen {
             worldRenderer.drawBackground(roomsManager.getCurrentRoom());
 
             //Draw Room and all contents
-            worldRenderer.drawRoomAndContents(stateTime, roomsManager.getCurrentRoom());
+            worldRenderer.drawWorld(stateTime, roomsManager.getCurrentRoom());
         }
 
         //Draw all overlays
@@ -184,5 +186,6 @@ public class GameScreen implements Screen {
         worldManager.dispose();
         textManager.dispose();
         assetManager.dispose();
+        worldRenderer.dispose();
     }
 }

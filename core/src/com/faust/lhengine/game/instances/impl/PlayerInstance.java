@@ -69,6 +69,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private final Map<ItemEnum, Integer> itemsFound;
     private final Map<PlayerFlag, Boolean> playerFlags = new HashMap<>();
     private TriggerArea triggerToActivate;
+    private boolean muteSounds = false;
 
 
     public PlayerInstance(AssetManager assetManager) {
@@ -99,7 +100,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //if is Dead, play death animation and then game over
         if (isDead()) {
-            playerFlags.put(PlayerFlag.IS_CHANGING_ROOM,true);
+            muteSounds = true;
             setPlayerLinearVelocity(0, 0);
             leftSpearBody.setActive(false);
             upSpearBody.setActive(false);
@@ -121,12 +122,6 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         if (playerFlags.get(PlayerFlag.PREPARE_END_GAME)) {
             currentBehavior = GameBehavior.IDLE;
             setPlayerLinearVelocity(0, 0);
-            return;
-        }
-
-        //In roomchange, idling and do nothing
-        if (playerFlags.get(PlayerFlag.IS_CHANGING_ROOM)) {
-            currentBehavior = GameBehavior.IDLE;
             return;
         }
 
@@ -853,7 +848,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setSubmerged(boolean submerged) {
         Vector2 velocity = this.body.getLinearVelocity();
-        if (!playerFlags.get(PlayerFlag.IS_CHANGING_ROOM) && submerged && !playerFlags.get(PlayerFlag.IS_SUBMERGED)) {
+        if (!muteSounds && submerged && !playerFlags.get(PlayerFlag.IS_SUBMERGED)) {
             //Play sound when Walfrit gets in water
             ((PlayerEntity) entity).playWaterSplash();
 
@@ -912,12 +907,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     /**
      *
      * @param flagToGet
-     * @return flag value
      */
-    public boolean setPlayerFlagValue(PlayerFlag flagToGet, boolean value){
+    public void setPlayerFlagValue(PlayerFlag flagToGet, boolean value){
         Objects.requireNonNull(flagToGet);
 
-        return playerFlags.put(flagToGet, value);
+        playerFlags.put(flagToGet, value);
     }
 
     /**
@@ -947,12 +941,15 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     @Override
     public void onRoomChangeStart(AbstractRoom newRoom) {
-        setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,true);
+        //Sounds are not played on roomchange
+        muteSounds = true;
     }
 
     @Override
     public void onRoomChangeEnd(AbstractRoom newRoom) {
-        setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,false);
+        muteSounds = false;
+        //In roomchange, idle and do nothing
+        currentBehavior = GameBehavior.IDLE;
     }
 
     @Override

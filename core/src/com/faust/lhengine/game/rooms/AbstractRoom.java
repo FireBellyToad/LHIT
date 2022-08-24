@@ -55,8 +55,6 @@ public abstract class AbstractRoom implements Spawner {
     public static final float RIGHT_BOUNDARY = LHEngine.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHEngine.GAME_HEIGHT - 24;
 
-    protected OrthogonalTiledMapRenderer tiledMapRenderer;
-
     protected final RoomContent roomContent = new RoomContent();
     protected final SplashManager splashManager;
     protected final TextBoxManager textManager;

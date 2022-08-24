@@ -10,6 +10,29 @@
     ],
     "propertyTypes": [
         {
+            "color": "#ffffffff",
+            "id": 6,
+            "members": [
+                {
+                    "name": "decoType",
+                    "propertyType": "DecoType",
+                    "type": "string",
+                    "value": "PLANT"
+                },
+                {
+                    "name": "isEchoTrigger",
+                    "type": "bool",
+                    "value": false
+                }
+            ],
+            "name": "DECO",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
             "id": 2,
             "name": "DecoType",
             "storageType": "string",
@@ -34,8 +57,26 @@
             "valuesAsFlags": false
         },
         {
+            "color": "#ffffaa00",
+            "id": 7,
+            "members": [
+                {
+                    "name": "scriptActorType",
+                    "propertyType": "ScriptsActorType",
+                    "type": "string",
+                    "value": "DISCIPULUS"
+                }
+            ],
+            "name": "ECHO_ACTOR",
+            "type": "class",
+            "useAs": [
+                "object",
+                "tile"
+            ]
+        },
+        {
             "id": 3,
-            "name": "EchoesActorType",
+            "name": "ScriptsActorType",
             "storageType": "string",
             "type": "enum",
             "values": [
@@ -53,99 +94,6 @@
                 "DIACONUS"
             ],
             "valuesAsFlags": false
-        },
-        {
-            "id": 4,
-            "name": "EnemyType",
-            "storageType": "string",
-            "type": "enum",
-            "values": [
-                "UNDEFINED",
-                "STRIX",
-                "BOUNDED",
-                "HIVE",
-                "SPITTER",
-                "MEAT",
-                "PORTAL",
-                "WILLOWISP",
-                "ESCAPE_PORTAL",
-                "DIACONUS"
-            ],
-            "valuesAsFlags": false
-        },
-        {
-            "id": 1,
-            "name": "PoiType",
-            "storageType": "string",
-            "type": "enum",
-            "values": [
-                "SKELETON",
-                "BUSH",
-                "SOIL",
-                "CADAVER",
-                "BROTHER",
-                "ECHO_CORPSE",
-                "BURNT_PAPER",
-                "BAPTISMAL",
-                "BURNT_MONK",
-                "ALTAR",
-                "WATERSKIN",
-                "PARCHMENT",
-                "RITUAL"
-            ],
-            "valuesAsFlags": false
-        },
-        {
-            "id": 5,
-            "name": "TriggerType",
-            "storageType": "string",
-            "type": "enum",
-            "values": [
-                "CONTACT",
-                "USE"
-            ],
-            "valuesAsFlags": false
-        },
-        {
-            "color": "#ffffffff",
-            "id": 6,
-            "members": [
-                {
-                    "name": "decoType",
-                    "propertyType": "DecoType",
-                    "type": "string",
-                    "value": "PLANT"
-                },
-                {
-                    "name": "isEchoTrigger",
-                    "type": "bool",
-                    "value": false
-                }
-            ],
-            "name": "DECO",
-            "type": "class",
-            "useAs": [
-                "object",
-                "tile"
-            ]
-        },
-        {
-            "color": "#ffffaa00",
-            "id": 7,
-            "members": [
-                {
-                    "name": "scriptActorType",
-                    "propertyType": "EchoesActorType",
-                    "type": "string",
-                    "value": "DISCIPULUS"
-                }
-            ],
-            "name": "ECHO_ACTOR",
-            "type": "class",
-            "useAs": [
-                "object",
-                "tile"
-            ]
         },
         {
             "color": "#ffa0a0a4",
@@ -181,6 +129,25 @@
                 "object",
                 "tile"
             ]
+        },
+        {
+            "id": 4,
+            "name": "EnemyType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "UNDEFINED",
+                "STRIX",
+                "BOUNDED",
+                "HIVE",
+                "SPITTER",
+                "MEAT",
+                "PORTAL",
+                "WILLOWISP",
+                "ESCAPE_PORTAL",
+                "DIACONUS"
+            ],
+            "valuesAsFlags": false
         },
         {
             "color": "#ffffff00",
@@ -223,6 +190,28 @@
             ]
         },
         {
+            "id": 1,
+            "name": "PoiType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "SKELETON",
+                "BUSH",
+                "SOIL",
+                "CADAVER",
+                "BROTHER",
+                "ECHO_CORPSE",
+                "BURNT_PAPER",
+                "BAPTISMAL",
+                "BURNT_MONK",
+                "ALTAR",
+                "WATERSKIN",
+                "PARCHMENT",
+                "RITUAL"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "color": "#ffffaa00",
             "id": 12,
             "members": [
@@ -244,6 +233,17 @@
                 "object",
                 "tile"
             ]
+        },
+        {
+            "id": 5,
+            "name": "TriggerType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "CONTACT",
+                "USE"
+            ],
+            "valuesAsFlags": false
         },
         {
             "color": "#ff000000",

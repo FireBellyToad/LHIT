@@ -31,13 +31,18 @@ public class DarknessRenderer {
 
     }
 
-    public void drawDarkness(SpriteBatch batch, Vector2 position, OrthographicCamera camera) {
+    public void drawDarkness(SpriteBatch batch, Vector2 position, OrthographicCamera camera, boolean roundOffset) {
         Objects.requireNonNull(batch);
         Objects.requireNonNull(position);
         Objects.requireNonNull(camera);
 
-        final float xOffset = position.x + 6 - LHEngine.GAME_WIDTH / 2;
-        final float yOffset = position.y + 8 - LHEngine.GAME_HEIGHT / 2;
+        float xOffset = position.x + 6 - LHEngine.GAME_WIDTH / 2;
+        float yOffset = position.y + 8 - LHEngine.GAME_HEIGHT / 2;
+
+        if(roundOffset){
+            xOffset = Math.round(xOffset);
+            yOffset = Math.round(yOffset);
+        }
 
         //Left overflow
         if (0 + xOffset > 0) {

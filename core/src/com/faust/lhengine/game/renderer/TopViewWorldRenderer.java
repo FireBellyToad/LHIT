@@ -146,7 +146,16 @@ public class TopViewWorldRenderer implements WorldRenderer<AbstractRoom>, OnRoom
     }
 
     @Override
-    public void onRoomChange(AbstractRoom newRoom) {
+    public void onRoomChangeStart(AbstractRoom newRoom) {
+        //Disposing old room tiledrendered
+        if(Objects.nonNull(tiledMapRenderer)){
+            tiledMapRenderer.dispose();
+        }
+    }
+
+    @Override
+    public void onRoomChangeEnd(AbstractRoom newRoom) {
+        //Setting new tileRenderer
         tiledMapRenderer = new OrthogonalTiledMapRenderer(newRoom.getRoomContent().tiledMap);
         tiledMapRenderer.setView(cameraManager.getCamera());
     }

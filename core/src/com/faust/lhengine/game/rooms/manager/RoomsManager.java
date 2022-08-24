@@ -66,6 +66,7 @@ public class RoomsManager {
         this.player = player;
         this.camera = camera;
         this.onRoomChangeListeners = new ArrayList<>();
+        addRoomChangeListener(player);
 
         initMainWorld();
     }
@@ -128,8 +129,10 @@ public class RoomsManager {
      */
     public void changeCurrentRoom(int newRoomPosX, int newRoomPosY) {
 
-        //stop logic and sounds
-        player.setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,true);
+        // Notifiy all listeners
+        for(OnRoomChangeListener l: onRoomChangeListeners){
+            l.onRoomChangeStart(currentRoom);
+        }
 
         //Do stuff while leaving room
         RoomSaveEntry currentRoomSaveEntry = saveMap.get(currentRoomPosInWorld);
@@ -166,16 +169,16 @@ public class RoomsManager {
         } else {
             currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
         }
-        
-        for(OnRoomChangeListener l: onRoomChangeListeners){
-            l.onRoomChange(currentRoom);
-        }
-        
+
+
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld.cpy(), currentRoomSaveEntry);
 
-        player.setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,false);
+        // Notifiy all listeners
+        for(OnRoomChangeListener l: onRoomChangeListeners){
+            l.onRoomChangeEnd(currentRoom);
+        }
 
     }
 

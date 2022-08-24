@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
+import com.faust.lhengine.game.rooms.AbstractRoom;
+import com.faust.lhengine.game.rooms.OnRoomChangeListener;
 import com.faust.lhengine.game.scripts.enums.ScriptActorType;
 import com.faust.lhengine.game.gameentities.AnimatedEntity;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
@@ -36,7 +38,7 @@ import java.util.*;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class PlayerInstance extends AnimatedInstance implements InputProcessor, Hurtable, Damager {
+public class PlayerInstance extends AnimatedInstance implements InputProcessor, Hurtable, Damager, OnRoomChangeListener {
 
     private static final float PLAYER_SPEED = 50;
     private static final float PLAYER_SPEED_SUBMERGED = 40;
@@ -941,6 +943,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
     public void setTriggerToActivate(TriggerArea triggerToActivate) {
         this.triggerToActivate = triggerToActivate;
+    }
+
+    @Override
+    public void onRoomChangeStart(AbstractRoom newRoom) {
+        setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,true);
+    }
+
+    @Override
+    public void onRoomChangeEnd(AbstractRoom newRoom) {
+        setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,false);
     }
 
     @Override

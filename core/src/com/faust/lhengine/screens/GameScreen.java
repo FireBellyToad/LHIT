@@ -14,6 +14,7 @@ import com.faust.lhengine.game.hud.DarknessRenderer;
 import com.faust.lhengine.game.hud.Hud;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 import com.faust.lhengine.game.music.MusicManager;
+import com.faust.lhengine.game.renderer.TopViewWorldRenderer;
 import com.faust.lhengine.game.rooms.manager.RoomsManager;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
@@ -34,12 +35,12 @@ public class GameScreen implements Screen {
     private final WorldManager worldManager;
     private final PlayerInstance player;
     private final TextBoxManager textManager;
-    private RoomsManager roomsManager;
     private final SplashManager splashManager;
     private final PauseManager pauseManager;
+    private TopViewWorldRenderer worldRenderer;
+    private RoomsManager roomsManager;
 
     private final Hud hud;
-    private final DarknessRenderer darknessRenderer;
 
     private float stateTime = 0f;
 
@@ -55,11 +56,9 @@ public class GameScreen implements Screen {
         textManager = new TextBoxManager(assetManager, textLocalizer);
         hud = new Hud(textManager, assetManager);
         splashManager = new SplashManager(textManager, assetManager);
-        pauseManager = new PauseManager(game.getSaveFileManager(), game.getMusicManager(), assetManager);
-        darknessRenderer = new DarknessRenderer(assetManager);
+        pauseManager = new PauseManager(game.getSaveFileManager(), musicManager, assetManager);
         worldManager = new WorldManager(this.game.isWebBuild());
         player = new PlayerInstance(assetManager);
-
 
     }
 
@@ -72,6 +71,10 @@ public class GameScreen implements Screen {
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager(), game.getMusicManager());
+        worldRenderer = new TopViewWorldRenderer(game.getBatch(), cameraManager, splashManager, new DarknessRenderer(assetManager));
+
+        roomsManager.addRoomChangeListener(worldRenderer);
+        roomsManager.changeCurrentRoom(3, 0); // start room
 
     }
 
@@ -106,49 +109,17 @@ public class GameScreen implements Screen {
         if (!splashManager.isDrawingSplash()) {
 
             //Draw gray background
-            drawBackground();
+            worldRenderer.drawBackground(roomsManager.getCurrentRoom());
 
             //Draw Room and all contents
-            drawRoomAndContents(stateTime);
+            worldRenderer.drawWorld(stateTime, roomsManager.getCurrentRoom());
         }
 
         //Draw all overlays
-        drawOverlays();
+        worldRenderer.drawOverlays(stateTime,hud, player,roomsManager.getCurrentRoom(), pauseManager, textManager);
 
 //       cameraManager.box2DDebugRenderer(worldManager.getWorld());
 
-    }
-
-    private void drawOverlays() {
-        //Draw overlay tiles
-        roomsManager.drawCurrentRoomOverlays();
-
-        // Draw splash XOR hud
-        if (splashManager.isDrawingSplash()) {
-            splashManager.drawSplash(game.getBatch(),stateTime);
-        } else {
-            darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
-            hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
-            if (pauseManager.isGamePaused()) {
-                pauseManager.draw(game.getBatch(),cameraManager.getCamera());
-            }
-        }
-        // draw text
-        textManager.renderTextBoxes(game.getBatch(), cameraManager.getCamera());
-    }
-
-    private void drawRoomAndContents(float stateTime) {
-        roomsManager.drawCurrentRoomContents(game.getBatch(), stateTime);
-    }
-
-    /**
-     * Draws the background color and terrain tiles
-     */
-    private void drawBackground() {
-        game.getBatch().begin();
-        cameraManager.renderBackground();
-        game.getBatch().end();
-        roomsManager.drawCurrentRoomBackground();
     }
 
     /**
@@ -215,5 +186,6 @@ public class GameScreen implements Screen {
         worldManager.dispose();
         textManager.dispose();
         assetManager.dispose();
+        worldRenderer.dispose();
     }
 }

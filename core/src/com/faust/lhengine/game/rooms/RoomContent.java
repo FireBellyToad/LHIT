@@ -1,12 +1,13 @@
 package com.faust.lhengine.game.rooms;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.faust.lhengine.game.ai.RoomNodesGraph;
 import com.faust.lhengine.game.instances.AnimatedInstance;
 import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.impl.DecorationInstance;
-import com.faust.lhengine.game.instances.impl.ScriptActorInstance;
 import com.faust.lhengine.game.instances.impl.POIInstance;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
+import com.faust.lhengine.game.instances.impl.ScriptActorInstance;
 import com.faust.lhengine.game.rooms.areas.EmergedArea;
 import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.rooms.areas.WallArea;
@@ -23,6 +24,7 @@ import java.util.Map;
  */
 public class RoomContent {
 
+    public TiledMap tiledMap;
     public List<POIInstance> poiList;
     public List<DecorationInstance> decorationList;
     public List<AnimatedInstance> enemyList;

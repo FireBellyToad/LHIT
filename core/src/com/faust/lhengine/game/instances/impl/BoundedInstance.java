@@ -62,7 +62,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
         translateAccessoryBodies();
 
-        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
             return;
 
         //Try to attack if not dead. If is attacking and is too far away, still needs to end the attack before following

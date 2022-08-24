@@ -3,7 +3,6 @@ package com.faust.lhengine.game.rooms.manager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -15,6 +14,7 @@ import com.faust.lhengine.game.gameentities.enums.PlayerFlag;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.rooms.AbstractRoom;
+import com.faust.lhengine.game.rooms.OnRoomChangeListener;
 import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
@@ -26,9 +26,7 @@ import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Room Manager class
@@ -40,6 +38,7 @@ public class RoomsManager {
     private final SplashManager splashManager;
     private final AssetManager assetManager;
     private final AbstractSaveFileManager saveFileManager;
+    private final List<OnRoomChangeListener> onRoomChangeListeners;
 
     private AbstractRoom currentRoom;
     private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
@@ -66,9 +65,10 @@ public class RoomsManager {
         this.musicManager = musicManager;
         this.player = player;
         this.camera = camera;
+        this.onRoomChangeListeners = new ArrayList<>();
+        addRoomChangeListener(player);
 
         initMainWorld();
-        changeCurrentRoom(3, 0);
     }
 
     /**
@@ -129,8 +129,10 @@ public class RoomsManager {
      */
     public void changeCurrentRoom(int newRoomPosX, int newRoomPosY) {
 
-        //stop logic and sounds
-        player.setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,true);
+        // Notifiy all listeners
+        for(OnRoomChangeListener l: onRoomChangeListeners){
+            l.onRoomChangeStart(currentRoom);
+        }
 
         //Do stuff while leaving room
         RoomSaveEntry currentRoomSaveEntry = saveMap.get(currentRoomPosInWorld);
@@ -167,11 +169,16 @@ public class RoomsManager {
         } else {
             currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
         }
+
+
         Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
         //Keep the same state of already visited rooms
         saveMap.put(currentRoomPosInWorld.cpy(), currentRoomSaveEntry);
 
-        player.setPlayerFlagValue(PlayerFlag.IS_CHANGING_ROOM,false);
+        // Notifiy all listeners
+        for(OnRoomChangeListener l: onRoomChangeListeners){
+            l.onRoomChangeEnd(currentRoom);
+        }
 
     }
 
@@ -332,25 +339,6 @@ public class RoomsManager {
         }
     }
 
-    /**
-     * Draws all the POIs and the Decorations
-     *
-     * @param batch
-     * @param stateTime
-     */
-    public void drawCurrentRoomContents(SpriteBatch batch, float stateTime) {
-        Objects.requireNonNull(batch);
-
-        currentRoom.drawRoomContents(batch, stateTime, camera);
-    }
-
-    /**
-     * Draws the current room background terrain
-     */
-    public void drawCurrentRoomBackground() {
-        currentRoom.drawRoomTerrain();
-    }
-
     public Vector2 getCurrentRoomPosInWorld() {
         return currentRoomPosInWorld;
     }
@@ -360,18 +348,28 @@ public class RoomsManager {
      */
     public void dispose() {
         saveFileManager.saveOnFile(player, saveMap);
+        onRoomChangeListeners.clear();
 
         currentRoom.dispose();
     }
 
-    /**
-     * Draws the current room overlay tiles
-     */
-    public void drawCurrentRoomOverlays() {
-        currentRoom.drawRoomOverlay();
-    }
-
     public Map<Vector2, RoomSaveEntry> getSaveMap() {
         return saveMap;
+    }
+
+    /**
+     *
+     * @return current room
+     */
+    public AbstractRoom getCurrentRoom() {
+        return currentRoom;
+    }
+
+    /**
+     *
+     * @param listener
+     */
+    public void addRoomChangeListener(OnRoomChangeListener listener){
+        onRoomChangeListeners.add(listener);
     }
 }

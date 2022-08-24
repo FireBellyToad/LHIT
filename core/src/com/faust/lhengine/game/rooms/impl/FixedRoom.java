@@ -2,28 +2,27 @@ package com.faust.lhengine.game.rooms.impl;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.faust.lhengine.game.scripts.enums.ScriptActorType;
 import com.faust.lhengine.game.gameentities.enums.ItemEnum;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.impl.*;
+import com.faust.lhengine.game.instances.impl.EscapePortalInstance;
+import com.faust.lhengine.game.instances.impl.POIInstance;
+import com.faust.lhengine.game.instances.impl.PlayerInstance;
+import com.faust.lhengine.game.instances.impl.ScriptActorInstance;
 import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.rooms.AbstractRoom;
 import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.rooms.enums.*;
+import com.faust.lhengine.game.scripts.enums.ScriptActorType;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
-import com.faust.lhengine.utils.DepthComparatorUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,13 +45,13 @@ public class FixedRoom extends AbstractRoom {
     @Override
     protected void loadTiledMap(RoomSaveEntry roomSaveEntry) {
         // Load Tiled map
-        tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        roomContent.tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
+        //onMapChange() todo
 
     }
 
     @Override
-    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
+    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MapObjects mapObjects) {
 
         this.roomContent.triggerAreaList = new ArrayList<>();
         mapObjects.forEach(obj -> {
@@ -153,45 +152,6 @@ public class FixedRoom extends AbstractRoom {
     }
 
     @Override
-    public void drawRoomContents(SpriteBatch batch, float stateTime, OrthographicCamera cameraTemp) {
-        List<GameInstance> allInstance = new ArrayList<>();
-
-        allInstance.addAll(roomContent.poiList);
-        allInstance.addAll(roomContent.decorationList);
-        allInstance.add(roomContent.player);
-        allInstance.addAll(roomContent.enemyList);
-
-        //add all actors with an activated trigger
-        for(ScriptActorInstance echoActorInstance : roomContent.echoActors){
-            if(echoActorInstance.isEchoIsActive()){
-                allInstance.add(echoActorInstance);
-            }
-        }
-
-        allInstance.addAll(roomContent.spellEffects);
-
-        // Sort by Y for depth effect. If decoration is interacted, priority is lowered
-        allInstance.sort(DepthComparatorUtils::compareEntities);
-
-        allInstance.forEach((i) -> i.draw(batch, stateTime));
-
-    }
-
-    @Override
-    public void drawRoomTerrain() {
-        MapLayers mapLayers = tiledMap.getLayers();
-
-        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) mapLayers.get(layerToDraw);
-
-        //Overlay layer should is required
-        Objects.requireNonNull(terrainLayer);
-
-        tiledMapRenderer.getBatch().begin();
-        tiledMapRenderer.renderTileLayer(terrainLayer);
-        tiledMapRenderer.getBatch().end();
-    }
-
-    @Override
     public void dispose() {
         super.dispose();
         roomContent.echoActors.forEach(ScriptActorInstance::dispose);
@@ -258,6 +218,11 @@ public class FixedRoom extends AbstractRoom {
 
         //always enable enemies
         roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, false);
+    }
+
+    @Override
+    public String getLayerToDraw() {
+        return layerToDraw;
     }
 
 }

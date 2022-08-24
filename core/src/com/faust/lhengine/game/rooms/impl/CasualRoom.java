@@ -3,14 +3,15 @@ package com.faust.lhengine.game.rooms.impl;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.faust.lhengine.game.instances.impl.POIInstance;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.rooms.AbstractRoom;
+import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
 import com.faust.lhengine.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.game.splash.SplashManager;
@@ -85,12 +86,12 @@ public class CasualRoom extends AbstractRoom {
         roomSaveEntry.casualNumber = casualNumber;
 
         // Load Tiled map
-        tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        this.roomContent.tiledMap = new TmxMapLoader().load(roomContent.roomFileName);
+        //onMapChange(); tODO
     }
 
     @Override
-    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry) {
+    protected void onRoomEnter(RoomTypeEnum roomType, WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MapObjects mapObjects) {
 
         if(Objects.nonNull(roomSaveEntry)){
             roomSaveEntry.poiStates.forEach((id,isExamined)->{
@@ -118,5 +119,10 @@ public class CasualRoom extends AbstractRoom {
 
         //always enable enemies
         roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ENEMIES, false);
+    }
+
+    @Override
+    public String getLayerToDraw() {
+        return MapLayersEnum.TERRAIN_LAYER.getLayerName();
     }
 }

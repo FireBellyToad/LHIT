@@ -55,10 +55,6 @@ public abstract class AbstractRoom implements Spawner {
     public static final float RIGHT_BOUNDARY = LHEngine.GAME_WIDTH - 12;
     public static final float TOP_BOUNDARY = LHEngine.GAME_HEIGHT - 24;
 
-    protected TiledMap tiledMap;
-    protected OrthogonalTiledMapRenderer tiledMapRenderer;
-    protected final MapObjects mapObjects;
-
     protected final RoomContent roomContent = new RoomContent();
     protected final SplashManager splashManager;
     protected final TextBoxManager textManager;
@@ -101,10 +97,7 @@ public abstract class AbstractRoom implements Spawner {
         loadTiledMap(roomSaveEntry);
 
         // Extract mapObjects
-        mapObjects = tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.getLayerName()).getObjects();
-
-        // Set camera for rendering
-        tiledMapRenderer.setView(camera);
+        final MapObjects mapObjects = this.roomContent.tiledMap.getLayers().get(MapLayersEnum.OBJECT_LAYER.getLayerName()).getObjects();
 
         // Add content to room
         this.roomContent.player = player;
@@ -121,7 +114,7 @@ public abstract class AbstractRoom implements Spawner {
         this.roomContent.removedPoiList = new ArrayList<>();
 
         // Place objects in room
-        this.mapObjects.forEach(obj -> {
+        mapObjects.forEach(obj -> {
 
             String typeString = (String) obj.getProperties().get("type");
 
@@ -168,7 +161,7 @@ public abstract class AbstractRoom implements Spawner {
         }
 
         // Do other stuff
-        this.onRoomEnter(roomType, worldManager, assetManager, roomSaveEntry);
+        this.onRoomEnter(roomType, worldManager, assetManager, roomSaveEntry, mapObjects);
     }
 
     /**
@@ -372,70 +365,16 @@ public abstract class AbstractRoom implements Spawner {
      * @param roomType
      * @param worldManager
      * @param roomSaveEntry
+     * @param mapObjects
      */
-    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry);
-
-    /**
-     * Draws room background terrain
-     */
-    public void drawRoomTerrain() {
-        MapLayers mapLayers = tiledMap.getLayers();
-        TiledMapTileLayer terrainLayer = (TiledMapTileLayer) mapLayers.get(MapLayersEnum.TERRAIN_LAYER.getLayerName());
-
-        //Overlay layer should is required
-        Objects.requireNonNull(terrainLayer);
-
-        tiledMapRenderer.getBatch().begin();
-        tiledMapRenderer.renderTileLayer(terrainLayer);
-        tiledMapRenderer.getBatch().end();
-    }
-
-    /**
-     * Draws room overlay
-     */
-    public void drawRoomOverlay() {
-        MapLayers mapLayers = tiledMap.getLayers();
-        TiledMapTileLayer overlayLayer = (TiledMapTileLayer) mapLayers.get(MapLayersEnum.OVERLAY_LAYER.getLayerName());
-
-        //Overlay layer should not be required
-        if (Objects.isNull(overlayLayer)) {
-            return;
-        }
-
-        tiledMapRenderer.getBatch().begin();
-        tiledMapRenderer.renderTileLayer(overlayLayer);
-        tiledMapRenderer.getBatch().end();
-    }
-
-    /**
-     * Draws room contents
-     *  @param batch
-     * @param stateTime
-     * @param cameraTemp
-     */
-    public void drawRoomContents(final SpriteBatch batch, float stateTime, OrthographicCamera cameraTemp) {
-
-        List<GameInstance> allInstance = new ArrayList<>();
-
-        allInstance.addAll(roomContent.poiList);
-        allInstance.addAll(roomContent.decorationList);
-        allInstance.add(roomContent.player);
-        allInstance.addAll(roomContent.enemyList);
-        allInstance.addAll(roomContent.spellEffects);
-
-        // Sort by Y for depth effect. If decoration is interacted, priority is lowered
-        allInstance.sort(DepthComparatorUtils::compareEntities);
-
-        allInstance.forEach((i) -> i.draw(batch, stateTime));
-
-    }
+    protected abstract void onRoomEnter(RoomTypeEnum roomType, final WorldManager worldManager, AssetManager assetManager, RoomSaveEntry roomSaveEntry, MapObjects mapObjects);
 
     /**
      * Disposes the terrain and the contents of the room
      */
     public void dispose() {
         textManager.removeAllBoxes();
-        tiledMap.dispose();
+        roomContent.tiledMap.dispose();
         roomContent.enemyList.forEach(AnimatedInstance::dispose);
         roomContent.decorationList.forEach(DecorationInstance::dispose);
         roomContent.poiList.forEach(POIInstance::dispose);
@@ -557,4 +496,10 @@ public abstract class AbstractRoom implements Spawner {
     }
 
     public abstract void onRoomLeave(RoomSaveEntry roomSaveEntry);
+
+    public RoomContent getRoomContent(){
+        return roomContent;
+    }
+
+    public abstract String getLayerToDraw();
 }

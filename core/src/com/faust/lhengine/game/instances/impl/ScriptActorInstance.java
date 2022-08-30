@@ -19,7 +19,7 @@ import com.faust.lhengine.game.gameentities.enums.GameBehavior;
 import com.faust.lhengine.game.gameentities.enums.POIEnum;
 import com.faust.lhengine.game.gameentities.impl.ScriptActorEntity;
 import com.faust.lhengine.game.instances.AnimatedInstance;
-import com.faust.lhengine.game.instances.Spawner;
+import com.faust.lhengine.game.instances.interfaces.Spawner;
 import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.instances.interfaces.Killable;

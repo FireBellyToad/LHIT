@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.PauseManager;
+import com.faust.lhengine.game.gameentities.enums.GameBehavior;
 import com.faust.lhengine.game.hud.DarknessRenderer;
 import com.faust.lhengine.game.hud.Hud;
 import com.faust.lhengine.game.instances.GameInstance;
@@ -95,7 +96,7 @@ public class TopViewWorldRenderer implements WorldRenderer<AbstractRoom>, OnRoom
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(batch, stateTime);
         } else {
-            darknessRenderer.drawDarkness(batch, player.getBody().getPosition(), cameraManager.getCamera());
+            darknessRenderer.drawDarkness(batch, player.getBody().getPosition(), cameraManager.getCamera(), GameBehavior.IDLE.equals(player.getCurrentBehavior()));
             hud.drawHud(batch, player, cameraManager.getCamera());
             if (pauseManager.isGamePaused()) {
                 pauseManager.draw(batch, cameraManager.getCamera());

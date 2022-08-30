@@ -7,6 +7,6 @@ package com.faust.lhengine.game.rooms;
  */
 public interface OnRoomChangeListener {
 
-    void onRoomChangeStart(AbstractRoom newRoom);
+    void onRoomChangeStart(AbstractRoom previousRoom);
     void onRoomChangeEnd(AbstractRoom newRoom);
 }

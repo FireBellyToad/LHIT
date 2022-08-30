@@ -104,7 +104,7 @@ public class FixedRoom extends AbstractRoom {
      */
     private void addObjAsEchoActor(MapObject obj, AssetManager assetManager) {
 
-        ScriptActorType scriptActorType = ScriptActorType.valueOf((String) obj.getProperties().get("echoesActorType"));
+        ScriptActorType scriptActorType = ScriptActorType.valueOf((String) obj.getProperties().get("scriptActorType"));
         int triggeredById = (int) obj.getProperties().get("triggeredById");
 
         TriggerArea triggerForActor = roomContent.triggerAreaList.stream().filter(t -> t.getTriggerId() == triggeredById).findFirst().orElse(null);

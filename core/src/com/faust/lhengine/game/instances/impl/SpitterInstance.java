@@ -24,7 +24,7 @@ import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.Spawner;
+import com.faust.lhengine.game.instances.interfaces.Spawner;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;

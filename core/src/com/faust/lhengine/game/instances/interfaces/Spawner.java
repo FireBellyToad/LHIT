@@ -1,4 +1,6 @@
-package com.faust.lhengine.game.instances;
+package com.faust.lhengine.game.instances.interfaces;
+
+import com.faust.lhengine.game.instances.GameInstance;
 
 /**
  * Interface for adding game instances in something during runtime (spawning)

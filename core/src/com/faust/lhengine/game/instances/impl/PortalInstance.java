@@ -41,7 +41,7 @@ public class PortalInstance extends AnimatedInstance {
         //is fixed;
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), mapStateTimeFromBehaviour(stateTime), true);
         batch.draw(frame, 80 - POSITION_OFFSET , LHEngine.GAME_HEIGHT- POSITION_OFFSET - 108);
         batch.end();
     }

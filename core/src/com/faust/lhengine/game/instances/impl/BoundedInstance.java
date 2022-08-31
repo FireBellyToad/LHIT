@@ -62,18 +62,18 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
         translateAccessoryBodies();
 
-        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.EVADE.equals(getCurrentBehavior()) || GameBehavior.HURT.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior()))
             return;
 
         //Try to attack if not dead. If is attacking and is too far away, still needs to end the attack before following
         //the player
-        if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.ATTACK.equals(currentBehavior) ||
+        if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.ATTACK.equals(getCurrentBehavior()) ||
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK)) {
 
             //Start animation
-            if (!GameBehavior.ATTACK.equals(currentBehavior)) {
+            if (!GameBehavior.ATTACK.equals(getCurrentBehavior())) {
                 attackDeltaTime = stateTime;
-                currentBehavior = GameBehavior.ATTACK;
+                changeCurrentBehavior(GameBehavior.ATTACK);
             }
 
             // Normal from bounded position to target
@@ -88,7 +88,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
             deactivateAttackBodies();
             isAggressive = true;
-            currentBehavior = GameBehavior.WALK;
+            changeCurrentBehavior(GameBehavior.WALK);
             calculateNewGoal(roomContent.roomGraph);
 
             // Normal from Bounded position to target
@@ -102,7 +102,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
             deactivateAttackBodies();
         } else {
-            currentBehavior = GameBehavior.IDLE;
+            changeCurrentBehavior(GameBehavior.IDLE);
 
             body.setLinearVelocity(0, 0);
         }
@@ -129,7 +129,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
     @Override
     public boolean isDead() {
-        return GameBehavior.DEAD.equals(currentBehavior);
+        return GameBehavior.DEAD.equals(getCurrentBehavior());
     }
 
 
@@ -295,7 +295,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(getCurrentBehavior()));
 
         Vector2 drawPosition = adjustPosition();
         //Draw shadow
@@ -304,12 +304,12 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
         //Draw Bounded
 
         // If not hurt or the flickering POI must be shown, draw the texture
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+        if (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior())) {
             batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
@@ -341,8 +341,8 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
         if (isDying()) {
             ((BoundedEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
-            currentBehavior = GameBehavior.DEAD;
-        } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
+            changeCurrentBehavior(GameBehavior.DEAD);
+        } else if (!canEvade && !GameBehavior.HURT.equals(getCurrentBehavior())) {
             ((BoundedEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -353,13 +353,13 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             }
 
             this.damage += Math.min(getResistance(), amount);
-            currentBehavior = GameBehavior.HURT;
+            changeCurrentBehavior(GameBehavior.HURT);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
-        } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
+        } else if (canEvade && !GameBehavior.EVADE.equals(getCurrentBehavior())) {
             ((BoundedEntity) entity).playEvadeSwift();
             //Just evade
-            currentBehavior = GameBehavior.EVADE;
+            changeCurrentBehavior(GameBehavior.EVADE);
             Gdx.app.log("DEBUG", "Instance EVADED!");
             postHurtLogic(attacker);
         }
@@ -375,7 +375,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
         float modifier = 4f;
         //If evading, the leap is more subtle and perpendicular in a random direction
-        if (GameBehavior.EVADE.equals(currentBehavior)) {
+        if (GameBehavior.EVADE.equals(getCurrentBehavior())) {
             modifier = 1.5f;
             direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
@@ -384,7 +384,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
         }, 0.25f);
     }
@@ -406,7 +406,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
@@ -455,7 +455,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
     private float mapStateTimeFromBehaviour(float stateTime) {
 
-        if (currentBehavior == GameBehavior.ATTACK) {
+        if (getCurrentBehavior() == GameBehavior.ATTACK) {
             return (stateTime - attackDeltaTime);
         }
         return stateTime;

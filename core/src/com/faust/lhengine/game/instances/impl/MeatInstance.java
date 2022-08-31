@@ -42,16 +42,16 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
         this.startY = y;
 
         target = playerInstance.getBody().getPosition().cpy();
-        currentBehavior = GameBehavior.WALK;
+        changeCurrentBehavior(GameBehavior.WALK);
     }
 
     @Override
     public void doLogic(float stateTime, RoomContent roomContent) {
 
-        switch (currentBehavior) {
+        switch (getCurrentBehavior()) {
             case ATTACK: {
                 if (TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(3000)) {
-                    currentBehavior = GameBehavior.DEAD;
+                    changeCurrentBehavior(GameBehavior.DEAD);
                     dispose();
                 }
                 break;
@@ -66,7 +66,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
 
                 // If near target, starts attacking
                 if (target.dst(getBody().getPosition()) < 1) {
-                    currentBehavior = GameBehavior.ATTACK;
+                    changeCurrentBehavior(GameBehavior.ATTACK);
                     startAttackCooldown = TimeUtils.nanoTime();
                     body.setLinearVelocity(0, 0);
                 }
@@ -121,7 +121,7 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
         Objects.requireNonNull(batch);
         batch.begin();
         Vector2 drawPosition = adjustPosition();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), mapStateTimeFromBehaviour(stateTime), true);
         batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         batch.end();
     }
@@ -158,6 +158,6 @@ public class MeatInstance extends AnimatedInstance implements Interactable, Dama
 
     @Override
     public boolean isDead() {
-        return GameBehavior.DEAD.equals(currentBehavior);
+        return GameBehavior.DEAD.equals(getCurrentBehavior());
     }
 }

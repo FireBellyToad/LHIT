@@ -86,7 +86,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             musicManager.playMusic(TuneEnum.FINAL);
         }
 
-        switch (currentBehavior) {
+        switch (getCurrentBehavior()) {
             case ATTACK: {
 
                 attackLogic(stateTime);
@@ -118,7 +118,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
     private void readyToAttack(float stateTime) {
         attackDeltaTime = stateTime;
-        currentBehavior = GameBehavior.ATTACK;
+        changeCurrentBehavior(GameBehavior.ATTACK);
         canAttack = true;
         startAttackCooldown = TimeUtils.nanoTime();
     }
@@ -126,12 +126,12 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     @Override
     public void postHurtLogic(GameInstance attacker) {
 
-        currentBehavior = GameBehavior.HURT;
+        changeCurrentBehavior(GameBehavior.HURT);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
         }, 0.25f);
     }
@@ -213,17 +213,17 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), mapStateTimeFromBehaviour(stateTime), true);
 
         Vector2 drawPosition = adjustPosition();
         //Draw Spitter
         // If not hurt or the flickering Spitter must be shown, draw the texture
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+        if (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior())) {
             batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
@@ -259,8 +259,8 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             ((SpitterEntity) entity).playDeathCry();
             spawner.spawnInstance(PortalInstance.class, this.startX, this.startY, EnemyEnum.PORTAL.name());
             isDead = true;
-            currentBehavior = GameBehavior.DEAD;
-        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+            changeCurrentBehavior(GameBehavior.DEAD);
+        } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
             ((SpitterEntity) entity).playHurtCry();
 
             //If 0 HiveInstance  in room, SpitterInstance can be damaged
@@ -292,7 +292,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
@@ -301,14 +301,14 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
             canAttack = false;
         }
         // Resetting Behaviour on animation end
-        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
-            currentBehavior = GameBehavior.IDLE;
+        if (((AnimatedEntity) entity).isAnimationFinished(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
+            changeCurrentBehavior(GameBehavior.IDLE);
         }
     }
 
     private float mapStateTimeFromBehaviour(float stateTime) {
 
-        if (currentBehavior == GameBehavior.ATTACK) {
+        if (getCurrentBehavior() == GameBehavior.ATTACK) {
             return (stateTime - attackDeltaTime);
         }
         return stateTime;

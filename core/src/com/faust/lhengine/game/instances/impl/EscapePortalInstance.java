@@ -82,7 +82,7 @@ public class EscapePortalInstance extends AnimatedInstance implements Interactab
         //is fixed;
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), mapStateTimeFromBehaviour(stateTime), true);
         Vector2 drawPosition = adjustPosition();
         batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y );
         batch.end();

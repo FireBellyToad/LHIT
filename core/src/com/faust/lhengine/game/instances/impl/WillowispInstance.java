@@ -62,25 +62,25 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
 
         translateAccessoryBodies();
 
-        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.EVADE.equals(getCurrentBehavior()) || GameBehavior.HURT.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior()))
             return;
 
         //Try to attack if not dead. If is attacking and is too far away, still needs to end the attack before following
         //the player
-        if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.IDLE.equals(currentBehavior) ||
+        if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.IDLE.equals(getCurrentBehavior()) ||
                 target.getBody().getPosition().dst(getBody().getPosition()) <= LINE_OF_ATTACK)) {
 
             //Wait in visible IDLE before attacking
-            if (!GameBehavior.IDLE.equals(currentBehavior) && !GameBehavior.ATTACK.equals(currentBehavior)) {
-                currentBehavior = GameBehavior.IDLE;
+            if (!GameBehavior.IDLE.equals(getCurrentBehavior()) && !GameBehavior.ATTACK.equals(getCurrentBehavior())) {
+                changeCurrentBehavior(GameBehavior.IDLE);
                 attackDeltaTime = stateTime;
                 body.setLinearVelocity(0, 0);
-            } else if (GameBehavior.IDLE.equals(currentBehavior) &&
-                    ((WillowispEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
+            } else if (GameBehavior.IDLE.equals(getCurrentBehavior()) &&
+                    ((WillowispEntity) entity).isAnimationFinished(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
                 // Start attacking on IDLE end
                 attackDeltaTime = stateTime;
-                currentBehavior = GameBehavior.ATTACK;
-            } else if (GameBehavior.ATTACK.equals(currentBehavior)) {
+                changeCurrentBehavior(GameBehavior.ATTACK);
+            } else if (GameBehavior.ATTACK.equals(getCurrentBehavior())) {
                 //Start attack animation
                 // Normal from bounded position to target
                 Vector2 direction = new Vector2(target.getBody().getPosition().x - body.getPosition().x,
@@ -94,7 +94,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
         } else if (target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK) {
             calculateNewGoal(roomContent.roomGraph);
             deactivateAttackBodies();
-            currentBehavior = GameBehavior.WALK;
+            changeCurrentBehavior(GameBehavior.WALK);
             // Normal from Willowisp position to target
             final Vector2 destination = getMovementDestination();
             Vector2 direction = new Vector2(destination.x - body.getPosition().x,
@@ -129,7 +129,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
 
     @Override
     public boolean isDead() {
-        return GameBehavior.DEAD.equals(currentBehavior);
+        return GameBehavior.DEAD.equals(getCurrentBehavior());
     }
 
 
@@ -295,12 +295,12 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(getCurrentBehavior()));
 
         //Draw Will o wisp
         // While it WALKs, do not show. Is invisible! FIXME use spell
         // If not hurt or the flickering POI must be shown, draw the texture.
-        if (!GameBehavior.WALK.equals(currentBehavior) && (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior))) {
+        if (!GameBehavior.WALK.equals(getCurrentBehavior()) && (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior()))) {
             //Draw shadow
             Vector2 drawPosition = adjustPosition();
             batch.draw(((WillowispEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - 2 - POSITION_Y_OFFSET);
@@ -308,7 +308,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
@@ -340,8 +340,8 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
         if (isDying()) {
             ((WillowispEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
-            currentBehavior = GameBehavior.DEAD;
-        } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
+            changeCurrentBehavior(GameBehavior.DEAD);
+        } else if (!canEvade && !GameBehavior.HURT.equals(getCurrentBehavior())) {
             ((WillowispEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -352,13 +352,13 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
             }
 
             this.damage += Math.min(getResistance(), amount);
-            currentBehavior = GameBehavior.HURT;
+            changeCurrentBehavior(GameBehavior.HURT);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
-        } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
+        } else if (canEvade && !GameBehavior.EVADE.equals(getCurrentBehavior())) {
             ((WillowispEntity) entity).playEvadeSwift();
             //Just evade
-            currentBehavior = GameBehavior.EVADE;
+            changeCurrentBehavior(GameBehavior.EVADE);
             Gdx.app.log("DEBUG", "Instance EVADED!");
             postHurtLogic(attacker);
         }
@@ -373,7 +373,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
 
         float modifier = 4f;
         //If evading, the leap is more subtle and perpendicular
-        if (GameBehavior.EVADE.equals(currentBehavior)) {
+        if (GameBehavior.EVADE.equals(getCurrentBehavior())) {
             modifier = 1.5f;
             direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
@@ -382,7 +382,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
         }, 0.25f);
     }
@@ -404,7 +404,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
@@ -431,8 +431,8 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
             deactivateAttackBodies();
         }
 
-        if (GameBehavior.ATTACK.equals(currentBehavior) && ((WillowispEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
-            currentBehavior = GameBehavior.WALK;
+        if (GameBehavior.ATTACK.equals(getCurrentBehavior()) && ((WillowispEntity) entity).isAnimationFinished(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
+            changeCurrentBehavior(GameBehavior.WALK);
         }
     }
 
@@ -456,7 +456,7 @@ public class WillowispInstance extends ChaserInstance implements Interactable, H
 
     private float mapStateTimeFromBehaviour(float stateTime) {
 
-        switch (currentBehavior) {
+        switch (getCurrentBehavior()) {
             case IDLE:
             case ATTACK: {
                 return (stateTime - attackDeltaTime);

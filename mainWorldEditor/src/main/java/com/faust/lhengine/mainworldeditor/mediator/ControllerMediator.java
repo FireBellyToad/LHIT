@@ -19,7 +19,7 @@ public class ControllerMediator {
 
     private static final ControllerMediator INSTANCE = new ControllerMediator();
 
-    private Map<String,AbstractController> controllersMap = new HashMap<>();
+    private final Map<String,AbstractController> controllersMap = new HashMap<>();
 
     /**
      * Singleton implementation

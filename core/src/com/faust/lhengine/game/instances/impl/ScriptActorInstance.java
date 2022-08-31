@@ -57,7 +57,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         this.triggerForActor = triggerForActor;
 
         //get first step
-        this.currentBehavior = ((ScriptActorEntity) this.entity).getStepOrder().get(0);
+        changeCurrentBehavior(((ScriptActorEntity) this.entity).getStepOrder().get(0));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
                 deltaTime = stateTime;
 
             //All commands to do in this step
-            executeCommands(((ScriptActorEntity) this.entity).getCommandsForStep(currentBehavior), roomContent, stateTime);
+            executeCommands(((ScriptActorEntity) this.entity).getCommandsForStep(getCurrentBehavior()), roomContent, stateTime);
         }
     }
 
@@ -98,7 +98,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         }
 
         //Reuse animation of another step if specified
-        GameBehavior animationToUse = currentBehavior;
+        GameBehavior animationToUse = getCurrentBehavior();
         if(commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
             animationToUse = ((ScriptActorEntity) entity).getStepOrder().get((Integer) commands.get(ScriptCommandsEnum.USE_ANIMATION_OF_STEP));
         }
@@ -108,7 +108,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             final List<GameBehavior> stepOrder = ((ScriptActorEntity) entity).getStepOrder();
             int index = getNewIndex(stepOrder, commands, roomContent);
 
-            Gdx.app.log("DEBUG", "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " end step " + currentBehavior);
+            Gdx.app.log("DEBUG", "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " end step " + getCurrentBehavior());
 
             deltaTime = stateTime;
             //If is not last step
@@ -119,7 +119,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
                     roomContent.player.hurt(this);
                 }
 
-                currentBehavior = ((ScriptActorEntity) entity).getStepOrder().get(index + 1);
+                changeCurrentBehavior(((ScriptActorEntity) entity).getStepOrder().get(index + 1));
                 showTextBox = true;
             } else {
                 removeFromRoom = true;
@@ -152,7 +152,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         }
 
         // or else, just get next
-        return stepOrder.indexOf(currentBehavior);
+        return stepOrder.indexOf(getCurrentBehavior());
     }
 
     /**
@@ -315,7 +315,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             return;
         }
 
-        final Map<ScriptCommandsEnum, Object> commands = ((ScriptActorEntity) this.entity).getCommandsForStep(currentBehavior);
+        final Map<ScriptCommandsEnum, Object> commands = ((ScriptActorEntity) this.entity).getCommandsForStep(getCurrentBehavior());
         if ((Boolean) commands.getOrDefault(ScriptCommandsEnum.INVISIBLE, false)) {
             //Don't draw anything
             return;
@@ -324,7 +324,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         batch.begin();
 
         //Reuse animation of another step if specified
-        GameBehavior animationToUse = currentBehavior;
+        GameBehavior animationToUse = getCurrentBehavior();
         if(commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
            animationToUse = ((ScriptActorEntity) entity).getStepOrder().get((Integer) commands.get(ScriptCommandsEnum.USE_ANIMATION_OF_STEP));
         }
@@ -347,7 +347,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
     public String getCurrentTextBoxToShow() {
         if (showTextBox) {
             showTextBox = false;
-            Map<ScriptCommandsEnum, Object> commandOnCurrentStep = ((ScriptActorEntity) entity).getCommandsForStep(currentBehavior);
+            Map<ScriptCommandsEnum, Object> commandOnCurrentStep = ((ScriptActorEntity) entity).getCommandsForStep(getCurrentBehavior());
             return (String) commandOnCurrentStep.get(ScriptCommandsEnum.TEXTBOX_KEY);
         }
 
@@ -355,7 +355,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
     }
 
     public boolean hasCurrentTextBoxToShow() {
-        return ((ScriptActorEntity) entity).getCommandsForStep(currentBehavior).containsKey(ScriptCommandsEnum.TEXTBOX_KEY) && showTextBox;
+        return ((ScriptActorEntity) entity).getCommandsForStep(getCurrentBehavior()).containsKey(ScriptCommandsEnum.TEXTBOX_KEY) && showTextBox;
     }
 
     public void playStartingSound() {
@@ -395,7 +395,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
      * @return the Map layer to draw
      */
     public String overrideMapLayerDrawn() {
-        final Map<ScriptCommandsEnum, Object> extractedCommand = ((ScriptActorEntity) this.entity).getCommandsForStep(currentBehavior);
+        final Map<ScriptCommandsEnum, Object> extractedCommand = ((ScriptActorEntity) this.entity).getCommandsForStep(getCurrentBehavior());
         final String layerString = (String) extractedCommand.get(ScriptCommandsEnum.RENDER_ONLY_MAP_LAYER);
         return Objects.isNull(layerString) ? MapLayersEnum.TERRAIN_LAYER.getLayerName() : MapLayersEnum.valueOf(layerString).getLayerName();
     }

@@ -55,12 +55,12 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
     @Override
     public void postHurtLogic(GameInstance attacker) {
 
-        currentBehavior = GameBehavior.HURT;
+        changeCurrentBehavior(GameBehavior.HURT);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
         }, 0.25f);
     }
@@ -145,17 +145,17 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, mapStateTimeFromBehaviour(stateTime), true);
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), mapStateTimeFromBehaviour(stateTime), true);
 
         //Draw Hive
         // If not hurt or the flickering Hive must be shown, draw the texture
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+        if (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior())) {
             Vector2 drawPosition = adjustPosition();
             batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET-4);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
@@ -192,8 +192,8 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
         if (isDying()) {
             ((HiveEntity) entity).playDeathCry();
             isDead = true;
-            currentBehavior = GameBehavior.DEAD;
-        } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+            changeCurrentBehavior(GameBehavior.DEAD);
+        } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
             ((HiveEntity) entity).playHurtCry();
 
             //If Undead or Otherworldly, halve normal lance damage

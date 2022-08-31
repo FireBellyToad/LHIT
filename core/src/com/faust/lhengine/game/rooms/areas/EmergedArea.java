@@ -16,7 +16,7 @@ public class EmergedArea {
     private final PolygonShape polygonShape;
     private final float x;
     private final float y;
-    private boolean blocksNodePath;
+    private final boolean blocksNodePath;
 
     public EmergedArea(PolygonMapObject polygon) {
         this.polygonShape = new PolygonShape();

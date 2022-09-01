@@ -164,7 +164,7 @@ public class ConfusionSpellInstance extends GameInstance implements Interactable
 
     @Override
     public boolean isDying() {
-        //is never dying...
+        //cannot ever be in dying state...
         return false;
     }
 

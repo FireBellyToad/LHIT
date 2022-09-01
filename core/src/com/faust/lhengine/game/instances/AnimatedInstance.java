@@ -20,7 +20,9 @@ public abstract class AnimatedInstance extends GameInstance {
 
     protected int damage = 0;
 
+    //is private because it must be never change with assignment outside of this scope!
     private GameBehavior currentBehavior = GameBehavior.IDLE;
+
     protected DirectionEnum currentDirectionEnum = DirectionEnum.UNUSED;
     protected final List<OnBehaviorChangeListener> onBehaviorChangeListenerList = new ArrayList<>();
     protected Body hitBox;
@@ -68,11 +70,16 @@ public abstract class AnimatedInstance extends GameInstance {
         this.damage = damage;
     }
 
+    /**
+     * change this AnimatedInstance current behavior, notifying listeners
+     * @param newBehavior
+     */
     public void changeCurrentBehavior(GameBehavior newBehavior){
         Objects.requireNonNull(newBehavior);
 
         currentBehavior = newBehavior;
 
+        //Noitify listeners
         if(!onBehaviorChangeListenerList.isEmpty()){
             for(OnBehaviorChangeListener listener : onBehaviorChangeListenerList){
                 listener.onBehaviourChange(this, newBehavior);
@@ -81,6 +88,10 @@ public abstract class AnimatedInstance extends GameInstance {
 
     }
 
+    /**
+     * Add a OnBehaviorChangeListener
+     * @param listener
+     */
     public void addOnBehaviorChangeListener(OnBehaviorChangeListener listener){
         Objects.requireNonNull(listener);
         onBehaviorChangeListenerList.add(listener);

@@ -237,7 +237,8 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
 
         //Keep leeching
         if (attachedToPlayer && TimeUtils.timeSinceNanos(leechStartTimer) > TimeUtils.millisToNanos(LEECHING_FREQUENCY_IN_MILLIS)) {
-            ((Hurtable) target).hurt(StrixInstance.this);
+
+            ((Hurtable<StrixInstance>) target).hurt(StrixInstance.this);
             //Prevents loop on gameover screen
             if (((Killable) target).isDead()) {
                 ((StrixEntity) entity).stopLeechSound();

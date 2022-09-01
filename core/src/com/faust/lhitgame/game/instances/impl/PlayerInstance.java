@@ -67,6 +67,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private final Map<ItemEnum, Integer> itemsFound;
     private final Map<PlayerFlag, Boolean> playerFlags = new HashMap<>();
     private TriggerArea triggerToActivate;
+    private boolean canStillTurnWhileAttacking = true;
 
 
     public PlayerInstance(AssetManager assetManager) {
@@ -432,6 +433,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         //Activate spear bodies when in right frame
         final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME + 4) {
+            canStillTurnWhileAttacking = false;
             switch (currentDirectionEnum) {
                 case UP: {
                     upSpearBody.setActive(true);
@@ -452,6 +454,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             }
         } else {
             deactivateAttackBodies();
+            canStillTurnWhileAttacking = true;
         }
 
         // Resetting Behaviour on animation end
@@ -636,12 +639,16 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         float verticalVelocity = this.body.getLinearVelocity().y;
 
         // Set instance direction and velocity accordingly to the pressed key
-        // Check if not moving in opposite direction
+        // Check if not moving in opposite direction.
+        // If attacking, can turn just before doing the final thrust with the spear.
+        // This is done to smooth out the attack while turning and soften up a little the controls
         switch (keycode) {
             case Input.Keys.W:
             case Input.Keys.UP: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != -PLAYER_SPEED) {
                     verticalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(currentBehavior) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.UP;
                 }
                 break;
             }
@@ -649,6 +656,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.DOWN: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != PLAYER_SPEED) {
                     verticalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(currentBehavior) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.DOWN;
                 }
                 break;
             }
@@ -656,6 +665,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.LEFT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != PLAYER_SPEED) {
                     horizontalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(currentBehavior) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.LEFT;
                 }
                 break;
             }
@@ -663,6 +674,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.RIGHT: {
                 if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != -PLAYER_SPEED) {
                     horizontalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(currentBehavior) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.RIGHT;
                 }
                 break;
             }

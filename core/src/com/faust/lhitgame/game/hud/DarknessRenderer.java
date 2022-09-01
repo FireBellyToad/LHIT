@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.faust.lhitgame.LHITGame;
-import com.faust.lhitgame.game.instances.impl.PlayerInstance;
 
 import java.util.Objects;
 
@@ -30,13 +30,18 @@ public class DarknessRenderer {
 
     }
 
-    public void drawDarkness(SpriteBatch batch, PlayerInstance player, OrthographicCamera camera) {
+    public void drawDarkness(SpriteBatch batch, Vector2 position, OrthographicCamera camera, boolean roundOffset) {
         Objects.requireNonNull(batch);
-        Objects.requireNonNull(player);
+        Objects.requireNonNull(position);
         Objects.requireNonNull(camera);
 
-        final float xOffset = player.getBody().getPosition().x + 6 - LHITGame.GAME_WIDTH / 2;
-        final float yOffset = player.getBody().getPosition().y + 8 - LHITGame.GAME_HEIGHT / 2;
+        float xOffset = position.x + 6 - LHITGame.GAME_WIDTH / 2;
+        float yOffset = position.y + 8 - LHITGame.GAME_HEIGHT / 2;
+
+        if(roundOffset){
+            xOffset = Math.round(xOffset);
+            yOffset = Math.round(yOffset);
+        }
 
         //Left overflow
         if (0 + xOffset > 0) {

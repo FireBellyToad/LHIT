@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.faust.lhitgame.LHITGame;
 import com.faust.lhitgame.camera.CameraManager;
 import com.faust.lhitgame.game.PauseManager;
+import com.faust.lhitgame.game.gameentities.enums.GameBehavior;
 import com.faust.lhitgame.game.gameentities.enums.PlayerFlag;
 import com.faust.lhitgame.game.hud.DarknessRenderer;
 import com.faust.lhitgame.game.hud.Hud;
@@ -127,7 +128,7 @@ public class GameScreen implements Screen {
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(game.getBatch(),stateTime);
         } else {
-            darknessRenderer.drawDarkness(game.getBatch(), player, cameraManager.getCamera());
+            darknessRenderer.drawDarkness(game.getBatch(), player.getBody().getPosition(), cameraManager.getCamera(), GameBehavior.IDLE.equals(player.getCurrentBehavior()));
             hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
             if (pauseManager.isGamePaused()) {
                 pauseManager.draw(game.getBatch(),cameraManager.getCamera());

@@ -2,10 +2,8 @@ package com.faust.lhengine.mainworldeditor;
 
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;

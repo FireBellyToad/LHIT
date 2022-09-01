@@ -69,7 +69,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private final Map<ItemEnum, Integer> itemsFound;
     private final Map<PlayerFlag, Boolean> playerFlags = new HashMap<>();
     private TriggerArea triggerToActivate;
+
     private boolean muteSounds = false;
+    private boolean canStillTurnWhileAttacking = true;
 
 
     public PlayerInstance(AssetManager assetManager) {
@@ -107,11 +109,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             downSpearBody.setActive(false);
             rightSpearBody.setActive(false);
             //Init delta time
-            if (!GameBehavior.DEAD.equals(currentBehavior)) {
-                currentBehavior = GameBehavior.DEAD;
+            if (!GameBehavior.DEAD.equals(getCurrentBehavior())) {
+                changeCurrentBehavior(GameBehavior.DEAD);
                 attackDeltaTime = stateTime;
                 ((PlayerEntity) entity).playDeathCry();
-            } else if (((PlayerEntity) entity).isAnimationFinished(currentBehavior, mapStateTimeFromBehaviour(stateTime))) {
+            } else if (((PlayerEntity) entity).isAnimationFinished(getCurrentBehavior(), mapStateTimeFromBehaviour(stateTime))) {
                 playerFlags.put(PlayerFlag.GO_TO_GAMEOVER,true);
             }
             //Do not do anything else
@@ -120,39 +122,39 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //In endgame do nothing
         if (playerFlags.get(PlayerFlag.PREPARE_END_GAME)) {
-            currentBehavior = GameBehavior.IDLE;
+            changeCurrentBehavior(GameBehavior.IDLE);
             setPlayerLinearVelocity(0, 0);
             return;
         }
 
         //If hurt, deactivate hitbox and don't do anything
-        hitBox.setActive(!GameBehavior.HURT.equals(currentBehavior));
-        if (GameBehavior.HURT.equals(currentBehavior))
+        hitBox.setActive(!GameBehavior.HURT.equals(getCurrentBehavior()));
+        if (GameBehavior.HURT.equals(getCurrentBehavior()))
             return;
 
         // Interrupt healing if moving
-        if (GameBehavior.KNEE.equals(currentBehavior)) {
+        if (GameBehavior.KNEE.equals(getCurrentBehavior())) {
             if (TimeUtils.timeSinceNanos(startHealingTime) >= TimeUtils.millisToNanos(HEALTH_KIT_TIME_IN_MILLIS)) {
                 availableHealthKits--;
                 startHealingTime = 0;
                 damage = 0;
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
             if (this.body.getLinearVelocity().x != 0 ||
                     this.body.getLinearVelocity().y != 0) {
-                currentBehavior = GameBehavior.WALK;
+                changeCurrentBehavior(GameBehavior.WALK);
             }
         }
 
         // If not healing
-        if (!GameBehavior.KNEE.equals(currentBehavior)) {
+        if (!GameBehavior.KNEE.equals(getCurrentBehavior())) {
             if (startHealingTime > 0) {
                 // Resetting healing timer if healing is interrupted by anything
                 startHealingTime = 0;
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
 
-            if (GameBehavior.ATTACK.equals(currentBehavior)) {
+            if (GameBehavior.ATTACK.equals(getCurrentBehavior())) {
                 // If attacking do attack logic
                 setPlayerLinearVelocity(0, 0);
                 attackLogic(stateTime);
@@ -161,9 +163,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
                 // If the player has stopped moving, set idle behaviour
                 if (this.body.getLinearVelocity().x == 0 && this.body.getLinearVelocity().y == 0) {
-                    currentBehavior = GameBehavior.IDLE;
+                    changeCurrentBehavior(GameBehavior.IDLE);
                 } else {
-                    currentBehavior = GameBehavior.WALK;
+                    changeCurrentBehavior(GameBehavior.WALK);
                 }
 
                 // Set horizontal direction if horizontal velocity is not zero
@@ -247,12 +249,12 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 !(attacker instanceof ScriptActorInstance && (ScriptActorType.INFERNUM.equals(((ScriptActorInstance) attacker).getType())))) {
             body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
-        currentBehavior = GameBehavior.HURT;
+        changeCurrentBehavior(GameBehavior.HURT);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
                 body.setLinearVelocity(0, 0);
             }
         }, 0.20f);
@@ -295,7 +297,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     public void stopAll() {
-        this.currentBehavior = GameBehavior.IDLE;
+        this.changeCurrentBehavior(GameBehavior.IDLE);
     }
 
     /**
@@ -311,7 +313,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         int xOffset = 0;
         int yOffset = 0;
 
-        if (GameBehavior.ATTACK.equals(currentBehavior)) {
+        if (GameBehavior.ATTACK.equals(getCurrentBehavior())) {
             switch (currentDirectionEnum) {
                 case LEFT: {
                     xOffset = 1;
@@ -334,13 +336,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         //Draw Walfrit
         // If not hurt or the flickering POI must be shown, draw the texture
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+        if (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior())) {
 
             drawWalfritShaded(batch, stateTime, xOffset, yOffset);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
@@ -361,8 +363,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private void drawWalfritShaded(SpriteBatch batch, float stateTime, int xOffset, int yOffset) {
 
         // Get frame (looping if is not dead)
-        TextureRegion frame = ((PlayerEntity) entity).getFrame(currentBehavior, currentDirectionEnum,
-                mapStateTimeFromBehaviour(stateTime), !GameBehavior.DEAD.equals(currentBehavior));
+        TextureRegion frame = ((PlayerEntity) entity).getFrame(getCurrentBehavior(), currentDirectionEnum,
+                mapStateTimeFromBehaviour(stateTime), !GameBehavior.DEAD.equals(getCurrentBehavior()));
 
         //Get shader and set parameters
         ShaderWrapper shader = ((PlayerEntity) entity).getPlayerShader();
@@ -383,7 +385,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             waterWalkEffect.draw(batch, Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
-            if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
+            if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(getCurrentBehavior())) {
                 waterWalkEffect.reset();
             }
         } else {
@@ -403,7 +405,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * @return
      */
     private float mapStateTimeFromBehaviour(float stateTime) {
-        switch (currentBehavior) {
+        switch (getCurrentBehavior()) {
             case DEAD: {
                 return stateTime - attackDeltaTime;
             }
@@ -427,8 +429,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             attackDeltaTime = stateTime;
 
         //Activate spear bodies when in right frame
-        final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
+        final int currentFrame = ((AnimatedEntity) entity).getFrameIndex(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         if (currentFrame >= ATTACK_VALID_FRAME && currentFrame < ATTACK_VALID_FRAME + 4) {
+            canStillTurnWhileAttacking = false;
             switch (currentDirectionEnum) {
                 case UP: {
                     upSpearBody.setActive(true);
@@ -448,12 +451,13 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 }
             }
         } else {
+            canStillTurnWhileAttacking = true;
             deactivateAttackBodies();
         }
 
         // Resetting Behaviour on animation end
-        if (((AnimatedEntity) entity).isAnimationFinished(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
-            currentBehavior = GameBehavior.IDLE;
+        if (((AnimatedEntity) entity).isAnimationFinished(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime))) {
+            changeCurrentBehavior(GameBehavior.IDLE);
         }
     }
 
@@ -624,7 +628,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         // If hurt o dying, can't do anything
-        if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior)) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior())) {
             return false;
         }
 
@@ -633,33 +637,43 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         float verticalVelocity = this.body.getLinearVelocity().y;
 
         // Set instance direction and velocity accordingly to the pressed key
-        // Check if not moving in opposite direction
+        // Check if not moving in opposite direction.
+        // If attacking, can turn just before doing the final thrust with the spear.
+        // This is done to smooth out the attack while turning and soften up a little the controls
         switch (keycode) {
             case Input.Keys.W:
             case Input.Keys.UP: {
-                if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != -PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(getCurrentBehavior()) && verticalVelocity != -PLAYER_SPEED) {
                     verticalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(getCurrentBehavior()) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.UP;
                 }
                 break;
             }
             case Input.Keys.S:
             case Input.Keys.DOWN: {
-                if (!GameBehavior.ATTACK.equals(currentBehavior) && verticalVelocity != PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(getCurrentBehavior()) && verticalVelocity != PLAYER_SPEED) {
                     verticalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(getCurrentBehavior()) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.DOWN;
                 }
                 break;
             }
             case Input.Keys.A:
             case Input.Keys.LEFT: {
-                if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(getCurrentBehavior()) && horizontalVelocity != PLAYER_SPEED) {
                     horizontalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? -PLAYER_SPEED_SUBMERGED : -PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(getCurrentBehavior()) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.LEFT;
                 }
                 break;
             }
             case Input.Keys.D:
             case Input.Keys.RIGHT: {
-                if (!GameBehavior.ATTACK.equals(currentBehavior) && horizontalVelocity != -PLAYER_SPEED) {
+                if (!GameBehavior.ATTACK.equals(getCurrentBehavior()) && horizontalVelocity != -PLAYER_SPEED) {
                     horizontalVelocity = playerFlags.get(PlayerFlag.IS_SUBMERGED) ? PLAYER_SPEED_SUBMERGED : PLAYER_SPEED;
+                } else if (GameBehavior.ATTACK.equals(getCurrentBehavior()) && canStillTurnWhileAttacking) {
+                    this.currentDirectionEnum = DirectionEnum.RIGHT;
                 }
                 break;
             }
@@ -680,9 +694,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             case Input.Keys.Z:
             case Input.Keys.J: {
                 //Attacks
-                if (!GameBehavior.ATTACK.equals(currentBehavior)) {
+                if (!GameBehavior.ATTACK.equals(getCurrentBehavior())) {
                     ((PlayerEntity) entity).playLanceSwing();
-                    currentBehavior = GameBehavior.ATTACK;
+                    changeCurrentBehavior(GameBehavior.ATTACK);
                     attackDeltaTime = 0;
                 }
                 break;
@@ -720,7 +734,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         }
 
         // If hurt, can't do anything
-        if (GameBehavior.HURT.equals(currentBehavior)) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior())) {
             return false;
         }
         // Keep the initial velocity
@@ -759,7 +773,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         //If has at least one healing kit, is not already curing himself and at least 1 damage point
         if (startHealingTime == 0 && availableHealthKits > 0 && damage > 0) {
             //Cures himself if not interrupted
-            currentBehavior = GameBehavior.KNEE;
+            changeCurrentBehavior(GameBehavior.KNEE);
             startHealingTime = TimeUtils.nanoTime();
         }
     }
@@ -930,7 +944,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      */
     public void setAsInputProcessor() {
         playerFlags.put(PlayerFlag.PAUSE_GAME,false);
-        currentBehavior = GameBehavior.IDLE;
+        changeCurrentBehavior(GameBehavior.IDLE);
         setPlayerLinearVelocity(0, 0);
         Gdx.input.setInputProcessor(this);
     }
@@ -949,7 +963,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public void onRoomChangeEnd(AbstractRoom newRoom) {
         muteSounds = false;
         //In roomchange, idle and do nothing
-        currentBehavior = GameBehavior.IDLE;
+        changeCurrentBehavior(GameBehavior.IDLE);
     }
 
     @Override

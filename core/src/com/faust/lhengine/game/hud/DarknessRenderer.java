@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.game.instances.impl.PlayerInstance;
 
 import java.util.Objects;
 

@@ -15,8 +15,9 @@ public interface Hurtable <T extends GameInstance & Damager>extends Killable {
     int  getResistance();
 
     /**
+     * Call when Hurtable is hurt
      *
-     * @param attacker
+     * @param attacker the GameInstance & Damager who hurts this Hurtable
      */
     void hurt(T attacker);
 

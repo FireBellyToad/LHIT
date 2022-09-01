@@ -85,11 +85,11 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         }
 
 
-        if (GameBehavior.EVADE.equals(currentBehavior) || GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.EVADE.equals(getCurrentBehavior()) || GameBehavior.HURT.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior()))
             return;
 
-        if (target.getBody().getPosition().dst(getBody().getPosition()) > 70  && !GameBehavior.ATTACK.equals(currentBehavior)) {
-            currentBehavior = GameBehavior.WALK;
+        if (target.getBody().getPosition().dst(getBody().getPosition()) > 70  && !GameBehavior.ATTACK.equals(getCurrentBehavior())) {
+            changeCurrentBehavior(GameBehavior.WALK);
             calculateNewGoal(roomContent.roomGraph);
 
             // Normal from Diaconus position to target
@@ -101,15 +101,15 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             // Move towards target
             body.setLinearVelocity(DIACONUS_SPEED * direction.x, DIACONUS_SPEED * direction.y);
-        } else if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.ATTACK.equals(currentBehavior) ||
+        } else if (!((Killable)target).isDead() && TimeUtils.timeSinceNanos(startAttackCooldown) > TimeUtils.millisToNanos(ATTACK_COOLDOWN_TIME) && (GameBehavior.ATTACK.equals(getCurrentBehavior()) ||
                     target.getBody().getPosition().dst(getBody().getPosition()) > LINE_OF_ATTACK)) {
 
             //Try to attack if not dead. If is attacking and is too near, still needs to end the attack before escaping
             //from the player
             //Start animation
-            if (!GameBehavior.ATTACK.equals(currentBehavior)) {
+            if (!GameBehavior.ATTACK.equals(getCurrentBehavior())) {
                 attackDeltaTime = stateTime;
-                currentBehavior = GameBehavior.ATTACK;
+                changeCurrentBehavior(GameBehavior.ATTACK);
             }
 
             // Normal from Diaconus position to target
@@ -120,9 +120,9 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             attackLogic(stateTime);
             body.setLinearVelocity(0, 0);
 
-        } else if (target.getBody().getPosition().dst(getBody().getPosition()) < LINE_OF_ATTACK  && !GameBehavior.ATTACK.equals(currentBehavior)) {
+        } else if (target.getBody().getPosition().dst(getBody().getPosition()) < LINE_OF_ATTACK  && !GameBehavior.ATTACK.equals(getCurrentBehavior())) {
             //FIXME add check that if still attacking keeps attacking
-            currentBehavior = GameBehavior.WALK;
+            changeCurrentBehavior(GameBehavior.WALK);
             calculateNewGoal(roomContent.roomGraph);
 
             // Normal from Diaconus position to target
@@ -135,7 +135,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             // Move towards target
             body.setLinearVelocity(DIACONUS_SPEED * direction.x, DIACONUS_SPEED * direction.y);
         } else {
-            currentBehavior = GameBehavior.IDLE;
+            changeCurrentBehavior(GameBehavior.IDLE);
 
             body.setLinearVelocity(0, 0);
         }
@@ -152,7 +152,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     @Override
     public boolean isDead() {
-        return GameBehavior.DEAD.equals(currentBehavior);
+        return GameBehavior.DEAD.equals(getCurrentBehavior());
     }
 
 
@@ -218,7 +218,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
     public void draw(final SpriteBatch batch, float stateTime) {
         Objects.requireNonNull(batch);
         batch.begin();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(currentBehavior));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime), !GameBehavior.ATTACK.equals(getCurrentBehavior()));
 
         int yOffset = 0;
         final ParticleEffect waterWalkEffect = ((DiaconusEntity) entity).getWaterWalkEffect();
@@ -228,7 +228,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             waterWalkEffect.draw(batch, Gdx.graphics.getDeltaTime());
             yOffset += 2;
             // Do not loop if is not doing anything
-            if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(currentBehavior)) {
+            if (waterWalkEffect.isComplete() && GameBehavior.WALK.equals(getCurrentBehavior())) {
                 waterWalkEffect.reset();
             }
         } else {
@@ -241,12 +241,12 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         //Draw Diaconus
         // If not hurt or the flickering POI must be shown, draw the texture
-        if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+        if (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior())) {
             batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
         }
 
         // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-        if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
             mustFlicker = !mustFlicker;
 
             // restart flickering timer
@@ -281,9 +281,9 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             ((DiaconusEntity) entity).playDeathCry();
             this.musicManager.stopMusic();
             this.body.setLinearVelocity(0, 0);
-            this.currentBehavior = GameBehavior.DEAD;
+            changeCurrentBehavior(GameBehavior.DEAD);
             ((PlayerInstance) attacker).setPlayerFlagValue(PlayerFlag.HAS_KILLED_SECRET_BOSS, true);
-        } else if (!canEvade && !GameBehavior.HURT.equals(currentBehavior)) {
+        } else if (!canEvade && !GameBehavior.HURT.equals(getCurrentBehavior())) {
             ((DiaconusEntity) entity).playHurtCry();
 
             // Hurt by player
@@ -294,13 +294,13 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
             }
 
             this.damage += Math.min(getResistance(), amount);
-            currentBehavior = GameBehavior.HURT;
+            changeCurrentBehavior(GameBehavior.HURT);
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
-        } else if (canEvade && !GameBehavior.EVADE.equals(currentBehavior)) {
+        } else if (canEvade && !GameBehavior.EVADE.equals(getCurrentBehavior())) {
             ((DiaconusEntity) entity).playEvadeSwift();
             //Just evade
-            currentBehavior = GameBehavior.EVADE;
+            changeCurrentBehavior(GameBehavior.EVADE);
             Gdx.app.log("DEBUG", "Instance EVADED!");
             postHurtLogic(attacker);
         }
@@ -316,7 +316,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
         float modifier = 4f;
         //If evading, the leap is more subtle and perpendicular
-        if (GameBehavior.EVADE.equals(currentBehavior)) {
+        if (GameBehavior.EVADE.equals(getCurrentBehavior())) {
             modifier = 2f;
             direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
@@ -325,7 +325,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
         }, 0.25f);
     }
@@ -347,7 +347,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
      */
     private void attackLogic(float stateTime) {
 
-        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
+        int currentFrame = ((AnimatedEntity) entity).getFrameIndex(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
 
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME) {
@@ -377,7 +377,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     private float mapStateTimeFromBehaviour(float stateTime) {
 
-        if (currentBehavior == GameBehavior.ATTACK) {
+        if (getCurrentBehavior() == GameBehavior.ATTACK) {
             return (stateTime - attackDeltaTime);
         }
         return stateTime;

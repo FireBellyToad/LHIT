@@ -6,8 +6,6 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.saves.impl.DesktopSaveFileManager;
 
-import java.util.Arrays;
-
 public class DesktopLauncher {
 	private static final int SCALE_FACTOR = 6;
 

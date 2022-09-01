@@ -7,7 +7,7 @@ package com.faust.lhengine.game.instances.interfaces;
  */
 public interface Damager {
     /**
-     * @return a random damage roll INFLICTED BY the Killable
+     * @return a random damage roll
      */
     double damageRoll();
 

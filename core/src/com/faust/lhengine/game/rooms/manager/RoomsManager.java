@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.ItemEnum;
-import com.faust.lhengine.game.gameentities.enums.PlayerFlag;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.rooms.AbstractRoom;

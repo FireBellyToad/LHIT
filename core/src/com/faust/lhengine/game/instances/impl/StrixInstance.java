@@ -53,11 +53,11 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
 
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
 
-        if (GameBehavior.HURT.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior))
+        if (GameBehavior.HURT.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior()))
             return;
 
         if (!attachedToPlayer && (canSeeTarget() || isAggressive)) {
-            currentBehavior = GameBehavior.WALK;
+            changeCurrentBehavior(GameBehavior.WALK);
             isAggressive = true;
             calculateNewGoal(roomContent.roomGraph);
 
@@ -73,12 +73,12 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
             body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
         } else {
 
-            currentBehavior = GameBehavior.IDLE;
+            changeCurrentBehavior(GameBehavior.IDLE);
             body.setLinearVelocity(0, 0);
 
             //leech if attachedToPlayer
             if (attachedToPlayer) {
-                currentBehavior = GameBehavior.ATTACK;
+                changeCurrentBehavior(GameBehavior.ATTACK);
                 leechLife();
             } else {
                 leechStartTimer = 0;
@@ -98,13 +98,13 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         body.setLinearVelocity(STRIX_SPEED * 4 * -direction.x, STRIX_SPEED * 4 * -direction.y);
-        currentBehavior = GameBehavior.HURT;
+        changeCurrentBehavior(GameBehavior.HURT);
         attachedToPlayer = false;
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentBehavior = GameBehavior.IDLE;
+                changeCurrentBehavior(GameBehavior.IDLE);
             }
         }, 0.25f);
     }
@@ -120,7 +120,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
 
     @Override
     public boolean isDead() {
-        return GameBehavior.DEAD.equals(currentBehavior);
+        return GameBehavior.DEAD.equals(getCurrentBehavior());
     }
 
     @Override
@@ -195,24 +195,24 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
         Objects.requireNonNull(batch);
 
         Vector2 drawPosition = adjustPosition();
-        TextureRegion frame = ((AnimatedEntity) entity).getFrame(currentBehavior, currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
+        TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         batch.begin();
         //Draw shadow
         batch.draw(((StrixEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
 
         //Draw Strix
-        if (GameBehavior.IDLE.equals(currentBehavior) || GameBehavior.DEAD.equals(currentBehavior)) {
+        if (GameBehavior.IDLE.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior())) {
             // On Idle, the Strix is landed. While walking it flies
             batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - 8 - POSITION_Y_OFFSET);
         } else {
 
             // If not hurt or the flickering POI must be shown, draw the texture
-            if (!mustFlicker || !GameBehavior.HURT.equals(currentBehavior)) {
+            if (!mustFlicker || !GameBehavior.HURT.equals(getCurrentBehavior())) {
                 batch.draw(frame, drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
             }
 
             // Every 1/8 seconds alternate between showing and hiding the texture to achieve flickering effect
-            if (GameBehavior.HURT.equals(currentBehavior) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
+            if (GameBehavior.HURT.equals(getCurrentBehavior()) && TimeUtils.timeSinceNanos(startToFlickTime) > GameScreen.FLICKER_DURATION_IN_NANO / 6) {
                 mustFlicker = !mustFlicker;
 
                 // restart flickering timer
@@ -237,7 +237,8 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
 
         //Keep leeching
         if (attachedToPlayer && TimeUtils.timeSinceNanos(leechStartTimer) > TimeUtils.millisToNanos(LEECHING_FREQUENCY_IN_MILLIS)) {
-            ((Hurtable) target).hurt(StrixInstance.this);
+
+            ((Hurtable<StrixInstance>) target).hurt(StrixInstance.this);
             //Prevents loop on gameover screen
             if (((Killable) target).isDead()) {
                 ((StrixEntity) entity).stopLeechSound();
@@ -287,8 +288,8 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
             if (isDying()) {
                 ((StrixEntity) entity).playDeathCry();
                 body.setLinearVelocity(0, 0);
-                currentBehavior = GameBehavior.DEAD;
-            } else if (!GameBehavior.HURT.equals(currentBehavior)) {
+                changeCurrentBehavior(GameBehavior.DEAD);
+            } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
                 ((StrixEntity) entity).playHurtCry();
                 // Hurt by player
                 this.damage += ((Damager) attacker).damageRoll();

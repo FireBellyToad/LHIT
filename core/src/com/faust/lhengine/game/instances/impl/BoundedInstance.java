@@ -34,11 +34,11 @@ import java.util.Objects;
  */
 public class BoundedInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
 
-    private static final float BOUNDED_SPEED = 40;
+    private static final float BOUNDED_SPEED = 38;
     private static final int LINE_OF_ATTACK = 15;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
-    private static final long ATTACK_COOLDOWN_TIME = 150; // in millis
+    private static final long ATTACK_COOLDOWN_TIME = 200; // in millis
 
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;

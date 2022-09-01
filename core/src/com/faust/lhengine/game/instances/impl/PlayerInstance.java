@@ -29,6 +29,7 @@ import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.world.manager.CollisionManager;
 import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.utils.GameInstanceUtils;
 import com.faust.lhengine.utils.ShaderWrapper;
 
 import java.util.*;
@@ -59,7 +60,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private Body rightSpearBody;
     private Body upSpearBody;
 
-    private final List<GameInstance> roomPoiList = new ArrayList<>();
+    private final List<POIInstance> roomPoiList = new ArrayList<>();
     private POIInstance nearestPOIInstance;
 
     private int availableHealthKits = 0; // available Health Kits
@@ -188,9 +189,9 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         // Checking if there is any unexamined POI near enough to be examined by the player
         if (!roomPoiList.isEmpty()) {
 
-            roomPoiList.forEach((poi) -> ((POIInstance) poi).setEnableFlicker(false));
+            roomPoiList.forEach((poi) -> poi.setEnableFlicker(false));
 
-            nearestPOIInstance = (POIInstance) this.getNearestInstance(roomPoiList);
+            nearestPOIInstance =  GameInstanceUtils.getNearestInstance(this,roomPoiList);
             if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE &&
                     !nearestPOIInstance.isAlreadyExamined()) {
                 nearestPOIInstance.setEnableFlicker(true);
@@ -281,7 +282,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         roomPoiList.clear();
         roomPoiList.addAll(poiNewList);
         if (!roomPoiList.isEmpty()) {
-            nearestPOIInstance = (POIInstance) this.getNearestInstance(roomPoiList);
+            nearestPOIInstance = GameInstanceUtils.getNearestInstance(this,roomPoiList);
         }
     }
 

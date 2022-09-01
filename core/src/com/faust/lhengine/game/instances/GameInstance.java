@@ -59,27 +59,6 @@ public abstract class GameInstance {
                 this.body.destroyFixture(f));
     }
 
-    /**
-     * Returs the nearest Instance from this in the room. USE ONLY AFTER INSERTING THE POI IN THE WORLD
-     *
-     * @return the nearest Instance from this in the room
-     */
-    protected GameInstance getNearestInstance(List<GameInstance> instanceList) {
-
-        GameInstance nearest = null;
-
-        for (GameInstance poi : instanceList) {
-            // In no nearest, just return the first one
-            if (Objects.isNull(nearest)) {
-                nearest = poi;
-            } else if (nearest.getBody().getPosition().dst(getBody().getPosition()) > poi.getBody().getPosition().dst(getBody().getPosition())) {
-                nearest = poi;
-            }
-        }
-        return nearest;
-
-    }
-
     public float getStartX() {
         return startX;
     }

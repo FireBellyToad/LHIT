@@ -24,12 +24,13 @@ public class ShaderWrapper {
      * @param vertexShaderFile
      * @param fragmentShaderFile
      */
-    public ShaderWrapper(String vertexShaderFile, String fragmentShaderFile) {
+    public ShaderWrapper(String vertexShaderFile, String fragmentShaderFile, boolean isWebBuild) {
         Objects.requireNonNull(vertexShaderFile);
         Objects.requireNonNull(fragmentShaderFile);
 
         final String vertexShader = Gdx.files.internal(vertexShaderFile).readString();
-        final String fragmentShader = Gdx.files.internal(fragmentShaderFile).readString();
+        final String webBuildHeader = Gdx.files.internal("shaders/web_build_header.glsl").readString();
+        final String fragmentShader = (isWebBuild ? webBuildHeader : "" )+ Gdx.files.internal(fragmentShaderFile).readString();
 
         shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
         if (!shaderProgram.isCompiled())

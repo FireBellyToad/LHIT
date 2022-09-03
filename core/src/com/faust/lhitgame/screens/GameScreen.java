@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
         pauseManager = new PauseManager(game.getSaveFileManager(), game.getMusicManager(), assetManager);
         darknessRenderer = new DarknessRenderer(assetManager);
         worldManager = new WorldManager(this.game.isWebBuild());
-        player = new PlayerInstance(assetManager);
+        player = new PlayerInstance(assetManager,this.game.isWebBuild());
 
 
     }

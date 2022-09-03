@@ -31,7 +31,7 @@ public class PlayerEntity extends AnimatedEntity {
 
     private final ParticleEffect waterWalkEffect;
 
-    public PlayerEntity(AssetManager assetManager) {
+    public PlayerEntity(AssetManager assetManager, boolean isWebBuild) {
         super(assetManager.get("sprites/walfrit_sheet.png"));
         shadow = assetManager.get("sprites/shadow.png");
         bonus = assetManager.get("sounds/SFX_collect&bonus13.ogg");
@@ -39,7 +39,7 @@ public class PlayerEntity extends AnimatedEntity {
         lanceSwing = assetManager.get("sounds/SFX_swordSwing.ogg");
         waterSplash = assetManager.get("sounds/SFX_waterSplash.ogg");
         deathCry = assetManager.get("sounds/death_scream.ogg");
-        playerShader = new ShaderWrapper("shaders/player_vertex.glsl","shaders/player_fragment.glsl");
+        playerShader = new ShaderWrapper("shaders/player_vertex.glsl","shaders/player_fragment.glsl",isWebBuild);
 
         // Init waterwalk effect
         waterWalkEffect = new ParticleEffect();

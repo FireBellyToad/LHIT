@@ -1,7 +1,11 @@
 package com.faust.lhitgame.game.gameentities.enums;
 
 /**
- * Player flags Enum
+ * Player flags Enum.
+ *
+ * This flags represent all the boolean values that alter PlayerInstance status AND can be changed by environment or other GameInstances.
+ *
+ * For boolean values that can be changed by PlayerInstance only, use a private boolean in his class instead.
  *
  * @author Jacopo "Faust" Buttiglieri
  */

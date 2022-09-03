@@ -39,6 +39,7 @@ public class CutsceneManager implements InputProcessor {
     private final String cutsceneKey;
     private final AssetManager assetManager;
     private final AbstractSaveFileManager saveFileManager;
+    private final boolean isWebBuild;
 
     private TiledMap tiledScene;
     private OrthogonalTiledMapRenderer tiledSceneRenderer;
@@ -46,12 +47,13 @@ public class CutsceneManager implements InputProcessor {
     private final OrthographicCamera camera;
     private final Sound nextSound;
 
-    public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera, AbstractSaveFileManager saveFileManager) {
+    public CutsceneManager(CutsceneEnum cutsceneEnum, AssetManager assetManager, TextLocalizer textLocalizer, final OrthographicCamera camera, AbstractSaveFileManager saveFileManager, boolean isWebBuild) {
         this.textLocalizer = textLocalizer;
         this.cutsceneKey = cutsceneEnum.getKey();
         this.assetManager = assetManager;
         this.saveFileManager = saveFileManager;
         this.camera = camera;
+        this.isWebBuild = isWebBuild;
 
         lastStep = cutsceneEnum.getStepsNumber();
 
@@ -174,7 +176,7 @@ public class CutsceneManager implements InputProcessor {
                     params.add(SimpleActorParametersEnum.PLAYER_HAS_LANCE);
 
                 }
-                entity = new PlayerEntity(assetManager);
+                entity = new PlayerEntity(assetManager, isWebBuild);
                 behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
                 if (obj.getProperties().containsKey("direction")) {
                     direction =  DirectionEnum.valueOf((String) obj.getProperties().get("direction"));

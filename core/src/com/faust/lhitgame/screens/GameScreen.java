@@ -128,8 +128,7 @@ public class GameScreen implements Screen {
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(game.getBatch(),stateTime);
         } else {
-            final boolean roundPosition = GameBehavior.IDLE.equals(player.getCurrentBehavior()) || GameBehavior.ATTACK.equals(player.getCurrentBehavior());
-            darknessRenderer.drawDarkness(game.getBatch(), player.getBody().getPosition(), cameraManager.getCamera(), roundPosition);
+            darknessRenderer.drawDarkness(game.getBatch(), player.getBody().getPosition(), cameraManager.getCamera(), !GameBehavior.WALK.equals(player.getCurrentBehavior()));
             hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
             if (pauseManager.isGamePaused()) {
                 pauseManager.draw(game.getBatch(),cameraManager.getCamera());

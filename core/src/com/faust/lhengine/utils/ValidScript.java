@@ -84,7 +84,7 @@ public class ValidScript {
                         extractedValue = child.asBoolean();
                     } else if (extractedCommand.getValueClass().equals(ScriptCommandsEnum.class)) {
 
-                        //is required check on suncommands
+                        //is required check on subcommands
                         for (ScriptCommandsEnum subCommand : extractedCommand.getSubCommands()) {
                             if (subCommand.isRequired() && !child.has(subCommand.getCommandString())) {
                                 throw new NullPointerException(subCommand.getCommandString() + " is required!");

@@ -75,8 +75,8 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private boolean canStillTurnWhileAttacking = true;
 
 
-    public PlayerInstance(AssetManager assetManager) {
-        super(new PlayerEntity(assetManager));
+    public PlayerInstance(AssetManager assetManager, boolean isWebBuild) {
+        super(new PlayerEntity(assetManager, isWebBuild));
 
         itemsFound = new HashMap<>();
         currentDirectionEnum = DirectionEnum.DOWN;

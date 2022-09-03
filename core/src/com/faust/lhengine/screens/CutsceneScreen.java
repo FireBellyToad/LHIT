@@ -47,7 +47,7 @@ public class CutsceneScreen implements Screen {
         //Init cutscene
         Objects.requireNonNull(cutsceneEnum);
 
-        cutsceneManager = new CutsceneManager(cutsceneEnum, game.getAssetManager(), game.getTextLocalizer(),cameraManager.getCamera(),  game.getSaveFileManager());
+        cutsceneManager = new CutsceneManager(cutsceneEnum, game.getAssetManager(), game.getTextLocalizer(),cameraManager.getCamera(),  game.getSaveFileManager(), game.isWebBuild());
 
         if(!CutsceneEnum.STORY.equals(cutsceneEnum)){
             //Loop title music

@@ -36,9 +36,19 @@ public class ControllerMediator {
      * @param controller
      */
     public void registerController(AbstractController controller) {
-        Objects.requireNonNull(controller);
-        controllersMap.put(controller.getClass().getSimpleName(),controller);
+        registerControllerWithUuid(controller,"");
     }
+
+    /**
+     * Register a controller, which then can be used in a mediation
+     *
+     * @param controller
+     */
+    public void registerControllerWithUuid(AbstractController controller, String uuid) {
+        Objects.requireNonNull(controller);
+        controllersMap.put(uuid + controller.getClass().getSimpleName(),controller);
+    }
+
 
     /**
      * Change a scene from a registered controller
@@ -60,7 +70,7 @@ public class ControllerMediator {
      * @param widthField
      * @param heightField
      */
-    public void mainWorldEditorControllerCreateNewWorld(int widthField, int heightField) {
+    public void mainWorldEditorControllerCreateNewWorld(int widthField, int heightField) throws IOException {
         if(!controllersMap.containsKey(MainWorldEditorController.class.getSimpleName())){
             throw new RuntimeException(MainWorldEditorController.class.getSimpleName() + " is not registered!");
         }

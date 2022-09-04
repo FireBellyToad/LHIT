@@ -6,19 +6,19 @@ package com.faust.lhengine.game.rooms;
  * @author Jacopo "Faust" Buttiglieri
  */
 public class RoomPosition {
-    private final float x;
-    private final float y;
+    private final int x;
+    private final int y;
 
-    public RoomPosition(float x, float y) {
+    public RoomPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public float getX() {
+    public int getX() {
         return x;
     }
 
-    public float getY() {
+    public int getY() {
         return y;
     }
 }

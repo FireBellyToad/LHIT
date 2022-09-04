@@ -9,7 +9,8 @@ public enum MainWorldEditorScenes {
 
     MAIN("main-view"),
     EDITING("editing-view"),
-    NEW_WORLD_POPUP("new-popup-view");
+    NEW_WORLD_POPUP("new-popup-view"),
+    ROOM_BOX("room-box");
 
     private final String filename;
 

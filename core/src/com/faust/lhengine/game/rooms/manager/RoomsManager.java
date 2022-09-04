@@ -287,8 +287,8 @@ public class RoomsManager {
             boolean hasBoundary = mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection);
             if (hasBoundary) {
                 if (Objects.nonNull(mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
-                    newXPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getX();
-                    newYPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getY();
+                    newXPosInMatrix = mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getX();
+                    newYPosInMatrix = mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getY();
                 }
             }
             switch (switchDirection) {

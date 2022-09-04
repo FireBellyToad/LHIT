@@ -15,6 +15,7 @@ import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.rooms.AbstractRoom;
 import com.faust.lhengine.game.rooms.OnRoomChangeListener;
 import com.faust.lhengine.game.rooms.RoomModel;
+import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.game.rooms.impl.CasualRoom;
@@ -24,6 +25,7 @@ import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
+import com.faust.lhengine.utils.Pair;
 
 import java.util.*;
 
@@ -85,17 +87,15 @@ public class RoomsManager {
 
             //Parsing boundaries
             JsonValue boundariesJson = t.get("boundaries");
-            Map<DirectionEnum, Vector2> boundaries = new HashMap<>();
+            Map<DirectionEnum, RoomPosition> boundaries = new HashMap<>();
             if (Objects.nonNull(boundariesJson)) {
                 boundariesJson.forEach((b) -> {
                     //Parsing targets
                     JsonValue targetJson = b.get("target");
                     //Null if impassable
-                    Vector2 target = null;
+                    RoomPosition target = null;
                     if (Objects.nonNull(targetJson.child)) {
-                        target = new Vector2();
-                        target.x = targetJson.getInt("x");
-                        target.y = targetJson.getInt("y");
+                        target = new RoomPosition(targetJson.getInt("x"), targetJson.getInt("y"));
                     }
                     DirectionEnum side = DirectionEnum.valueOf(b.getString("side"));
                     Objects.requireNonNull(side);
@@ -287,8 +287,8 @@ public class RoomsManager {
             boolean hasBoundary = mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection);
             if (hasBoundary) {
                 if (Objects.nonNull(mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
-                    newXPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).x;
-                    newYPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).y;
+                    newXPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getX();
+                    newYPosInMatrix = (int) mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getY();
                 }
             }
             switch (switchDirection) {

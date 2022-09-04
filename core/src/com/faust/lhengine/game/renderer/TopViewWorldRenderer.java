@@ -96,7 +96,7 @@ public class TopViewWorldRenderer implements WorldRenderer<AbstractRoom>, OnRoom
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(batch, stateTime);
         } else {
-            darknessRenderer.drawDarkness(game.getBatch(), player.getBody().getPosition(), cameraManager.getCamera(), !GameBehavior.WALK.equals(player.getCurrentBehavior()));
+            darknessRenderer.drawDarkness(batch, player.getBody().getPosition(), cameraManager.getCamera(), !GameBehavior.WALK.equals(player.getCurrentBehavior()));
             hud.drawHud(batch, player, cameraManager.getCamera());
             if (pauseManager.isGamePaused()) {
                 pauseManager.draw(batch, cameraManager.getCamera());

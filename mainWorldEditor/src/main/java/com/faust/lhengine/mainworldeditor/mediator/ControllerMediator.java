@@ -1,5 +1,7 @@
 package com.faust.lhengine.mainworldeditor.mediator;
 
+import com.faust.lhengine.game.rooms.RoomPosition;
+import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.controllers.AbstractController;
 import com.faust.lhengine.mainworldeditor.controllers.MainWorldEditorController;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
@@ -78,5 +80,14 @@ public class ControllerMediator {
         MainWorldEditorController controller = (MainWorldEditorController) controllersMap.get(MainWorldEditorController.class.getSimpleName());
         controller.createNewWorld(widthField,heightField);
 
+    }
+
+    public void mainWorldEditorControllerSetNewRoomType(RoomPosition roomPosition, RoomTypeEnum newType) {
+        if(!controllersMap.containsKey(MainWorldEditorController.class.getSimpleName())){
+            throw new RuntimeException(MainWorldEditorController.class.getSimpleName() + " is not registered!");
+        }
+
+        MainWorldEditorController controller = (MainWorldEditorController) controllersMap.get(MainWorldEditorController.class.getSimpleName());
+        controller.setNewRoomType(roomPosition,newType);
     }
 }

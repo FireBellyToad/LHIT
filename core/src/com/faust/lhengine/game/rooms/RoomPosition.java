@@ -1,5 +1,7 @@
 package com.faust.lhengine.game.rooms;
 
+import java.util.Objects;
+
 /**
  * Class for Room position in mainWorld.
  *
@@ -20,5 +22,13 @@ public class RoomPosition {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoomPosition)) return false;
+        RoomPosition that = (RoomPosition) o;
+        return x == that.x && y == that.y;
     }
 }

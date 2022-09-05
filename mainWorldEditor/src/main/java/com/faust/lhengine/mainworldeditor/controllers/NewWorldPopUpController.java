@@ -32,7 +32,7 @@ public class NewWorldPopUpController  extends AbstractController {
 
         //FIXME add validation
 
-        //Order is important! First load the view, then create the world so that the UI components are already injected
+        //Order is important! First change (and load) the view, then create the world so that the UI components are already injected
         ControllerMediator.getInstance().changeScene(MainWorldEditorController.class,MainWorldEditorScenes.EDITING);
         ControllerMediator.getInstance().mainWorldEditorControllerCreateNewWorld(widthValue,heightValue);
 

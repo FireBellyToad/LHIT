@@ -1,32 +1,53 @@
 package com.faust.lhengine.mainworldeditor.controllers;
 
 import com.faust.lhengine.game.rooms.RoomModel;
+import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
+import com.faust.lhengine.mainworldeditor.mediator.ControllerMediator;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
 
 /**
  * Main World Editor Controller
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class RoomBoxController extends AbstractController{
+public class RoomBoxController extends AbstractController implements Initializable {
 
-    RoomModel roomModel;
+    private RoomModel roomModel;
+    private RoomPosition roomPosition;
 
     @FXML
     private ComboBox<RoomTypeEnum> terrainTypesCombobox;
 
     @FXML
-    protected void populateTerrainTypes(){
+    protected void onChangeTerrainType(Event event) {
 
-        if(terrainTypesCombobox.getItems().isEmpty()){
+        if (Objects.isNull(roomPosition)) {
+            roomPosition = ((Map.Entry<RoomPosition, RoomModel>) rootVbox.getUserData()).getKey();
+        }
+
+        ControllerMediator.getInstance().mainWorldEditorControllerSetNewRoomType(roomPosition, terrainTypesCombobox.getValue());
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        if (terrainTypesCombobox.getItems().isEmpty()) {
             System.out.println("Load all terrains");
             terrainTypesCombobox.setItems(FXCollections.observableList(List.of(RoomTypeEnum.values())));
         }
-    }
 
+        terrainTypesCombobox.getSelectionModel().select(RoomTypeEnum.EMPTY_SPACE);
+
+    }
 }

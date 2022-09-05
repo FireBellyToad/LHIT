@@ -4,6 +4,7 @@ import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
+import com.faust.lhengine.mainworldeditor.mediator.ControllerMediator;
 import com.faust.lhengine.utils.Pair;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -19,6 +20,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,32 +58,47 @@ public class MainWorldEditorController extends AbstractController {
         changeScene(MainWorldEditorScenes.MAIN);
     }
 
-    public void createNewWorld(int widthField, int heightField) throws IOException {
-        FXMLLoader.load(getClass().getResource(MainWorldEditorScenes.EDITING.getFilename()));
+    /**
+     * Create a new mainWorld given width and height. All rooms will be EMPTY_SPACE
+     *
+     * @param width
+     * @param height
+     * @throws IOException
+     */
+    public void createNewWorld(int width, int height) throws IOException {
 
-        worldLimit = new Pair<>(widthField,heightField);
+        worldLimit = new Pair<>(width,height);
         mainWorldData.clear();
 
         // add the correct number of room boxes
-        for(int x=0; x < widthField; x++){
-            for(int y=0; y < heightField; y++){
+        for(int x=0; x < width; x++){
+            for(int y=0; y < height; y++){
                 mainWorldData.put(new RoomPosition(x,y),new RoomModel(new HashMap<>(),RoomTypeEnum.EMPTY_SPACE));
             }
         }
 
-        final GridPane root = new GridPane();
-        root.setHgap(5);
-        root.setVgap(5);
+        //Creates a GridPane with a RoomBox in each cell
+        final GridPane gridPane = new GridPane();
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
 
         for(Map.Entry<RoomPosition,RoomModel> entry: mainWorldData.entrySet()){
             Node roomBox = FXMLLoader.load(getClass().getResource(MainWorldEditorScenes.ROOM_BOX.getFilename()));
+            //mainWorldData as UserData
             roomBox.setUserData(entry);
-            root.add(roomBox,entry.getKey().getX(), entry.getKey().getY());
+            gridPane.add(roomBox,entry.getKey().getX(), entry.getKey().getY());
         }
 
-        roomBoxContainer.setContent(root);
+        roomBoxContainer.setContent(gridPane);
         roomBoxContainer.setPannable(true); // it means that the user should be able to pan the viewport by using the mouse.
+    }
 
-        System.out.println(worldLimit);
+    /**
+     * Sets a new type for roomPosition. Clears all previously set boundaries
+     * @param roomPosition
+     * @param newType
+     */
+    public void setNewRoomType(RoomPosition roomPosition, RoomTypeEnum newType) {
+        mainWorldData.put(roomPosition, new RoomModel(new HashMap<>(),newType));
     }
 }

@@ -34,17 +34,7 @@ public class WorldManager implements RayCaster {
 
     private final World world;
 
-    private final float timeStep;
-    private final int velocityIterations;
-    private final int positionIterations;
-
-    public WorldManager(boolean isWebBuild) {
-
-        //Web build physics need to be slow down at 3/4 of desktop speed.
-        timeStep = isWebBuild ? DEFAULT_TIME_STEP * 0.75f : DEFAULT_TIME_STEP;
-        velocityIterations = isWebBuild ? (int) (DEFAULT_VELOCITY_ITERATIONS * 0.75f) : DEFAULT_VELOCITY_ITERATIONS;
-        positionIterations = isWebBuild ? (int) (DEFAULT_POSITION_ITERATIONS * 0.75f) : DEFAULT_POSITION_ITERATIONS;
-
+    public WorldManager() {
         this.world = new World(new Vector2(0, 0), true);
         world.setContactListener(new CollisionManager());
 
@@ -54,7 +44,7 @@ public class WorldManager implements RayCaster {
      * Makes the world step to next
      */
     public void doStep() {
-        world.step(timeStep,velocityIterations,positionIterations);
+        world.step(DEFAULT_TIME_STEP,DEFAULT_VELOCITY_ITERATIONS,DEFAULT_POSITION_ITERATIONS);
     }
 
     public void dispose() {

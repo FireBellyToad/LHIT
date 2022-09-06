@@ -78,20 +78,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Stops game logic if splash screen is shown or game is paused
-        if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
-
-            // If player is not input processor, reset it
-            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
-                player.setAsInputProcessor();
-
-            worldManager.doStep();
-            doLogic();
-        } else if (pauseManager.isGamePaused()) {
-            //Handle pause logic
-            pauseManager.doLogic(game,player, roomsManager);
-        }
-
+        //Render before game logic to avoid desync
         //Prevent animations while paused
         if (!pauseManager.isGamePaused()) {
             stateTime += Gdx.graphics.getDeltaTime();
@@ -116,6 +103,21 @@ public class GameScreen implements Screen {
         drawOverlays();
 
 //       cameraManager.box2DDebugRenderer(worldManager.getWorld());
+
+
+        // Stops game logic if splash screen is shown or game is paused
+        if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
+
+            // If player is not input processor, reset it
+            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
+                player.setAsInputProcessor();
+
+            worldManager.doStep(delta);
+            doLogic();
+        } else if (pauseManager.isGamePaused()) {
+            //Handle pause logic
+            pauseManager.doLogic(game,player, roomsManager);
+        }
 
     }
 

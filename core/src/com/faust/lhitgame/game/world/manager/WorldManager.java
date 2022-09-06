@@ -33,18 +33,28 @@ public class WorldManager implements RayCaster {
     private static final int DEFAULT_POSITION_ITERATIONS = 3;
 
     private final World world;
+    private float accumulator;
 
     public WorldManager() {
         this.world = new World(new Vector2(0, 0), true);
         world.setContactListener(new CollisionManager());
-
     }
 
     /**
-     * Makes the world step to next
+     * Makes the world step to next. Handles also correct physics speed
+     * @param deltaTime
      */
-    public void doStep() {
-        world.step(DEFAULT_TIME_STEP,DEFAULT_VELOCITY_ITERATIONS,DEFAULT_POSITION_ITERATIONS);
+    public void doStep(float deltaTime) {
+        // Thanks to Lyze of Discord LibGDX community!!!
+        // fixed time step
+        // max frame time to avoid spiral of death (on slow devices)
+        float frameTime = Math.min(deltaTime, 0.125f);
+        accumulator += frameTime;
+        while (accumulator >= DEFAULT_TIME_STEP) {
+            world.step(DEFAULT_TIME_STEP,DEFAULT_VELOCITY_ITERATIONS,DEFAULT_POSITION_ITERATIONS);
+            accumulator -= DEFAULT_TIME_STEP;
+        }
+
     }
 
     public void dispose() {

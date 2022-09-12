@@ -1,6 +1,7 @@
 package com.faust.lhengine.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -68,6 +69,14 @@ public class GameScreen implements Screen {
         textLocalizer.loadTextFromLanguage();
         musicManager.initTuneMap(assetManager);
         Gdx.input.setInputProcessor(player);
+
+        if(this.game.isWebBuild()){
+            //Prevents arrow keys browser scrolling
+            Gdx.input.setCatchKey(Input.Keys.UP, true);
+            Gdx.input.setCatchKey(Input.Keys.DOWN, true);
+            Gdx.input.setCatchKey(Input.Keys.LEFT, true);
+            Gdx.input.setCatchKey(Input.Keys.RIGHT, true);
+        }
 
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager(), game.getMusicManager());

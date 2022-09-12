@@ -1,6 +1,7 @@
 package com.faust.lhengine.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,6 +50,14 @@ public class MenuScreen implements Screen {
         musicManager.playMusic(TuneEnum.TITLE);
 
         Gdx.input.setInputProcessor(menu);
+
+        if(this.game.isWebBuild()){
+            //Prevents arrow keys browser scrolling
+            Gdx.input.setCatchKey(Input.Keys.UP, true);
+            Gdx.input.setCatchKey(Input.Keys.DOWN, true);
+            Gdx.input.setCatchKey(Input.Keys.LEFT, true);
+            Gdx.input.setCatchKey(Input.Keys.RIGHT, true);
+        }
     }
 
     @Override

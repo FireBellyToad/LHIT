@@ -31,4 +31,9 @@ public class RoomPosition {
         RoomPosition that = (RoomPosition) o;
         return x == that.x && y == that.y;
     }
+
+    @Override
+    public String toString() {
+        return "\"x\": " + x + ", \"y\" :" + y;
+    }
 }

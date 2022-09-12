@@ -43,7 +43,6 @@ public class RoomBoxController extends AbstractController implements Initializab
     public void initialize(URL location, ResourceBundle resources) {
 
         if (terrainTypesCombobox.getItems().isEmpty()) {
-            System.out.println("Load all terrains");
             terrainTypesCombobox.setItems(FXCollections.observableList(List.of(RoomTypeEnum.values())));
         }
 

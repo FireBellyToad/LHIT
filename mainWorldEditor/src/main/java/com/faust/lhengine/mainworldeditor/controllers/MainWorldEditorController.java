@@ -4,28 +4,23 @@ import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
-import com.faust.lhengine.mainworldeditor.mediator.ControllerMediator;
+import com.faust.lhengine.mainworldeditor.model.MainWorldData;
 import com.faust.lhengine.utils.Pair;
-import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +30,7 @@ import java.util.Map;
  */
 public class MainWorldEditorController extends AbstractController {
 
-    private final Map<RoomPosition,RoomModel> mainWorldData = new HashMap<>();
+    private final MainWorldData mainWorldData = new MainWorldData();
     private Pair<Integer,Integer> worldLimit;
 
     @FXML
@@ -58,6 +53,25 @@ public class MainWorldEditorController extends AbstractController {
         changeScene(MainWorldEditorScenes.MAIN);
     }
 
+    @FXML
+    protected void saveCurrentMainWorld() throws FileNotFoundException {
+
+        //Open file chooser with save
+        final var fileChooser = new FileChooser();
+        final Stage stage = (Stage) rootVbox.getScene().getWindow();
+
+        //Set extension filter for text files
+        var extFilter = new FileChooser.ExtensionFilter("Json file (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        var file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            saveMapToFile(file);
+        }
+    }
+
     /**
      * Create a new mainWorld given width and height. All rooms will be EMPTY_SPACE
      *
@@ -73,7 +87,7 @@ public class MainWorldEditorController extends AbstractController {
         // add the correct number of room boxes
         for(int x=0; x < width; x++){
             for(int y=0; y < height; y++){
-                mainWorldData.put(new RoomPosition(x,y),new RoomModel(new HashMap<>(),RoomTypeEnum.EMPTY_SPACE));
+                mainWorldData.getData().put(new RoomPosition(x,y),new RoomModel(new HashMap<>(),RoomTypeEnum.EMPTY_SPACE));
             }
         }
 
@@ -82,7 +96,7 @@ public class MainWorldEditorController extends AbstractController {
         gridPane.setHgap(5);
         gridPane.setVgap(5);
 
-        for(Map.Entry<RoomPosition,RoomModel> entry: mainWorldData.entrySet()){
+        for(Map.Entry<RoomPosition,RoomModel> entry: mainWorldData.getData().entrySet()){
             Node roomBox = FXMLLoader.load(getClass().getResource(MainWorldEditorScenes.ROOM_BOX.getFilename()));
             //mainWorldData as UserData
             roomBox.setUserData(entry);
@@ -99,6 +113,14 @@ public class MainWorldEditorController extends AbstractController {
      * @param newType
      */
     public void setNewRoomType(RoomPosition roomPosition, RoomTypeEnum newType) {
-        mainWorldData.put(roomPosition, new RoomModel(new HashMap<>(),newType));
+        System.out.println("New room of type " + newType.name() + " at " + roomPosition);
+        mainWorldData.getData().put(roomPosition, new RoomModel(new HashMap<>(),newType));
+    }
+
+    private void saveMapToFile(File file) throws FileNotFoundException {
+
+        var writer = new PrintWriter(file);
+        writer.println(mainWorldData.toJson());
+        writer.close();
     }
 }

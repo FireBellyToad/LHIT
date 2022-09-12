@@ -1,15 +1,11 @@
 package com.faust.lhengine.mainworldeditor.controllers;
 
-import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
 import com.faust.lhengine.mainworldeditor.mediator.ControllerMediator;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * New World PopUp Controller

@@ -57,7 +57,7 @@ public class GameScreen implements Screen {
         hud = new Hud(textManager, assetManager);
         splashManager = new SplashManager(textManager, assetManager);
         pauseManager = new PauseManager(game.getSaveFileManager(), musicManager, assetManager);
-        worldManager = new WorldManager(this.game.isWebBuild());
+        worldManager = new WorldManager();
         player = new PlayerInstance(assetManager,this.game.isWebBuild());
 
     }

@@ -15,7 +15,7 @@ public class LHEngine extends Game {
     public static final int GAME_WIDTH = 160;
     public static final int GAME_HEIGHT = 144;
 
-    private boolean isWebBuild = false;
+    private boolean isWebBuild;
     private SpriteBatch batch;
     private AssetManager assetManager;
     private CameraManager cameraManager;

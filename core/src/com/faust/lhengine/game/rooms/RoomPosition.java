@@ -1,7 +1,5 @@
 package com.faust.lhengine.game.rooms;
 
-import java.util.Objects;
-
 /**
  * Class for Room position in mainWorld.
  *

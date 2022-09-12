@@ -67,7 +67,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     private long startHealingTime;
     private long confusionTimeout = 0;
     private long postHurtCooldown = 0;
-    private final Map<ItemEnum, Integer> itemsFound;
+    private final Map<ItemEnum, Integer> itemsFound = new HashMap<> ();
     private final Map<PlayerFlag, Boolean> playerFlags = new HashMap<>();
     private TriggerArea triggerToActivate;
 
@@ -78,7 +78,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     public PlayerInstance(AssetManager assetManager, boolean isWebBuild) {
         super(new PlayerEntity(assetManager, isWebBuild));
 
-        itemsFound = new HashMap<>();
+
         currentDirectionEnum = DirectionEnum.DOWN;
 
         Gdx.input.setInputProcessor(this);

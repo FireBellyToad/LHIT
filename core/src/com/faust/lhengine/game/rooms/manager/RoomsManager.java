@@ -25,7 +25,6 @@ import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
-import com.faust.lhengine.utils.Pair;
 
 import java.util.*;
 

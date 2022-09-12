@@ -9,7 +9,6 @@ import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.gameentities.GameEntity;
 import com.faust.lhengine.game.rooms.RoomContent;
 
-import java.util.List;
 import java.util.Objects;
 
 /**

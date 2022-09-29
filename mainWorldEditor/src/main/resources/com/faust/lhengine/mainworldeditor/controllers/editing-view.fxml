@@ -66,7 +66,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <ScrollPane id="mainWorldEditPane" fx:id="roomBoxContainer" fitToWidth="true" maxHeight="Infinity" maxWidth="Infinity" prefHeight="455.0" prefWidth="640.0" style="-fx-background-color: black;" />
+            <ScrollPane id="mainWorldEditPane" fx:id="roomBoxContainer" fitToWidth="true" maxHeight="Infinity" maxWidth="Infinity" prefHeight="455.0" prefWidth="640.0" style="-fx-background-color: black;" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
          </children>
     </AnchorPane>
   </children>

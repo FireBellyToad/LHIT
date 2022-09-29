@@ -51,7 +51,7 @@ public class POIInstance extends GameInstance {
         this.guaranteedGoldcross = guaranteedGoldcross;
         this.poiIdInMap = id;
 
-        this.alwaysInBackground = poiType.equals(POIEnum.ECHO_CORPSE) || poiType.equals(POIEnum.SKELETON) || poiType.equals(POIEnum.BURNT_PAPER);
+        this.alwaysInBackground = poiType.equals(POIEnum.ECHO_CORPSE) || poiType.equals(POIEnum.SKELETON) || poiType.equals(POIEnum.BURNT_PAPER) || poiType.equals(POIEnum.BROTHER);
     }
 
     /**

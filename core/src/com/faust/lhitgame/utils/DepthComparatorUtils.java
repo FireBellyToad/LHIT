@@ -32,7 +32,10 @@ public class DepthComparatorUtils {
         }
 
         if (((o1 instanceof Hurtable && ((Hurtable) o1).isDead()) && !(o1 instanceof PlayerInstance)) ||
-                (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer())) {
+                (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer()) ||
+                (o1 instanceof DecorationInstance && o1.isAlwaysInBackground()) ||
+                (o1 instanceof DecorationInstance && ((DecorationInstance) o1).getInteracted()) ||
+                (o1 instanceof POIInstance && o1.isAlwaysInBackground())) {
             return -1;
         }
 

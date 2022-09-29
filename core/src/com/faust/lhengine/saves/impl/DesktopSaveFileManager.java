@@ -2,11 +2,11 @@ package com.faust.lhengine.saves.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
+import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.enums.SaveFieldsEnum;
@@ -29,7 +29,7 @@ public class DesktopSaveFileManager extends AbstractSaveFileManager {
      * @param saveMap
      * @throws SerializationException
      */
-    public void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException {
+    public void loadSaveForGame(PlayerInstance player, Map<RoomPosition, RoomSaveEntry> saveMap) throws SerializationException {
 
         FileHandle file = Gdx.files.local(selectedFileName);
 
@@ -52,7 +52,7 @@ public class DesktopSaveFileManager extends AbstractSaveFileManager {
     /**
      * Save on filesystem the predefined numbers of the casual rooms
      */
-    public void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
+    public void saveOnFile(PlayerInstance player, Map<RoomPosition, RoomSaveEntry> saveMap) {
 
         String stringSave = getStringSaveFile(player, saveMap);
         Gdx.files.local(selectedFileName).writeString(stringSave, false);

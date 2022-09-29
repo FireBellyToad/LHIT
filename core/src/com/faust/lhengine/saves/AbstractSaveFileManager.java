@@ -1,12 +1,12 @@
 package com.faust.lhengine.saves;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhengine.game.gameentities.enums.ItemEnum;
 import com.faust.lhengine.game.gameentities.enums.PlayerFlag;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
+import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhengine.saves.enums.SaveFieldsEnum;
 
@@ -21,7 +21,7 @@ public abstract class AbstractSaveFileManager {
     protected final Json jsonParser = new Json();
     protected final String selectedFileName = "saves/mainWorldSave";
 
-    protected String getStringSaveFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) {
+    protected String getStringSaveFile(PlayerInstance player, Map<RoomPosition, RoomSaveEntry> saveMap) {
 
         //Player info
         List<String> entries = new ArrayList<>();
@@ -65,11 +65,9 @@ public abstract class AbstractSaveFileManager {
 
     /**
      * Set room info in savemap
-     *
-     * @param saveMap
-     * @param file
-     */
-    protected void setRoomInfo(Map<Vector2, RoomSaveEntry> saveMap, JsonValue file) {
+     *  @param saveMap
+     * @param file*/
+    protected void setRoomInfo(Map<RoomPosition, RoomSaveEntry> saveMap, JsonValue file) {
 
         //Already visited room Info
         JsonValue rooms = file.get(SaveFieldsEnum.ROOMS.getFieldName());
@@ -78,14 +76,14 @@ public abstract class AbstractSaveFileManager {
         }
 
         //Main loop
-        Vector2 roomPositionInCurrentSave;
+        RoomPosition roomPositionInCurrentSave;
         int casualNumberPredefined;
         JsonValue flagsJson;
         JsonValue poiStateJson;
 
         for (JsonValue roomSaveEntry : rooms) {
-            roomPositionInCurrentSave = new Vector2(roomSaveEntry.getFloat(SaveFieldsEnum.X.getFieldName()),
-                    roomSaveEntry.getFloat(SaveFieldsEnum.Y.getFieldName()));
+            roomPositionInCurrentSave = new RoomPosition(roomSaveEntry.getInt(SaveFieldsEnum.X.getFieldName()),
+                    roomSaveEntry.getInt(SaveFieldsEnum.Y.getFieldName()));
 
             casualNumberPredefined = roomSaveEntry.getInt(SaveFieldsEnum.CASUAL_NUMBER.getFieldName());
 
@@ -93,7 +91,7 @@ public abstract class AbstractSaveFileManager {
             poiStateJson = roomSaveEntry.get(SaveFieldsEnum.POI_STATES.getFieldName());
 
             saveMap.put(roomPositionInCurrentSave, new RoomSaveEntry(
-                    (int) roomPositionInCurrentSave.x, (int) roomPositionInCurrentSave.y, casualNumberPredefined,
+                    roomPositionInCurrentSave.getX(),roomPositionInCurrentSave.getY(), casualNumberPredefined,
                     parseJsonFlags(flagsJson), parseJsonPoiState(poiStateJson)));
         }
     }
@@ -170,12 +168,12 @@ public abstract class AbstractSaveFileManager {
      * @param saveMap
      * @throws SerializationException
      */
-    public abstract void loadSaveForGame(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap) throws SerializationException;
+    public abstract void loadSaveForGame(PlayerInstance player, Map<RoomPosition, RoomSaveEntry> saveMap) throws SerializationException;
 
     /**
      * Save on filesystem the predefined numbers of the casual rooms
      */
-    public abstract void saveOnFile(PlayerInstance player, Map<Vector2, RoomSaveEntry> saveMap);
+    public abstract void saveOnFile(PlayerInstance player, Map<RoomPosition, RoomSaveEntry> saveMap);
 
     /**
      * Clean saveFile for new game

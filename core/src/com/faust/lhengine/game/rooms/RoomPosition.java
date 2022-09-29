@@ -1,5 +1,9 @@
 package com.faust.lhengine.game.rooms;
 
+import com.badlogic.gdx.utils.NumberUtils;
+
+import java.io.Serializable;
+
 /**
  * Class for Room position in mainWorld.
  *
@@ -12,6 +16,11 @@ public class RoomPosition {
     public RoomPosition(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public RoomPosition(float x, float y) {
+        this.x = (int) x;
+        this.y = (int) y;
     }
 
     public int getX() {
@@ -28,6 +37,15 @@ public class RoomPosition {
         if (!(o instanceof RoomPosition)) return false;
         RoomPosition that = (RoomPosition) o;
         return x == that.x && y == that.y;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 11;
+        int result = 1;
+        result = prime * result + x;
+        result = prime * result + y;
+        return result;
     }
 
     @Override

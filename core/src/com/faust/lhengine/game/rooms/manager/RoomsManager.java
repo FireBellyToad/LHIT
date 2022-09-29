@@ -41,14 +41,14 @@ public class RoomsManager {
     private final List<OnRoomChangeListener> onRoomChangeListeners;
 
     private AbstractRoom currentRoom;
-    private final Vector2 currentRoomPosInWorld = new Vector2(0, 0);
+    private RoomPosition currentRoomPosInWorld = new RoomPosition(0, 0);
 
     /**
      * MainWorld Matrix
      */
-    private final Map<Vector2, RoomModel> mainWorld = new HashMap<>();
-    private final Map<Vector2, RoomSaveEntry> saveMap = new HashMap<>();
-    private final Vector2 mainWorldSize = new Vector2(0, 0);
+    private final Map<RoomPosition, RoomModel> mainWorld = new HashMap<>();
+    private final Map<RoomPosition, RoomSaveEntry> saveMap = new HashMap<>();
+    private RoomPosition mainWorldSize;
 
     private final WorldManager worldManager;
     private final TextBoxManager textManager;
@@ -77,10 +77,10 @@ public class RoomsManager {
     private void initMainWorld() {
 
         JsonValue terrains = new JsonReader().parse(Gdx.files.internal("mainWorldModel.json")).get("terrains");
-        mainWorldSize.set(0, 0);
+        final Vector2 mainWorldSize = new Vector2(0, 0);
 
         terrains.forEach((t) -> {
-            Vector2 v = new Vector2(t.getFloat("x"), t.getFloat("y"));
+            RoomPosition v = new RoomPosition(t.getInt("x"), t.getInt("y"));
             RoomTypeEnum type = RoomTypeEnum.valueOf(t.getString("roomType"));
             Objects.requireNonNull(type);
 
@@ -103,10 +103,10 @@ public class RoomsManager {
             }
 
             mainWorld.put(v, new RoomModel(boundaries, type));
-            mainWorldSize.set(Math.max(mainWorldSize.x, v.x), Math.max(mainWorldSize.y, v.y));
+            mainWorldSize.set(Math.max(mainWorldSize.x, v.getX()), Math.max(mainWorldSize.y, v.getY()));
         });
         // Finalize size
-        mainWorldSize.set(mainWorldSize.x + 1, mainWorldSize.y + 1);
+        this.mainWorldSize = new RoomPosition(mainWorldSize.x + 1, mainWorldSize.y + 1);
 
         //Try to load predefined casualnumbers for casual rooms from file
         try {
@@ -139,15 +139,15 @@ public class RoomsManager {
         }
 
         //Change room position
-        float finalX = (newRoomPosX < 0 ? mainWorldSize.x - 1 : (newRoomPosX == mainWorldSize.x ? 0 : newRoomPosX));
-        float finalY = (newRoomPosY < 0 ? mainWorldSize.y - 1 : (newRoomPosY == mainWorldSize.y ? 0 : newRoomPosY));
+        int finalX = (newRoomPosX < 0 ? mainWorldSize.getX() - 1 : (newRoomPosX == mainWorldSize.getX() ? 0 : newRoomPosX));
+        int finalY = (newRoomPosY < 0 ? mainWorldSize.getY() - 1 : (newRoomPosY == mainWorldSize.getY() ? 0 : newRoomPosY));
 
         // Safety check on y
         if (finalY == 8 && finalX != 3) {
             finalY--;
         }
 
-        currentRoomPosInWorld.set(finalX, finalY);
+        currentRoomPosInWorld = new RoomPosition(finalX, finalY);
 
         //get entry from save or create new
         currentRoomSaveEntry = saveMap.get(currentRoomPosInWorld);
@@ -160,7 +160,6 @@ public class RoomsManager {
             currentRoomSaveEntry.savedFlags.putAll(populateRoomFlags());
         }
 
-
         if (mainWorld.get(currentRoomPosInWorld).type == RoomTypeEnum.CASUAL) {
             currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
         } else {
@@ -168,9 +167,9 @@ public class RoomsManager {
         }
 
 
-        Gdx.app.log("DEBUG", "ROOM " + (int) currentRoomPosInWorld.x + "," + (int) currentRoomPosInWorld.y);
+        Gdx.app.log("DEBUG", "ROOM " + currentRoomPosInWorld.getX() + "," + currentRoomPosInWorld.getY());
         //Keep the same state of already visited rooms
-        saveMap.put(currentRoomPosInWorld.cpy(), currentRoomSaveEntry);
+        saveMap.put(new RoomPosition(currentRoomPosInWorld.getX(), currentRoomPosInWorld.getY()), currentRoomSaveEntry);
 
         // Notifiy all listeners
         for(OnRoomChangeListener l: onRoomChangeListeners){
@@ -189,7 +188,7 @@ public class RoomsManager {
         if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld).type)) {
             //If unvisited rooms are less than the number of found crosses to find, guarantee them
             final boolean guaranteedGoldcross = player.getItemQuantityFound(ItemEnum.GOLDCROSS) < 9 &&
-                    (mainWorldSize.x * mainWorldSize.y) - 10 <= (saveMap.size() + (9 - player.getItemQuantityFound(ItemEnum.GOLDCROSS)));
+                    (mainWorldSize.getX() * mainWorldSize.getY()) - 10 <= (saveMap.size() + (9 - player.getItemQuantityFound(ItemEnum.GOLDCROSS)));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_GOLDCROSS, guaranteedGoldcross);
 
             //Only three herbs can be found
@@ -199,7 +198,7 @@ public class RoomsManager {
 
             //If unvisited rooms (priority is on goldcross) are less than the number of found herbs to find, guarantee them
             final boolean guaranteedHerb = !mustNotHaveHerb && !guaranteedGoldcross &&
-                    (mainWorldSize.x * mainWorldSize.y) - 13 <= (saveMap.size() + (3 - player.getItemQuantityFound(ItemEnum.HEALTH_KIT)));
+                    (mainWorldSize.getX() * mainWorldSize.getY()) - 13 <= (saveMap.size() + (3 - player.getItemQuantityFound(ItemEnum.HEALTH_KIT)));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_HERBS, guaranteedHerb);
 
         } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld).type)) {
@@ -254,8 +253,8 @@ public class RoomsManager {
         player.setStartX(playerPosition.x);
         player.setStartY(playerPosition.y);
 
-        int newXPosInMatrix = (int) getCurrentRoomPosInWorld().x;
-        int newYPosInMatrix = (int) getCurrentRoomPosInWorld().y;
+        int newXPosInMatrix = getCurrentRoomPosInWorld().getX();
+        int newYPosInMatrix = getCurrentRoomPosInWorld().getY();
 
         DirectionEnum switchDirection = DirectionEnum.UNUSED;
         // Check for left or right passage
@@ -329,14 +328,14 @@ public class RoomsManager {
             }
 
             //Change room and clear nearest poi reference
-            if (getCurrentRoomPosInWorld().x != newXPosInMatrix || getCurrentRoomPosInWorld().y != newYPosInMatrix) {
+            if (getCurrentRoomPosInWorld().getX() != newXPosInMatrix || getCurrentRoomPosInWorld().getY() != newYPosInMatrix) {
                 changeCurrentRoom(newXPosInMatrix, newYPosInMatrix);
                 player.cleanReferences();
             }
         }
     }
 
-    public Vector2 getCurrentRoomPosInWorld() {
+    public RoomPosition getCurrentRoomPosInWorld() {
         return currentRoomPosInWorld;
     }
 
@@ -350,7 +349,7 @@ public class RoomsManager {
         currentRoom.dispose();
     }
 
-    public Map<Vector2, RoomSaveEntry> getSaveMap() {
+    public Map<RoomPosition, RoomSaveEntry> getSaveMap() {
         return saveMap;
     }
 
@@ -372,9 +371,9 @@ public class RoomsManager {
 
     public void putPlayerInStartingRoom(PlayerInstance player) {
 
-        for(Map.Entry<Vector2, RoomModel> entry : mainWorld.entrySet()){
+        for(Map.Entry<RoomPosition, RoomModel> entry : mainWorld.entrySet()){
             if(RoomTypeEnum.START_POINT.equals(entry.getValue().type)){
-                changeCurrentRoom((int) entry.getKey().x, (int) entry.getKey().y);
+                changeCurrentRoom(entry.getKey().getX(), entry.getKey().getY());
             }
         }
 

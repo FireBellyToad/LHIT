@@ -215,10 +215,10 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
      * Translate all accessory body
      */
     private void translateAccessoryBodies() {
-        rightSpearBody.setTransform(body.getPosition().x + 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 13 + SPEAR_SENSOR_Y_OFFSET, 0);
-        leftSpearBody.setTransform(body.getPosition().x - 13, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
-        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 14 + SPEAR_SENSOR_Y_OFFSET, 0);
+        rightSpearBody.setTransform(body.getPosition().x + 12, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        upSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y + 12 + SPEAR_SENSOR_Y_OFFSET, 0);
+        leftSpearBody.setTransform(body.getPosition().x - 12, body.getPosition().y + SPEAR_SENSOR_Y_OFFSET, 0);
+        downSpearBody.setTransform(body.getPosition().x - 4, body.getPosition().y - 12 + SPEAR_SENSOR_Y_OFFSET, 0);
         hitBox.setTransform(body.getPosition().x, body.getPosition().y + 8, 0);
     }
 
@@ -493,11 +493,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef rightSpearDef = new BodyDef();
         rightSpearDef.type = BodyDef.BodyType.KinematicBody;
         rightSpearDef.fixedRotation = true;
-        rightSpearDef.position.set(x + 2, y);
+        rightSpearDef.position.set(x + 2, y-1);
 
         // Define shape
         PolygonShape rightSpearShape = new PolygonShape();
-        rightSpearShape.setAsBox(4, 2);
+        rightSpearShape.setAsBox(6, 2);
 
         // Define Fixtures
         FixtureDef rightSpearFixtureDef = new FixtureDef();
@@ -517,11 +517,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef upSpearDef = new BodyDef();
         upSpearDef.type = BodyDef.BodyType.KinematicBody;
         upSpearDef.fixedRotation = true;
-        upSpearDef.position.set(x, y - 2);
+        upSpearDef.position.set(x, y - 1);
 
         // Define shape
         PolygonShape upSpearShape = new PolygonShape();
-        upSpearShape.setAsBox(2, 4);
+        upSpearShape.setAsBox(2, 6);
 
         // Define Fixtures
         FixtureDef upSpearFixtureDef = new FixtureDef();
@@ -545,7 +545,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
 
         // Define shape
         PolygonShape leftSpearShape = new PolygonShape();
-        leftSpearShape.setAsBox(4, 2);
+        leftSpearShape.setAsBox(6, 2);
 
         // Define Fixtures
         FixtureDef leftSpearFixtureDef = new FixtureDef();
@@ -565,11 +565,11 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
         BodyDef downSpearDef = new BodyDef();
         downSpearDef.type = BodyDef.BodyType.KinematicBody;
         downSpearDef.fixedRotation = true;
-        downSpearDef.position.set(x, y + 2);
+        downSpearDef.position.set(x, y +1);
 
         // Define shape
         PolygonShape downSpearShape = new PolygonShape();
-        downSpearShape.setAsBox(2, 4);
+        downSpearShape.setAsBox(2, 6);
 
         // Define Fixtures
         FixtureDef downSpearFixtureDef = new FixtureDef();

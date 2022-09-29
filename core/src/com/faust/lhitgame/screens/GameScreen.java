@@ -1,6 +1,7 @@
 package com.faust.lhitgame.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -58,9 +59,8 @@ public class GameScreen implements Screen {
         splashManager = new SplashManager(textManager, assetManager);
         pauseManager = new PauseManager(game.getSaveFileManager(), game.getMusicManager(), assetManager);
         darknessRenderer = new DarknessRenderer(assetManager);
-        worldManager = new WorldManager(this.game.isWebBuild());
+        worldManager = new WorldManager();
         player = new PlayerInstance(assetManager,this.game.isWebBuild());
-
 
     }
 
@@ -71,6 +71,14 @@ public class GameScreen implements Screen {
         musicManager.initTuneMap(assetManager);
         Gdx.input.setInputProcessor(player);
 
+        if(this.game.isWebBuild()){
+            //Prevents arrow keys browser scrolling
+            Gdx.input.setCatchKey(Input.Keys.UP, true);
+            Gdx.input.setCatchKey(Input.Keys.DOWN, true);
+            Gdx.input.setCatchKey(Input.Keys.LEFT, true);
+            Gdx.input.setCatchKey(Input.Keys.RIGHT, true);
+        }
+
         roomsManager = new RoomsManager(worldManager, textManager, splashManager, player, cameraManager.getCamera(),
                 assetManager, game.getSaveFileManager(), game.getMusicManager());
 
@@ -79,20 +87,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        // Stops game logic if splash screen is shown or game is paused
-        if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
-
-            // If player is not input processor, reset it
-            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
-                player.setAsInputProcessor();
-
-            worldManager.doStep();
-            doLogic();
-        } else if (pauseManager.isGamePaused()) {
-            //Handle pause logic
-            pauseManager.doLogic(game,player, roomsManager);
-        }
-
+        //Render before game logic to avoid desync
         //Prevent animations while paused
         if (!pauseManager.isGamePaused()) {
             stateTime += Gdx.graphics.getDeltaTime();
@@ -118,6 +113,21 @@ public class GameScreen implements Screen {
 
 //       cameraManager.box2DDebugRenderer(worldManager.getWorld());
 
+
+        // Stops game logic if splash screen is shown or game is paused
+        if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
+
+            // If player is not input processor, reset it
+            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
+                player.setAsInputProcessor();
+
+            worldManager.doStep(delta);
+            doLogic();
+        } else if (pauseManager.isGamePaused()) {
+            //Handle pause logic
+            pauseManager.doLogic(game,player, roomsManager);
+        }
+
     }
 
     private void drawOverlays() {
@@ -128,7 +138,7 @@ public class GameScreen implements Screen {
         if (splashManager.isDrawingSplash()) {
             splashManager.drawSplash(game.getBatch(),stateTime);
         } else {
-            darknessRenderer.drawDarkness(game.getBatch(), player.getBody().getPosition(), cameraManager.getCamera(), GameBehavior.IDLE.equals(player.getCurrentBehavior()));
+            darknessRenderer.drawDarkness(game.getBatch(), player.getBody().getPosition(), cameraManager.getCamera(), !GameBehavior.WALK.equals(player.getCurrentBehavior()));
             hud.drawHud(game.getBatch(), player, cameraManager.getCamera());
             if (pauseManager.isGamePaused()) {
                 pauseManager.draw(game.getBatch(),cameraManager.getCamera());

@@ -38,5 +38,6 @@ public class HtmlLauncher extends GwtApplication {
                 meterPanel.addStyleName("nostripes");
                 meterStyle.setProperty("backgroundColor", "#000000");
                 meterStyle.setProperty("backgroundImage", "none");
+
         }
 }

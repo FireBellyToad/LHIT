@@ -111,7 +111,6 @@ public class RoomsManager {
         //Try to load predefined casualnumbers for casual rooms from file
         try {
             saveFileManager.loadSaveForGame(player, saveMap);
-
         } catch (SerializationException ex) {
             Gdx.app.log("WARN", "No valid savefile to load");
         }
@@ -369,5 +368,15 @@ public class RoomsManager {
      */
     public void addRoomChangeListener(OnRoomChangeListener listener){
         onRoomChangeListeners.add(listener);
+    }
+
+    public void putPlayerInStartingRoom(PlayerInstance player) {
+
+        for(Map.Entry<Vector2, RoomModel> entry : mainWorld.entrySet()){
+            if(RoomTypeEnum.START_POINT.equals(entry.getValue().type)){
+                changeCurrentRoom((int) entry.getKey().x, (int) entry.getKey().y);
+            }
+        }
+
     }
 }

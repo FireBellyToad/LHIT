@@ -83,7 +83,7 @@ public class GameScreen implements Screen {
         worldRenderer = new TopViewWorldRenderer(game.getBatch(), cameraManager, splashManager, new DarknessRenderer(assetManager));
 
         roomsManager.addRoomChangeListener(worldRenderer);
-        roomsManager.changeCurrentRoom(3, 0); // start room
+        roomsManager.putPlayerInStartingRoom(player); // start room
 
     }
 

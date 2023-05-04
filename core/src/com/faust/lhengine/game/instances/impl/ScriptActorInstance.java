@@ -88,6 +88,9 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
      * @param stateTime   stateTime of the main loop
      */
     private void executeCommands(final Map<ScriptCommandsEnum, Object> commands, RoomContent roomContent, float stateTime) {
+
+        final Boolean checkOnEveryFrame = (Boolean) commands.getOrDefault(ScriptCommandsEnum.CHECK_ON_EVERY_FRAME, false);
+
         //Move if should
         if (commands.containsKey(ScriptCommandsEnum.DIRECTION) && commands.containsKey(ScriptCommandsEnum.SPEED)) {
             DirectionEnum directionEnum = DirectionEnum.valueOf((String) commands.get(ScriptCommandsEnum.DIRECTION));
@@ -99,14 +102,25 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
 
         //Reuse animation of another step if specified
         GameBehavior animationToUse = getCurrentBehavior();
-        if(commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
+        if (commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
             animationToUse = ((ScriptActorEntity) entity).getStepOrder().get((Integer) commands.get(ScriptCommandsEnum.USE_ANIMATION_OF_STEP));
         }
 
-        //If animation is finished pass to the next step
-        if (((ScriptActorEntity) this.entity).isAnimationFinished(animationToUse, mapStateTimeFromBehaviour(stateTime))) {
+        //If checkOnEveryFrame is true, that potentially cut the time to do check and go to next step
+        Integer index = null;
+        boolean isJustNextStep = true;
+        if (checkOnEveryFrame) {
             final List<GameBehavior> stepOrder = ((ScriptActorEntity) entity).getStepOrder();
-            int index = getNewIndex(stepOrder, commands, roomContent);
+            index = getNewIndex(stepOrder, commands, roomContent);
+            isJustNextStep = index == stepOrder.indexOf(getCurrentBehavior());
+        }
+
+        //If a new step index is found AND is not just next step OR animation is ended THEN pass to the next step
+        if ((index != null && !isJustNextStep) || ((ScriptActorEntity) this.entity).isAnimationFinished(animationToUse, mapStateTimeFromBehaviour(stateTime))) {
+            final List<GameBehavior> stepOrder = ((ScriptActorEntity) entity).getStepOrder();
+            if (index == null) {
+                index = getNewIndex(stepOrder, commands, roomContent);
+            }
 
             Gdx.app.log("DEBUG", "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " end step " + getCurrentBehavior());
 
@@ -119,11 +133,12 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
                     roomContent.player.hurt(this);
                 }
 
+                //Go to next step
                 changeCurrentBehavior(((ScriptActorEntity) entity).getStepOrder().get(index + 1));
                 showTextBox = true;
             } else {
                 removeFromRoom = true;
-                spawnInstancesOnEnd(commands);
+                spawnInstances(commands);
                 Gdx.app.log("DEBUG", "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " must be removed ");
             }
         }
@@ -139,16 +154,23 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
      */
     private int getNewIndex(List<GameBehavior> stepOrder, Map<ScriptCommandsEnum, Object> commands, RoomContent roomContent) {
 
-        //If has "go to step", handle it correctly
+        //If has "go to step" or "terminate", handle it correctly
         if (commands.containsKey(ScriptCommandsEnum.STEP)) {
 
             final Integer index = (Integer) commands.get(ScriptCommandsEnum.STEP);
 
             if (checkConditionalCommands(commands, roomContent)) {
+
                 //If no "until" condition, just jump to "go to step" value
                 return stepOrder.indexOf(GameBehavior.getFromOrdinal(index));
+
             }
 
+        } else if (commands.containsKey(ScriptCommandsEnum.END)) {
+            //return Size to end echo
+            if (checkConditionalCommands(commands, roomContent)) {
+               return stepOrder.size();
+            }
         }
 
         // or else, just get next
@@ -161,7 +183,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
      * @return true if all conditionals commands are true
      */
     private boolean checkConditionalCommands(Map<ScriptCommandsEnum, Object> commands, RoomContent roomContent) {
-        boolean areConditionsTrue = true;
+        boolean areConditionsTrue = false;
         //Check condition on until Player has at least less then N damage (priority on other checks)
         if (commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN)) {
             //Extract value of damage
@@ -178,19 +200,19 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             //Extract instance class from enum and do check
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-            areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
         } else if (commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE)) {
             //Check condition on if there is no enemy of type is alive in room
             //Extract instance class from enum and do check
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-            areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
         }
 
         if (commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
             //Extract Poi type and do check
             final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE));
-            areConditionsTrue = areConditionsTrue && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+            areConditionsTrue = areConditionsTrue || roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
         }
 
         return areConditionsTrue;
@@ -201,7 +223,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
      *
      * @param commands
      */
-    private void spawnInstancesOnEnd(Map<ScriptCommandsEnum, Object> commands) {
+    private void spawnInstances(Map<ScriptCommandsEnum, Object> commands) {
 
         //Should not spawn anything if has no identifier
         if (!commands.containsKey(ScriptCommandsEnum.IDENTIFIER))
@@ -316,8 +338,9 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         }
 
         final Map<ScriptCommandsEnum, Object> commands = ((ScriptActorEntity) this.entity).getCommandsForStep(getCurrentBehavior());
+
+        //If has ScriptCommandsEnum.INVISIBLE == true don't draw anything
         if ((Boolean) commands.getOrDefault(ScriptCommandsEnum.INVISIBLE, false)) {
-            //Don't draw anything
             return;
         }
 
@@ -325,8 +348,8 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
 
         //Reuse animation of another step if specified
         GameBehavior animationToUse = getCurrentBehavior();
-        if(commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
-           animationToUse = ((ScriptActorEntity) entity).getStepOrder().get((Integer) commands.get(ScriptCommandsEnum.USE_ANIMATION_OF_STEP));
+        if (commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
+            animationToUse = ((ScriptActorEntity) entity).getStepOrder().get((Integer) commands.get(ScriptCommandsEnum.USE_ANIMATION_OF_STEP));
         }
 
         // Should not loop!

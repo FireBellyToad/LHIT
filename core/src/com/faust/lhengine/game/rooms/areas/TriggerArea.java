@@ -83,9 +83,13 @@ public class TriggerArea {
      */
     public void activate(PlayerInstance player){
 
+        //Has the player all the needed items (if any) to activate the trigger?
         final boolean missingNeededItem= !itemsNeededForTrigger.isEmpty() && itemsNeededForTrigger.stream().anyMatch(itemEnum -> player.getItemQuantityFound(itemEnum) == 0);
+
+        //is referencedInstance a POI that has been used?
         final boolean referencedInstanceHasBeenUsed = referencedInstance instanceof POIInstance && ((POIInstance)referencedInstance).isAlreadyExamined();
 
+        //If both are true, then activate the trigger
         this.activated = !missingNeededItem && (TriggerTypeEnum.CONTACT.equals(this.triggerTypeEnum)  || referencedInstanceHasBeenUsed);
 
     }

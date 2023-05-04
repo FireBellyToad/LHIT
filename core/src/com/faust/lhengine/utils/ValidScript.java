@@ -13,7 +13,9 @@ import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Valid Script extractedCommands enum
@@ -30,13 +32,15 @@ public class ValidScript {
      * @throws ScriptValidationException
      */
     public static void validate(JsonValue parsedSteps, String filename) throws ScriptValidationException {
-        int parsedStepNumber = 1;
+        int parsedStepNumber = 0;
+        final Set<ScriptCommandsEnum> incompatibleCommandInStepSet = new HashSet();
         try {
             Objects.requireNonNull(parsedSteps);
 
             for (JsonValue s : parsedSteps) {
-                inspect(s.child, filename, parsedStepNumber);
+                inspect(s.child, filename, parsedStepNumber, incompatibleCommandInStepSet);
                 parsedStepNumber++;
+                incompatibleCommandInStepSet.clear();
             }
         } catch (ScriptValidationException e) {
             throw e;
@@ -49,12 +53,13 @@ public class ValidScript {
     /**
      * Validate a single step
      *
-     * @param child            step to validate
-     * @param filename         filename of the extracted step (readonly, used for logs)
-     * @param parsedStepNumber (readonly, used for logs)
+     * @param child                        step to validate
+     * @param filename                     filename of the extracted step (readonly, used for logs)
+     * @param parsedStepNumber             (readonly, used for logs)
+     * @param incompatibleCommandInStepSet
      * @throws ScriptValidationException
      */
-    private static void inspect(JsonValue child, final String filename, final int parsedStepNumber) throws ScriptValidationException {
+    private static void inspect(JsonValue child, final String filename, final int parsedStepNumber, final Set<ScriptCommandsEnum> incompatibleCommandInStepSet) throws ScriptValidationException {
 
         try {
             if (Objects.nonNull(child)) {
@@ -92,14 +97,14 @@ public class ValidScript {
                         }
 
                         //Recursion for children extractedCommands
-                        inspect(child.child, filename, parsedStepNumber);
+                        inspect(child.child, filename, parsedStepNumber, incompatibleCommandInStepSet);
                     }
                 }
                 EnemyEnum enemyEnum = null;
 
                 //String values validation
                 switch (extractedCommand) {
-                    case IF_AT_LEAST_ONE_KILLABLE_ALIVE:{
+                    case IF_AT_LEAST_ONE_KILLABLE_ALIVE: {
 
                         try {
                             enemyEnum = EnemyEnum.valueOf((String) extractedValue);
@@ -107,7 +112,7 @@ public class ValidScript {
                             throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
                         }
 
-                        if(!ClassReflection.isAssignableFrom(Killable.class,enemyEnum.getInstanceClass())){
+                        if (!ClassReflection.isAssignableFrom(Killable.class, enemyEnum.getInstanceClass())) {
                             throw new IllegalArgumentException(extractedValue + " is not valid Killable!");
                         }
                         break;
@@ -143,11 +148,19 @@ public class ValidScript {
                         }
                         break;
                     }
+                    case USE_ANIMATION_OF_STEP: {
+                        if (extractedValue.equals(parsedStepNumber)) {
+                            throw new IllegalArgumentException(" useAnimationOfStep cannot have value of " + extractedValue + " because is the same as the step!");
+                        }
+                        break;
+                    }
                 }
+
+                checkIncompatibleCommands(extractedCommand, incompatibleCommandInStepSet);
 
                 if (Objects.nonNull(child.next)) {
                     //Recursion for children extractedCommands
-                    inspect(child.next, filename, parsedStepNumber);
+                    inspect(child.next, filename, parsedStepNumber, incompatibleCommandInStepSet);
                 }
             }
         } catch (ScriptValidationException e) {
@@ -162,7 +175,28 @@ public class ValidScript {
     }
 
     /**
+     * @param extractedCommand
+     * @param incompatibleCommandInStepSet
+     */
+    private static void checkIncompatibleCommands(ScriptCommandsEnum extractedCommand, Set<ScriptCommandsEnum> incompatibleCommandInStepSet) {
+        switch (extractedCommand) {
+            case STEP:
+            case END: {
+                if (!incompatibleCommandInStepSet.contains(ScriptCommandsEnum.STEP) && !incompatibleCommandInStepSet.contains(ScriptCommandsEnum.END)) {
+                    incompatibleCommandInStepSet.add(extractedCommand);
+                } else {
+                    throw new IllegalArgumentException("\"goTo\" and \"end\" cannot be on same step!");
+                }
+            }
+            default:
+                break;
+
+        }
+    }
+
+    /**
      * Validate all game scripts
+     *
      * @throws ScriptValidationException
      */
     public static void validateAllScriptsGdx() throws ScriptValidationException {

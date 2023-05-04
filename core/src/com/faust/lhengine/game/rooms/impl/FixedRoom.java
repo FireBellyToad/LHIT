@@ -131,14 +131,16 @@ public class FixedRoom extends AbstractRoom {
         GameInstance referencedInstance = null;
         List<ItemEnum> requiredItemList = Collections.emptyList();
 
+        //Search referencedInstanceId in POIs
         if(Objects.nonNull(referencedInstanceId)){
 
             referencedInstance = roomContent.poiList.stream().filter(p -> p.getPoiIdInMap() == referencedInstanceId).findFirst().orElse(null);
 
-            //Fallback on decorations
+            //Fallback on decorations if no POI with referencedInstanceId has been found
             if(Objects.isNull(referencedInstance)){
                 referencedInstance = roomContent.decorationList.stream().filter(d -> d.getDecoIdInMap() == referencedInstanceId).findFirst().orElse(null);
             } else {
+                //Set requiredItemList to the item required to activate POI (right now Singleton list)
                 POIInstance poi = ((POIInstance) referencedInstance);
                 if(Objects.nonNull(poi.getType().getItemRequired())){
                     requiredItemList = Collections.singletonList(poi.getType().getItemRequired());
@@ -211,8 +213,8 @@ public class FixedRoom extends AbstractRoom {
         //Disable Echo on room leave if activated trigger is already examined POI
         if (!roomContent.roomFlags.get(RoomFlagEnum.DISABLED_ECHO) && roomContent.triggerAreaList.stream().anyMatch(t->
                 (t.isActivated() && Objects.isNull(t.getReferencedInstance())) || //activated trigger without referenced Instance
-                (t.isActivated() && Objects.nonNull(t.getReferencedInstance()) && !(t.getReferencedInstance() instanceof POIInstance)) ||  //activated trigger with a non POI referenced Instance
-                (t.isActivated() && Objects.nonNull(t.getReferencedInstance()) && t.getReferencedInstance() instanceof POIInstance && ((POIInstance) t.getReferencedInstance()).isAlreadyExamined()))) {//activated trigger with an activated POI referenced Instance
+                        (t.isActivated() && Objects.nonNull(t.getReferencedInstance()) && !(t.getReferencedInstance() instanceof POIInstance)) ||  //activated trigger with a non POI referenced Instance
+                        (t.isActivated() && Objects.nonNull(t.getReferencedInstance()) && t.getReferencedInstance() instanceof POIInstance && ((POIInstance) t.getReferencedInstance()).isAlreadyExamined()))) {//activated trigger with an activated POI referenced Instance
             roomContent.roomFlags.put(RoomFlagEnum.DISABLED_ECHO, true);
         }
 

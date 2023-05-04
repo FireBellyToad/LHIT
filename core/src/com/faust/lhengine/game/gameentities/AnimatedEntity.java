@@ -128,6 +128,17 @@ public abstract class AnimatedEntity extends TexturedEntity {
     }
 
     /**
+     * Returns current frame Index (with DirectionEnum.UNUSED)
+     *
+     * @param behavior  The behavior of the animation
+     * @param stateTime state time to render
+     * @return true if animation is finished
+     */
+    public int getFrameIndex(GameBehavior behavior,  float stateTime) {
+        return getFrameIndex(behavior, DirectionEnum.UNUSED, stateTime);
+    }
+
+    /**
      * Returns current frame Index
      *
      * @param behavior  The behavior of the animation

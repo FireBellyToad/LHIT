@@ -22,9 +22,12 @@ import java.util.*;
  */
 public class ScriptActorEntity extends AnimatedEntity {
 
+    private static final int MAX_SUPPORTED_ROWS = 5; //for sprite sheet
+
     private final ScriptActorType scriptActorType;
     private Sound startingSound;
-    private int precalculatedRows = 5;
+    private int precalculatedRows = MAX_SUPPORTED_ROWS;
+
 
     //Each step, ordered
     private final List<GameBehavior> stepOrder = new ArrayList<>();

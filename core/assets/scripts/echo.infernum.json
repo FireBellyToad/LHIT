@@ -4,9 +4,14 @@
   "steps": [
     {
       "invisible": true,
+      "renderOnlyMapLayer": "ECHO_LAYER"
+    },
+    {
+      "invisible": true,
       "renderOnlyMapLayer": "ECHO_LAYER",
       "goTo" :{
-        "step": 3,
+        "checkOnEveryFrame": true,
+        "end": true,
         "ifPlayerDamageIsMoreThan":5,
         "ifNoKillableAlive":"ESCAPE_PORTAL"
       }
@@ -14,22 +19,32 @@
     {
       "invisible": true,
       "renderOnlyMapLayer": "ECHO_LAYER",
+      "goTo" :{
+        "end": true,
+        "checkOnEveryFrame": true,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive":"ESCAPE_PORTAL"
+      },
       "hurtPlayer": {
         "damage": 1,
         "canKillPlayer": false
-      },
-      "goTo" :{
-        "step": 3,
-        "ifPlayerDamageIsMoreThan":5,
-        "ifNoKillableAlive":"ESCAPE_PORTAL"
       }
     },
     {
-      "textBoxKey": "echo.infernum.first",
       "invisible": true,
       "renderOnlyMapLayer": "ECHO_LAYER",
       "goTo" :{
-        "step": 0,
+        "end": true,
+        "checkOnEveryFrame": true,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive":"ESCAPE_PORTAL"
+      }
+    },{
+      "invisible": true,
+      "renderOnlyMapLayer": "ECHO_LAYER",
+      "goTo" :{
+        "step": 1,
+        "checkOnEveryFrame": true,
         "ifPlayerDamageIsLessThan":5,
         "ifAtLeastOneKillableAlive":"ESCAPE_PORTAL"
       }

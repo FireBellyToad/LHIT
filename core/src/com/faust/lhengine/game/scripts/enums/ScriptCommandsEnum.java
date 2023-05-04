@@ -11,7 +11,7 @@ public enum ScriptCommandsEnum {
     RENDER_ONLY_MAP_LAYER("renderOnlyMapLayer", String.class),
     DIRECTION("direction", String.class, true),
     SPEED("speed", Integer.class, true),
-    STEP("step", Integer.class, true),
+    STEP("step", Integer.class),
     TIMES("times", Integer.class),
     IF_AT_LEAST_ONE_KILLABLE_ALIVE("ifAtLeastOneKillableAlive", String.class),
     IF_AT_LEAST_ONE_POI_EXAMINABLE("ifAtLeastOnePOIExaminable", String.class),
@@ -23,19 +23,20 @@ public enum ScriptCommandsEnum {
     Y("y", Integer.class),
     RELATIVE("relative", Boolean.class),
     INVISIBLE("invisible", Boolean.class),
-    DAMAGE("damage",Integer.class,true),
-    CAN_KILL_PLAYER("canKillPlayer",Boolean.class),
+    DAMAGE("damage", Integer.class, true),
+    CAN_KILL_PLAYER("canKillPlayer", Boolean.class),
     IF_NO_KILLABLE_ALIVE("ifNoKillableAlive", String.class),
     IF_PLAYER_DAMAGE_IS_MORE_THAN("ifPlayerDamageIsMoreThan", Integer.class),
-    MUST_END("mustEnd", Boolean.class),
     USE_ANIMATION_OF_STEP("useAnimationOfStep", Integer.class),
+    CHECK_ON_EVERY_FRAME("checkOnEveryFrame", Boolean.class),
+    END("end", Boolean.class),
 
 
     //Composite
-    HURT_PLAYER("hurtPlayer", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{DAMAGE,CAN_KILL_PLAYER}),
+    HURT_PLAYER("hurtPlayer", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{DAMAGE, CAN_KILL_PLAYER}),
     MOVE("move", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{DIRECTION, SPEED}),
-    GO_TO("goTo", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{STEP, TIMES, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, IF_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN}),
-    SPAWN("spawn", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{IDENTIFIER, X, Y,RELATIVE});
+    GO_TO("goTo", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{STEP, END, TIMES, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, IF_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN, CHECK_ON_EVERY_FRAME}),
+    SPAWN("spawn", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{IDENTIFIER, X, Y, RELATIVE});
 
     private final String commandString;
     private final Class<?> valueClass;

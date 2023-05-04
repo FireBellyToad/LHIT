@@ -3,25 +3,34 @@
   "description": "A flesh pillar that bounces the player around",
   "steps": [
     {
-      "goTo": {
-        "step": 2,
-        "ifPlayerDamageIsMoreThan": 5,
-        "ifNoKillableAlive": "ESCAPE_PORTAL"
-      }
+
     },
     {
       "goTo": {
-        "step": 2,
-        "ifPlayerDamageIsMoreThan": 5,
+        "end": true,
+        "checkOnEveryFrame": true,
+        "ifPlayerDamageIsMoreThan":5,
         "ifNoKillableAlive": "ESCAPE_PORTAL"
-      }
+      },
+      "useAnimationOfStep": 0
     },
     {
       "goTo": {
-        "step": 0,
-        "ifPlayerDamageIsLessThan": 5,
+        "end": true,
+        "checkOnEveryFrame": true,
+        "ifPlayerDamageIsMoreThan":5,
+        "ifNoKillableAlive": "ESCAPE_PORTAL"
+      },
+      "useAnimationOfStep": 0
+    },
+    {
+      "goTo": {
+        "step": 1,
+        "checkOnEveryFrame": true,
+        "ifPlayerDamageIsLessThan":5,
         "ifAtLeastOneKillableAlive": "ESCAPE_PORTAL"
-      }
+      },
+      "useAnimationOfStep": 0
     }
   ]
 }

@@ -1,6 +1,7 @@
 [
     {
         "color": "#ffffffff",
+        "drawFill": true,
         "id": 6,
         "members": [
             {
@@ -48,6 +49,7 @@
     },
     {
         "color": "#ffffaa00",
+        "drawFill": true,
         "id": 7,
         "members": [
             {
@@ -55,6 +57,11 @@
                 "propertyType": "ScriptsActorType",
                 "type": "string",
                 "value": "DISCIPULUS"
+            },
+            {
+                "name": "triggeredById",
+                "type": "int",
+                "value": 0
             }
         ],
         "name": "ECHO_ACTOR",
@@ -66,6 +73,7 @@
     },
     {
         "color": "#ffa0a0a4",
+        "drawFill": true,
         "id": 8,
         "members": [
             {
@@ -83,6 +91,7 @@
     },
     {
         "color": "#ffff0000",
+        "drawFill": true,
         "id": 9,
         "members": [
             {
@@ -120,6 +129,7 @@
     },
     {
         "color": "#ffffff00",
+        "drawFill": true,
         "id": 10,
         "members": [
         ],
@@ -132,6 +142,7 @@
     },
     {
         "color": "#ff0000ff",
+        "drawFill": true,
         "id": 11,
         "members": [
             {
@@ -203,6 +214,7 @@
     },
     {
         "color": "#ffffaa00",
+        "drawFill": true,
         "id": 12,
         "members": [
             {
@@ -237,6 +249,7 @@
     },
     {
         "color": "#ff000000",
+        "drawFill": true,
         "id": 13,
         "members": [
         ],

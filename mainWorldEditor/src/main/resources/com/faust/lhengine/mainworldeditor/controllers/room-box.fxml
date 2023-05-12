@@ -7,13 +7,14 @@
 
 <VBox fx:id="rootVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.faust.lhengine.mainworldeditor.controllers.RoomBoxController">
    <children>
-      <Pane prefHeight="300.0" prefWidth="300.0" style="-fx-border-color: black; -fx-border-width: 5 px;">
+      <Pane onMouseClicked="#selectBoundary" prefHeight="300.0" prefWidth="300.0" style="-fx-border-color: black; -fx-border-width: 5 px;">
          <children>
             <ComboBox fx:id="terrainTypesCombobox" layoutX="87.0" layoutY="138.0" onAction="#onChangeTerrainType" prefHeight="25.0" prefWidth="127.0" />
-            <Button layoutX="234.0" layoutY="138.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="124.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="14.0" layoutY="138.0" mnemonicParsing="false" text="Button" />
-            <Button layoutX="124.0" layoutY="261.0" mnemonicParsing="false" text="Button" />
+            <Button layoutX="241.0" layoutY="138.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Right" userData="RIGHT" />
+            <Button layoutX="135.0" layoutY="14.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Up" userData="UP" />
+            <Button layoutX="14.0" layoutY="138.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Left" userData="LEFT" />
+            <Button layoutX="124.0" layoutY="261.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Down" userData="DOWN" />
+            <Button fx:id="closeBoundaryButton" disable="true" layoutX="101.0" layoutY="83.0" mnemonicParsing="false" onAction="#closeBoundary" text="Close boundary" />
          </children>
       </Pane>
    </children>

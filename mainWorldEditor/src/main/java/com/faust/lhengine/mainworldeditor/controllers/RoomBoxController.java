@@ -1,13 +1,17 @@
 package com.faust.lhengine.mainworldeditor.controllers;
 
+import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.mediator.ControllerMediator;
 import javafx.collections.FXCollections;
+import javafx.css.PseudoClass;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 
 import java.net.URL;
@@ -24,15 +28,14 @@ public class RoomBoxController extends AbstractController implements Initializab
     private RoomPosition roomPosition;
 
     @FXML
+    private Button closeBoundaryButton;
+
+
+    @FXML
     private ComboBox<RoomTypeEnum> terrainTypesCombobox;
 
     @FXML
     protected void onChangeTerrainType(Event event) {
-
-        if (Objects.isNull(roomPosition)) {
-            roomPosition = ((Map.Entry<RoomPosition, RoomModel>) rootVbox.getUserData()).getKey();
-        }
-
         ControllerMediator.getInstance().mainWorldEditorControllerSetNewRoomType(roomPosition, terrainTypesCombobox.getValue());
     }
 
@@ -47,10 +50,48 @@ public class RoomBoxController extends AbstractController implements Initializab
 
     }
 
+    /**
+     * Populate room box editable fields
+     *
+     * @param entry
+     */
     public void setRoomData(Map.Entry<RoomPosition, RoomModel> entry) {
 
         roomModel = entry.getValue();
         roomPosition = entry.getKey();
         terrainTypesCombobox.getSelectionModel().select(roomModel.type);
+    }
+
+    @FXML
+    public void startBoundarySelection(Event event){
+        String directionEnumData = (String) ((Node) event.getSource()).getUserData();
+
+        DirectionEnum directionEnum = DirectionEnum.valueOf(directionEnumData);
+
+        ControllerMediator.getInstance().mainWorldEditorControllerStartBoundarySelection(directionEnum,roomPosition);
+
+        closeBoundaryButton.setDisable(false);
+    }
+
+    /**
+     *
+     */
+    @FXML
+    public void selectBoundary(){
+
+
+        ControllerMediator.getInstance().mainWorldEditorControllerSelectBoundary(roomPosition);
+        closeBoundaryButton.setDisable(true);
+    }
+
+    /**
+     *
+     */
+    @FXML
+    public void closeBoundary(){
+
+
+        ControllerMediator.getInstance().mainWorldEditorControllerSelectBoundary(null);
+        closeBoundaryButton.setDisable(true);
     }
 }

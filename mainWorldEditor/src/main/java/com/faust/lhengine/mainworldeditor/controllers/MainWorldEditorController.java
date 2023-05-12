@@ -1,6 +1,7 @@
 package com.faust.lhengine.mainworldeditor.controllers;
 
 import com.esotericsoftware.jsonbeans.Json;
+import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
@@ -31,6 +32,8 @@ public class MainWorldEditorController extends AbstractController {
 
     private MainWorldData mainWorldData;
     private Pair<Integer,Integer> worldLimit;
+    private boolean isBoundarySelectionModeOn = false;
+    private Pair<DirectionEnum,RoomPosition> boundarySelectionModeDestination = null;
 
     @FXML
     protected ScrollPane roomBoxContainer;
@@ -49,8 +52,8 @@ public class MainWorldEditorController extends AbstractController {
 
     @FXML
     protected void closeCurrentMainWorld() throws IOException {
-        mainWorldData.clear();
-        changeScene(MainWorldEditorScenes.EDITING);
+        mainWorldData = null;
+        roomBoxContainer.setContent(null);
     }
 
     @FXML
@@ -141,14 +144,13 @@ public class MainWorldEditorController extends AbstractController {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             mainWorldData = jsonParser.fromJson(MainWorldData.class,reader.lines().collect(Collectors.joining("\n")));
 
+            //Calculate width and height of the map
             int width = 0;
             int height =0;
 
             for(Map.Entry<RoomPosition, RoomModel> t : mainWorldData.terrains.entrySet()){
-
-                width = width < t.getKey().getX() ? t.getKey().getX()  : width;
-                height = height < t.getKey().getY() ? t.getKey().getY()  : height;
-
+                width = Math.max(width,t.getKey().getX());
+                height = Math.max(height,t.getKey().getY());
             }
 
             worldLimit = new Pair<>(width+1,height+1);
@@ -160,6 +162,11 @@ public class MainWorldEditorController extends AbstractController {
         }
     }
 
+    /**
+     * Populate the UI with the roomboxes for the map
+     *
+     * @throws IOException
+     */
     private void populateRoomBoxContainer() throws IOException {
 
         //Creates a GridPane with a RoomBox in each cell
@@ -173,15 +180,51 @@ public class MainWorldEditorController extends AbstractController {
             Node roomBox = loader.load();
             RoomBoxController controller = loader.getController();
             controller.setRoomData(entry);
-            //Use Hight - y for rendering to respect the bottom-left origin of the mainworld IN GAME
-            System.out.println("worldLimit.getSecond()- entry.getKey().getY() : "+ (worldLimit.getSecond()- entry.getKey().getY()));
+
+            //Use Height - y for rendering to respect the bottom-left origin of the mainworld IN GAME
             gridPane.add(roomBox,entry.getKey().getX(),worldLimit.getSecond()- entry.getKey().getY());
         }
 
-
-
         roomBoxContainer.setContent(gridPane);
         roomBoxContainer.setPannable(true); // it means that the user should be able to pan the viewport by using the mouse.
+    }
+
+    public boolean isBoundarySelectionModeOn() {
+        return isBoundarySelectionModeOn;
+    }
+
+    /**
+     * start BoundarySelectionMode
+     *
+     * @param directionEnum
+     * @param roomPosition
+     */
+    public void startBoundarySelection(DirectionEnum directionEnum, RoomPosition roomPosition) {
+
+        isBoundarySelectionModeOn = true;
+        boundarySelectionModeDestination = new Pair<>(directionEnum,roomPosition);
+
+    }
+
+    /**
+     * Select boundary if BoundarySelectionMode is on
+     *
+     * @param boundaryDestination
+     */
+    public void selectBoundary(RoomPosition boundaryDestination) {
+
+        if(isBoundarySelectionModeOn){
+
+            Objects.requireNonNull(boundarySelectionModeDestination);
+
+            RoomPosition position = boundarySelectionModeDestination.getSecond();
+            DirectionEnum direction = boundarySelectionModeDestination.getFirst();
+
+            mainWorldData.terrains.get(position).boundaries.put(direction,boundaryDestination);
+
+            isBoundarySelectionModeOn = false;
+            boundarySelectionModeDestination = null;
+        }
     }
 
 }

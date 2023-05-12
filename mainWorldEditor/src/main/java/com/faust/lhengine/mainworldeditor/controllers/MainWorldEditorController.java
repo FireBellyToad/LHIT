@@ -19,8 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -148,7 +147,7 @@ public class MainWorldEditorController extends AbstractController {
             for(Map.Entry<RoomPosition, RoomModel> t : mainWorldData.terrains.entrySet()){
 
                 width = width < t.getKey().getX() ? t.getKey().getX()  : width;
-                height = height < t.getKey().getY() ? t.getKey().getX()  : height;
+                height = height < t.getKey().getY() ? t.getKey().getY()  : height;
 
             }
 
@@ -172,11 +171,11 @@ public class MainWorldEditorController extends AbstractController {
         for(Map.Entry<RoomPosition,RoomModel> entry: mainWorldData.terrains.entrySet()){
             loader = new FXMLLoader(getClass().getResource(MainWorldEditorScenes.ROOM_BOX.getFilename()));
             Node roomBox = loader.load();
-            //mainWorldData as UserData
-//            roomBox.setUserData(entry);
             RoomBoxController controller = loader.getController();
             controller.setRoomData(entry);
-            gridPane.add(roomBox,entry.getKey().getX(), entry.getKey().getY());
+            //Use Hight - y for rendering to respect the bottom-left origin of the mainworld IN GAME
+            System.out.println("worldLimit.getSecond()- entry.getKey().getY() : "+ (worldLimit.getSecond()- entry.getKey().getY()));
+            gridPane.add(roomBox,entry.getKey().getX(),worldLimit.getSecond()- entry.getKey().getY());
         }
 
 

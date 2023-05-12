@@ -18,6 +18,7 @@
       "goTo": {
         "end": true,
         "checkOnEveryFrame": true,
+        "onlyOneConditionMustBeTrue": true,
         "ifPlayerDamageIsMoreThan":5,
         "ifNoKillableAlive": "ESCAPE_PORTAL"
       },
@@ -27,6 +28,7 @@
       "goTo": {
         "step": 1,
         "checkOnEveryFrame": true,
+        "onlyOneConditionMustBeTrue": true,
         "ifPlayerDamageIsLessThan":5,
         "ifAtLeastOneKillableAlive": "ESCAPE_PORTAL"
       },

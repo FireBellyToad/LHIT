@@ -4,18 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.SerializationException;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.ItemEnum;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 import com.faust.lhengine.game.music.MusicManager;
-import com.faust.lhengine.game.rooms.AbstractRoom;
-import com.faust.lhengine.game.rooms.OnRoomChangeListener;
-import com.faust.lhengine.game.rooms.RoomModel;
-import com.faust.lhengine.game.rooms.RoomPosition;
+import com.faust.lhengine.game.rooms.*;
 import com.faust.lhengine.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.game.rooms.impl.CasualRoom;
@@ -25,6 +21,7 @@ import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
+import com.faust.lhengine.utils.serialization.MainWorldSerializer;
 
 import java.util.*;
 
@@ -46,7 +43,7 @@ public class RoomsManager {
     /**
      * MainWorld Matrix
      */
-    private final Map<RoomPosition, RoomModel> mainWorld = new HashMap<>();
+    private MainWorldModel mainWorld;
     private final Map<RoomPosition, RoomSaveEntry> saveMap = new HashMap<>();
     private RoomPosition mainWorldSize;
 
@@ -76,35 +73,17 @@ public class RoomsManager {
      */
     private void initMainWorld() {
 
-        JsonValue terrains = new JsonReader().parse(Gdx.files.internal("mainWorldModel.json")).get("terrains");
-        final Vector2 mainWorldSize = new Vector2(0, 0);
+        final var mainWorldSize = new Vector2(0, 0);
+        final var jsonParser = new Json();
+        jsonParser.setSerializer(MainWorldModel.class, new MainWorldSerializer());
 
-        terrains.forEach((t) -> {
-            RoomPosition v = new RoomPosition(t.getInt("x"), t.getInt("y"));
-            RoomTypeEnum type = RoomTypeEnum.valueOf(t.getString("roomType"));
-            Objects.requireNonNull(type);
+        mainWorld = jsonParser.fromJson(MainWorldModel.class, Gdx.files.internal("mainWorldModel.json"));
 
-            //Parsing boundaries
-            JsonValue boundariesJson = t.get("boundaries");
-            Map<DirectionEnum, RoomPosition> boundaries = new HashMap<>();
-            if (Objects.nonNull(boundariesJson)) {
-                boundariesJson.forEach((b) -> {
-                    //Parsing targets
-                    JsonValue targetJson = b.get("target");
-                    //Null if impassable
-                    RoomPosition target = null;
-                    if (Objects.nonNull(targetJson.child)) {
-                        target = new RoomPosition(targetJson.getInt("x"), targetJson.getInt("y"));
-                    }
-                    DirectionEnum side = DirectionEnum.valueOf(b.getString("side"));
-                    Objects.requireNonNull(side);
-                    boundaries.put(side, target);
-                });
-            }
-
-            mainWorld.put(v, new RoomModel(boundaries, type));
-            mainWorldSize.set(Math.max(mainWorldSize.x, v.getX()), Math.max(mainWorldSize.y, v.getY()));
+        //TODO improve somehow?
+        mainWorld.terrains.forEach((roomPosition,roomModel) -> {
+            mainWorldSize.set(Math.max(mainWorldSize.x, roomPosition.getX()), Math.max(mainWorldSize.y, roomPosition.getY()));
         });
+        
         // Finalize size
         this.mainWorldSize = new RoomPosition(mainWorldSize.x + 1, mainWorldSize.y + 1);
 
@@ -160,10 +139,10 @@ public class RoomsManager {
             currentRoomSaveEntry.savedFlags.putAll(populateRoomFlags());
         }
 
-        if (mainWorld.get(currentRoomPosInWorld).type == RoomTypeEnum.CASUAL) {
+        if (mainWorld.terrains.get(currentRoomPosInWorld).type == RoomTypeEnum.CASUAL) {
             currentRoom = new CasualRoom(worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
         } else {
-            currentRoom = new FixedRoom(mainWorld.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
+            currentRoom = new FixedRoom(mainWorld.terrains.get(currentRoomPosInWorld).type, worldManager, textManager, splashManager, player, camera, assetManager, currentRoomSaveEntry, musicManager);
         }
 
 
@@ -185,7 +164,7 @@ public class RoomsManager {
         //default map
         Map<RoomFlagEnum, Boolean> newRoomFlags = RoomFlagEnum.generateDefaultRoomFlags();
 
-        if (RoomTypeEnum.CASUAL.equals(mainWorld.get(currentRoomPosInWorld).type)) {
+        if (RoomTypeEnum.CASUAL.equals(mainWorld.terrains.get(currentRoomPosInWorld).type)) {
             //If unvisited rooms are less than the number of found crosses to find, guarantee them
             final boolean guaranteedGoldcross = player.getItemQuantityFound(ItemEnum.GOLDCROSS) < 9 &&
                     (mainWorldSize.getX() * mainWorldSize.getY()) - 10 <= (saveMap.size() + (9 - player.getItemQuantityFound(ItemEnum.GOLDCROSS)));
@@ -201,7 +180,7 @@ public class RoomsManager {
                     (mainWorldSize.getX() * mainWorldSize.getY()) - 13 <= (saveMap.size() + (3 - player.getItemQuantityFound(ItemEnum.HEALTH_KIT)));
             newRoomFlags.put(RoomFlagEnum.GUARANTEED_HERBS, guaranteedHerb);
 
-        } else if (RoomTypeEnum.hasEchoes(mainWorld.get(currentRoomPosInWorld).type)) {
+        } else if (RoomTypeEnum.hasEchoes(mainWorld.terrains.get(currentRoomPosInWorld).type)) {
 
             //If echoes were disabled in this room, disable them
             if (saveMap.containsKey(currentRoomPosInWorld)) {
@@ -281,11 +260,11 @@ public class RoomsManager {
 
         // Adjustments for world extremes, semi pacman effect
         if (!DirectionEnum.UNUSED.equals(switchDirection)) {
-            boolean hasBoundary = mainWorld.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection);
+            boolean hasBoundary = mainWorld.terrains.get(currentRoomPosInWorld).boundaries.containsKey(switchDirection);
             if (hasBoundary) {
-                if (Objects.nonNull(mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
-                    newXPosInMatrix = mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getX();
-                    newYPosInMatrix = mainWorld.get(currentRoomPosInWorld).boundaries.get(switchDirection).getY();
+                if (Objects.nonNull(mainWorld.terrains.get(currentRoomPosInWorld).boundaries.get(switchDirection))) {
+                    newXPosInMatrix = mainWorld.terrains.get(currentRoomPosInWorld).boundaries.get(switchDirection).getX();
+                    newYPosInMatrix = mainWorld.terrains.get(currentRoomPosInWorld).boundaries.get(switchDirection).getY();
                 }
             }
             switch (switchDirection) {
@@ -371,7 +350,7 @@ public class RoomsManager {
 
     public void putPlayerInStartingRoom(PlayerInstance player) {
 
-        for(Map.Entry<RoomPosition, RoomModel> entry : mainWorld.entrySet()){
+        for(Map.Entry<RoomPosition, RoomModel> entry : mainWorld.terrains.entrySet()){
             if(RoomTypeEnum.START_POINT.equals(entry.getValue().type)){
                 changeCurrentRoom(entry.getKey().getX(), entry.getKey().getY());
             }

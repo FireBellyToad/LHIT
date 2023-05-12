@@ -1,8 +1,12 @@
 package com.faust.lhengine.mainworldeditor.model;
 
+import com.esotericsoftware.jsonbeans.Json;
+import com.esotericsoftware.jsonbeans.JsonSerializer;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
+import com.faust.lhengine.game.rooms.MainWorldModel;
 import com.faust.lhengine.game.rooms.RoomModel;
 import com.faust.lhengine.game.rooms.RoomPosition;
+import com.faust.lhengine.mainworldeditor.serialization.MainWorldSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,59 +20,23 @@ import java.util.Objects;
  */
 public class MainWorldData {
 
-    private final Map<RoomPosition, RoomModel> data = new HashMap<>();
-
-    public Map<RoomPosition, RoomModel> getData() {
-        return data;
-    }
+    public final Map<RoomPosition, RoomModel> terrains = new HashMap<>();
 
     /**
-     * FIXME improve with a proper library!
      *
      * @return a json of the room data
      */
     public String toJson() {
-        String json = "{ \"terrains\": [ ";
+        final Json jsonParser = new Json();
+        jsonParser.setSerializer(MainWorldData.class, new MainWorldSerializer());
 
-        //Rooms data
-        for (Map.Entry<RoomPosition, RoomModel> entry : data.entrySet()) {
-            json += "{ ";
 
-            json += "\"type\": \"" + entry.getValue().type.name() + "\", ";
-            json += entry.getKey() + " ";
+        String mapJson = jsonParser.toJson(this);
 
-            //Boundaries
-            if (!entry.getValue().boundaries.isEmpty()) {
-
-                for (Map.Entry<DirectionEnum, RoomPosition> boundary : entry.getValue().boundaries.entrySet()) {
-                    json += "{ ";
-                    json += "\"side\": \"" + boundary.getKey().name() + "\", ";
-                    json += "\"target\": ";
-
-                    if (Objects.isNull(boundary.getValue())) {
-                        json += "null ";
-                    } else {
-                        json += "{ \"";
-                        json += boundary.getValue() + " ";
-                        json += "} ";
-                    }
-
-                    json += "} ";
-                    json += "} ";
-                }
-            }
-
-            json += "}, ";
-        }
-
-        //remove last comma
-        json = json.substring(0,json.lastIndexOf(","));
-
-        json += " ] }";
-        return json;
+        return mapJson;
     }
 
     public void clear() {
-        data.clear();
+        terrains.clear();
     }
 }

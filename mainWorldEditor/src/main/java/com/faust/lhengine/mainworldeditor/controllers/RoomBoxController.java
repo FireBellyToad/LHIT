@@ -11,10 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Main World Editor Controller
@@ -48,5 +45,12 @@ public class RoomBoxController extends AbstractController implements Initializab
 
         terrainTypesCombobox.getSelectionModel().select(RoomTypeEnum.EMPTY_SPACE);
 
+    }
+
+    public void setRoomData(Map.Entry<RoomPosition, RoomModel> entry) {
+
+        roomModel = entry.getValue();
+        roomPosition = entry.getKey();
+        terrainTypesCombobox.getSelectionModel().select(roomModel.type);
     }
 }

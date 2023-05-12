@@ -47,7 +47,7 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#openModalPopupFromMenu" text="New" userData="NEW_WORLD_POPUP" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
+            <MenuItem mnemonicParsing="false" onAction="#loadMainWorldFromFile" text="Open…" />
             <Menu mnemonicParsing="false" text="Open Recent" />
             <SeparatorMenuItem mnemonicParsing="false" />
             <MenuItem mnemonicParsing="false" onAction="#closeCurrentMainWorld" text="Close" />

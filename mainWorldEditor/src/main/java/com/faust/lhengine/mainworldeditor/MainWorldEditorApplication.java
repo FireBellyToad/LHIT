@@ -19,7 +19,7 @@ public class MainWorldEditorApplication extends Application {
     public void start(Stage stage) throws IOException {
 
         //Opens up main view
-        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("controllers/"+MainWorldEditorScenes.MAIN.getFilename())));
+        Scene scene = new Scene(FXMLLoader.load(getClass().getResource("controllers/"+MainWorldEditorScenes.EDITING.getFilename())));
         stage.setTitle("LH-Engine Main World Editor");
         stage.setScene(scene);
         stage.show();

@@ -21,6 +21,7 @@ public class AbstractController {
 
     @FXML
     protected Parent rootVbox;
+    protected String uuid;
 
     public AbstractController() {
         ControllerMediator.getInstance().registerController(this);
@@ -63,7 +64,6 @@ public class AbstractController {
 
     }
 
-
     /**
      * Closes stage
      */
@@ -71,5 +71,9 @@ public class AbstractController {
     protected void closeStage(){
         final Stage stage = (Stage) rootVbox.getScene().getWindow();
         stage.close();
+    }
+
+    public String getUuid() {
+        return uuid;
     }
 }

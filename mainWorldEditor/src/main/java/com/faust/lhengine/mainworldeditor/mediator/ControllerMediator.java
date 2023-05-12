@@ -20,6 +20,7 @@ import java.util.Objects;
 public class ControllerMediator {
 
     private static final ControllerMediator INSTANCE = new ControllerMediator();
+    private static final String SEPARATOR = "|-|" ;
 
     private final Map<String,AbstractController> controllersMap = new HashMap<>();
 
@@ -48,7 +49,7 @@ public class ControllerMediator {
      */
     public void registerControllerWithUuid(AbstractController controller, String uuid) {
         Objects.requireNonNull(controller);
-        controllersMap.put(uuid + controller.getClass().getSimpleName(),controller);
+        controllersMap.put(uuid + SEPARATOR + controller.getClass().getSimpleName(),controller);
     }
 
 

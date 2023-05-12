@@ -180,10 +180,16 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
     /**
      * @param commands
      * @param roomContent
-     * @return true if all conditionals commands are true
+     * @return true if one of the conditionals commands is true
      */
     private boolean checkConditionalCommands(Map<ScriptCommandsEnum, Object> commands, RoomContent roomContent) {
-        boolean areConditionsTrue = false;
+
+        //If onlyOneConditionMustBeTrue = true, we use OR instead of AND when checking conditions.
+        //That means that the initial value of this variable must be respectively "true" or "false" to
+        //ensure checking is done right
+        final boolean onlyOneConditionMustBeTrue = (boolean) commands.getOrDefault(ScriptCommandsEnum.ONLY_ONE_CONDITION_MUST_BE_TRUE,true);
+        boolean areConditionsTrue = !onlyOneConditionMustBeTrue;
+
         //Check condition on until Player has at least less then N damage (priority on other checks)
         if (commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN)) {
             //Extract value of damage
@@ -200,19 +206,36 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             //Extract instance class from enum and do check
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-            areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+
+            if(onlyOneConditionMustBeTrue){
+                areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            } else{
+                areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            }
+
         } else if (commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE)) {
             //Check condition on if there is no enemy of type is alive in room
             //Extract instance class from enum and do check
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
-            areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+
+            if(onlyOneConditionMustBeTrue){
+                areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            } else{
+                areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
+            }
+
         }
 
         if (commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
             //Extract Poi type and do check
             final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE));
-            areConditionsTrue = areConditionsTrue || roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+
+            if(onlyOneConditionMustBeTrue){
+                areConditionsTrue = areConditionsTrue || roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+            } else{
+                areConditionsTrue = areConditionsTrue && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
+            }
         }
 
         return areConditionsTrue;

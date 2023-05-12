@@ -184,6 +184,13 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
      */
     private boolean checkConditionalCommands(Map<ScriptCommandsEnum, Object> commands, RoomContent roomContent) {
 
+        //If there are no conditions, just go
+        if(!commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN) && !commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN) &&
+                !commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE) && !commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE) &&
+                !commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE) && !commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
+            return true;
+        }
+
         //If onlyOneConditionMustBeTrue = true, we use OR instead of AND when checking conditions.
         //That means that the initial value of this variable must be respectively "true" or "false" to
         //ensure checking is done right

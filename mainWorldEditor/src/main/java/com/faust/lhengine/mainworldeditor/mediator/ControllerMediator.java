@@ -5,6 +5,7 @@ import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
 import com.faust.lhengine.mainworldeditor.controllers.AbstractController;
 import com.faust.lhengine.mainworldeditor.controllers.MainWorldEditorController;
+import com.faust.lhengine.mainworldeditor.controllers.RoomBoxController;
 import com.faust.lhengine.mainworldeditor.enums.MainWorldEditorScenes;
 
 import java.io.IOException;
@@ -100,17 +101,17 @@ public class ControllerMediator {
     }
 
     /**
-     *
      * @param directionEnum
      * @param roomPosition
+     * @param eventSource
      */
-    public void mainWorldEditorControllerStartBoundarySelection(final DirectionEnum directionEnum, final RoomPosition roomPosition) {
+    public void mainWorldEditorControllerStartBoundarySelection(final DirectionEnum directionEnum, final RoomPosition roomPosition, RoomBoxController eventSource) {
         if (!controllersMap.containsKey(MainWorldEditorController.class.getSimpleName())) {
             throw new RuntimeException(MainWorldEditorController.class.getSimpleName() + " is not registered!");
         }
 
         MainWorldEditorController controller = (MainWorldEditorController) controllersMap.get(MainWorldEditorController.class.getSimpleName());
-        controller.startBoundarySelection(directionEnum, roomPosition);
+        controller.startBoundarySelection(directionEnum, roomPosition, eventSource);
     }
 
     /**
@@ -124,5 +125,17 @@ public class ControllerMediator {
 
         MainWorldEditorController controller = (MainWorldEditorController) controllersMap.get(MainWorldEditorController.class.getSimpleName());
         controller.selectBoundary(roomPosition);
+    }
+
+    /**
+     *
+     */
+    public void mainWorldEditorControllerExitBoundarySelectionMode() {
+        if (!controllersMap.containsKey(MainWorldEditorController.class.getSimpleName())) {
+            throw new RuntimeException(MainWorldEditorController.class.getSimpleName() + " is not registered!");
+        }
+
+        MainWorldEditorController controller = (MainWorldEditorController) controllersMap.get(MainWorldEditorController.class.getSimpleName());
+        controller.exitBoundarySelectionMode();
     }
 }

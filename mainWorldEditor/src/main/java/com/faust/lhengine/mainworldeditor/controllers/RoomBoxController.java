@@ -28,11 +28,29 @@ public class RoomBoxController extends AbstractController implements Initializab
     private RoomPosition roomPosition;
 
     @FXML
+    private Button upButton;
+
+    @FXML
+    private Button rightButton;
+
+    @FXML
+    private Button downButton;
+
+    @FXML
+    private Button leftButton;
+
+    @FXML
     private Button closeBoundaryButton;
+
+    @FXML
+    private Button exitBoundaryButton;
+    private String temporaryTextPlaceholder;
 
 
     @FXML
     private ComboBox<RoomTypeEnum> terrainTypesCombobox;
+
+    private Button boundaryDestination;
 
     @FXML
     protected void onChangeTerrainType(Event event) {
@@ -60,38 +78,116 @@ public class RoomBoxController extends AbstractController implements Initializab
         roomModel = entry.getValue();
         roomPosition = entry.getKey();
         terrainTypesCombobox.getSelectionModel().select(roomModel.type);
+
+        for(Map.Entry<DirectionEnum, RoomPosition> b: roomModel.boundaries.entrySet()){
+
+            if(Objects.isNull(b.getValue())){
+                initalizeButtonText(b.getKey(),"X");
+            } else {
+                initalizeButtonText(b.getKey(),b.getValue().toString());
+            }
+
+        }
+
     }
 
     @FXML
-    public void startBoundarySelection(Event event){
-        String directionEnumData = (String) ((Node) event.getSource()).getUserData();
+    protected void startBoundarySelection(Event event){
+
+        //if another boundary was selected before, handle it
+        if(Objects.nonNull(boundaryDestination)){
+            boundaryDestination.setText(temporaryTextPlaceholder);
+        }
+
+        //Extract data from button and send it to editor
+        boundaryDestination = ((Button) event.getSource());
+        String directionEnumData = (String) boundaryDestination.getUserData();
+
+        temporaryTextPlaceholder = boundaryDestination.getText();
+        boundaryDestination.setText("...");
 
         DirectionEnum directionEnum = DirectionEnum.valueOf(directionEnumData);
 
-        ControllerMediator.getInstance().mainWorldEditorControllerStartBoundarySelection(directionEnum,roomPosition);
+        ControllerMediator.getInstance().mainWorldEditorControllerStartBoundarySelection(directionEnum,roomPosition, this);
 
         closeBoundaryButton.setDisable(false);
+        exitBoundaryButton.setDisable(false);
     }
 
     /**
      *
      */
     @FXML
-    public void selectBoundary(){
-
+    protected void selectBoundary(){
 
         ControllerMediator.getInstance().mainWorldEditorControllerSelectBoundary(roomPosition);
-        closeBoundaryButton.setDisable(true);
+        clearBoundaryTempVariables();
     }
 
     /**
      *
      */
     @FXML
-    public void closeBoundary(){
-
+    protected void closeBoundary(){
 
         ControllerMediator.getInstance().mainWorldEditorControllerSelectBoundary(null);
-        closeBoundaryButton.setDisable(true);
+        clearBoundaryTempVariables();
     }
+
+    /**
+     *
+     */
+    @FXML
+    protected void exitBoundarySelectionMode(){
+
+        boundaryDestination.setText(temporaryTextPlaceholder);
+        ControllerMediator.getInstance().mainWorldEditorControllerExitBoundarySelectionMode();
+        clearBoundaryTempVariables();
+    }
+
+    /**
+     *
+     */
+    public void clearBoundaryTempVariables(){
+        closeBoundaryButton.setDisable(true);
+        exitBoundaryButton.setDisable(true);
+        boundaryDestination = null;
+        temporaryTextPlaceholder= null;
+    }
+
+    /**
+     *
+     * @param newText
+     */
+    public void setButtonText(String newText) {
+        boundaryDestination.setText(newText);
+    }
+
+    /**
+     *
+     * @param key
+     * @param text
+     */
+    private void initalizeButtonText(DirectionEnum key, String text) {
+        switch (key){
+
+            case UP: {
+                upButton.setText(text);
+                break;
+            }
+            case RIGHT: {
+                rightButton.setText(text);
+                break;
+            }
+            case DOWN:{
+                downButton.setText(text);
+                break;
+            }
+            case LEFT: {
+                leftButton.setText(text);
+                break;
+            }
+        }
+    }
+
 }

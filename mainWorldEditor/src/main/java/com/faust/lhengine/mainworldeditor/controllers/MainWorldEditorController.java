@@ -13,6 +13,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
@@ -37,6 +38,8 @@ public class MainWorldEditorController extends AbstractController {
 
     @FXML
     protected ScrollPane roomBoxContainer;
+
+    private RoomBoxController boundarySelectionEventSource;
 
     @FXML
     protected void openModalPopupFromMenu(Event event) throws IOException {
@@ -188,21 +191,18 @@ public class MainWorldEditorController extends AbstractController {
         roomBoxContainer.setContent(gridPane);
         roomBoxContainer.setPannable(true); // it means that the user should be able to pan the viewport by using the mouse.
     }
-
-    public boolean isBoundarySelectionModeOn() {
-        return isBoundarySelectionModeOn;
-    }
-
     /**
      * start BoundarySelectionMode
      *
      * @param directionEnum
      * @param roomPosition
+     * @param eventSource
      */
-    public void startBoundarySelection(DirectionEnum directionEnum, RoomPosition roomPosition) {
+    public void startBoundarySelection(DirectionEnum directionEnum, RoomPosition roomPosition, RoomBoxController eventSource) {
 
         isBoundarySelectionModeOn = true;
         boundarySelectionModeDestination = new Pair<>(directionEnum,roomPosition);
+        boundarySelectionEventSource = eventSource;
 
     }
 
@@ -213,6 +213,7 @@ public class MainWorldEditorController extends AbstractController {
      */
     public void selectBoundary(RoomPosition boundaryDestination) {
 
+        //If in BoundarySelectionMode
         if(isBoundarySelectionModeOn){
 
             Objects.requireNonNull(boundarySelectionModeDestination);
@@ -220,11 +221,27 @@ public class MainWorldEditorController extends AbstractController {
             RoomPosition position = boundarySelectionModeDestination.getSecond();
             DirectionEnum direction = boundarySelectionModeDestination.getFirst();
 
+            //inject new boundary
             mainWorldData.terrains.get(position).boundaries.put(direction,boundaryDestination);
 
-            isBoundarySelectionModeOn = false;
-            boundarySelectionModeDestination = null;
+            //Close if null
+            if(Objects.nonNull(boundaryDestination))
+                boundarySelectionEventSource.setButtonText(boundaryDestination.toString());
+            else
+                boundarySelectionEventSource.setButtonText("X");
+
+            boundarySelectionEventSource.clearBoundaryTempVariables();
+            exitBoundarySelectionMode();
         }
     }
 
+    /**
+     *
+     */
+    public void exitBoundarySelectionMode() {
+        //Remove references and turn off BoundarySelection Mode
+        isBoundarySelectionModeOn = false;
+        boundarySelectionModeDestination = null;
+        boundarySelectionEventSource = null;
+    }
 }

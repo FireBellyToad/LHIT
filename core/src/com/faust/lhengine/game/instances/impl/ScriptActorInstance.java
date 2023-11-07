@@ -20,7 +20,7 @@ import com.faust.lhengine.game.instances.AnimatedInstance;
 import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.instances.interfaces.Killable;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
@@ -45,16 +45,16 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
     private boolean showTextBox = true;
     private float deltaTime = 0; // Time delta between step start and current
     private boolean echoIsActive;
-    private final Spawner spawner;
+    private final SpawnFactory spawnFactory;
     private int instanceCounter;
 
 
-    public ScriptActorInstance(ScriptActorType scriptActorType, float x, float y, AssetManager assetManager, TriggerArea triggerForActor, Spawner spawner) {
+    public ScriptActorInstance(ScriptActorType scriptActorType, float x, float y, AssetManager assetManager, TriggerArea triggerForActor, SpawnFactory spawnFactory) {
         super(new ScriptActorEntity(scriptActorType, assetManager));
         this.startX = x;
         this.startY = y;
         this.echoIsActive = false;
-        this.spawner = spawner;
+        this.spawnFactory = spawnFactory;
         this.triggerForActor = triggerForActor;
         this.instanceCounter = 0;
 
@@ -323,9 +323,9 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         }
 
         if (Objects.nonNull(enemyEnum)) {
-            spawner.spawnInstance(enemyEnum.getInstanceClass(), spawnX, spawnY, enemyEnum.name());
+            spawnFactory.spawnInstance(enemyEnum.getInstanceClass(), spawnX, spawnY, enemyEnum.name());
         } else if (Objects.nonNull(poiEnum)) {
-            spawner.spawnInstance(POIInstance.class, spawnX, spawnY, poiEnum.name());
+            spawnFactory.spawnInstance(POIInstance.class, spawnX, spawnY, poiEnum.name());
         }
     }
 

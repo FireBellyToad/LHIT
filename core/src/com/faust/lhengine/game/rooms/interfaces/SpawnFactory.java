@@ -1,4 +1,4 @@
-package com.faust.lhengine.game.instances.interfaces;
+package com.faust.lhengine.game.rooms.interfaces;
 
 import com.faust.lhengine.game.instances.GameInstance;
 
@@ -7,7 +7,7 @@ import com.faust.lhengine.game.instances.GameInstance;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public interface Spawner {
+public interface SpawnFactory {
 
     <T extends GameInstance> void spawnInstance(Class<T> instanceClass, float startX, float startY, String instanceIdentifierEnum);
 }

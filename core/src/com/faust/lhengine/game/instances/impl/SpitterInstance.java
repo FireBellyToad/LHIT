@@ -24,7 +24,7 @@ import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
@@ -48,7 +48,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
 
-    private final Spawner spawner;
+    private final SpawnFactory spawnFactory;
 
     private long startAttackCooldown;
 
@@ -57,13 +57,13 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     private boolean canBeDamaged = false;
     private boolean isAggressive = false;
 
-    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner, MusicManager musicManager) {
+    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, SpawnFactory spawnFactory, MusicManager musicManager) {
         super(new SpitterEntity(assetManager));
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
         this.textBoxManager = textBoxManager;
-        this.spawner = spawner;
+        this.spawnFactory = spawnFactory;
         this.startAttackCooldown = TimeUtils.nanoTime();
         this.musicManager = musicManager;
     }
@@ -257,7 +257,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void hurt(GameInstance attacker) {
         if (isDying()) {
             ((SpitterEntity) entity).playDeathCry();
-            spawner.spawnInstance(PortalInstance.class, this.startX, this.startY, EnemyEnum.PORTAL.name());
+            spawnFactory.spawnInstance(PortalInstance.class, this.startX, this.startY, EnemyEnum.PORTAL.name());
             isDead = true;
             changeCurrentBehavior(GameBehavior.DEAD);
         } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
@@ -297,7 +297,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
             ((SpitterEntity) entity).playSpitSound();
-            spawner.spawnInstance(MeatInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
+            spawnFactory.spawnInstance(MeatInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
             canAttack = false;
         }
         // Resetting Behaviour on animation end

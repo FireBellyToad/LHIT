@@ -16,7 +16,7 @@ import com.faust.lhengine.game.gameentities.enums.*;
 import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.instances.AnimatedInstance;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.instances.impl.*;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
@@ -39,7 +39,7 @@ import java.util.*;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class AbstractRoom implements Spawner {
+public abstract class AbstractRoom implements SpawnFactory {
 
     /**
      * Boundaries for room changing

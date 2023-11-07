@@ -17,8 +17,8 @@
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.game.instances.interfaces" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.game.instances.impl.WillowispInstance" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.game.instances.impl.EscapePortalInstance" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.GameScreen" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.CutsceneScreen" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.EndGameScreen" />
-	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.MenuScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.GameScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.CutsceneScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.EndGameScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.MenuScreen" />
 </module>

@@ -10,8 +10,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.faust.lhengine.game.scripts.enums.ScriptCommandsEnum;
-import com.faust.lhengine.game.scripts.enums.ScriptActorType;
 import com.faust.lhengine.game.gameentities.AnimatedEntity;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.EnemyEnum;
@@ -19,13 +17,15 @@ import com.faust.lhengine.game.gameentities.enums.GameBehavior;
 import com.faust.lhengine.game.gameentities.enums.POIEnum;
 import com.faust.lhengine.game.gameentities.impl.ScriptActorEntity;
 import com.faust.lhengine.game.instances.AnimatedInstance;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
 import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.instances.interfaces.Killable;
+import com.faust.lhengine.game.instances.interfaces.Spawner;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
+import com.faust.lhengine.game.scripts.enums.ScriptActorType;
+import com.faust.lhengine.game.scripts.enums.ScriptCommandsEnum;
 import com.faust.lhengine.game.world.manager.CollisionManager;
 
 import java.util.List;
@@ -46,6 +46,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
     private float deltaTime = 0; // Time delta between step start and current
     private boolean echoIsActive;
     private final Spawner spawner;
+    private int instanceCounter;
 
 
     public ScriptActorInstance(ScriptActorType scriptActorType, float x, float y, AssetManager assetManager, TriggerArea triggerForActor, Spawner spawner) {
@@ -55,6 +56,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         this.echoIsActive = false;
         this.spawner = spawner;
         this.triggerForActor = triggerForActor;
+        this.instanceCounter = 0;
 
         //get first step
         changeCurrentBehavior(((ScriptActorEntity) this.entity).getStepOrder().get(0));
@@ -104,6 +106,11 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         GameBehavior animationToUse = getCurrentBehavior();
         if (commands.containsKey(ScriptCommandsEnum.USE_ANIMATION_OF_STEP)) {
             animationToUse = ((ScriptActorEntity) entity).getStepOrder().get((Integer) commands.get(ScriptCommandsEnum.USE_ANIMATION_OF_STEP));
+        }
+
+        // Increase counter if needed
+        if (commands.containsKey(ScriptCommandsEnum.INCREASE_COUNTER_OF) ) {
+            this.instanceCounter += (Integer) commands.get(ScriptCommandsEnum.INCREASE_COUNTER_OF);
         }
 
         //If checkOnEveryFrame is true, that potentially cut the time to do check and go to next step
@@ -169,7 +176,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
         } else if (commands.containsKey(ScriptCommandsEnum.END)) {
             //return Size to end echo
             if (checkConditionalCommands(commands, roomContent)) {
-               return stepOrder.size();
+                return stepOrder.size();
             }
         }
 
@@ -185,16 +192,17 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
     private boolean checkConditionalCommands(Map<ScriptCommandsEnum, Object> commands, RoomContent roomContent) {
 
         //If there are no conditions, just go
-        if(!commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN) && !commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN) &&
+        if (!commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_LESS_THAN) && !commands.containsKey(ScriptCommandsEnum.IF_PLAYER_DAMAGE_IS_MORE_THAN) &&
                 !commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE) && !commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE) &&
-                !commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE) && !commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
+                !commands.containsKey(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE) && !commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE) &&
+                !commands.containsKey(ScriptCommandsEnum.IF_COUNTER_IS_GREATER_THAN) && !commands.containsKey(ScriptCommandsEnum.IF_COUNTER_IS_LESS_THAN)) {
             return true;
         }
 
         //If onlyOneConditionMustBeTrue = true, we use OR instead of AND when checking conditions.
         //That means that the initial value of this variable must be respectively "true" or "false" to
         //ensure checking is done right
-        final boolean onlyOneConditionMustBeTrue = (boolean) commands.getOrDefault(ScriptCommandsEnum.ONLY_ONE_CONDITION_MUST_BE_TRUE,true);
+        final boolean onlyOneConditionMustBeTrue = (boolean) commands.getOrDefault(ScriptCommandsEnum.ONLY_ONE_CONDITION_MUST_BE_TRUE, false);
         boolean areConditionsTrue = !onlyOneConditionMustBeTrue;
 
         //Check condition on until Player has at least less then N damage (priority on other checks)
@@ -214,9 +222,9 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_AT_LEAST_ONE_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
 
-            if(onlyOneConditionMustBeTrue){
+            if (onlyOneConditionMustBeTrue) {
                 areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
-            } else{
+            } else {
                 areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().anyMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
             }
 
@@ -226,23 +234,47 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             final EnemyEnum enemyEnum = EnemyEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_NO_KILLABLE_ALIVE));
             final Class<? extends AnimatedInstance> enemyClass = enemyEnum.getInstanceClass();
 
-            if(onlyOneConditionMustBeTrue){
+            if (onlyOneConditionMustBeTrue) {
                 areConditionsTrue = areConditionsTrue || roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
-            } else{
+            } else {
                 areConditionsTrue = areConditionsTrue && roomContent.enemyList.stream().noneMatch(e -> enemyClass.equals(e.getClass()) && !((Killable) e).isDead());
             }
 
         }
 
+        //Check condition on until there is in the room at least one examinable POI
         if (commands.containsKey(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE)) {
             //Extract Poi type and do check
             final POIEnum poiEnum = POIEnum.valueOf((String) commands.get(ScriptCommandsEnum.IF_AT_LEAST_ONE_POI_EXAMINABLE));
 
-            if(onlyOneConditionMustBeTrue){
+            if (onlyOneConditionMustBeTrue) {
                 areConditionsTrue = areConditionsTrue || roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
-            } else{
+            } else {
                 areConditionsTrue = areConditionsTrue && roomContent.poiList.stream().anyMatch(poi -> poiEnum.equals(poi.getType()) && poi.isAlreadyExamined());
             }
+        }
+
+        //Check condition on counter
+        if (commands.containsKey(ScriptCommandsEnum.IF_COUNTER_IS_GREATER_THAN)) {
+            //Extract instance class from enum and do check
+            final int counterValue = (Integer) commands.get(ScriptCommandsEnum.IF_COUNTER_IS_GREATER_THAN);
+
+            if (onlyOneConditionMustBeTrue) {
+                areConditionsTrue = areConditionsTrue || (this.instanceCounter > counterValue);
+            } else {
+                areConditionsTrue = areConditionsTrue && (this.instanceCounter > counterValue);
+            }
+
+        } else  if (commands.containsKey(ScriptCommandsEnum.IF_COUNTER_IS_LESS_THAN)) {
+            //Extract instance class from enum and do check
+            final int counterValue = (Integer) commands.get(ScriptCommandsEnum.IF_COUNTER_IS_LESS_THAN);
+
+            if (onlyOneConditionMustBeTrue) {
+                areConditionsTrue = areConditionsTrue || (this.instanceCounter < counterValue);
+            } else {
+                areConditionsTrue = areConditionsTrue && (this.instanceCounter < counterValue);
+            }
+
         }
 
         return areConditionsTrue;

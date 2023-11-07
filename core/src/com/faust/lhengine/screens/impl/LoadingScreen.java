@@ -1,8 +1,6 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,16 +9,13 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.faust.lhengine.game.scripts.enums.ScriptActorType;
+import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.ValidScript;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.music.MusicManager;
 
-public class LoadingScreen implements Screen {
+public class LoadingScreen extends AbstractScreen {
 
-    private final LHEngine game;
-    private final AssetManager assetManager;
-    private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final Texture loadScreen;
 
@@ -31,9 +26,7 @@ public class LoadingScreen implements Screen {
     private static final Color corner = new Color(0xffffffff);
 
     public LoadingScreen(LHEngine game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
-        cameraManager = game.getCameraManager();
+        super(game);
         musicManager = game.getMusicManager();
         loadScreen = assetManager.get("splash/loading_splash.png");
     }
@@ -132,30 +125,5 @@ public class LoadingScreen implements Screen {
         game.getBatch().end();
 
         Gdx.app.log("DEBUG", "Loading progress: " + loadingProgress + "%" );
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 }

@@ -73,8 +73,8 @@ public class RoomsManager {
      */
     private void initMainWorld() {
 
-        final var mainWorldSize = new Vector2(0, 0);
-        final var jsonParser = new Json();
+        final Vector2 mainWorldSize = new Vector2(0, 0);
+        final Json jsonParser = new Json();
         jsonParser.setSerializer(MainWorldModel.class, new MainWorldSerializer());
 
         mainWorld = jsonParser.fromJson(MainWorldModel.class, Gdx.files.internal("mainWorldModel.json"));

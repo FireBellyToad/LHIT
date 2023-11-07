@@ -11,7 +11,7 @@ import com.faust.lhengine.game.gameentities.SpriteEntity;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.GameBehavior;
 import com.faust.lhengine.game.gameentities.impl.PlayerEntity;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 import com.faust.lhengine.utils.ShaderWrapper;
 
 import java.util.*;

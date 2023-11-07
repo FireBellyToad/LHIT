@@ -24,7 +24,7 @@ import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.world.interfaces.RayCaster;
 import com.faust.lhengine.game.world.manager.CollisionManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

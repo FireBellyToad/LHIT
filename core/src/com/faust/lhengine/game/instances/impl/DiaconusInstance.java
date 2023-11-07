@@ -30,7 +30,7 @@ import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.world.manager.CollisionManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

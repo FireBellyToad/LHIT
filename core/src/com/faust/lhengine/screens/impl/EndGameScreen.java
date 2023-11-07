@@ -1,13 +1,10 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.gameentities.AnimatedEntity;
 import com.faust.lhengine.game.gameentities.SpriteEntity;
 import com.faust.lhengine.game.hud.enums.HudIconsEnum;
@@ -16,12 +13,13 @@ import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.menu.Menu;
 import com.faust.lhengine.menu.enums.MenuItem;
 import com.faust.lhengine.saves.enums.SaveFieldsEnum;
+import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 
 import java.util.Map;
 import java.util.Objects;
 
-public class EndGameScreen implements Screen {
+public class EndGameScreen extends AbstractScreen {
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color darkness = new Color(0x000000ff);
@@ -29,9 +27,6 @@ public class EndGameScreen implements Screen {
     private static final float X_OFFSET = 50;
     private static final float Y_OFFSET = (float) (LHEngine.GAME_HEIGHT * 0.66);
 
-    private final LHEngine game;
-    private final AssetManager assetManager;
-    private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextLocalizer textLocalizer;
     private final Menu menu;
@@ -40,9 +35,7 @@ public class EndGameScreen implements Screen {
 
 
     public EndGameScreen(LHEngine game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
-        cameraManager = game.getCameraManager();
+        super(game);
         musicManager = game.getMusicManager();
         textLocalizer = game.getTextLocalizer();
         valuesMap = game.getSaveFileManager().loadRawValues();
@@ -165,28 +158,4 @@ public class EndGameScreen implements Screen {
         batch.end();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

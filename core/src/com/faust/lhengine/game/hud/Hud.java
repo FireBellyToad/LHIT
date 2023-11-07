@@ -16,7 +16,7 @@ import com.faust.lhengine.game.gameentities.enums.ItemEnum;
 import com.faust.lhengine.game.hud.enums.HudIconsEnum;
 import com.faust.lhengine.game.instances.impl.PlayerInstance;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

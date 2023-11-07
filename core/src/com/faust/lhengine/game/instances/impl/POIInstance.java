@@ -17,7 +17,7 @@ import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

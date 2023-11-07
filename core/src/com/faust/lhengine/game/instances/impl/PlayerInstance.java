@@ -28,7 +28,7 @@ import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.world.manager.CollisionManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 import com.faust.lhengine.utils.GameInstanceUtils;
 import com.faust.lhengine.utils.ShaderWrapper;
 

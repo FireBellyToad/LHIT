@@ -23,7 +23,7 @@ import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

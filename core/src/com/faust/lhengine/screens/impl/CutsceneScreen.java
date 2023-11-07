@@ -1,4 +1,4 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -14,6 +14,7 @@ import com.faust.lhengine.cutscenes.CutsceneManager;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.enums.cutscenes.CutsceneEnum;
+import com.faust.lhengine.screens.AbstractScreen;
 
 import java.util.Objects;
 
@@ -22,12 +23,10 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class CutsceneScreen implements Screen {
+public class CutsceneScreen extends AbstractScreen {
 
     private static final Color back = new Color(0x000000ff);
 
-    private final LHEngine game;
-    private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final ShapeRenderer background;
 
@@ -37,8 +36,8 @@ public class CutsceneScreen implements Screen {
     private float stateTime = 0f;
 
     public CutsceneScreen(LHEngine game, CutsceneEnum cutsceneEnum) {
-        this.game = game;
-        cameraManager = game.getCameraManager();
+        super(game);
+
         musicManager = game.getMusicManager();
 
         musicManager.loadSingleTune(TuneEnum.DANGER, game.getAssetManager());
@@ -106,28 +105,4 @@ public class CutsceneScreen implements Screen {
         game.getBatch().end();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

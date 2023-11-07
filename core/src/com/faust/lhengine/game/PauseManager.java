@@ -13,7 +13,7 @@ import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.menu.Menu;
 import com.faust.lhengine.menu.enums.MenuItem;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
-import com.faust.lhengine.screens.MenuScreen;
+import com.faust.lhengine.screens.impl.MenuScreen;
 
 /**
  * @author Jacopo "Faust" Buttiglieri

@@ -24,7 +24,7 @@ import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

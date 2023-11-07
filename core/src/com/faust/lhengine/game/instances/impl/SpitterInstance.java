@@ -29,7 +29,7 @@ import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 

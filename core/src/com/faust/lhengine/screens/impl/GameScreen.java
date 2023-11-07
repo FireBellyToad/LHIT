@@ -1,14 +1,12 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.utils.Timer;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.PauseManager;
 import com.faust.lhengine.game.gameentities.enums.PlayerFlag;
 import com.faust.lhengine.game.hud.DarknessRenderer;
@@ -20,17 +18,17 @@ import com.faust.lhengine.game.rooms.manager.RoomsManager;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.enums.cutscenes.CutsceneEnum;
+import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 import com.faust.lhengine.game.world.manager.WorldManager;
 
 import java.util.Objects;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
 
     public static final long FLICKER_DURATION_IN_NANO = 125000000; // 1/8 second in nanoseconds
 
     private final AssetManager assetManager;
-    private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextLocalizer textLocalizer;
     private final WorldManager worldManager;
@@ -45,13 +43,11 @@ public class GameScreen implements Screen {
 
     private float stateTime = 0f;
 
-    private final LHEngine game;
     private Timer.Task endGameTimer = null;
 
     public GameScreen(LHEngine game) {
-        this.game = game;
+        super(game);
         this.assetManager = game.getAssetManager();
-        this.cameraManager = game.getCameraManager();
         this.musicManager = game.getMusicManager();
         this.textLocalizer = game.getTextLocalizer();
         textManager = new TextBoxManager(assetManager, textLocalizer);
@@ -59,7 +55,7 @@ public class GameScreen implements Screen {
         splashManager = new SplashManager(textManager, assetManager);
         pauseManager = new PauseManager(game.getSaveFileManager(), musicManager, assetManager);
         worldManager = new WorldManager();
-        player = new PlayerInstance(assetManager,this.game.isWebBuild());
+        player = new PlayerInstance(assetManager, this.game.isWebBuild());
 
     }
 
@@ -70,7 +66,7 @@ public class GameScreen implements Screen {
         musicManager.initTuneMap(assetManager);
         Gdx.input.setInputProcessor(player);
 
-        if(this.game.isWebBuild()){
+        if (this.game.isWebBuild()) {
             //Prevents arrow keys browser scrolling
             Gdx.input.setCatchKey(Input.Keys.UP, true);
             Gdx.input.setCatchKey(Input.Keys.DOWN, true);
@@ -112,7 +108,7 @@ public class GameScreen implements Screen {
         }
 
         //Draw all overlays
-        worldRenderer.drawOverlays(stateTime,hud, player,roomsManager.getCurrentRoom(), pauseManager, textManager);
+        worldRenderer.drawOverlays(stateTime, hud, player, roomsManager.getCurrentRoom(), pauseManager, textManager);
 
 //       cameraManager.box2DDebugRenderer(worldManager.getWorld());
 
@@ -121,14 +117,14 @@ public class GameScreen implements Screen {
         if (!splashManager.isDrawingSplash() && !pauseManager.isGamePaused()) {
 
             // If player is not input processor, reset it
-            if(!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
+            if (!(Gdx.input.getInputProcessor() instanceof PlayerInstance))
                 player.setAsInputProcessor();
 
             worldManager.doStep(delta);
             doLogic();
         } else if (pauseManager.isGamePaused()) {
             //Handle pause logic
-            pauseManager.doLogic(game,player, roomsManager);
+            pauseManager.doLogic(game, player, roomsManager);
         }
 
     }
@@ -143,13 +139,13 @@ public class GameScreen implements Screen {
         //Pause
         if (player.getPlayerFlagValue(PlayerFlag.PAUSE_GAME)) {
             pauseManager.pauseGame();
-            player.setPlayerFlagValue(PlayerFlag.PAUSE_GAME,false);
+            player.setPlayerFlagValue(PlayerFlag.PAUSE_GAME, false);
         }
 
         if (Objects.isNull(endGameTimer)) {
             if (player.getPlayerFlagValue(PlayerFlag.GO_TO_GAMEOVER)) {
                 //Save game and go to game over
-                endGameTimer =Timer.schedule(new Timer.Task() {
+                endGameTimer = Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
                         player.setDamage(0);
@@ -159,35 +155,15 @@ public class GameScreen implements Screen {
                     }
                 }, 3f);
             } else if (player.getPlayerFlagValue(PlayerFlag.PREPARE_END_GAME)) {
-                endGameTimer =Timer.schedule(new Timer.Task() {
-                            @Override
-                            public void run() {
-                                game.setScreen(new CutsceneScreen(game, CutsceneEnum.ENDGAME));
-                            }
-                        }, 3f);
+                endGameTimer = Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new CutsceneScreen(game, CutsceneEnum.ENDGAME));
+                    }
+                }, 3f);
                 Gdx.input.setInputProcessor(null);
             }
         }
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-        player.setPlayerFlagValue(PlayerFlag.PAUSE_GAME, true);
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override

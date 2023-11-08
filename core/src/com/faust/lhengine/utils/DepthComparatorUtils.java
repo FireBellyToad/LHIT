@@ -24,7 +24,7 @@ public class DepthComparatorUtils {
         //Special conditions to place object always on higher depth, usually
         //for avoiding that objects laying on the ground cover taller ones
         if ((o2 instanceof Hurtable && ((Hurtable) o2).isDead() && !(o2 instanceof PlayerInstance)) ||
-                (o1 instanceof StrixInstance && ((StrixInstance) o1).isAttachedToPlayer()) ||
+                (o1 instanceof MonsterBirdInstance && ((MonsterBirdInstance) o1).isAttachedToPlayer()) ||
                 (o2 instanceof DecorationInstance && o2.isAlwaysInBackground()) ||
                 (o2 instanceof DecorationInstance && ((DecorationInstance) o2).getInteracted()) ||
                 (o2 instanceof POIInstance && o2.isAlwaysInBackground())) {
@@ -32,7 +32,7 @@ public class DepthComparatorUtils {
         }
 
         if (((o1 instanceof Hurtable && ((Hurtable) o1).isDead()) && !(o1 instanceof PlayerInstance)) ||
-                (o2 instanceof StrixInstance && ((StrixInstance) o2).isAttachedToPlayer()) ||
+                (o2 instanceof MonsterBirdInstance && ((MonsterBirdInstance) o2).isAttachedToPlayer()) ||
                 (o1 instanceof DecorationInstance && o1.isAlwaysInBackground()) ||
                 (o1 instanceof DecorationInstance && ((DecorationInstance) o1).getInteracted()) ||
                 (o1 instanceof POIInstance && o1.isAlwaysInBackground())) {

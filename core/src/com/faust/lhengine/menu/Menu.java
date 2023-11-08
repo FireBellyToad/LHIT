@@ -76,17 +76,26 @@ public class Menu implements InputProcessor {
         Objects.requireNonNull(currentMenu);
         Objects.requireNonNull(currentMenu.getSubItems()); // Must have subitems!
 
+        float verticalOffset = 0f;
+
         //Title
-        if (Objects.nonNull(currentMenu.getTitleMessageKey()))
-            mainFont.draw(batch, textLocalizer.localizeFromKey("menu", currentMenu.getTitleMessageKey()), MENU_X_OFFSET, MENU_Y_OFFSET);
+        if (Objects.nonNull(currentMenu.getTitleMessageKey())){
+            String titleString = textLocalizer.localizeFromKey("menu", currentMenu.getTitleMessageKey());
+
+            long count = titleString.chars().filter(ch -> ch == '\n').count();
+            verticalOffset = (SPAN * 2/3) * count;
+
+            mainFont.draw(batch, titleString, MENU_X_OFFSET, MENU_Y_OFFSET);
+        }
+
 
         MenuItem[] subItemsArray = currentMenu.getSubItems();
         for (int i = 0; i < subItemsArray.length; i++) {
             mainFont.draw(batch, textLocalizer.localizeFromKey("menu", subItemsArray[i].name()),
-                    MENU_X_OFFSET, MENU_Y_OFFSET - (SPAN * (1 + i)));
+                    MENU_X_OFFSET, MENU_Y_OFFSET - (verticalOffset + (SPAN * (1 + i))));
         }
         //Draw arrow on selected option
-        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (SPAN * (1 + this.selectedMenuVoice)));
+        mainFont.draw(batch, ARROW_CHARACTER, MENU_X_OFFSET - 10, MENU_Y_OFFSET - (verticalOffset + (SPAN * (1 + this.selectedMenuVoice))));
     }
 
     /**
@@ -168,8 +177,13 @@ public class Menu implements InputProcessor {
         switch (selectedMenuVoice) {
             case 0: {
                 //New game
-                selectedMenuVoice = 0;
-                currentMenu = MenuItem.NEW_GAME;
+                Map<String, Object> rawData = saveFileManager.loadRawValues();
+                if (rawData == null || rawData.isEmpty()) {
+                    changeToGameScreen = true;
+                } else {
+                    selectedMenuVoice = 0;
+                    currentMenu = MenuItem.NEW_GAME;
+                }
                 break;
             }
             case 1: {

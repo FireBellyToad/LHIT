@@ -192,6 +192,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
             roomPoiList.forEach((poi) -> poi.setEnableFlicker(false));
 
             nearestPOIInstance =  GameInstanceUtils.getNearestInstance(this,roomPoiList);
+
             if (nearestPOIInstance.getBody().getPosition().dst(getBody().getPosition()) <= EXAMINATION_DISTANCE &&
                     !nearestPOIInstance.isAlreadyExamined()) {
                 nearestPOIInstance.setEnableFlicker(true);
@@ -246,7 +247,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
         //Strix, Hurtspell and Infernum must not send player back on hurt
-        if (!(attacker instanceof StrixInstance) && !(attacker instanceof HurtSpellInstance) &&
+        if (!(attacker instanceof MonsterBirdInstance) && !(attacker instanceof HurtingSpellInstance) &&
                 !(attacker instanceof ScriptActorInstance && (ScriptActorType.INFERNUM.equals(((ScriptActorInstance) attacker).getType())))) {
             body.setLinearVelocity(PLAYER_SPEED * 2 * -direction.x, PLAYER_SPEED * 2 * -direction.y);
         }
@@ -885,7 +886,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
     }
 
     public double damageRoll() {
-        return Math.max(MathUtils.random(1, 6), MathUtils.random(1, 6));
+        return 2 + MathUtils.random(1, 4);
     }
 
     @Override

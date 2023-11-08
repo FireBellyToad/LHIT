@@ -83,6 +83,10 @@ public abstract class ChaserInstance extends AnimatedInstance {
         targetPathNode = pathQueue.isEmpty() ? currentPos : pathQueue.removeFirst();
     }
 
+    /**
+     *
+     * @return true if target can be seen by this instance
+     */
     protected boolean canSeeTarget() {
         //Check if target is in range
         if ((getDistanceFromTarget() > (getLineOfSight() * 0.75) && !isAggressive) ||
@@ -119,14 +123,14 @@ public abstract class ChaserInstance extends AnimatedInstance {
     /**
      * Can be overridden
      *
-     * @return Distance From target
+     * @return Distance From target instance
      */
     protected float getDistanceFromTarget() {
         return target.getBody().getPosition().dst(body.getPosition());
     }
 
     /**
-     * Check if should go to target or another point
+     * Check if should go to target instance or another point
      *
      * @return
      */
@@ -157,43 +161,43 @@ public abstract class ChaserInstance extends AnimatedInstance {
     /**
      * FIXME REMOVE
      */
-    public void drawDebug(OrthographicCamera cameraTemp) {
-
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-        Color back = new Color(0xffffffff);
-
-        PathNode previous = null;
-        for (PathNode p : pathQueue) {
-
-            if (Objects.isNull(previous)) {
-                previous = p;
-                continue;
-            }
-            shapeRenderer.setColor(back);
-            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.line(p, previous);
-            shapeRenderer.end();
-            previous = p;
-        }
-
-        if (Objects.nonNull(currentPos)) {
-
-            shapeRenderer.setColor(back);
-            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(currentPos.x, currentPos.y, 5);
-            shapeRenderer.end();
-        }
-        if (Objects.nonNull(newGoal)) {
-
-            shapeRenderer.setColor(back);
-            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(newGoal.x, newGoal.y, 5);
-            shapeRenderer.end();
-        }
-    }
+//    public void drawDebug(OrthographicCamera cameraTemp) {
+//
+//        ShapeRenderer shapeRenderer = new ShapeRenderer();
+//        Color back = new Color(0xffffffff);
+//
+//        PathNode previous = null;
+//        for (PathNode p : pathQueue) {
+//
+//            if (Objects.isNull(previous)) {
+//                previous = p;
+//                continue;
+//            }
+//            shapeRenderer.setColor(back);
+//            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.line(p, previous);
+//            shapeRenderer.end();
+//            previous = p;
+//        }
+//
+//        if (Objects.nonNull(currentPos)) {
+//
+//            shapeRenderer.setColor(back);
+//            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.circle(currentPos.x, currentPos.y, 5);
+//            shapeRenderer.end();
+//        }
+//        if (Objects.nonNull(newGoal)) {
+//
+//            shapeRenderer.setColor(back);
+//            shapeRenderer.setProjectionMatrix(cameraTemp.combined);
+//            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//            shapeRenderer.circle(newGoal.x, newGoal.y, 5);
+//            shapeRenderer.end();
+//        }
+//    }
 
     /**
      * Force this instance to use graph

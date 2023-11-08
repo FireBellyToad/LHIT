@@ -18,7 +18,7 @@ import com.faust.lhengine.game.world.manager.CollisionManager;
 import com.faust.lhengine.game.gameentities.AnimatedEntity;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.GameBehavior;
-import com.faust.lhengine.game.gameentities.impl.HiveEntity;
+import com.faust.lhengine.game.gameentities.impl.FleshWallEntity;
 import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.GameInstance;
@@ -29,17 +29,17 @@ import com.faust.lhengine.screens.impl.GameScreen;
 import java.util.Objects;
 
 /**
- * Hive enemy instance class
+ * Flesh wall enemy instance class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class HiveInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
+public class FleshWallInstance extends AnimatedInstance implements Interactable, Hurtable, Damager {
 
     private final TextBoxManager textBoxManager;
     private boolean isDead = false;
 
-    public HiveInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager) {
-        super(new HiveEntity(assetManager));
+    public FleshWallInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager) {
+        super(new FleshWallEntity(assetManager));
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
@@ -190,11 +190,11 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
     @Override
     public void hurt(GameInstance attacker) {
         if (isDying()) {
-            ((HiveEntity) entity).playDeathCry();
+            ((FleshWallEntity) entity).playDeathCry();
             isDead = true;
             changeCurrentBehavior(GameBehavior.DEAD);
         } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
-            ((HiveEntity) entity).playHurtCry();
+            ((FleshWallEntity) entity).playHurtCry();
 
             //If Undead or Otherworldly, halve normal lance damage
             if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
@@ -211,7 +211,7 @@ public class HiveInstance extends AnimatedInstance implements Interactable, Hurt
 
     @Override
     public int getResistance() {
-        return 8;
+        return 1;
     }
 
     public double damageRoll() {

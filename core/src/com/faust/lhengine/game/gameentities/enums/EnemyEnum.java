@@ -4,11 +4,11 @@ import com.faust.lhengine.game.instances.AnimatedInstance;
 import com.faust.lhengine.game.instances.impl.*;
 
 public enum EnemyEnum {
-    STRIX(StrixInstance.class),
-    BOUNDED(BoundedInstance.class),
-    HIVE(HiveInstance.class),
+    STRIX(MonsterBirdInstance.class),
+    BOUNDED(FyingCorpseInstance.class),
+    HIVE(FleshWallInstance.class),
     SPITTER(SpitterInstance.class),
-    MEAT(MeatInstance.class),
+    MEAT(FleshBiterInstance.class),
     PORTAL(PortalInstance.class),
     WILLOWISP(WillowispInstance.class),
     ESCAPE_PORTAL(EscapePortalInstance.class),

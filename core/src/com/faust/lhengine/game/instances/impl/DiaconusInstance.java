@@ -288,7 +288,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             // Hurt by player
             double amount = ((Damager) attacker).damageRoll();
-            //Diaconus halves normal lance damage
+            //Diaconus reduces normal lance damage
             if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
                 amount = Math.floor(amount / 2);
             }
@@ -333,7 +333,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     @Override
     public int getResistance() {
-        return 9;
+        return 7;
     }
 
     public double damageRoll() {
@@ -361,7 +361,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             } else {
                 ((DiaconusEntity) entity).playHurtSpellSound();
-                spawnFactory.spawnInstance(HurtSpellInstance.class,
+                spawnFactory.spawnInstance(HurtingSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);
 

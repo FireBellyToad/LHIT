@@ -72,12 +72,12 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void doLogic(float stateTime, RoomContent roomContent) {
 
         //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
-        long hiveCount = roomContent.enemyList.stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
+        long hiveCount = roomContent.enemyList.stream().filter(ene -> ene instanceof FleshWallInstance && !((Killable) ene).isDead()).count();
         canBeDamaged = hiveCount == 0;
 
         //If one of the HiveInstances are hurted, start aggression
         if (!isAggressive) {
-            isAggressive = roomContent.enemyList.stream().anyMatch(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
+            isAggressive = roomContent.enemyList.stream().anyMatch(ene -> ene instanceof FleshWallInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
         }
 
         //Change Music
@@ -278,7 +278,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
     @Override
     public int getResistance() {
-        return 15;
+        return 12;
     }
 
     public double damageRoll() {
@@ -297,7 +297,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
             ((SpitterEntity) entity).playSpitSound();
-            spawnFactory.spawnInstance(MeatInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
+            spawnFactory.spawnInstance(FleshBiterInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
             canAttack = false;
         }
         // Resetting Behaviour on animation end

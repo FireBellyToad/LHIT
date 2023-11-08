@@ -183,8 +183,8 @@ public class CutsceneManager implements InputProcessor {
                 }else{
                     direction = DirectionEnum.UNUSED;
                 }
-            } else if (obj.getName().equals(HiveEntity.class.getSimpleName())) {
-                entity = new HiveEntity(assetManager);
+            } else if (obj.getName().equals(FleshWallEntity.class.getSimpleName())) {
+                entity = new FleshWallEntity(assetManager);
                 behavior = GameBehavior.valueOf((String) obj.getProperties().get("behavior"));
                 direction = DirectionEnum.UNUSED;
             } else if (obj.getName().equals(PortalEntity.class.getSimpleName())) {

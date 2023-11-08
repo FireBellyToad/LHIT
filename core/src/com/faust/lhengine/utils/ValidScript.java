@@ -185,7 +185,7 @@ public class ValidScript {
                 if (!incompatibleCommandInStepSet.contains(ScriptCommandsEnum.STEP) && !incompatibleCommandInStepSet.contains(ScriptCommandsEnum.END)) {
                     incompatibleCommandInStepSet.add(extractedCommand);
                 } else {
-                    throw new IllegalArgumentException("\"goTo\" and \"end\" cannot be on same step!");
+                    throw new IllegalArgumentException("\"step\" command and \"end\" command cannot be on same step!");
                 }
             }
             default:

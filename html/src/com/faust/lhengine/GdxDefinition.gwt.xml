@@ -21,4 +21,8 @@
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.CutsceneScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.EndGameScreen" />
 	<extend-configuration-property name="gdx.reflect.include" value="com.faust.lhengine.screens.impl.MenuScreen" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.maps.objects" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.maps" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.tiled" />
+
 </module>

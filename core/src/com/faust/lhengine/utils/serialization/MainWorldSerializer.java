@@ -28,11 +28,11 @@ public class MainWorldSerializer implements Json.Serializer<MainWorldModel> {
 
     @Override
     public MainWorldModel read(Json json, JsonValue mainWorldJson, Class type) {
-        var mainWorldModel = new MainWorldModel();
+        MainWorldModel mainWorldModel = new MainWorldModel();
         for (JsonValue terrain : mainWorldJson.get("terrains")) {
 
-            var roomPosition = new RoomPosition(terrain.getInt("x"), terrain.getInt("y"));
-            var roomType = RoomTypeEnum.valueOf(terrain.getString("roomType"));
+            RoomPosition roomPosition = new RoomPosition(terrain.getInt("x"), terrain.getInt("y"));
+            RoomTypeEnum roomType = RoomTypeEnum.valueOf(terrain.getString("roomType"));
             Objects.requireNonNull(roomType);
 
             //Parsing boundaries

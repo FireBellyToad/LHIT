@@ -1,15 +1,13 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.enums.cutscenes.CutsceneEnum;
+import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 import com.faust.lhengine.menu.Menu;
 
@@ -18,20 +16,15 @@ import com.faust.lhengine.menu.Menu;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class MenuScreen implements Screen {
+public class MenuScreen extends AbstractScreen {
 
-    private final LHEngine game;
-    private final AssetManager assetManager;
-    private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextLocalizer textLocalizer;
     private final Menu menu;
     private final Texture titleTexture;
 
     public MenuScreen(LHEngine game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
-        cameraManager = game.getCameraManager();
+        super(game);
         musicManager = game.getMusicManager();
         textLocalizer = game.getTextLocalizer();
 
@@ -89,31 +82,6 @@ public class MenuScreen implements Screen {
             menu.drawCurrentMenuLocalized(game.getBatch(), textLocalizer);
             game.getBatch().end();
         }
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
 
     }
 }

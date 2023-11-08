@@ -14,9 +14,9 @@ import java.util.Arrays;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class MeatEntity extends AnimatedEntity {
+public class FleshBiterEntity extends AnimatedEntity {
 
-    public MeatEntity(AssetManager assetManager) {
+    public FleshBiterEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/meat_sheet.png"));
     }
 

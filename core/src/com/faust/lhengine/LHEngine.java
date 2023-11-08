@@ -1,15 +1,13 @@
 package com.faust.lhengine;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
-import com.faust.lhengine.screens.LanguageScreen;
+import com.faust.lhengine.screens.impl.LanguageScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 
 public class LHEngine extends Game {

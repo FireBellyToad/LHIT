@@ -12,10 +12,11 @@ public enum ScriptCommandsEnum {
     DIRECTION("direction", String.class, true),
     SPEED("speed", Integer.class, true),
     STEP("step", Integer.class),
-    TIMES("times", Integer.class),
     IF_AT_LEAST_ONE_KILLABLE_ALIVE("ifAtLeastOneKillableAlive", String.class),
     IF_AT_LEAST_ONE_POI_EXAMINABLE("ifAtLeastOnePOIExaminable", String.class),
     IF_PLAYER_DAMAGE_IS_LESS_THAN("ifPlayerDamageIsLessThan", Integer.class),
+    IF_COUNTER_IS_GREATER_THAN("ifCounterIsGreaterThan", Integer.class),
+    IF_COUNTER_IS_LESS_THAN("ifCounterIsLessThan", Integer.class),
     SPLASH_TO_SHOW("splashToShow", String.class),
     INSTANCE_CLASS("instanceClass", String.class, true),
     IDENTIFIER("identifier", String.class, true),
@@ -30,12 +31,14 @@ public enum ScriptCommandsEnum {
     USE_ANIMATION_OF_STEP("useAnimationOfStep", Integer.class),
     CHECK_ON_EVERY_FRAME("checkOnEveryFrame", Boolean.class),
     END("end", Boolean.class),
-
+    ONLY_ONE_CONDITION_MUST_BE_TRUE("onlyOneConditionMustBeTrue", Boolean.class),
+    INCREASE_COUNTER_OF("increaseCounterOf", Integer.class),
 
     //Composite
+    COUNTER("hurtPlayer", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{DAMAGE, CAN_KILL_PLAYER}),
     HURT_PLAYER("hurtPlayer", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{DAMAGE, CAN_KILL_PLAYER}),
     MOVE("move", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{DIRECTION, SPEED}),
-    GO_TO("goTo", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{STEP, END, TIMES, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, IF_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN, CHECK_ON_EVERY_FRAME}),
+    GO_TO("goTo", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{STEP, END, ONLY_ONE_CONDITION_MUST_BE_TRUE, IF_NO_KILLABLE_ALIVE, IF_PLAYER_DAMAGE_IS_MORE_THAN, IF_AT_LEAST_ONE_KILLABLE_ALIVE, IF_AT_LEAST_ONE_POI_EXAMINABLE, IF_PLAYER_DAMAGE_IS_LESS_THAN, CHECK_ON_EVERY_FRAME,IF_COUNTER_IS_GREATER_THAN,IF_COUNTER_IS_LESS_THAN}),
     SPAWN("spawn", ScriptCommandsEnum.class, new ScriptCommandsEnum[]{IDENTIFIER, X, Y, RELATIVE});
 
     private final String commandString;

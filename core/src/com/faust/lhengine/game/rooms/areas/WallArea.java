@@ -7,6 +7,7 @@ import java.util.Objects;
 
 /**
  * Static invisible Wall area.
+ *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class WallArea {

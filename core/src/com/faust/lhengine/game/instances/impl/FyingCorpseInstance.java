@@ -18,12 +18,12 @@ import com.faust.lhengine.game.world.manager.CollisionManager;
 import com.faust.lhengine.game.gameentities.AnimatedEntity;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.GameBehavior;
-import com.faust.lhengine.game.gameentities.impl.BoundedEntity;
+import com.faust.lhengine.game.gameentities.impl.FyingCorpseEntity;
 import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 
@@ -32,9 +32,9 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class BoundedInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
+public class FyingCorpseInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
 
-    private static final float BOUNDED_SPEED = 38;
+    private static final float SPEED = 38;
     private static final int LINE_OF_ATTACK = 15;
     private static final float CLAW_SENSOR_Y_OFFSET = 10;
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
@@ -50,8 +50,8 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
     private Body rightClawBody;
     private Body upClawBody;
 
-    public BoundedInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
-        super(new BoundedEntity(assetManager),target,rayCaster);
+    public FyingCorpseInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
+        super(new FyingCorpseEntity(assetManager),target,rayCaster);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
@@ -99,7 +99,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             currentDirectionEnum = extractDirectionFromNormal(direction);
 
             // Move towards target
-            body.setLinearVelocity(BOUNDED_SPEED * direction.x, BOUNDED_SPEED * direction.y);
+            body.setLinearVelocity(SPEED * direction.x, SPEED * direction.y);
             deactivateAttackBodies();
         } else {
             changeCurrentBehavior(GameBehavior.IDLE);
@@ -299,7 +299,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
         Vector2 drawPosition = adjustPosition();
         //Draw shadow
-        batch.draw(((BoundedEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - 2 - POSITION_Y_OFFSET);
+        batch.draw(((FyingCorpseEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - 2 - POSITION_Y_OFFSET);
 
         //Draw Bounded
 
@@ -339,11 +339,11 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
         //40% chance of evading attack
         final boolean canEvade = (MathUtils.random(1, 100)) >= 60;
         if (isDying()) {
-            ((BoundedEntity) entity).playDeathCry();
+            ((FyingCorpseEntity) entity).playDeathCry();
             body.setLinearVelocity(0, 0);
             changeCurrentBehavior(GameBehavior.DEAD);
         } else if (!canEvade && !GameBehavior.HURT.equals(getCurrentBehavior())) {
-            ((BoundedEntity) entity).playHurtCry();
+            ((FyingCorpseEntity) entity).playHurtCry();
 
             // Hurt by player
             double amount = ((Damager) attacker).damageRoll();
@@ -357,7 +357,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         } else if (canEvade && !GameBehavior.EVADE.equals(getCurrentBehavior())) {
-            ((BoundedEntity) entity).playEvadeSwift();
+            ((FyingCorpseEntity) entity).playEvadeSwift();
             //Just evade
             changeCurrentBehavior(GameBehavior.EVADE);
             Gdx.app.log("DEBUG", "Instance EVADED!");
@@ -379,7 +379,7 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
             modifier = 1.5f;
             direction = direction.rotate90(MathUtils.randomBoolean() ? 0 :1 );
         }
-        body.setLinearVelocity(BOUNDED_SPEED * modifier * -direction.x, BOUNDED_SPEED * modifier * -direction.y);
+        body.setLinearVelocity(SPEED * modifier * -direction.x, SPEED * modifier * -direction.y);
         // Do nothing for half second
         Timer.schedule(new Timer.Task() {
             @Override
@@ -392,11 +392,11 @@ public class BoundedInstance extends ChaserInstance implements Interactable, Hur
 
     @Override
     public int getResistance() {
-        return 9;
+        return 6;
     }
 
     public double damageRoll() {
-        return 3;
+        return 2;
     }
 
     /**

@@ -21,7 +21,7 @@ import com.faust.lhengine.game.gameentities.enums.PlayerFlag;
 import com.faust.lhengine.game.gameentities.impl.DiaconusEntity;
 import com.faust.lhengine.game.instances.DistancerInstance;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
@@ -30,7 +30,7 @@ import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.world.manager.CollisionManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 
@@ -46,7 +46,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
     private static final int ATTACK_VALID_FRAME = 3; // Frame to activate attack sensor
     private static final long ATTACK_COOLDOWN_TIME = 750; // in millis
 
-    private final Spawner spawner;
+    private final SpawnFactory spawnFactory;
     private final MusicManager musicManager;
 
     // Time delta between state and start of attack animation
@@ -55,9 +55,9 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     private long startAttackCooldown = 0;
 
-    public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, MusicManager musicManager, Spawner spawner) {
+    public DiaconusInstance(float x, float y, PlayerInstance target, AssetManager assetManager, MusicManager musicManager, SpawnFactory spawnFactory) {
         super(new DiaconusEntity(assetManager), target);
-        this.spawner = spawner;
+        this.spawnFactory = spawnFactory;
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
@@ -288,7 +288,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             // Hurt by player
             double amount = ((Damager) attacker).damageRoll();
-            //Diaconus halves normal lance damage
+            //Diaconus reduces normal lance damage
             if (((PlayerInstance) attacker).getItemQuantityFound(ItemEnum.HOLY_LANCE) < 2) {
                 amount = Math.floor(amount / 2);
             }
@@ -333,7 +333,7 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
     @Override
     public int getResistance() {
-        return 9;
+        return 7;
     }
 
     public double damageRoll() {
@@ -355,13 +355,13 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             if (MathUtils.random(1, 5) > 4) {
                 ((DiaconusEntity) entity).playConfusionSpellSound();
-                spawner.spawnInstance(ConfusionSpellInstance.class,
+                spawnFactory.spawnInstance(ConfusionSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);
 
             } else {
                 ((DiaconusEntity) entity).playHurtSpellSound();
-                spawner.spawnInstance(HurtSpellInstance.class,
+                spawnFactory.spawnInstance(HurtingSpellInstance.class,
                         this.body.getPosition().x,
                         this.body.getPosition().y, null);
 

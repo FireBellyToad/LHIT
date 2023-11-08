@@ -1,5 +1,11 @@
 package com.faust.lhengine.game.music.enums;
 
+
+/**
+ * Enum for game music tunes
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public enum TuneEnum {
 
     TITLE("title.ogg"),

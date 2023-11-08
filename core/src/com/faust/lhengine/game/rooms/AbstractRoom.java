@@ -16,7 +16,7 @@ import com.faust.lhengine.game.gameentities.enums.*;
 import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.instances.AnimatedInstance;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.instances.impl.*;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
@@ -39,7 +39,7 @@ import java.util.*;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public abstract class AbstractRoom implements Spawner {
+public abstract class AbstractRoom implements SpawnFactory {
 
     /**
      * Boundaries for room changing
@@ -283,7 +283,7 @@ public abstract class AbstractRoom implements Spawner {
                 break;
             }
             case HIVE: {
-                addedInstance = new HiveInstance(
+                addedInstance = new FleshWallInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
                         assetManager,
@@ -297,7 +297,7 @@ public abstract class AbstractRoom implements Spawner {
                 break;
             }
             case MEAT: {
-                addedInstance = new MeatInstance(
+                addedInstance = new FleshBiterInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
                         roomContent.player, assetManager);
@@ -317,7 +317,7 @@ public abstract class AbstractRoom implements Spawner {
             default: {
 
                 if (roomContent.roomFlags.get(RoomFlagEnum.GUARDANTEED_BOUNDED)) {
-                    addedInstance = new BoundedInstance(
+                    addedInstance = new FyingCorpseInstance(
                             (float) obj.getProperties().get("x"),
                             (float) obj.getProperties().get("y"),
                             roomContent.player,
@@ -330,7 +330,7 @@ public abstract class AbstractRoom implements Spawner {
 
                     roomContent.roomFlags.put(RoomFlagEnum.FIRST_BOUNDED_ENCOUNTERED, true);
                 } else {
-                    addedInstance = new StrixInstance(
+                    addedInstance = new MonsterBirdInstance(
                             (float) obj.getProperties().get("x"),
                             (float) obj.getProperties().get("y"),
                             roomContent.player,
@@ -423,7 +423,7 @@ public abstract class AbstractRoom implements Spawner {
         });
 
         // Remove some dead enemies
-        roomContent.enemyList.removeIf(ene -> ene instanceof MeatInstance && ((Killable) ene).isDead());
+        roomContent.enemyList.removeIf(ene -> ene instanceof FleshBiterInstance && ((Killable) ene).isDead());
 
         //Remove examined removable POI
         roomContent.poiList.removeIf(poiInstance -> {
@@ -482,8 +482,8 @@ public abstract class AbstractRoom implements Spawner {
             roomContent.spellEffects.add(new ConfusionSpellInstance(startX,startY, roomContent.player));
             GameInstance lastSpellInstance = roomContent.spellEffects.get( roomContent.spellEffects.size()-1);
             worldManager.insertSpellsIntoWorld(Collections.singletonList( lastSpellInstance));
-        }else  if (instanceClass.equals(HurtSpellInstance.class)) {
-            roomContent.spellEffects.add(new HurtSpellInstance(startX,startY, roomContent.player));
+        }else  if (instanceClass.equals(HurtingSpellInstance.class)) {
+            roomContent.spellEffects.add(new HurtingSpellInstance(startX,startY, roomContent.player));
             GameInstance lastSpellInstance = roomContent.spellEffects.get( roomContent.spellEffects.size()-1);
             worldManager.insertSpellsIntoWorld(Collections.singletonList( lastSpellInstance));
         }

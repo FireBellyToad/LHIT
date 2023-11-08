@@ -11,16 +11,16 @@ import java.util.Arrays;
 
 /**
  *
- * Hive enemy Entity class
+ * Flesh Wall enemy Entity class
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class HiveEntity extends AnimatedEntity {
+public class FleshWallEntity extends AnimatedEntity {
 
     private final Sound hurtCry;
     private final Sound deathCry;
 
-    public HiveEntity(AssetManager assetManager) {
+    public FleshWallEntity(AssetManager assetManager) {
         super(assetManager.get("sprites/hive_sheet.png"));
         hurtCry = assetManager.get("sounds/SFX_hit&damage2.ogg");
         deathCry = assetManager.get("sounds/SFX_creatureDie4.ogg");

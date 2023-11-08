@@ -1,13 +1,11 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.camera.CameraManager;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
+import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 import com.faust.lhengine.menu.Menu;
 import com.faust.lhengine.menu.enums.MenuItem;
@@ -17,20 +15,15 @@ import com.faust.lhengine.menu.enums.MenuItem;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class GameOverScreen implements Screen {
+public class GameOverScreen extends AbstractScreen {
 
-    private final LHEngine game;
-    private final AssetManager assetManager;
-    private final CameraManager cameraManager;
     private final MusicManager musicManager;
     private final TextLocalizer textLocalizer;
     private final Menu menu;
     private final Texture gameOverScreen;
 
     public GameOverScreen(LHEngine game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
-        cameraManager = game.getCameraManager();
+        super(game);
         musicManager = game.getMusicManager();
         textLocalizer = game.getTextLocalizer();
         gameOverScreen = assetManager.get("splash/gameover_splash.png");
@@ -76,31 +69,6 @@ public class GameOverScreen implements Screen {
             menu.drawCurrentMenuLocalized(game.getBatch(), textLocalizer);
             game.getBatch().end();
         }
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
 
     }
 }

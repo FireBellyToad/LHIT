@@ -28,9 +28,9 @@ public class CollisionManager implements ContactListener {
             handlePlayerBeginContact(contact);
         }
 
-        if (isContactOfClass(contact, BoundedInstance.class)) {
+        if (isContactOfClass(contact, FyingCorpseInstance.class)) {
             if (isContactOfClass(contact, WallArea.class) || isContactOfClass(contact, DecorationInstance.class)) {
-                BoundedInstance bInst = ((BoundedInstance) getCorrectFixture(contact, BoundedInstance.class).getBody().getUserData());
+                FyingCorpseInstance bInst = ((FyingCorpseInstance) getCorrectFixture(contact, FyingCorpseInstance.class).getBody().getUserData());
                 bInst.forceRecalculation();
             }
         }
@@ -93,18 +93,18 @@ public class CollisionManager implements ContactListener {
         }
 
         // Handle Strix Collision
-        if (isContactOfClass(contact, StrixInstance.class)) {
-            handleEnemyCollisionEvent(contact, StrixInstance.class);
+        if (isContactOfClass(contact, MonsterBirdInstance.class)) {
+            handleEnemyCollisionEvent(contact, MonsterBirdInstance.class);
         }
 
         // Handle Bounded Collision
-        if (isContactOfClass(contact, BoundedInstance.class)) {
-            handleEnemyCollisionEvent(contact, BoundedInstance.class);
+        if (isContactOfClass(contact, FyingCorpseInstance.class)) {
+            handleEnemyCollisionEvent(contact, FyingCorpseInstance.class);
         }
 
         // Handle Hive Collision
-        if (isContactOfClass(contact, HiveInstance.class)) {
-            handleEnemyCollisionEvent(contact, HiveInstance.class);
+        if (isContactOfClass(contact, FleshWallInstance.class)) {
+            handleEnemyCollisionEvent(contact, FleshWallInstance.class);
         }
 
         // Handle Dead hand Collision
@@ -125,8 +125,8 @@ public class CollisionManager implements ContactListener {
         }
 
         // Handle Meat Collision
-        if (isContactOfClass(contact, MeatInstance.class)) {
-            MeatInstance meatInstance = ((MeatInstance) getCorrectFixture(contact, MeatInstance.class).getBody().getUserData());
+        if (isContactOfClass(contact, FleshBiterInstance.class)) {
+            FleshBiterInstance meatInstance = ((FleshBiterInstance) getCorrectFixture(contact, FleshBiterInstance.class).getBody().getUserData());
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
             meatInstance.doPlayerInteraction(playerInstance);
         }
@@ -142,10 +142,10 @@ public class CollisionManager implements ContactListener {
         }
 
         // Handle HurtSpell Collision
-        if (isContactOfClass(contact, HurtSpellInstance.class)) {
-            HurtSpellInstance hurtSpellInstance = ((HurtSpellInstance) getCorrectFixture(contact, HurtSpellInstance.class).getBody().getUserData());
+        if (isContactOfClass(contact, HurtingSpellInstance.class)) {
+            HurtingSpellInstance hurtingSpellInstance = ((HurtingSpellInstance) getCorrectFixture(contact, HurtingSpellInstance.class).getBody().getUserData());
             PlayerInstance playerInstance = ((PlayerInstance) getCorrectFixture(contact, PlayerInstance.class).getBody().getUserData());
-            hurtSpellInstance.doPlayerInteraction(playerInstance);
+            hurtingSpellInstance.doPlayerInteraction(playerInstance);
         }
 
         // Handle ConfusionSpell Collision
@@ -218,18 +218,18 @@ public class CollisionManager implements ContactListener {
         }
 
         // Handle Strix Collision end
-        if (isContactOfClass(contact, StrixInstance.class)) {
-            handleEnemyCollisionEventEnd(contact, StrixInstance.class);
+        if (isContactOfClass(contact, MonsterBirdInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, MonsterBirdInstance.class);
         }
 
         // Handle Bounded Collision end
-        if (isContactOfClass(contact, BoundedInstance.class)) {
-            handleEnemyCollisionEventEnd(contact, BoundedInstance.class);
+        if (isContactOfClass(contact, FyingCorpseInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, FyingCorpseInstance.class);
         }
 
         // Handle Hive Collision end
-        if (isContactOfClass(contact, HiveInstance.class)) {
-            handleEnemyCollisionEventEnd(contact, HiveInstance.class);
+        if (isContactOfClass(contact, FleshWallInstance.class)) {
+            handleEnemyCollisionEventEnd(contact, FleshWallInstance.class);
         }
 
         // Handle Spitter Collision end

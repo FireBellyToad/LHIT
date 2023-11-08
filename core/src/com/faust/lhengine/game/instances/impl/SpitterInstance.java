@@ -24,12 +24,12 @@ import com.faust.lhengine.game.instances.interfaces.Damager;
 import com.faust.lhengine.game.instances.interfaces.Hurtable;
 import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.instances.interfaces.Spawner;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 
@@ -48,7 +48,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     // Time delta between state and start of attack animation
     private float attackDeltaTime = 0;
 
-    private final Spawner spawner;
+    private final SpawnFactory spawnFactory;
 
     private long startAttackCooldown;
 
@@ -57,13 +57,13 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     private boolean canBeDamaged = false;
     private boolean isAggressive = false;
 
-    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, Spawner spawner, MusicManager musicManager) {
+    public SpitterInstance(float x, float y, AssetManager assetManager, TextBoxManager textBoxManager, SpawnFactory spawnFactory, MusicManager musicManager) {
         super(new SpitterEntity(assetManager));
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
         this.textBoxManager = textBoxManager;
-        this.spawner = spawner;
+        this.spawnFactory = spawnFactory;
         this.startAttackCooldown = TimeUtils.nanoTime();
         this.musicManager = musicManager;
     }
@@ -72,12 +72,12 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void doLogic(float stateTime, RoomContent roomContent) {
 
         //Counting living HiveInstance in room. If 0, SpitterInstance can be damaged
-        long hiveCount = roomContent.enemyList.stream().filter(ene -> ene instanceof HiveInstance && !((Killable) ene).isDead()).count();
+        long hiveCount = roomContent.enemyList.stream().filter(ene -> ene instanceof FleshWallInstance && !((Killable) ene).isDead()).count();
         canBeDamaged = hiveCount == 0;
 
         //If one of the HiveInstances are hurted, start aggression
         if (!isAggressive) {
-            isAggressive = roomContent.enemyList.stream().anyMatch(ene -> ene instanceof HiveInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
+            isAggressive = roomContent.enemyList.stream().anyMatch(ene -> ene instanceof FleshWallInstance && GameBehavior.HURT.equals(ene.getCurrentBehavior()));
         }
 
         //Change Music
@@ -257,7 +257,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
     public void hurt(GameInstance attacker) {
         if (isDying()) {
             ((SpitterEntity) entity).playDeathCry();
-            spawner.spawnInstance(PortalInstance.class, this.startX, this.startY, EnemyEnum.PORTAL.name());
+            spawnFactory.spawnInstance(PortalInstance.class, this.startX, this.startY, EnemyEnum.PORTAL.name());
             isDead = true;
             changeCurrentBehavior(GameBehavior.DEAD);
         } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
@@ -278,7 +278,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
     @Override
     public int getResistance() {
-        return 15;
+        return 12;
     }
 
     public double damageRoll() {
@@ -297,7 +297,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
         //Activate weapon sensor on frame
         if (currentFrame == ATTACK_VALID_FRAME && canAttack) {
             ((SpitterEntity) entity).playSpitSound();
-            spawner.spawnInstance(MeatInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
+            spawnFactory.spawnInstance(FleshBiterInstance.class, this.startX, this.startY, EnemyEnum.MEAT.name());
             canAttack = false;
         }
         // Resetting Behaviour on animation end

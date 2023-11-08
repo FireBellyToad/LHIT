@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.faust.lhengine.game.gameentities.AnimatedEntity;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.GameBehavior;
-import com.faust.lhengine.game.gameentities.impl.StrixEntity;
+import com.faust.lhengine.game.gameentities.impl.MonsterBirdEntity;
 import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.ChaserInstance;
 import com.faust.lhengine.game.instances.interfaces.Damager;
@@ -24,7 +24,7 @@ import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.world.interfaces.RayCaster;
 import com.faust.lhengine.game.world.manager.CollisionManager;
-import com.faust.lhengine.screens.GameScreen;
+import com.faust.lhengine.screens.impl.GameScreen;
 
 import java.util.Objects;
 
@@ -33,16 +33,16 @@ import java.util.Objects;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class StrixInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
+public class MonsterBirdInstance extends ChaserInstance implements Interactable, Hurtable, Damager {
 
-    private static final float STRIX_SPEED = 35;
+    private static final float SPEED = 35;
     private static final long LEECHING_FREQUENCY_IN_MILLIS = 1000;
     private boolean attachedToPlayer = false;
 
     private long leechStartTimer;
 
-    public StrixInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
-        super(new StrixEntity(assetManager), target, rayCaster);
+    public MonsterBirdInstance(float x, float y, PlayerInstance target, AssetManager assetManager, RayCaster rayCaster) {
+        super(new MonsterBirdEntity(assetManager), target, rayCaster);
         currentDirectionEnum = DirectionEnum.DOWN;
         this.startX = x;
         this.startY = y;
@@ -70,7 +70,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
             currentDirectionEnum = extractDirectionFromNormal(direction);
 
             // Move towards target
-            body.setLinearVelocity(STRIX_SPEED * direction.x, STRIX_SPEED * direction.y);
+            body.setLinearVelocity(SPEED * direction.x, SPEED * direction.y);
         } else {
 
             changeCurrentBehavior(GameBehavior.IDLE);
@@ -97,7 +97,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
         Vector2 direction = new Vector2(attacker.getBody().getPosition().x - body.getPosition().x,
                 attacker.getBody().getPosition().y - body.getPosition().y).nor();
 
-        body.setLinearVelocity(STRIX_SPEED * 4 * -direction.x, STRIX_SPEED * 4 * -direction.y);
+        body.setLinearVelocity(SPEED * 4 * -direction.x, SPEED * 4 * -direction.y);
         changeCurrentBehavior(GameBehavior.HURT);
         attachedToPlayer = false;
         // Do nothing for half second
@@ -198,7 +198,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
         TextureRegion frame = ((AnimatedEntity) entity).getFrame(getCurrentBehavior(), currentDirectionEnum, mapStateTimeFromBehaviour(stateTime));
         batch.begin();
         //Draw shadow
-        batch.draw(((StrixEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
+        batch.draw(((MonsterBirdEntity) entity).getShadowTexture(), drawPosition.x - POSITION_OFFSET, drawPosition.y - POSITION_Y_OFFSET);
 
         //Draw Strix
         if (GameBehavior.IDLE.equals(getCurrentBehavior()) || GameBehavior.DEAD.equals(getCurrentBehavior())) {
@@ -238,10 +238,10 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
         //Keep leeching
         if (attachedToPlayer && TimeUtils.timeSinceNanos(leechStartTimer) > TimeUtils.millisToNanos(LEECHING_FREQUENCY_IN_MILLIS)) {
 
-            ((Hurtable<StrixInstance>) target).hurt(StrixInstance.this);
+            ((Hurtable<MonsterBirdInstance>) target).hurt(MonsterBirdInstance.this);
             //Prevents loop on gameover screen
             if (((Killable) target).isDead()) {
-                ((StrixEntity) entity).stopLeechSound();
+                ((MonsterBirdEntity) entity).stopLeechSound();
             }
             leechStartTimer = TimeUtils.nanoTime();
             Gdx.app.log("DEBUG", "END leech timer");
@@ -258,7 +258,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
     public void doPlayerInteraction(PlayerInstance playerInstance) {
         // Start to leech
         attachedToPlayer = true;
-        ((StrixEntity) entity).playLeechSound();
+        ((MonsterBirdEntity) entity).playLeechSound();
 
     }
 
@@ -266,7 +266,7 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
     public void endPlayerInteraction(PlayerInstance playerInstance) {
         // End leech and cancel timer if present
         attachedToPlayer = false;
-        ((StrixEntity) entity).stopLeechSound();
+        ((MonsterBirdEntity) entity).stopLeechSound();
         if (leechStartTimer > 0) {
             leechStartTimer = 0;
             Gdx.app.log("DEBUG", "CANCEL leech timer");
@@ -286,11 +286,11 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
         if (!isAttachedToPlayer()) {
 
             if (isDying()) {
-                ((StrixEntity) entity).playDeathCry();
+                ((MonsterBirdEntity) entity).playDeathCry();
                 body.setLinearVelocity(0, 0);
                 changeCurrentBehavior(GameBehavior.DEAD);
             } else if (!GameBehavior.HURT.equals(getCurrentBehavior())) {
-                ((StrixEntity) entity).playHurtCry();
+                ((MonsterBirdEntity) entity).playHurtCry();
                 // Hurt by player
                 this.damage += ((Damager) attacker).damageRoll();
                 Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
@@ -301,6 +301,6 @@ public class StrixInstance extends ChaserInstance implements Interactable, Hurta
 
     @Override
     public int getResistance() {
-        return 9;
+        return 5;
     }
 }

@@ -5,6 +5,11 @@ import com.faust.lhengine.game.instances.GameInstance;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Generic Game Instances Utils
+ *
+ * @author Jacopo "Faust" Buttiglieri
+ */
 public class GameInstanceUtils {
 
 

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * Static invisible emerged land area.
+ *
  * @author Jacopo "Faust" Buttiglieri
  */
 public class EmergedArea {

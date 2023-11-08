@@ -1,14 +1,12 @@
-package com.faust.lhengine.screens;
+package com.faust.lhengine.screens.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.faust.lhengine.LHEngine;
-import com.faust.lhengine.camera.CameraManager;
+import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 import com.faust.lhengine.menu.Menu;
 import com.faust.lhengine.menu.enums.MenuItem;
@@ -18,21 +16,16 @@ import com.faust.lhengine.menu.enums.MenuItem;
  *
  * @author Jacopo "Faust" Buttiglieri
  */
-public class LanguageScreen implements Screen {
+public class LanguageScreen extends AbstractScreen {
 
     private final ShapeRenderer backgroundBox = new ShapeRenderer();
     private static final Color darkness = new Color(0x000000ff);
 
-    private final LHEngine game;
-    private final AssetManager assetManager;
-    private final CameraManager cameraManager;
     private final TextLocalizer textLocalizer;
     private final Menu menu;
 
     public LanguageScreen(LHEngine game) {
-        this.game = game;
-        assetManager = game.getAssetManager();
-        cameraManager = game.getCameraManager();
+        super(game);
         textLocalizer = game.getTextLocalizer();
 
         menu = new Menu(game.getSaveFileManager(), MenuItem.LANGUAGE, assetManager);
@@ -83,31 +76,6 @@ public class LanguageScreen implements Screen {
             menu.drawCurrentMenu(game.getBatch());
             game.getBatch().end();
         }
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        cameraManager.getViewport().update(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
 
     }
 }

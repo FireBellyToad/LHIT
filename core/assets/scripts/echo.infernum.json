@@ -13,7 +13,8 @@
         "checkOnEveryFrame": true,
         "end": true,
         "ifPlayerDamageIsMoreThan":5,
-        "ifNoKillableAlive":"ESCAPE_PORTAL"
+        "ifNoKillableAlive":"ESCAPE_PORTAL",
+        "onlyOneConditionMustBeTrue": true
       }
     },
     {
@@ -23,7 +24,8 @@
         "end": true,
         "checkOnEveryFrame": true,
         "ifPlayerDamageIsMoreThan":5,
-        "ifNoKillableAlive":"ESCAPE_PORTAL"
+        "ifNoKillableAlive":"ESCAPE_PORTAL",
+        "onlyOneConditionMustBeTrue": true
       },
       "hurtPlayer": {
         "damage": 1,
@@ -37,7 +39,8 @@
         "end": true,
         "checkOnEveryFrame": true,
         "ifPlayerDamageIsMoreThan":5,
-        "ifNoKillableAlive":"ESCAPE_PORTAL"
+        "ifNoKillableAlive":"ESCAPE_PORTAL",
+        "onlyOneConditionMustBeTrue": true
       }
     },{
       "invisible": true,
@@ -46,7 +49,8 @@
         "step": 1,
         "checkOnEveryFrame": true,
         "ifPlayerDamageIsLessThan":5,
-        "ifAtLeastOneKillableAlive":"ESCAPE_PORTAL"
+        "ifAtLeastOneKillableAlive":"ESCAPE_PORTAL",
+        "onlyOneConditionMustBeTrue": true
       }
     }
   ]

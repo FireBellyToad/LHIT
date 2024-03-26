@@ -10,7 +10,7 @@
       <Pane onMouseClicked="#selectBoundary" prefHeight="510.0" prefWidth="500.0" style="-fx-border-color: black; -fx-border-width: 5 px;">
          <children>
             <ComboBox fx:id="terrainTypesCombobox" layoutX="187.0" layoutY="238.0" onAction="#onChangeTerrainType" prefHeight="25.0" prefWidth="127.0" />
-            <Button fx:id="rightButton" layoutX="441.0" layoutY="238.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Right" userData="RIGHT" />
+            <Button fx:id="rightButton" alignment="CENTER_RIGHT" layoutX="441.0" layoutY="238.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Right" textAlignment="RIGHT" userData="RIGHT" />
             <Button fx:id="upButton" layoutX="234.0" layoutY="14.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Up" userData="UP" />
             <Button fx:id="leftButton" layoutX="14.0" layoutY="238.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Left" userData="LEFT" />
             <Button fx:id="downButton" layoutX="226.0" layoutY="446.0" mnemonicParsing="false" onAction="#startBoundarySelection" text="Down" userData="DOWN" />

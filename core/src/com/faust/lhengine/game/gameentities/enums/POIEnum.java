@@ -19,7 +19,9 @@ public enum POIEnum {
     ALTAR("poi.altar", null,"splash.diaconus", ItemEnum.HOLY_WATER, false),
     WATERSKIN("poi.waterskin", ItemEnum.WATERSKIN, "splash.waterskin", ItemEnum.RITUAL, true),
     PARCHMENT("poi.parchment"),
-    RITUAL("poi.ritual",ItemEnum.RITUAL,"splash.ritual", null,true);
+    RITUAL("poi.ritual",ItemEnum.RITUAL,"splash.ritual", null,true),
+    PLEA("poi.plea"),
+    MICHAEL("poi.michael", null,"splash.michael", null, false);
 
     private final String textKey;
     private final ItemEnum itemGiven;

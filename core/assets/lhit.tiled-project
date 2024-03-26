@@ -7,6 +7,8 @@
         "cutscenes",
         "terrains"
     ],
+    "properties": [
+    ],
     "propertyTypes": [
         {
             "color": "#ffffffff",
@@ -52,7 +54,8 @@
                 "IMPALED",
                 "DEAD_TREE",
                 "PAPER",
-                "BIG_TREE"
+                "BIG_TREE",
+                ""
             ],
             "valuesAsFlags": false
         },
@@ -196,7 +199,9 @@
                 "ALTAR",
                 "WATERSKIN",
                 "PARCHMENT",
-                "RITUAL"
+                "RITUAL",
+                "MICHAEL",
+                "PLEA"
             ],
             "valuesAsFlags": false
         },

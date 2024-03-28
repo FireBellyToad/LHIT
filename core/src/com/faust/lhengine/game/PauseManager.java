@@ -14,6 +14,7 @@ import com.faust.lhengine.menu.Menu;
 import com.faust.lhengine.menu.enums.MenuItem;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
 import com.faust.lhengine.screens.impl.MenuScreen;
+import com.faust.lhengine.utils.TextLocalizer;
 
 /**
  * @author Jacopo "Faust" Buttiglieri
@@ -22,6 +23,7 @@ public class PauseManager {
 
     private final Menu menu;
     private final AbstractSaveFileManager saveFileManager;
+    private final TextLocalizer textLocalizer;
     private boolean gamePaused = false;
     private final MusicManager musicManager;
 
@@ -29,10 +31,11 @@ public class PauseManager {
     private static final Color back = new Color(0x000000ff);
 
 
-    public PauseManager(AbstractSaveFileManager saveFileManager, MusicManager musicManager, AssetManager assetManager) {
+    public PauseManager(AbstractSaveFileManager saveFileManager, MusicManager musicManager, AssetManager assetManager, TextLocalizer textLocalizer) {
 
         this.musicManager = musicManager;
         this.saveFileManager = saveFileManager;
+        this.textLocalizer = textLocalizer;
         menu = new Menu(saveFileManager, MenuItem.PAUSE_GAME, assetManager);
         menu.loadFonts(assetManager);
     }
@@ -63,7 +66,7 @@ public class PauseManager {
         batch.end();
 
         batch.begin();
-        menu.drawCurrentMenu(batch);
+        menu.drawCurrentMenuLocalized(batch, this.textLocalizer);
         batch.end();
     }
 

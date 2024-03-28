@@ -6,17 +6,19 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.saves.impl.DesktopSaveFileManager;
 
+import java.util.Arrays;
+
 public class DesktopLauncher {
 	private static final int SCALE_FACTOR = 6;
 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "LHEngine";
+		config.title = "LHIT";
 		config.resizable = false;
 		config.width = LHEngine.GAME_WIDTH * SCALE_FACTOR;
 		config.height = LHEngine.GAME_HEIGHT * SCALE_FACTOR;
 		//if parameter w is set, go windowed
-		config.fullscreen = false;//!Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
+		config.fullscreen = !Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
 		config.addIcon("icon.png", Files.FileType.Internal);
 		new LwjglApplication(new LHEngine(false, new DesktopSaveFileManager()), config);
 	}

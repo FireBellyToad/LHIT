@@ -53,7 +53,7 @@ public class GameScreen extends AbstractScreen {
         textManager = new TextBoxManager(assetManager, textLocalizer);
         hud = new Hud(textManager, assetManager);
         splashManager = new SplashManager(textManager, assetManager);
-        pauseManager = new PauseManager(game.getSaveFileManager(), musicManager, assetManager);
+        pauseManager = new PauseManager(game.getSaveFileManager(), musicManager, assetManager, textLocalizer);
         worldManager = new WorldManager();
         player = new PlayerInstance(assetManager, this.game.isWebBuild());
 

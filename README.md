@@ -1,29 +1,11 @@
-# Langobardia Horribilis: in Trebia
+# LHEngine
 
-Retro-styled horror game based on the world of [Langobardia Horribilis](https://www.langobardiahorribilis.com/)
+A 2D game engine based on Java and LibGDX.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
 
-# Download and play
 
-<a href="https://faust90.itch.io/lhit">Langobardia Horribilis: in Trebia by Faust</a>
+## Games made with it 
 
-# Trailer
-
-[![LHIT Trailer](https://img.youtube.com/vi/HzlzRR_GRwc/0.jpg)](https://www.youtube.com/watch?v=HzlzRR_GRwc)
-
-# Credits
-
-2e8u - 8-bit: Chopin, Funeral March ( https://www.youtube.com/watch?v=CODmvzK25dI )
-
-Luis E. Juan -Verklärte Nacht, for string orchestra (arr. from String Sextet, Op.4)
-
-Rolemusic - Shipwreck In The Pacific Ocean - The Pirate And The Dancer
-
-Music & Sounds Effect Library - 8 bit sound effect pack
-
-Retro SFX - Andrea Baroni
-
-RedStone128 - The Final Battle (8-bit Epic) ( https://www.youtube.com/watch?v=_wmT9U1X7Cw )
-
-L'Origine del Male 1 & 2 - Gilian Adam 
+* [Langobadia Horribilis: in Trebia](https://faust90.itch.io/lhit) - ([repo](https://github.com/FireBellyToad/LHIT.git))
+* More coming soon...

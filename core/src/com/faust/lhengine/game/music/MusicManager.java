@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class MusicManager {
 
-    private final Map<TuneEnum, Music> musicMap = new HashMap<>();
+    private final Map<TuneEnum, Music> musicMap = new EnumMap<>(TuneEnum.class);
     private final List<TuneEnum> pausedTunes = new ArrayList<>();
 
     /**
@@ -121,7 +121,7 @@ public class MusicManager {
      * Pause all music
      */
     public void resumeMusic() {
-        pausedTunes.forEach((tune) -> musicMap.get(tune).play());
+        pausedTunes.forEach( tune -> musicMap.get(tune).play());
 
         pausedTunes.clear();
     }
@@ -147,8 +147,7 @@ public class MusicManager {
      * @return true if any music is playing
      */
     public boolean isPlaying() {
-        for (TuneEnum tune : musicMap.keySet()) {
-            final Music tuneToCheck = musicMap.get(tune);
+        for (Music tuneToCheck : musicMap.values()) {
             if (tuneToCheck.isPlaying()) {
                 return true;
             }

@@ -44,7 +44,7 @@ public abstract class ChaserInstance extends AnimatedInstance {
     private PathNode currentPos;
     private PathNode newGoal;
 
-    public ChaserInstance(TexturedEntity entity, GameInstance target, RayCaster rayCaster) {
+    protected ChaserInstance(TexturedEntity entity, GameInstance target, RayCaster rayCaster) {
         super(entity);
         this.target = target;
         this.rayCaster = rayCaster;

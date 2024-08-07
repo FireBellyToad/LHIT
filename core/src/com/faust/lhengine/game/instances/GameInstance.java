@@ -18,8 +18,8 @@ import java.util.Objects;
  */
 public abstract class GameInstance {
 
-    public final static int POSITION_OFFSET = 16;
-    public final static int POSITION_Y_OFFSET = 8;
+    public static final int POSITION_OFFSET = 16;
+    public static final int POSITION_Y_OFFSET = 8;
 
     // Flicker effect variables
     protected boolean mustFlicker = false;// flag that is true when the Instance must be hidden
@@ -31,7 +31,7 @@ public abstract class GameInstance {
     protected float startY = LHEngine.GAME_HEIGHT / 3;
     protected boolean alwaysInBackground = false;
 
-    public GameInstance(GameEntity entity) {
+    protected GameInstance(GameEntity entity) {
         Objects.requireNonNull(entity);
 
         this.entity = entity;
@@ -72,6 +72,7 @@ public abstract class GameInstance {
 
     /**
      * When is not moving, adjust position if necessary to avoid pixel tearing
+     *
      * @return position with integer x and y
      */
     protected Vector2 adjustPosition() {

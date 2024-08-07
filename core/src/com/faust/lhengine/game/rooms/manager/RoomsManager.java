@@ -21,6 +21,7 @@ import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
+import com.faust.lhengine.utils.LoggerUtils;
 import com.faust.lhengine.utils.serialization.MainWorldSerializer;
 
 import java.util.*;
@@ -146,7 +147,7 @@ public class RoomsManager {
         }
 
 
-        Gdx.app.log("DEBUG", "ROOM " + currentRoomPosInWorld.getX() + "," + currentRoomPosInWorld.getY());
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "ROOM " + currentRoomPosInWorld.getX() + "," + currentRoomPosInWorld.getY());
         //Keep the same state of already visited rooms
         saveMap.put(new RoomPosition(currentRoomPosInWorld.getX(), currentRoomPosInWorld.getY()), currentRoomSaveEntry);
 

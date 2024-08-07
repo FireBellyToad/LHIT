@@ -18,6 +18,7 @@ import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.Objects;
 public class CasualRoom extends AbstractRoom {
 
     //List of map casual numbers with a Golden cross
-    public static final List<Integer> GOLDCROSS_MAPS = new ArrayList<Integer>() {{
+    public static final List<Integer> GOLDCROSS_MAPS = new ArrayList<>() {{
         this.add(1);
         this.add(5);
         this.add(6);
@@ -40,7 +41,7 @@ public class CasualRoom extends AbstractRoom {
     }};
 
     //List of Map casual numbers with a bush
-    public static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
+    public static final List<Integer> BUSH_MAPS = new ArrayList<>() {{
         this.add(3);
         this.add(8);
         this.add(16);
@@ -78,7 +79,7 @@ public class CasualRoom extends AbstractRoom {
                 casualNumber = MathUtils.random(1, CasualRoom.CASUAL_TOTAL);
             }
         }
-        Gdx.app.log("DEBUG", "casualNumber: " + casualNumber);
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "casualNumber: " + casualNumber);
 
         //Enforce number between 1 and CASUAL_TOTAL. Seemingly unnecessary, but...
         casualNumber = MathUtils.clamp(casualNumber, 1, CasualRoom.CASUAL_TOTAL);

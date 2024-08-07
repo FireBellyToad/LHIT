@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.GameBehavior;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,9 +20,9 @@ public abstract class AnimatedEntity extends TexturedEntity {
     public static final float FRAME_DURATION = 0.1f;
 
     //Animations given Behavior and Direction
-    protected final Map<GameBehavior, Map<DirectionEnum, Animation<TextureRegion>>> animations = new HashMap<>();
+    protected final Map<GameBehavior, Map<DirectionEnum, Animation<TextureRegion>>> animations = new EnumMap<>(GameBehavior.class);
 
-    public AnimatedEntity(Texture texture) {
+    protected AnimatedEntity(Texture texture) {
         super(texture);
 
         this.initAnimations();
@@ -56,9 +56,7 @@ public abstract class AnimatedEntity extends TexturedEntity {
         Objects.requireNonNull(behavior);
         Objects.requireNonNull(directionEnum);
 
-        if (!this.animations.containsKey(behavior)) {
-            this.animations.put(behavior, new HashMap<>());
-        }
+        this.animations.computeIfAbsent(behavior, key -> new EnumMap<>(DirectionEnum.class));
 
         this.animations.get(behavior).put(directionEnum, animation);
     }

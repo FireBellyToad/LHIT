@@ -12,8 +12,8 @@ import com.faust.lhengine.utils.TextLocalizer;
 
 public class LHEngine extends Game {
 
-    public static final int GAME_WIDTH = 160;
-    public static final int GAME_HEIGHT = 144;
+    public static final float GAME_WIDTH = 160;
+    public static final float GAME_HEIGHT = 144;
 
     private boolean isWebBuild;
     private SpriteBatch batch;

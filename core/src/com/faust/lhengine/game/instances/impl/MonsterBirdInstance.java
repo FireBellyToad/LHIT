@@ -25,6 +25,7 @@ import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.world.interfaces.RayCaster;
 import com.faust.lhengine.game.world.manager.CollisionManager;
 import com.faust.lhengine.screens.impl.GameScreen;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.Objects;
 
@@ -244,9 +245,9 @@ public class MonsterBirdInstance extends ChaserInstance implements Interactable,
                 ((MonsterBirdEntity) entity).stopLeechSound();
             }
             leechStartTimer = TimeUtils.nanoTime();
-            Gdx.app.log("DEBUG", "END leech timer");
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "END leech timer");
         }
-        Gdx.app.log("DEBUG", "START leech timer");
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "START leech timer");
 
     }
 
@@ -269,7 +270,7 @@ public class MonsterBirdInstance extends ChaserInstance implements Interactable,
         ((MonsterBirdEntity) entity).stopLeechSound();
         if (leechStartTimer > 0) {
             leechStartTimer = 0;
-            Gdx.app.log("DEBUG", "CANCEL leech timer");
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "CANCEL leech timer");
         }
     }
 
@@ -293,7 +294,7 @@ public class MonsterBirdInstance extends ChaserInstance implements Interactable,
                 ((MonsterBirdEntity) entity).playHurtCry();
                 // Hurt by player
                 this.damage += ((Damager) attacker).damageRoll();
-                Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+                Gdx.app.log(LoggerUtils.DEBUG_TAG, "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
                 postHurtLogic(attacker);
             }
         }

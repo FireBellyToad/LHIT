@@ -10,6 +10,7 @@ import com.faust.lhengine.game.rooms.RoomPosition;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
 import com.faust.lhengine.saves.enums.SaveFieldsEnum;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.*;
 
@@ -83,7 +84,7 @@ public class DesktopSaveFileManager extends AbstractSaveFileManager {
         try {
             fileRead = new JsonReader().parse(file);
         } catch (Exception e) {
-            Gdx.app.log("DEBUG", e.getMessage());
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, e.getMessage());
         }
 
         if (Objects.isNull(fileRead)) {

@@ -1,9 +1,5 @@
 package com.faust.lhengine.game.rooms;
 
-import com.badlogic.gdx.utils.NumberUtils;
-
-import java.io.Serializable;
-
 /**
  * Class for Room position in mainWorld.
  *

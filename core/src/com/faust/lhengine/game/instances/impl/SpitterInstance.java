@@ -30,6 +30,7 @@ import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.screens.impl.GameScreen;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.Objects;
 
@@ -271,7 +272,7 @@ public class SpitterInstance extends AnimatedInstance implements Interactable, H
 
             // Hurt by player
             this.damage += ((Damager) attacker).damageRoll();
-            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         }
     }

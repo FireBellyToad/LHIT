@@ -13,6 +13,7 @@ import com.faust.lhengine.game.gameentities.enums.DirectionEnum;
 import com.faust.lhengine.game.gameentities.enums.GameBehavior;
 import com.faust.lhengine.game.gameentities.impl.TutorialEntity;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class SplashManager implements InputProcessor {
      * Closes splash
      */
     private void closeSplash() {
-        Gdx.app.log("DEBUG", "END splash timer");
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "END splash timer");
         splashToShow = null;
         textManager.removeAllBoxes();
     }

@@ -17,13 +17,13 @@ public abstract class SpriteEntity extends TexturedEntity {
 
     protected Animation<TextureRegion> animation;
 
-    public SpriteEntity(Texture texture) {
+    protected SpriteEntity(Texture texture) {
         super(texture);
 
         this.initAnimation(0);
     }
 
-    public SpriteEntity(Texture texture, int rowNumber) {
+    protected SpriteEntity(Texture texture, int rowNumber) {
         super(texture);
 
         this.initAnimation(rowNumber);

@@ -20,8 +20,9 @@ import com.faust.lhengine.game.gameentities.impl.*;
 import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
 import com.faust.lhengine.menu.LongTextHandler;
 import com.faust.lhengine.saves.AbstractSaveFileManager;
-import com.faust.lhengine.enums.cutscenes.CutsceneEnum;
+import com.faust.lhengine.cutscenes.enums.CutsceneEnum;
 import com.faust.lhengine.saves.enums.SaveFieldsEnum;
+import com.faust.lhengine.utils.LoggerUtils;
 import com.faust.lhengine.utils.TextLocalizer;
 
 import java.util.*;
@@ -79,7 +80,7 @@ public class CutsceneManager implements InputProcessor {
             tiledSceneRenderer.setView(camera);
             populateActors();
         } catch (Exception e) {
-            Gdx.app.log("DEBUG", "Problem while loading cutscene, using blank");
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Problem while loading cutscene, using blank");
         }
     }
 
@@ -133,7 +134,7 @@ public class CutsceneManager implements InputProcessor {
             populateActors();
 
         } catch (Exception e) {
-            Gdx.app.log("DEBUG", "Problem while loading cutscene" +"cutscenes/" + cutsceneKey + "_" + (longTextHandler.getCurrentStep() + 1) + ".tmx, using blank");
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Problem while loading cutscene" +"cutscenes/" + cutsceneKey + "_" + (longTextHandler.getCurrentStep() + 1) + ".tmx, using blank");
             if (!actors.isEmpty()) {
                 actors.clear();
             }

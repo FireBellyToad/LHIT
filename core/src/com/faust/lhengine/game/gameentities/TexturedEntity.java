@@ -14,7 +14,7 @@ public abstract class TexturedEntity extends GameEntity {
 
     protected final Texture texture;
 
-    public TexturedEntity(Texture texture) {
+    protected TexturedEntity(Texture texture) {
         Objects.requireNonNull(texture);
         this.texture = texture;
     }

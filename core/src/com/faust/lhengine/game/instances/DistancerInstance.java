@@ -32,7 +32,7 @@ public abstract class DistancerInstance extends AnimatedInstance {
     private PathNode currentPos;
     private PathNode newGoal;
 
-    public DistancerInstance(TexturedEntity entity, GameInstance target) {
+    protected DistancerInstance(TexturedEntity entity, GameInstance target) {
         super(entity);
         this.target = target;
         this.targetPathNode = new PathNode(target.getBody().getPosition());

@@ -32,6 +32,9 @@
  </layer>
  <objectgroup id="2" name="objects">
   <object id="98" type="POI" x="55.8449" y="55.9778">
+   <properties>
+    <property name="poiType" propertytype="PoiType" value="SKELETON"/>
+   </properties>
    <point/>
   </object>
   <object id="99" type="DECO" x="133.125" y="24.75">

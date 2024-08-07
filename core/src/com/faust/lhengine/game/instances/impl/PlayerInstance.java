@@ -30,6 +30,7 @@ import com.faust.lhengine.game.rooms.areas.TriggerArea;
 import com.faust.lhengine.game.world.manager.CollisionManager;
 import com.faust.lhengine.screens.impl.GameScreen;
 import com.faust.lhengine.utils.GameInstanceUtils;
+import com.faust.lhengine.utils.LoggerUtils;
 import com.faust.lhengine.utils.ShaderWrapper;
 
 import java.util.*;
@@ -234,7 +235,7 @@ public class PlayerInstance extends AnimatedInstance implements InputProcessor, 
                 postHurtCooldown = TimeUtils.nanoTime();
                 ((PlayerEntity) entity).playHurtCry();
                 this.damage += Math.min(getResistance(), damageReceived);
-                Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+                Gdx.app.log(LoggerUtils.DEBUG_TAG, "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
                 postHurtLogic(attacker);
             }
         }

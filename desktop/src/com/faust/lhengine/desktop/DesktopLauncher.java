@@ -13,8 +13,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "LHEngine";
 		config.resizable = false;
-		config.width = LHEngine.GAME_WIDTH * SCALE_FACTOR;
-		config.height = LHEngine.GAME_HEIGHT * SCALE_FACTOR;
+		config.width = (int) (LHEngine.GAME_WIDTH * SCALE_FACTOR);
+		config.height = (int) (LHEngine.GAME_HEIGHT * SCALE_FACTOR);
 		//if parameter w is set, go windowed
 		config.fullscreen = false;//!Arrays.stream(arg).anyMatch(stringarg -> "w".equals(stringarg) || "windowed".equals(stringarg));
 		config.addIcon("icon.png", Files.FileType.Internal);

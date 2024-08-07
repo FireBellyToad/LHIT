@@ -17,7 +17,7 @@ import com.faust.lhengine.game.renderer.TopViewWorldRenderer;
 import com.faust.lhengine.game.rooms.manager.RoomsManager;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
-import com.faust.lhengine.enums.cutscenes.CutsceneEnum;
+import com.faust.lhengine.cutscenes.enums.CutsceneEnum;
 import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 import com.faust.lhengine.game.world.manager.WorldManager;

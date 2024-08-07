@@ -138,7 +138,7 @@ public class TopViewWorldRenderer implements WorldRenderer<AbstractRoom>, OnRoom
         // Sort by Y for depth effect. If decoration is interacted, priority is lowered
         allInstance.sort(DepthComparatorUtils::compareEntities);
 
-        allInstance.forEach((i) -> i.draw(batch, stateTime));
+        allInstance.forEach(i -> i.draw(batch, stateTime));
     }
 
     @Override
@@ -149,7 +149,7 @@ public class TopViewWorldRenderer implements WorldRenderer<AbstractRoom>, OnRoom
     @Override
     public void onRoomChangeStart(AbstractRoom newRoom) {
         //Disposing old room tiledrendered
-        if(Objects.nonNull(tiledMapRenderer)){
+        if (Objects.nonNull(tiledMapRenderer)) {
             tiledMapRenderer.dispose();
         }
     }

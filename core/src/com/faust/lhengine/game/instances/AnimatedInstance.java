@@ -27,7 +27,7 @@ public abstract class AnimatedInstance extends GameInstance {
     protected final List<OnBehaviorChangeListener> onBehaviorChangeListenerList = new ArrayList<>();
     protected Body hitBox;
 
-    public AnimatedInstance(final TexturedEntity entity) {
+    protected AnimatedInstance(final TexturedEntity entity) {
         super(entity);
     }
 

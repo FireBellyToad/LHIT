@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
-import com.faust.lhengine.enums.cutscenes.CutsceneEnum;
+import com.faust.lhengine.cutscenes.enums.CutsceneEnum;
 import com.faust.lhengine.screens.AbstractScreen;
 import com.faust.lhengine.utils.TextLocalizer;
 import com.faust.lhengine.menu.Menu;

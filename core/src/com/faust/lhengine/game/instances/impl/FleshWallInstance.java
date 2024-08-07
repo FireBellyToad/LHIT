@@ -25,6 +25,7 @@ import com.faust.lhengine.game.instances.GameInstance;
 import com.faust.lhengine.game.instances.interfaces.Interactable;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.screens.impl.GameScreen;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.Objects;
 
@@ -204,7 +205,7 @@ public class FleshWallInstance extends AnimatedInstance implements Interactable,
 
             // Hurt by player
             this.damage += ((Damager) attacker).damageRoll();
-            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         }
     }

@@ -13,11 +13,10 @@ import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.ai.PathNode;
 import com.faust.lhengine.game.ai.RoomNodesGraph;
 import com.faust.lhengine.game.gameentities.enums.*;
-import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.instances.AnimatedInstance;
 import com.faust.lhengine.game.instances.GameInstance;
-import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.instances.impl.*;
+import com.faust.lhengine.game.instances.interfaces.Killable;
 import com.faust.lhengine.game.music.MusicManager;
 import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.rooms.areas.EmergedArea;
@@ -26,12 +25,16 @@ import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
 import com.faust.lhengine.game.rooms.enums.MapObjTypeEnum;
 import com.faust.lhengine.game.rooms.enums.RoomFlagEnum;
 import com.faust.lhengine.game.rooms.enums.RoomTypeEnum;
+import com.faust.lhengine.game.rooms.interfaces.SpawnFactory;
 import com.faust.lhengine.game.splash.SplashManager;
 import com.faust.lhengine.game.textbox.manager.TextBoxManager;
 import com.faust.lhengine.game.world.manager.WorldManager;
 import com.faust.lhengine.saves.RoomSaveEntry;
+import com.faust.lhengine.utils.LoggerUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 
 /**
@@ -60,7 +63,8 @@ public abstract class AbstractRoom implements SpawnFactory {
 
     /**
      * Constructor
-     *  @param roomType
+     *
+     * @param roomType
      * @param worldManager
      * @param textManager
      * @param splashManager
@@ -69,7 +73,7 @@ public abstract class AbstractRoom implements SpawnFactory {
      * @param roomSaveEntry
      * @param musicManager
      */
-    public AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
+    protected AbstractRoom(final RoomTypeEnum roomType, final WorldManager worldManager, final TextBoxManager textManager, final SplashManager splashManager, final PlayerInstance player, final OrthographicCamera camera, final AssetManager assetManager, final RoomSaveEntry roomSaveEntry, MusicManager musicManager) {
         Objects.requireNonNull(worldManager);
         Objects.requireNonNull(textManager);
         Objects.requireNonNull(player);
@@ -211,14 +215,14 @@ public abstract class AbstractRoom implements SpawnFactory {
         POIEnum poiType = POIEnum.valueOf((String) obj.getProperties().get("poiType"));
         Objects.requireNonNull(poiType);
 
-        Gdx.app.log("DEBUG", "GUARANTEED_GOLDCROSS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
-        Gdx.app.log("DEBUG", "GUARANTEED_HERBS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
-        Gdx.app.log("DEBUG", "WITHOUT_HERBS: " + roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS));
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "GUARANTEED_GOLDCROSS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS));
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "GUARANTEED_HERBS: " + roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_HERBS));
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "WITHOUT_HERBS: " + roomContent.roomFlags.get(RoomFlagEnum.WITHOUT_HERBS));
 
         roomContent.poiList.add(new POIInstance(textManager,
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                poiType, (int)  obj.getProperties().get("id") ,splashManager, assetManager,
+                poiType, (int) obj.getProperties().get("id"), splashManager, assetManager,
                 roomContent.roomFlags.get(RoomFlagEnum.GUARANTEED_GOLDCROSS)));
 
     }
@@ -235,7 +239,7 @@ public abstract class AbstractRoom implements SpawnFactory {
         roomContent.decorationList.add(new DecorationInstance(
                 (float) obj.getProperties().get("x"),
                 (float) obj.getProperties().get("y"),
-                (int)  obj.getProperties().get("id"),
+                (int) obj.getProperties().get("id"),
                 decoType, assetManager));
     }
 
@@ -256,7 +260,7 @@ public abstract class AbstractRoom implements SpawnFactory {
         }
 
         switch (enemyEnum) {
-            case DIACONUS:{
+            case DIACONUS: {
                 addedInstance = new DiaconusInstance(
                         (float) obj.getProperties().get("x"),
                         (float) obj.getProperties().get("y"),
@@ -356,6 +360,7 @@ public abstract class AbstractRoom implements SpawnFactory {
 
     /**
      * Method for additional room initialization
+     *
      * @param roomType
      * @param worldManager
      * @param roomSaveEntry
@@ -391,7 +396,7 @@ public abstract class AbstractRoom implements SpawnFactory {
         }
 
         // Do enemy logic
-        roomContent.enemyList.forEach((ene) -> {
+        roomContent.enemyList.forEach(ene -> {
 
             ene.doLogic(stateTime, roomContent);
 
@@ -399,8 +404,8 @@ public abstract class AbstractRoom implements SpawnFactory {
                 musicManager.stopMusic();
             } else if (ene instanceof SpitterInstance && ((Killable) ene).isDead()) {
                 musicManager.stopMusic();
-                roomContent.player.setPlayerFlagValue(PlayerFlag.PREPARE_END_GAME,true);
-            } else if (roomContent.enemyList.size() == 1 && ClassReflection.isAssignableFrom(Killable.class,ene.getClass()) && ((Killable) ene).isDead()) {
+                roomContent.player.setPlayerFlagValue(PlayerFlag.PREPARE_END_GAME, true);
+            } else if (roomContent.enemyList.size() == 1 && ClassReflection.isAssignableFrom(Killable.class, ene.getClass()) && ((Killable) ene).isDead()) {
                 //Changing music based on enemy behaviour and number
                 musicManager.playMusic(TuneEnum.DANGER, true);
             } else if ((!RoomTypeEnum.FINAL.equals(roomContent.roomType) && !RoomTypeEnum.INFERNUM.equals(roomContent.roomType) && !RoomTypeEnum.CHURCH_ENTRANCE.equals(roomContent.roomType)) &&
@@ -427,9 +432,9 @@ public abstract class AbstractRoom implements SpawnFactory {
 
         //Remove examined removable POI
         roomContent.poiList.removeIf(poiInstance -> {
-            boolean check =  poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination();
+            boolean check = poiInstance.isAlreadyExamined() && poiInstance.isRemovableOnExamination();
 
-            if(check){
+            if (check) {
                 roomContent.removedPoiList.add(poiInstance);
             }
 
@@ -464,7 +469,7 @@ public abstract class AbstractRoom implements SpawnFactory {
         mapObjectStub.getProperties().put("y", startY);
 
         //Insert last enemy into world
-        if (ClassReflection.isAssignableFrom(AnimatedInstance.class,instanceClass)) {
+        if (ClassReflection.isAssignableFrom(AnimatedInstance.class, instanceClass)) {
             mapObjectStub.getProperties().put("enemyType", instanceIdentifierEnum);
             addObjAsEnemy(mapObjectStub, assetManager, true);
             worldManager.insertEnemiesIntoWorld(Collections.singletonList((AnimatedInstance) addedInstance));
@@ -475,23 +480,23 @@ public abstract class AbstractRoom implements SpawnFactory {
             POIInstance lastPOIInstance = roomContent.poiList.get(roomContent.poiList.size() - 1);
             worldManager.insertPOIIntoWorld(Collections.singletonList(lastPOIInstance));
             roomContent.player.changePOIList(roomContent.poiList);
-        } else  if (instanceClass.equals(PortalInstance.class)) {
+        } else if (instanceClass.equals(PortalInstance.class)) {
             mapObjectStub.getProperties().put("enemyType", instanceIdentifierEnum);
             addObjAsEnemy(mapObjectStub, assetManager, true);
-        } else  if (instanceClass.equals(ConfusionSpellInstance.class)) {
-            roomContent.spellEffects.add(new ConfusionSpellInstance(startX,startY, roomContent.player));
-            GameInstance lastSpellInstance = roomContent.spellEffects.get( roomContent.spellEffects.size()-1);
-            worldManager.insertSpellsIntoWorld(Collections.singletonList( lastSpellInstance));
-        }else  if (instanceClass.equals(HurtingSpellInstance.class)) {
-            roomContent.spellEffects.add(new HurtingSpellInstance(startX,startY, roomContent.player));
-            GameInstance lastSpellInstance = roomContent.spellEffects.get( roomContent.spellEffects.size()-1);
-            worldManager.insertSpellsIntoWorld(Collections.singletonList( lastSpellInstance));
+        } else if (instanceClass.equals(ConfusionSpellInstance.class)) {
+            roomContent.spellEffects.add(new ConfusionSpellInstance(startX, startY, roomContent.player));
+            GameInstance lastSpellInstance = roomContent.spellEffects.get(roomContent.spellEffects.size() - 1);
+            worldManager.insertSpellsIntoWorld(Collections.singletonList(lastSpellInstance));
+        } else if (instanceClass.equals(HurtingSpellInstance.class)) {
+            roomContent.spellEffects.add(new HurtingSpellInstance(startX, startY, roomContent.player));
+            GameInstance lastSpellInstance = roomContent.spellEffects.get(roomContent.spellEffects.size() - 1);
+            worldManager.insertSpellsIntoWorld(Collections.singletonList(lastSpellInstance));
         }
     }
 
     public abstract void onRoomLeave(RoomSaveEntry roomSaveEntry);
 
-    public RoomContent getRoomContent(){
+    public RoomContent getRoomContent() {
         return roomContent;
     }
 

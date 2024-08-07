@@ -179,7 +179,7 @@ public class Menu implements InputProcessor {
                 //New game
                 Map<String, Object> rawData = saveFileManager.loadRawValues();
                 if (rawData == null || rawData.isEmpty()) {
-                    changeToGameScreen = true;
+                    changeToIntroScreen = true;
                 } else {
                     selectedMenuVoice = 0;
                     currentMenu = MenuItem.NEW_GAME;

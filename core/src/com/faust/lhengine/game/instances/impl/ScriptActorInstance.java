@@ -27,6 +27,7 @@ import com.faust.lhengine.game.rooms.enums.MapLayersEnum;
 import com.faust.lhengine.game.scripts.enums.ScriptActorType;
 import com.faust.lhengine.game.scripts.enums.ScriptCommandsEnum;
 import com.faust.lhengine.game.world.manager.CollisionManager;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -129,7 +130,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
                 index = getNewIndex(stepOrder, commands, roomContent);
             }
 
-            Gdx.app.log("DEBUG", "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " end step " + getCurrentBehavior());
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " end step " + getCurrentBehavior());
 
             deltaTime = stateTime;
             //If is not last step
@@ -146,7 +147,7 @@ public class ScriptActorInstance extends AnimatedInstance implements Interactabl
             } else {
                 removeFromRoom = true;
                 spawnInstances(commands);
-                Gdx.app.log("DEBUG", "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " must be removed ");
+                Gdx.app.log(LoggerUtils.DEBUG_TAG, "Echo Actor " + ((ScriptActorEntity) entity).getEchoesActorType() + " must be removed ");
             }
         }
     }

@@ -31,6 +31,7 @@ import com.faust.lhengine.game.music.enums.TuneEnum;
 import com.faust.lhengine.game.rooms.RoomContent;
 import com.faust.lhengine.game.world.manager.CollisionManager;
 import com.faust.lhengine.screens.impl.GameScreen;
+import com.faust.lhengine.utils.LoggerUtils;
 
 import java.util.Objects;
 
@@ -295,13 +296,13 @@ public class DiaconusInstance extends DistancerInstance implements Interactable,
 
             this.damage += Math.min(getResistance(), amount);
             changeCurrentBehavior(GameBehavior.HURT);
-            Gdx.app.log("DEBUG", "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Instance " + this.getClass().getSimpleName() + " total damage " + damage);
             postHurtLogic(attacker);
         } else if (canEvade && !GameBehavior.EVADE.equals(getCurrentBehavior())) {
             ((DiaconusEntity) entity).playEvadeSwift();
             //Just evade
             changeCurrentBehavior(GameBehavior.EVADE);
-            Gdx.app.log("DEBUG", "Instance EVADED!");
+            Gdx.app.log(LoggerUtils.DEBUG_TAG, "Instance EVADED!");
             postHurtLogic(attacker);
         }
 

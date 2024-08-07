@@ -1,6 +1,7 @@
 package com.faust.lhengine.game.textbox;
 
 import com.badlogic.gdx.Gdx;
+import com.faust.lhengine.utils.LoggerUtils;
 
 /**
  * Class for wrapping text and duration
@@ -44,10 +45,10 @@ public class TextBoxData {
      */
     public String getTextIncremental(){
         String subText = text.substring(0, charsToShow);
-        Gdx.app.log("DEBUG","TextBoxData::getTextIncremental -> charsToShow =  " + charsToShow );
+        Gdx.app.log(LoggerUtils.DEBUG_TAG,"TextBoxData::getTextIncremental -> charsToShow =  " + charsToShow );
         charsToShow = Math.min(text.length(), charsToShow+1);
-        Gdx.app.log("DEBUG","TextBoxData::getTextIncremental -> charsToShow =  " + charsToShow );
-        Gdx.app.log("DEBUG","TextBoxData::getTextIncremental -> this =  " + this );
+        Gdx.app.log(LoggerUtils.DEBUG_TAG,"TextBoxData::getTextIncremental -> charsToShow =  " + charsToShow );
+        Gdx.app.log(LoggerUtils.DEBUG_TAG,"TextBoxData::getTextIncremental -> this =  " + this );
         return subText;
     }
 

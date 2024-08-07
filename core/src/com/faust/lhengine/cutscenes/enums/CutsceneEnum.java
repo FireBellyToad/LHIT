@@ -1,4 +1,4 @@
-package com.faust.lhengine.enums.cutscenes;
+package com.faust.lhengine.cutscenes.enums;
 
 import com.badlogic.gdx.Screen;
 import com.faust.lhengine.screens.impl.EndGameScreen;

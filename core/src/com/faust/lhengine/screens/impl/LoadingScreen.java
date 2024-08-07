@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.faust.lhengine.game.scripts.enums.ScriptActorType;
 import com.faust.lhengine.screens.AbstractScreen;
+import com.faust.lhengine.utils.LoggerUtils;
 import com.faust.lhengine.utils.ValidScript;
 import com.faust.lhengine.LHEngine;
 import com.faust.lhengine.game.music.MusicManager;
@@ -124,6 +125,6 @@ public class LoadingScreen extends AbstractScreen {
         cornerBox.end();
         game.getBatch().end();
 
-        Gdx.app.log("DEBUG", "Loading progress: " + loadingProgress + "%" );
+        Gdx.app.log(LoggerUtils.DEBUG_TAG, "Loading progress: " + loadingProgress + "%" );
     }
 }

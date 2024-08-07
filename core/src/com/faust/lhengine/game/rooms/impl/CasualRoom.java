@@ -31,8 +31,9 @@ import java.util.Objects;
  */
 public class CasualRoom extends AbstractRoom {
 
-    //List of map casual numbers with a Golden cross
-    public static final List<Integer> GOLDCROSS_MAPS = new ArrayList<>() {{
+    // List of map casual numbers with a Golden cross
+    // redundant type definition needed for html build
+    public static final List<Integer> GOLDCROSS_MAPS = new ArrayList<Integer>() {{
         this.add(1);
         this.add(5);
         this.add(6);
@@ -41,7 +42,8 @@ public class CasualRoom extends AbstractRoom {
     }};
 
     //List of Map casual numbers with a bush
-    public static final List<Integer> BUSH_MAPS = new ArrayList<>() {{
+    // redundant type definition needed for html build
+    public static final List<Integer> BUSH_MAPS = new ArrayList<Integer>() {{
         this.add(3);
         this.add(8);
         this.add(16);
